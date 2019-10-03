@@ -2,7 +2,7 @@
   "name": "gephgui",
   "version": "0.0.1",
   "private": true,
-  "main": "electron/main.js",
+  "main": "public/electron.js",
   "dependencies": {
     "@ionic/react": "^4.9.0-rc.2",
     "@ionic/react-router": "^4.9.0-rc.2",
@@ -30,10 +30,28 @@
   },
   "scripts": {
     "electron:start": "electron .",
+    "electron:pack": "react-scripts build; electron-builder -wl --dir",
+    "electron:dist": "react-scripts build; electron-builder",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "electron-pack": "build --em.main=build/electron.js"
+  },
+  "build": {
+    "appId": "io.geph.geghgui",
+    "files": [
+      "build/**/*",
+      "node_modules/**/*"
+    ],
+    "directories": {
+      "buildResources": "assets"
+    },
+    "linux": {
+      "target": [
+        "AppImage"
+      ]
+    }
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -46,6 +64,8 @@
   ],
   "description": "An Ionic project",
   "devDependencies": {
-    "electron": "^6.0.10"
+    "electron": "^6.0.10",
+    "electron-builder": "^21.2.0",
+    "electron-packager": "^14.0.6"
   }
 }

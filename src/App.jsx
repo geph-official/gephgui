@@ -6,6 +6,7 @@ import {
   IonLabel,
   IonRouterOutlet,
   IonTabBar,
+  IonTab,
   IonTabButton,
   IonTabs,
   IonContent,
@@ -137,18 +138,15 @@ class App extends React.Component {
                       }}
                     />
                   )}
-                  exact={true}
                 />
                 <Route
                   path="/tab2"
                   component={() => <Account {...this.state} />}
-                  exact={true}
                 />
                 <Route path="/tab3" component={Settings} />
-                <Route exact path="/" render={() => <Redirect to="/tab1" />} />
               </IonRouterOutlet>
               <IonTabBar slot="bottom">
-                <IonTabButton tab="tab1" href="/tab1">
+                <IonTabButton tab="tab1" id="labooyah" href="/tab1">
                   <IonIcon icon={icons.home} />
                   <IonLabel>{l10n.overview}</IonLabel>
                 </IonTabButton>

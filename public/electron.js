@@ -1,4 +1,4 @@
-const { app, BrowserWindow } = require("electron");
+const { app, BrowserWindow, protocol } = require("electron");
 const path = require("path");
 const url = require("url");
 const isDev = require("electron-is-dev");
@@ -35,11 +35,11 @@ function createWindow() {
 
   // and load the index.html of the app.
   if (isDev) {
-    win.loadURL("http://localhost:8100");
+    win.loadURL("http://localhost:8100/");
   } else {
     win.loadURL(
       url.format({
-        pathname: path.join(__dirname, "../public/index.html"),
+        pathname: path.join(__dirname, "../build/index.html"),
         protocol: "file:",
         slashes: true
       })
@@ -47,8 +47,8 @@ function createWindow() {
   }
 
   // Open the DevTools.
-  //win.webContents.openDevTools();
-  //win.setResizable(false);
+  win.webContents.openDevTools();
+  win.setResizable(true);
 
   // Emitted when the window is closed.
   win.on("closed", () => {
@@ -79,3 +79,15 @@ app.on("activate", () => {
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
+app.on("ready", () => {
+  protocol.interceptFileProtocol(
+    "file",
+    (request, callback) => {
+      const url = request.url.substr(7); /* all urls start with 'file://' */
+      callback({ path: path.normalize(`${__dirname}/${url}`) });
+    },
+    err => {
+      if (err) console.error("Failed to register protocol");
+    }
+  );
+});
