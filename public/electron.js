@@ -1,4 +1,8 @@
-const { app, BrowserWindow, protocol } = require("electron");
+const {
+  app,
+  BrowserWindow,
+  protocol
+} = require("electron");
 const path = require("path");
 const url = require("url");
 const isDev = require("electron-is-dev");
@@ -11,17 +15,19 @@ let win;
 function createWindow() {
   // Create the browser window.
   const os = require("os");
-  const { shell } = require("electron");
+  const {
+    shell
+  } = require("electron");
 
   win = new BrowserWindow({
     width: 400,
-    height: 620,
+    height: 600,
     webPreferences: {
       nodeIntegration: true
     }
   });
   win.setMenuBarVisibility(false);
-  win.webContents.on("new-window", function(event, url) {
+  win.webContents.on("new-window", function (event, url) {
     event.preventDefault();
     shell.openExternal(url);
   });
@@ -29,13 +35,19 @@ function createWindow() {
   win.setMaximizable(false);
   win.setMenu(null);
   // Prevent the UI itself from being routed through Geph
-  win.webContents.session.setProxy({ proxyRules: "direct://" }, () =>
+  win.webContents.session.setProxy({
+      proxyRules: "direct://"
+    }, () =>
     console.log("UI proxy unset")
   );
 
   // and load the index.html of the app.
   if (isDev) {
     win.loadURL("http://localhost:8100/");
+    win.webContents.openDevTools();
+    win.setResizable(true);
+
+    // Open the DevTools.
   } else {
     win.loadURL(
       url.format({
@@ -45,10 +57,6 @@ function createWindow() {
       })
     );
   }
-
-  // Open the DevTools.
-  win.webContents.openDevTools();
-  win.setResizable(true);
 
   // Emitted when the window is closed.
   win.on("closed", () => {
@@ -77,17 +85,20 @@ app.on("activate", () => {
   }
 });
 
-// In this file you can include the rest of your app's specific main process
-// code. You can also put them in separate files and require them here.
-app.on("ready", () => {
-  protocol.interceptFileProtocol(
-    "file",
-    (request, callback) => {
-      const url = request.url.substr(7); /* all urls start with 'file://' */
-      callback({ path: path.normalize(`${__dirname}/${url}`) });
-    },
-    err => {
-      if (err) console.error("Failed to register protocol");
-    }
-  );
-});
+// // In this file you can include the rest of your app's specific main process
+// // code. You can also put them in separate files and require them here.
+// app.on("ready", () => {
+//   protocol.interceptFileProtocol(
+//     "file",
+//     (request, callback) => {
+//       console.log(request.url)
+//       const url = request.url.substr(7); /* all urls start with 'file://' */
+//       callback({
+//         path: path.normalize(`${__dirname}/${url}`)
+//       });
+//     },
+//     err => {
+//       if (err) console.error("Failed to register protocol");
+//     }
+//   );
+// });

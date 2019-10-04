@@ -35,6 +35,8 @@ arrs["en-US"] = {
   nomoretx: "No more transactions",
   overview: "Overview",
   password: "Password",
+  loginblurb: "Log in with existing account",
+  registerblurb: "Create a new account",
   subscription: "Subscription",
   txlog: "Past transactions",
   upstream: "Upstream",
@@ -77,6 +79,9 @@ arrs["zh-CN"] = {
   accinfo: "用户信息",
   amount: "金额",
   cancel: "取消",
+  password: "密码",
+  loginblurb: "用已有账户登陆",
+  registerblurb: "创建新账户",
   connected: "连接成功",
   connectedblurb: "尽享自由的网络！",
   connecting: "连接中...",
@@ -228,7 +233,7 @@ arrs["zh-TW"] = {
 };
 
 if (!localStorage.getItem("prefs.lang")) {
-  localStorage.setItem("prefs.lang", navigator.language);
+  localStorage.setItem("prefs.lang", "en-US");
 }
 
 export var lang = localStorage.getItem("prefs.lang");

@@ -102,7 +102,7 @@ const Account = props => {
                         // FORCE reset
                         ngate.stopDaemon();
                         localStorage.clear();
-                        window.location.replace("./");
+                        window.location = "index.html";
                       }}
                     >
                       {l10n.logout}

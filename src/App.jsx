@@ -24,6 +24,7 @@ import Overview from "./pages/Overview";
 import Account from "./pages/Account.jsx";
 import Settings from "./pages/Settings";
 import Details from "./pages/Details";
+import { Helmet } from "react-helmet";
 import Login from "./pages/Login";
 
 /* Core CSS required for Ionic components to work properly */
@@ -45,7 +46,7 @@ import "@ionic/react/css/display.css";
 import * as axios from "axios";
 import * as ngate from "./nativeGate.js";
 
-import { l10n } from "./pages/l10n";
+import { l10n, lang } from "./pages/l10n";
 
 /* Theme variables */
 import "./theme/variables.css";
@@ -77,6 +78,18 @@ class App extends React.Component {
     if (localStorage.getItem("prefs.autoConn") === "true") {
       ngate.startDaemon();
     }
+
+    function clickLaboo() {
+      let laboo = document.getElementById("labooyah");
+      if (laboo !== null) {
+        laboo.click();
+      } else {
+        console.log(laboo);
+        setTimeout(clickLaboo, 300);
+      }
+    }
+
+    setTimeout(clickLaboo, 500);
   }
 
   componentWillUnmount() {
@@ -110,6 +123,8 @@ class App extends React.Component {
   render() {
     return (
       <IonApp>
+        <Helmet htmlAttributes={{ lang: lang }} />
+
         <IonReactRouter>
           <IonHeader mode="ios">
             <IonToolbar mode="ios" style={{ textAlign: "center" }}>

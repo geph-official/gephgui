@@ -96,7 +96,7 @@ const ConnStatusInfo = props => {
 
   return (
     <IonRow
-      style={{ paddingTop: "30px", height: "100px" }}
+      style={{ height: "100px" }}
       class="ion-align-items-center"
     >
       <IonCol size="5" style={{ textAlign: "right", paddingRight: "10px" }}>
@@ -203,7 +203,7 @@ const Overview = props => {
           <IonGrid>
             <ConnStatusInfo status={connState} />
 
-            <IonRow style={{ paddingTop: "40px", paddingBottom: "40px" }}>
+            <IonRow style={{ paddingTop: "20px", paddingBottom: "20px" }}>
               <IonCol>
                 <IonToggle
                   style={{ transform: "scale(1.7)" }}
@@ -225,7 +225,7 @@ const Overview = props => {
               free={props.netstats && props.netstats.Tier === "free"}
             />
 
-            <IonRow style={{ height: "50px" }}></IonRow>
+            <IonRow style={{ height: "20px" }}></IonRow>
           </IonGrid>
         </div>
 

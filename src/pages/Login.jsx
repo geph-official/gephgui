@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import l10n from "./l10n";
+import { l10n } from "./l10n";
 import {
   IonLabel,
   IonButton,
@@ -52,7 +52,7 @@ export default class Login extends React.Component {
               <IonCardHeader id="biglogohdr">
                 <img
                   id="biglogo"
-                  src={require("../assets/images/logo-zh-black.svg")}
+                  src={require("../assets/images/logo-naked.svg")}
                 />
               </IonCardHeader>
               <IonCardContent>
@@ -86,7 +86,7 @@ export default class Login extends React.Component {
                   <IonList id="upform">
                     <IonItem>
                       <IonLabel position="floating" color="medium">
-                        Username
+                        {l10n.username}
                       </IonLabel>
                       <IonInput
                         type="text"
@@ -103,7 +103,7 @@ export default class Login extends React.Component {
                         type="password"
                         color="medium"
                       >
-                        Password
+                        {l10n.password}
                       </IonLabel>
                       <IonInput
                         type="password"
@@ -122,7 +122,7 @@ export default class Login extends React.Component {
                     mode="ios"
                     type="submit"
                   >
-                    Log in with existing account
+                    {l10n.loginblurb}
                   </IonButton>
                   <IonButton
                     className="regButton"
@@ -131,7 +131,7 @@ export default class Login extends React.Component {
                     mode="ios"
                     type="button"
                   >
-                    Create a new account
+                    {l10n.registerblurb}
                   </IonButton>
                 </form>
               </IonCardContent>

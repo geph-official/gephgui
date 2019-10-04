@@ -29,7 +29,7 @@ class ExitSelector extends React.Component {
     super(props);
     // load the current selection
     if (!localStorage.getItem("prefs.exit")) {
-      localStorage.setItem("prefs.exit", "bg-sof-01.exits.geph.io");
+      localStorage.setItem("prefs.exit", "us-sfo-01.exits.geph.io");
     }
     this.props = props;
     this.state = {
@@ -81,9 +81,6 @@ const ExitPick = props => {
       </IonHeader>
       <IonContent>
         <IonList>
-          <IonListHeader>
-            <IonLabel color="medium">{l10n.coreblurb}</IonLabel>
-          </IonListHeader>
           {Object.keys(exits).map((key, index) => (
             <IonItem
               key={key}
@@ -111,13 +108,6 @@ const ExitPick = props => {
               {exits[key].plus ? (
                 <IonChip slot="end" color="warning" style={{ marginLeft: 0 }}>
                   <IonLabel>{l10n.plus}</IonLabel>
-                </IonChip>
-              ) : (
-                ""
-              )}
-              {exits[key].core ? (
-                <IonChip slot="end" color="tertiary" style={{ marginLeft: 0 }}>
-                  <IonLabel>{l10n.core}</IonLabel>
                 </IonChip>
               ) : (
                 ""
