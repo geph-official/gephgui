@@ -30,6 +30,9 @@
       "target": [
         "AppImage"
       ]
+    },
+    "win": {
+      "icon": "icons/windows.ico"
     }
   },
   "eslintConfig": {
