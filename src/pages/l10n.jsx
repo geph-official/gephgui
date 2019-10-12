@@ -58,6 +58,7 @@ arrs["en-US"] = {
 
   countries: {
     bg: "Bulgaria",
+    ch: "Switzerland",
     ca: "Canada",
     jp: "Japan",
     sg: "Singapore",
@@ -67,6 +68,7 @@ arrs["en-US"] = {
   cities: {
     dal: "Dallas",
     ewr: "Newark",
+    gva: "Geneva",
     mtl: "Montreal",
     sfo: "San Francisco",
     sgp: "Singapore",
@@ -141,7 +143,8 @@ arrs["zh-CN"] = {
     ca: "加拿大",
     jp: "日本",
     sg: "新加坡",
-    us: "美国"
+    us: "美国",
+    ch: "瑞士"
   },
 
   cities: {
@@ -151,7 +154,8 @@ arrs["zh-CN"] = {
     sfo: "旧金山",
     sgp: "新加坡",
     sof: "索菲亚",
-    tyo: "东京"
+    tyo: "东京",
+    gva: "日内瓦"
   }
 };
 
@@ -233,7 +237,7 @@ arrs["zh-TW"] = {
 };
 
 if (!localStorage.getItem("prefs.lang")) {
-  localStorage.setItem("prefs.lang", "en-US");
+  localStorage.setItem("prefs.lang", "zh-CN");
 }
 
 export var lang = localStorage.getItem("prefs.lang");

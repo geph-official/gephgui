@@ -38,6 +38,7 @@ import ExitSelector from "./ExitSelector";
 import "./odometer.css";
 
 import bglogo from "../assets/images/logo-bg.png";
+import { daemonRunning } from "../nativeGate";
 
 const ConnStatusInfo = props => {
   let lhs;
@@ -95,10 +96,7 @@ const ConnStatusInfo = props => {
   }
 
   return (
-    <IonRow
-      style={{ height: "100px" }}
-      class="ion-align-items-center"
-    >
+    <IonRow style={{ height: "100px" }} class="ion-align-items-center">
       <IonCol size="5" style={{ textAlign: "right", paddingRight: "10px" }}>
         {lhs}
       </IonCol>
@@ -213,7 +211,7 @@ const Overview = props => {
                   onIonChange={e => {
                     props.onConnToggle(e.detail.checked);
                   }}
-                  checked={props.running}
+                  checked={daemonRunning()}
                 />
               </IonCol>
             </IonRow>

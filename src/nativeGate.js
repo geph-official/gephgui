@@ -9,6 +9,11 @@ const spawn = window.require("child_process").spawn;
 
 var daemonPID = null;
 
+// set essential prefs if they don't exist
+if (!localStorage.getItem("prefs.autoProxy")) {
+  localStorage.setItem("prefs.autoProxy", "true");
+}
+
 function getBinaryPath() {
   if (os.platform() == "linux") {
     if (os.arch() == "x64") {
@@ -30,6 +35,10 @@ function binExt() {
   } else {
     return "";
   }
+}
+
+export function daemonRunning() {
+  return daemonPID != null;
 }
 
 export function checkAccount(uname, pwd) {
@@ -59,7 +68,7 @@ export function startDaemon() {
     alert("undefined exit?!");
     electron.exit();
   }
-  daemonPID = spawn(/*getBinaryPath() +*/ "geph-client" + binExt(), [
+  daemonPID = spawn("geph-client" + binExt(), [
     "-username",
     localStorage.getItem("prefs.uname"),
     "-password",
@@ -75,6 +84,15 @@ export function startDaemon() {
       daemonPID = null;
     }
   });
+  if (localStorage.getItem("prefs.autoProxy") === "true") {
+    // Don't use the pac executable on Windoze!
+    if (os.platform() === "win32") {
+      console.log("Win32, using alternative proxy enable");
+      spawn("ProxyToggle.exe", ["127.0.0.1:8780"]);
+    } else {
+      spawn("pac" + binExt(), ["on", "http://127.0.0.1:8790/proxy.pac"]);
+    }
+  }
 }
 
 // kill the daemon
@@ -84,10 +102,16 @@ export function stopDaemon() {
     daemonPID = null;
     dp.kill();
   }
+  if (os.platform() === "win32") {
+    spawn("ProxyToggle.exe", []);
+  } else {
+    spawn("pac" + binExt(), ["off"]);
+  }
 }
 
 // kill the daemon when we exit
 window.onbeforeunload = function(e) {
-  console.log("Cleaning up...");
-  stopDaemon();
+  if (daemonPID != null) {
+    return false;
+  }
 };

@@ -9,8 +9,8 @@
   },
   "scripts": {
     "electron:start": "electron .",
-    "electron:pack": "react-scripts build; electron-builder -wl --dir",
-    "electron:dist": "react-scripts build; electron-builder",
+    "electron:windows": "react-scripts build && electron-builder -w --ia32 --dir && cp binaries/win-ia32/* dist/win-ia32-unpacked/",
+    "electron:appimage": "react-scripts build && electron-builder",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -29,7 +29,8 @@
     "linux": {
       "target": [
         "AppImage"
-      ]
+      ],
+      "icon": "icons/512x512.png"
     },
     "win": {
       "icon": "icons/windows.ico"
@@ -46,9 +47,6 @@
   ],
   "description": "An Ionic project",
   "devDependencies": {
-    "electron": "^6.0.10",
-    "electron-builder": "^21.2.0",
-    "electron-packager": "^14.0.6",
     "@ionic/react": "^4.9.0-rc.2",
     "@ionic/react-router": "^4.9.0-rc.2",
     "@types/jest": "24.0.18",
@@ -59,6 +57,9 @@
     "@types/react-router-dom": "^4.3.1",
     "axios": "^0.19.0",
     "datejs": "^1.0.0-rc3",
+    "electron": "^6.0.12",
+    "electron-builder": "^21.2.0",
+    "electron-packager": "^14.0.6",
     "flag-icon-css": "^3.4.0",
     "ionicons": "^4.6.3",
     "react": "^16.9.0",
