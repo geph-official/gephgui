@@ -4,9 +4,12 @@ import { IonText } from "@ionic/react";
 export var arrs = {};
 
 arrs["en-US"] = {
+  err403: "You're not allowed on this exit. An upgrade may be needed.",
+
   langname: "English",
   accinfo: "Account info",
   account: "Account",
+  logs: "Logs",
   amount: "Amount",
   cancel: "Cancel",
   autoconn: "Auto-connect",
@@ -78,6 +81,7 @@ arrs["en-US"] = {
 };
 
 arrs["zh-CN"] = {
+  err403: "您没有资格登录这个出口端！",
   accinfo: "用户信息",
   amount: "金额",
   cancel: "取消",
@@ -135,7 +139,7 @@ arrs["zh-CN"] = {
       <b>高隐私</b>出口端位于网络最安全的地域
     </span>
   ),
-  paid: "Plus",
+  plus: "付费",
   free: "免费",
 
   countries: {

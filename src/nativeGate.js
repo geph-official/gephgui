@@ -2,6 +2,7 @@
 // right now it only supports Electron
 
 import exits from "./pages/exitList";
+import { l10n } from "./pages/l10n";
 
 const electron = window.require("electron");
 const os = window.require("os");
@@ -58,7 +59,7 @@ export function checkAccount(uname, pwd) {
 }
 
 // spawn the geph-client daemon
-export function startDaemon() {
+export function startDaemon(onLogLine) {
   if (daemonPID != null) {
     return;
   }
@@ -78,8 +79,15 @@ export function startDaemon() {
     "-exitKey",
     exit.key
   ]);
-  daemonPID.stderr.on("data", data => console.log(`stderr: ${data}`));
+  daemonPID.stderr.on("data", data => {
+    if (onLogLine) {
+      onLogLine(data.toString());
+    }
+  });
   daemonPID.on("close", code => {
+    if (code % 256 === 403 % 256) {
+      alert(l10n.err403);
+    }
     if (daemonPID !== null) {
       daemonPID = null;
     }

@@ -106,7 +106,7 @@ const ExitPick = props => {
               <IonText color="medium">/{l10n.cities[exits[key].city]}</IonText>
 
               {exits[key].plus ? (
-                <IonChip slot="end" color="warning" style={{ marginLeft: 0 }}>
+                <IonChip slot="end" color="success" style={{ marginLeft: 0 }}>
                   <IonLabel>{l10n.plus}</IonLabel>
                 </IonChip>
               ) : (

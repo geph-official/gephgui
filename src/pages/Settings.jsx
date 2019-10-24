@@ -14,6 +14,7 @@ import {
   IonNote,
   IonSelectOption
 } from "@ionic/react";
+import { Link } from "react-router-dom";
 
 import { l10n, arrs } from "./l10n";
 
@@ -79,6 +80,11 @@ const Settings = () => {
             <IonLabel>{l10n.http}</IonLabel>
             <IonLabel slot="end" color="medium">
               <tt>localhost:9910</tt>
+            </IonLabel>
+          </IonItem>
+          <IonItem lines="full">
+            <IonLabel>
+              <Link to="/logs">Debug logs</Link>
             </IonLabel>
           </IonItem>
         </IonList>

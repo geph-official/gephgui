@@ -38,6 +38,8 @@ function createWindow() {
   // and load the index.html of the app.
   if (isDev) {
     win.loadURL("http://localhost:8100/");
+    win.setResizable(true)
+    win.toggleDevTools()
   } else {
     win.loadURL(
       url.format({

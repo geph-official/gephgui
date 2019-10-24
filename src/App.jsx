@@ -18,12 +18,14 @@ import {
   IonToolbar,
   IonTitle
 } from "@ionic/react";
-import { IonReactRouter } from "@ionic/react-router";
+import { IonReactHashRouter } from "@ionic/react-router";
 import * as icons from "ionicons/icons";
 import Overview from "./pages/Overview";
 import Account from "./pages/Account.jsx";
 import Settings from "./pages/Settings";
+import Logs from "./pages/Logs";
 import Details from "./pages/Details";
+import axiosRetry, { exponentialDelay } from "axios-retry";
 import { Helmet } from "react-helmet";
 import Login from "./pages/Login";
 
@@ -50,6 +52,9 @@ import { l10n, lang } from "./pages/l10n";
 
 /* Theme variables */
 import "./theme/variables.css";
+
+//axiosRetry(axios, { retries: 1});
+
 setupConfig({
   rippleEffect: true,
   mode: "md"
@@ -63,7 +68,8 @@ const initState = {
   },
   upspeed: 0,
   downspeed: 0,
-  running: false
+  running: false,
+  logs: []
 };
 
 class App extends React.Component {
@@ -75,21 +81,6 @@ class App extends React.Component {
 
   componentDidMount() {
     this.timerID = setInterval(() => this.updateData(), 1000);
-    if (localStorage.getItem("prefs.autoConn") === "true") {
-      ngate.startDaemon();
-    }
-
-    function clickLaboo() {
-      let laboo = document.getElementById("labooyah");
-      if (laboo !== null) {
-        laboo.click();
-      } else {
-        console.log(laboo);
-        setTimeout(clickLaboo, 300);
-      }
-    }
-
-    setTimeout(clickLaboo, 500);
   }
 
   componentWillUnmount() {
@@ -116,7 +107,9 @@ class App extends React.Component {
         });
       })
       .catch(error => {
-        this.setState(initState);
+        if (!ngate.daemonRunning()) {
+          this.setState(initState);
+        }
       });
   }
 
@@ -125,7 +118,7 @@ class App extends React.Component {
       <IonApp>
         <Helmet htmlAttributes={{ lang: lang }} />
 
-        <IonReactRouter>
+        <IonReactHashRouter>
           <IonHeader mode="ios">
             <IonToolbar mode="ios" style={{ textAlign: "center" }}>
               <img
@@ -138,7 +131,9 @@ class App extends React.Component {
             <Login />
             <IonTabs>
               <IonRouterOutlet>
+                <Redirect exact from="/" to="/tab1" />
                 <Route
+                  exact
                   path="/tab1"
                   component={() => (
                     <Overview
@@ -146,8 +141,18 @@ class App extends React.Component {
                       onConnToggle={checked => {
                         console.log(checked);
                         if (checked) {
-                          ngate.startDaemon();
+                          this.setState({ running: true });
+                          // add every log line to the state
+                          ngate.startDaemon(logLine => {
+                            this.setState((state, props) => {
+                              console.log(logLine);
+                              return {
+                                logs: [...state.logs, logLine]
+                              };
+                            });
+                          });
                         } else {
+                          this.setState({ running: false });
                           ngate.stopDaemon();
                         }
                       }}
@@ -155,10 +160,16 @@ class App extends React.Component {
                   )}
                 />
                 <Route
+                  exact
                   path="/tab2"
                   component={() => <Account {...this.state} />}
                 />
-                <Route path="/tab3" component={Settings} />
+                <Route
+                  exact
+                  path="/logs"
+                  component={() => <Logs logs={this.state.logs} />}
+                />
+                <Route exact path="/tab3" component={Settings} />
               </IonRouterOutlet>
               <IonTabBar slot="bottom">
                 <IonTabButton tab="tab1" id="labooyah" href="/tab1">
@@ -176,7 +187,7 @@ class App extends React.Component {
               </IonTabBar>
             </IonTabs>
           </IonContent>
-        </IonReactRouter>
+        </IonReactHashRouter>
       </IonApp>
     );
   }

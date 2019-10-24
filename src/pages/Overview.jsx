@@ -211,7 +211,7 @@ const Overview = props => {
                   onIonChange={e => {
                     props.onConnToggle(e.detail.checked);
                   }}
-                  checked={daemonRunning()}
+                  checked={props.running}
                 />
               </IonCol>
             </IonRow>
