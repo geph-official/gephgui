@@ -4,9 +4,18 @@
 import exits from "./pages/exitList";
 import { l10n } from "./pages/l10n";
 
-const electron = window.require("electron");
-const os = window.require("os");
-const spawn = window.require("child_process").spawn;
+let electron;
+let os;
+let spawn;
+
+let isElectron = false;
+
+if ("require" in window) {
+  electron = window.require("electron");
+  os = window.require("os");
+  spawn = window.require("child_process").spawn;
+  isElectron = true;
+}
 
 var daemonPID = null;
 
@@ -43,6 +52,12 @@ export function daemonRunning() {
 }
 
 export function checkAccount(uname, pwd) {
+  if (!isElectron) {
+    window.Android.jsShowToast("cannot check account, just logging in anyway");
+    return new Promise((resolve, reject) => {
+      resolve(0);
+    });
+  }
   return new Promise((resolve, reject) => {
     console.log("checking account");
     let pid = spawn(/*getBinaryPath() +*/ "geph-client" + binExt(), [
@@ -60,16 +75,27 @@ export function checkAccount(uname, pwd) {
 
 // spawn geph-client in binder proxy mode
 export function startBinderProxy() {
+  if (!isElectron) {
+    return window.Android.jsStartProxBinder();
+  }
   return spawn("geph-client" + binExt(), ["-binderProxy", "127.0.0.1:23456"]);
 }
 
 // stop the binder proxy by handle
 export function stopBinderProxy(pid) {
+  if (!isElectron) {
+    alert("cannot stop binderproxy; not electron!");
+    return;
+  }
   pid.kill();
 }
 
 // spawn the geph-client daemon
 export function startDaemon(onLogLine) {
+  if (!isElectron) {
+    alert("cannot start daemon; not electron!");
+    return;
+  }
   if (daemonPID != null) {
     return;
   }
@@ -115,6 +141,10 @@ export function startDaemon(onLogLine) {
 
 // kill the daemon
 export function stopDaemon() {
+  if (!isElectron) {
+    alert("cannot stop daemon; not electron!");
+    return;
+  }
   if (daemonPID != null) {
     let dp = daemonPID;
     daemonPID = null;

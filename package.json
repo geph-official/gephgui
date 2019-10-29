@@ -5,13 +5,16 @@
   "homepage": ".",
   "main": "public/electron.js",
   "dependencies": {
+    "@types/whatwg-fetch": "0.0.33",
     "axios-retry": "^3.1.2",
-    "electron-is-dev": "^1.1.0"
+    "electron-is-dev": "^1.1.0",
+    "whatwg-fetch": "^3.0.0"
   },
   "scripts": {
     "electron:start": "electron .",
     "electron:windows": "react-scripts build && electron-builder -w --ia32 --dir && cp binaries/win-ia32/* dist/win-ia32-unpacked/",
-    "electron:appimage": "react-scripts build && electron-builder",
+    "electron:lin64": "react-scripts build && electron-builder -l --x64 --dir && cp binaries/lin-amd64/* dist/linux-unpacked/",
+    "electron:lin32": "react-scripts build && electron-builder -l --ia32 --dir && cp binaries/lin-ia32/* dist/linux-ia32-unpacked/",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",

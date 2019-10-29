@@ -11,6 +11,12 @@ const exits = {
     city: "sgp",
     plus: true
   },
+  "jp-tyo-01.exits.geph.io": {
+    key: "107b64be61eef80a863362b84c7ebc730f81e903697c6e632f2908a62a60163d",
+    country: "jp",
+    city: "tyo",
+    plus: true
+  },
   "us-sfo-01.exits.geph.io": {
     key: "2f8571e4795032433098af285c0ce9e43c973ac3ad71bf178e4f2aaa39794aec",
     country: "us",

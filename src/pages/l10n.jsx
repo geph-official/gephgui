@@ -20,6 +20,7 @@ arrs["en-US"] = {
   autoconn: "Auto-connect",
   autoconnblurb: "Connect when the Geph app starts",
   general: "General",
+  network: "Network",
   language: "Language",
   connected: "Connected",
   settings: "Settings",

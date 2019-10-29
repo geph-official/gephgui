@@ -24,20 +24,6 @@ const Settings = () => {
       <IonContent>
         <IonList>
           <IonListHeader mode="ios">{l10n.general}</IonListHeader>
-          <IonItem lines="full">
-            <IonLabel>
-              {l10n.autoconn}
-              <br />
-              <IonNote>{l10n.autoconnblurb}</IonNote>
-            </IonLabel>
-            <IonToggle
-              slot="end"
-              checked={localStorage.getItem("prefs.autoConn")}
-              onIonChange={e => {
-                localStorage.setItem("prefs.autoConn", e.target.checked);
-              }}
-            />
-          </IonItem>
           <IonItem>
             <IonLabel>{l10n.language}</IonLabel>
             <IonSelect
