@@ -6,6 +6,11 @@ export var arrs = {};
 arrs["en-US"] = {
   err403: "You're not allowed on this exit. An upgrade may be needed.",
 
+  errExists: "User already exists",
+  errBadCaptcha: "CAPTCHA wrong",
+
+  captcha: "CAPTCHA",
+
   langname: "English",
   accinfo: "Account info",
   account: "Account",
@@ -29,6 +34,8 @@ arrs["en-US"] = {
   advanced: "Advanced",
   downstream: "Downstream",
   exitserver: "Exit location:",
+  pwdmismatch: "Passwords do not match",
+  unameillegal: "Username must be 5 to 100 alphanumeric characters",
   expiry: "Expiration date",
   extend: "Extend",
   restartblurb: "Restart Geph to apply language",
@@ -38,6 +45,7 @@ arrs["en-US"] = {
   nomoretx: "No more transactions",
   overview: "Overview",
   password: "Password",
+  passwordConfirm: "Confirm password",
   loginblurb: "Log in with existing account",
   registerblurb: "Create a new account",
   subscription: "Subscription",
@@ -82,20 +90,28 @@ arrs["en-US"] = {
 
 arrs["zh-CN"] = {
   err403: "您没有资格登录这个出口端！",
+
+  errExists: "用戶已经存在！",
+  errBadCaptcha: "验证码错误",
+
   accinfo: "用户信息",
   amount: "金额",
   cancel: "取消",
   password: "密码",
+  passwordConfirm: "确认密码",
+  captcha: "验证码",
   loginblurb: "用已有账户登陆",
   registerblurb: "创建新账户",
   connected: "连接成功",
   connectedblurb: "尽享自由的网络！",
-  connecting: "连接中...",
+  connecting: "连接中",
   date: "日期",
   logout: "登出",
   restartblurb: "关闭、重启迷雾通后将使用选择的语言",
   disconnected: "未连接",
   advanced: "高级",
+  unameillegal: "用户名必须为5-100个字母或数字",
+  pwdmismatch: "密码和之前输入的不一样",
   downstream: "下行",
   langname: "简体中文",
   language: "语言",
@@ -241,11 +257,12 @@ arrs["zh-TW"] = {
 };
 
 if (!localStorage.getItem("prefs.lang")) {
-  localStorage.setItem("prefs.lang", "zh-CN");
+  localStorage.setItem("prefs.lang", navigator.language);
 }
 
 export var lang = localStorage.getItem("prefs.lang");
 if (lang !== "zh-CN" && lang !== "zh-TW") {
   lang = "en-US";
 }
+
 export var l10n = arrs[lang];

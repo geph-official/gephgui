@@ -98,6 +98,7 @@ const Account = props => {
                   <IonCol style={{ textAlign: "center" }}>
                     <IonButton
                       color="danger"
+                      size="small"
                       onClick={() => {
                         // FORCE reset
                         ngate.stopDaemon();

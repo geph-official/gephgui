@@ -58,6 +58,16 @@ export function checkAccount(uname, pwd) {
   });
 }
 
+// spawn geph-client in binder proxy mode
+export function startBinderProxy() {
+  return spawn("geph-client" + binExt(), ["-binderProxy", "127.0.0.1:23456"]);
+}
+
+// stop the binder proxy by handle
+export function stopBinderProxy(pid) {
+  pid.kill();
+}
+
 // spawn the geph-client daemon
 export function startDaemon(onLogLine) {
   if (daemonPID != null) {
@@ -96,9 +106,9 @@ export function startDaemon(onLogLine) {
     // Don't use the pac executable on Windoze!
     if (os.platform() === "win32") {
       console.log("Win32, using alternative proxy enable");
-      spawn("ProxyToggle.exe", ["127.0.0.1:8780"]);
+      spawn("ProxyToggle.exe", ["127.0.0.1:9910"]);
     } else {
-      spawn("pac" + binExt(), ["on", "http://127.0.0.1:8790/proxy.pac"]);
+      spawn("pac" + binExt(), ["on", "http://127.0.0.1:9809/proxy.pac"]);
     }
   }
 }
