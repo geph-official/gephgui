@@ -142,7 +142,10 @@ export function startBinderProxy() {
     let x = window.Android.jsStartProxBinder();
     return x;
   }
-  return spawn("geph-client" + binExt(), ["-binderProxy", "127.0.0.1:23456"]);
+  return spawn(getBinaryPath() + "geph-client" + binExt(), [
+    "-binderProxy",
+    "127.0.0.1:23456"
+  ]);
 }
 
 // stop the binder proxy by handle
@@ -218,9 +221,9 @@ export function stopDaemon() {
     dp.kill();
   }
   if (os.platform() === "win32") {
-    spawn("ProxyToggle.exe", []);
+    spawn(getBinaryPath() + "ProxyToggle.exe", []);
   } else {
-    spawn("pac" + binExt(), ["off"]);
+    spawn(getBinaryPath() + "pac" + binExt(), ["off"]);
   }
 }
 
