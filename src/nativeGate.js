@@ -97,6 +97,23 @@ export function daemonRunning() {
   return daemonPID != null;
 }
 
+function getBinaryPath() {
+  const { remote } = window.require("electron");
+  const myPath = remote.app.getAppPath();
+  if (os.platform() == "linux") {
+    if (os.arch() == "x64") {
+      return myPath + "/binaries/linux-x64/";
+    } else {
+      return myPath + "/binaries/linux-ia32/";
+    }
+  } else if (os.platform() == "win32") {
+    return myPath + "/binaries/win-ia32/";
+  } else if (os.platform() == "darwin") {
+    return myPath + "/binaries/mac-x64/";
+  }
+  throw "UNKNOWN OS";
+}
+
 export function checkAccount(uname, pwd) {
   if (!isElectron) {
     window.Android.jsShowToast("cannot check account, just logging in anyway");
@@ -106,7 +123,7 @@ export function checkAccount(uname, pwd) {
   }
   return new Promise((resolve, reject) => {
     console.log("checking account");
-    let pid = spawn(/*getBinaryPath() +*/ "geph-client" + binExt(), [
+    let pid = spawn(getBinaryPath() + "geph-client" + binExt(), [
       "-username",
       uname,
       "-password",
@@ -157,7 +174,7 @@ export function startDaemon() {
     alert("undefined exit?!");
     electron.exit();
   }
-  daemonPID = spawn("geph-client" + binExt(), [
+  daemonPID = spawn(getBinaryPath() + "geph-client" + binExt(), [
     "-username",
     localStorage.getItem("prefs.uname"),
     "-password",
@@ -179,9 +196,12 @@ export function startDaemon() {
     // Don't use the pac executable on Windoze!
     if (os.platform() === "win32") {
       console.log("Win32, using alternative proxy enable");
-      spawn("ProxyToggle.exe", ["127.0.0.1:9910"]);
+      spawn(getBinaryPath() + "ProxyToggle.exe", ["127.0.0.1:9910"]);
     } else {
-      spawn("pac" + binExt(), ["on", "http://127.0.0.1:9809/proxy.pac"]);
+      spawn(getBinaryPath() + "pac" + binExt(), [
+        "on",
+        "http://127.0.0.1:9809/proxy.pac"
+      ]);
     }
   }
 }
