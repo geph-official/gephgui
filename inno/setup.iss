@@ -41,7 +41,7 @@ Type: filesandordirs; Name: "{app}\*"
 
 [Files]
 ;Source: "E:\geph-electron-win32-ia32\geph-electron.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "PreOutput\geph-windows-{#MyAppVersion}\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "..\dist\win-ia32-unpacked\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]

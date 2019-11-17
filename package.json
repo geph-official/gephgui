@@ -27,7 +27,6 @@
     "files": [
       "build/**/*",
       "node_modules/**/*",
-      "binaries${/*}",
       "binaries/${os}-${arch}"
     ],
     "directories": {
