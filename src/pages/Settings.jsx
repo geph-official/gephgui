@@ -15,6 +15,7 @@ import {
   IonSelectOption
 } from "@ionic/react";
 import { Link } from "react-router-dom";
+import * as ngate from "../nativeGate";
 
 import { l10n, arrs } from "./l10n";
 
@@ -42,20 +43,24 @@ const Settings = () => {
         </IonList>
         <IonList>
           <IonListHeader mode="ios">{l10n.advanced}</IonListHeader>
-          <IonItem lines="full">
-            <IonLabel>
-              {l10n.autoproxy}
-              <br />
-              <IonNote>{l10n.autoproxyblurb}</IonNote>
-            </IonLabel>
-            <IonToggle
-              slot="end"
-              checked={localStorage.getItem("prefs.autoProxy")}
-              onIonChange={e => {
-                localStorage.setItem("prefs.autoProxy", e.target.checked);
-              }}
-            />
-          </IonItem>
+          {ngate.platform === "electron" ? (
+            <IonItem lines="full">
+              <IonLabel>
+                {l10n.autoproxy}
+                <br />
+                <IonNote>{l10n.autoproxyblurb}</IonNote>
+              </IonLabel>
+              <IonToggle
+                slot="end"
+                checked={localStorage.getItem("prefs.autoProxy")}
+                onIonChange={e => {
+                  localStorage.setItem("prefs.autoProxy", e.target.checked);
+                }}
+              />
+            </IonItem>
+          ) : (
+            ""
+          )}
           <IonItem lines="full">
             <IonLabel>{l10n.socks5}</IonLabel>
             <IonLabel slot="end" color="medium">

@@ -38,8 +38,6 @@ import ExitSelector from "./ExitSelector";
 import "./odometer.css";
 
 import bglogo from "../assets/images/logo-bg.png";
-import { daemonRunning } from "../nativeGate";
-
 const ConnStatusInfo = props => {
   let lhs;
   let rhs;
@@ -96,7 +94,7 @@ const ConnStatusInfo = props => {
   }
 
   return (
-    <IonRow style={{ height: "100px" }} class="ion-align-items-center">
+    <IonRow style={{ height: "100px" }} className="ion-align-items-center">
       <IonCol size="5" style={{ textAlign: "right", paddingRight: "10px" }}>
         {lhs}
       </IonCol>
@@ -139,6 +137,28 @@ const SpeedLabel = props => {
   );
 };
 
+const PingLabel = props => {
+  let style = {};
+  if (props.ms) {
+    if (props.ms < 100) {
+      style = { color: "blue" };
+    } else if (props.ms < 150) {
+      style = { color: "green" };
+    } else if (props.ms < 200) {
+      style = { color: "darkorange" };
+    } else {
+      style = { color: "red" };
+    }
+  }
+  return (
+    <>
+      <b style={style}>{props.ms && props.ms > 0.01 ? props.ms : "-"}</b> ms
+    </>
+  );
+};
+
+const IPLabel = props => <b>{props.ip ? props.ip : "-"}</b>;
+
 const NetActivityInfo = props => {
   let max;
   if (props.free) {
@@ -153,11 +173,11 @@ const NetActivityInfo = props => {
           <IonCardContent>
             <IonGrid>
               <IonRow>
-                <IonCol class="ion-no-padding">
+                <IonCol className="ion-no-padding">
                   <IonLabel>{l10n.downstream}</IonLabel> <br />
                   <SpeedLabel kbps={props.down} max={max} />
                 </IonCol>
-                <IonCol class="ion-no-padding">
+                <IonCol className="ion-no-padding">
                   {l10n.upstream} <br />
                   <SpeedLabel kbps={props.up} max={max} />
                 </IonCol>
@@ -209,17 +229,31 @@ const Overview = props => {
                   color="success"
                   value="maintoggle"
                   onIonChange={e => {
+                    if (props.updating) {
+                      return;
+                    }
                     props.onConnToggle(e.detail.checked);
                   }}
                   checked={props.running}
+                  disabled={props.updating}
                 />
               </IonCol>
             </IonRow>
 
             <ExitSelector disabled={props.running} />
+
+            <IonRow>
+              <IonCol className="ion-no-padding">
+                <tt style={{ opacity: 0.7 }}>
+                  <IPLabel ip={props.netstats && props.netstats.PublicIP} /> /{" "}
+                  <PingLabel ms={props.netstats && props.netstats.MinPing} />
+                </tt>
+              </IonCol>
+            </IonRow>
             <NetActivityInfo
               up={props.upspeed}
               down={props.downspeed}
+              netstats={props.netstats}
               free={props.netstats && props.netstats.Tier === "free"}
             />
 
@@ -243,7 +277,8 @@ const Overview = props => {
             display:
               props.netstats && props.netstats.Tier === "free"
                 ? "block"
-                : "none"
+                : "none",
+            textAlign: "center"
           }}
         >
           {l10n.freelimit}
@@ -251,18 +286,6 @@ const Overview = props => {
             <b> 800</b>
           </IonText>{" "}
           kbps
-          <div style={{ float: "right" }}>
-            <IonButton
-              size="small"
-              color="success"
-              fill="outline"
-              style={{
-                verticalAlign: "middle"
-              }}
-            >
-              Upgrade
-            </IonButton>
-          </div>
         </div>
       </IonContent>
     </IonPage>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   IonContent,
   IonHeader,
@@ -21,36 +21,42 @@ import {
   IonCol,
   IonIcon,
   IonButton,
-  IonText
+  IonText,
+  IonTextarea
 } from "@ionic/react";
+import axios from "axios";
 
-const Logs = props => (
-  <IonPage>
-    <IonHeader>
-      <IonToolbar>
-        <IonTitle>Debug logs</IonTitle>
-        <IonButtons slot="start">
-          <IonBackButton defaultHref="home" />
-        </IonButtons>
-      </IonToolbar>
-    </IonHeader>
-    <IonContent
-      style={{
-        fontSize: "6pt",
-        "--background": "#282828",
-        "--color": "#00ff76",
-        height: "100%",
-        overflowY: "scroll"
-      }}
-    >
-      {props.logs.map(line => (
-        <>
-          <tt>{line}</tt>
-          <br />
-        </>
-      ))}
-    </IonContent>
-  </IonPage>
-);
+const Logs = props => {
+  const [logs, setLogs] = useState([]);
+  async function fetchLogs() {
+    const logResp = await axios.get("http://localhost:9809/logs");
+    setLogs(logResp.data);
+  }
+  useEffect(() => {
+    fetchLogs();
+  }, []);
+  return (
+    <IonPage>
+      <IonHeader>
+        <IonToolbar>
+          <IonTitle>Debug logs</IonTitle>
+          <IonButtons slot="start">
+            <IonBackButton defaultHref="home" />
+          </IonButtons>
+        </IonToolbar>
+      </IonHeader>
+      <IonContent>
+        <IonTextarea
+          style={{
+            fontSize: "8pt",
+            fontFamily: "monospace"
+          }}
+        >
+          {logs.join("\n")}
+        </IonTextarea>
+      </IonContent>
+    </IonPage>
+  );
+};
 
 export default Logs;

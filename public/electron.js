@@ -14,7 +14,7 @@ function createWindow() {
 
   win = new BrowserWindow({
     width: 400,
-    height: 650,
+    height: 670,
     webPreferences: {
       nodeIntegration: true
     }
@@ -38,8 +38,8 @@ function createWindow() {
   // and load the index.html of the app.
   if (isDev) {
     win.loadURL("http://localhost:8100/");
-    win.setResizable(true)
-    win.toggleDevTools()
+    win.setResizable(true);
+    win.toggleDevTools();
   } else {
     win.loadURL(
       url.format({

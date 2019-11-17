@@ -1,11 +1,10 @@
 {
   "name": "gephgui",
-  "version": "0.0.1",
+  "version": "3.0.0",
   "private": true,
   "homepage": ".",
   "main": "public/electron.js",
   "dependencies": {
-    "@types/whatwg-fetch": "0.0.33",
     "axios-retry": "^3.1.2",
     "electron-is-dev": "^1.1.0",
     "whatwg-fetch": "^3.0.0"
@@ -14,6 +13,7 @@
     "electron:start": "electron .",
     "electron:windows": "react-scripts build && electron-builder -w --ia32 --dir && cp binaries/win-ia32/* dist/win-ia32-unpacked/",
     "electron:lin64": "react-scripts build && electron-builder -l --x64 --dir && cp binaries/lin-amd64/* dist/linux-unpacked/",
+    "electron:macos": "react-scripts build && electron-builder --mac --x64 --dir",
     "electron:lin32": "react-scripts build && electron-builder -l --ia32 --dir && cp binaries/lin-ia32/* dist/linux-ia32-unpacked/",
     "start": "react-scripts start",
     "build": "react-scripts build",
@@ -36,6 +36,11 @@
       ],
       "icon": "icons/512x512.png"
     },
+    "mac": {
+      "category": "public.app-category.utilities",
+      "icon": "icons/mac.icns",
+      "target": "dir"
+    },
     "win": {
       "icon": "icons/windows.ico"
     }
@@ -51,20 +56,20 @@
   ],
   "description": "An Ionic project",
   "devDependencies": {
-    "@ionic/react": "^4.11.2",
-    "@ionic/react-router": "^4.11.2",
+    "@ionic/react": "^4.11.3",
+    "@ionic/react-router": "^4.11.3",
     "@types/jest": "24.0.18",
     "@types/node": "12.7.5",
-    "@types/react": "^16.9.9",
-    "@types/react-dom": "^16.9.2",
+    "@types/react": "^16.9.11",
+    "@types/react-dom": "^16.9.3",
     "@types/react-router": "^5.1.2",
     "@types/react-router-dom": "^4.3.1",
     "axios": "^0.19.0",
     "datejs": "^1.0.0-rc3",
-    "electron": "^6.1.0",
+    "electron": "^6.1.2",
     "electron-builder": "^21.2.0",
-    "electron-packager": "^14.0.6",
-    "flag-icon-css": "^3.4.2",
+    "electron-packager": "^14.1.0",
+    "flag-icon-css": "^3.4.5",
     "ionicons": "^4.6.3",
     "react": "^16.11.0",
     "react-dom": "^16.11.0",

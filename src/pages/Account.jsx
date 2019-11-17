@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   IonContent,
   IonHeader,
@@ -16,10 +16,12 @@ import {
   IonListHeader,
   IonGrid,
   IonRow,
+  IonNote,
   IonCol,
   IonIcon,
   IonButton,
-  IonText
+  IonText,
+  IonButtons
 } from "@ionic/react";
 import * as icons from "ionicons/icons";
 import "datejs";
@@ -33,26 +35,31 @@ const Account = props => {
     ? Date.parse(props.netstats.Expiry).toString("yyyy-MM-dd")
     : "";
   const hideWhenNotRunning = {
-    visibility: props.running ? "visible" : "hidden"
+    visibility:
+      props.running && props.netstats && props.netstats.Connected
+        ? "visible"
+        : "hidden"
   };
   const isFree = props.netstats.Tier === "free";
   const extendURL = `https://geph.io/billing/login?next=%2Fbilling%2Fdashboard&uname=${encodeURI(
     localStorage.getItem("prefs.uname")
   )}&pwd=${encodeURI(localStorage.getItem("prefs.pwd"))}`;
+  // state
+  const [pwdShown, setPwdShown] = useState(false);
   return (
     <IonPage>
       <IonContent>
         <div class="cards">
-          <IonCard>
+          <IonCard mode="ios">
             <IonCardHeader>
               <IonCardTitle>
-                <IonIcon icon={icons.informationCircleOutline} size="large" />
+                <IonIcon icon={icons.person} size="large" />
                 &nbsp;
                 <IonLabel>{l10n.accinfo}</IonLabel>
               </IonCardTitle>
             </IonCardHeader>
             <IonCardContent>
-              <IonGrid className="ion-no-padding">
+              <IonGrid>
                 <IonRow>
                   <IonCol>
                     <b>{l10n.username}</b>
@@ -61,38 +68,29 @@ const Account = props => {
                     {localStorage.getItem("prefs.uname")}
                   </IonCol>
                 </IonRow>
-                <IonRow style={hideWhenNotRunning}>
+                <IonRow>
                   <IonCol>
-                    <b>{l10n.subscription}</b>
+                    <b>{l10n.password}</b>
                   </IonCol>
                   <IonCol className="accinfo">
-                    {props.netstats.Username === "dorbie" ||
-                    props.netstats.Username == "LisaWei"
-                      ? "Dorthisbe"
-                      : l10n[props.netstats.Tier]}
+                    {pwdShown ? (
+                      <>
+                        <IonIcon
+                          icon={icons.eyeOff}
+                          onClick={() => setPwdShown(false)}
+                        />
+                        &nbsp;&nbsp;<tt>{localStorage.getItem("prefs.pwd")}</tt>
+                      </>
+                    ) : (
+                      <>
+                        <IonIcon
+                          icon={icons.eye}
+                          onClick={() => setPwdShown(true)}
+                        />
+                        &nbsp;&nbsp;<tt>*******</tt>
+                      </>
+                    )}
                   </IonCol>
-                </IonRow>
-                <IonRow style={hideWhenNotRunning}>
-                  {!isFree
-                    ? [
-                        <IonCol>
-                          <b>{l10n.expiry}</b>
-                        </IonCol>,
-                        <IonCol className="accinfo">
-                          {expiryText === "2100-01-31" ? "Forever" : expiryText}
-                          <br />
-                          <a href={extendURL} target="_blank">
-                            {l10n.extend}
-                          </a>
-                        </IonCol>
-                      ]
-                    : [
-                        <IonCol style={{ textAlign: "center" }}>
-                          <a href={extendURL} target="_blank">
-                            {l10n.plusblurb}
-                          </a>
-                        </IonCol>
-                      ]}
                 </IonRow>
                 <IonRow>
                   <IonCol style={{ textAlign: "center" }}>
@@ -113,39 +111,87 @@ const Account = props => {
               </IonGrid>
             </IonCardContent>
           </IonCard>
-          <IonCard class="flexgrow" style={hideWhenNotRunning}>
+          <IonCard class="flexgrow" mode="ios" style={hideWhenNotRunning}>
             <IonCardHeader>
               <IonCardTitle>
                 <IonIcon icon={icons.card} size="large" />
                 &nbsp;
-                <IonLabel>{l10n.txlog}</IonLabel>
+                <IonLabel>{l10n.subscription}</IonLabel>
               </IonCardTitle>
             </IonCardHeader>
             <IonCardContent>
-              <IonGrid className="ion-no-padding">
+              <IonGrid>
                 <IonRow>
                   <IonCol>
-                    <b>{l10n.date}</b>
+                    <b>{l10n.subscription}</b>
                   </IonCol>
-                  <IonCol>
-                    <b>{l10n.amount}</b>
+                  <IonCol className="accinfo">
+                    {props.netstats.Username === "dorbie" ||
+                    props.netstats.Username === "LisaWei"
+                      ? "Dorthisbe"
+                      : l10n[props.netstats.Tier]}
                   </IonCol>
                 </IonRow>
-                {props.netstats.PayTxes
-                  ? props.netstats.PayTxes.map(val => (
-                      <IonRow>
+                <IonRow>
+                  {!isFree
+                    ? [
                         <IonCol>
-                          {Date.parse(val.Date).toString("yyyy-MM-dd")}
+                          <b>{l10n.expiry}</b>
+                        </IonCol>,
+                        <IonCol className="accinfo">
+                          {expiryText === "2100-01-31" ? "Forever" : expiryText}
                         </IonCol>
-                        <IonCol>${val.Amount / 100}</IonCol>
-                      </IonRow>
-                    ))
-                  : ""}
-                <IonRow>
-                  <IonCol>
-                    <IonText color="medium">{l10n.nomoretx}</IonText>
-                  </IonCol>
+                      ]
+                    : [
+                        <IonCol>
+                          <b>
+                            <IonText color="success">
+                              {l10n.upgradeToPlus}
+                            </IonText>
+                          </b>
+                          <br />
+                          <small>{l10n.unlockUnlimitedSpeed}</small>
+                        </IonCol>,
+                        <IonCol>
+                          <IonButton
+                            size="small"
+                            mode="ios"
+                            onClick={() => {
+                              if (ngate.platform === "android") {
+                                window.location.href = extendURL;
+                              } else {
+                                window.open(extendURL, "_blank");
+                              }
+                            }}
+                          >
+                            {l10n.seePlans}
+                          </IonButton>
+                        </IonCol>
+                      ]}
                 </IonRow>
+                {!isFree ? (
+                  <IonRow>
+                    <IonCol style={{ textAlign: "center" }}>
+                      <IonButton
+                        color="primary"
+                        mode="ios"
+                        fill="outline"
+                        size="small"
+                        onClick={() => {
+                          if (ngate.platform === "android") {
+                            window.location.href = extendURL;
+                          } else {
+                            window.open(extendURL, "_blank");
+                          }
+                        }}
+                      >
+                        {l10n.extend}
+                      </IonButton>
+                    </IonCol>
+                  </IonRow>
+                ) : (
+                  ""
+                )}
               </IonGrid>
             </IonCardContent>
           </IonCard>

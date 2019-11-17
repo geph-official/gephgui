@@ -68,7 +68,7 @@ const initState = {
   },
   upspeed: 0,
   downspeed: 0,
-  running: false,
+  updating: true,
   logs: []
 };
 
@@ -80,7 +80,8 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    this.timerID = setInterval(() => this.updateData(), 1000);
+    this.updateData(true);
+    this.timerID = setInterval(() => this.updateData(false), 1000);
   }
 
   componentWillUnmount() {
@@ -88,28 +89,32 @@ class App extends React.Component {
   }
 
   // update data from local port
-  updateData() {
+  updateData(changeRunning) {
     axios
       .get("http://localhost:9809")
       .then(resp => {
         this.setState((state, props) => {
+          let firstTime = state.netstats.DownBytes === 0;
           let UP = ((resp.data.UpBytes - state.netstats.UpBytes) * 8) / 1000;
           let DOWN =
             ((resp.data.DownBytes - state.netstats.DownBytes) * 8) / 1000;
-          console.log("UP: " + state.upspeed);
-          console.log("DN: " + state.downspeed);
+          console.log(resp.data);
           return {
             netstats: resp.data,
-            upspeed: UP,
-            downspeed: DOWN,
-            running: true
+            upspeed: firstTime ? 0 : UP,
+            downspeed: firstTime ? 0 : DOWN,
+            running: changeRunning ? true : state.running
           };
         });
       })
       .catch(error => {
-        if (!ngate.daemonRunning()) {
-          this.setState(initState);
+        this.setState(initState);
+        if (changeRunning) {
+          this.setState({ running: false });
         }
+      })
+      .finally(() => {
+        this.setState({ updating: false });
       });
   }
 
@@ -139,18 +144,12 @@ class App extends React.Component {
                     <Overview
                       {...this.state}
                       onConnToggle={checked => {
+                        this.setState({ updating: true });
                         console.log(checked);
                         if (checked) {
                           this.setState({ running: true });
                           // add every log line to the state
-                          ngate.startDaemon(logLine => {
-                            this.setState((state, props) => {
-                              console.log(logLine);
-                              return {
-                                logs: [...state.logs, logLine]
-                              };
-                            });
-                          });
+                          ngate.startDaemon();
                         } else {
                           this.setState({ running: false });
                           ngate.stopDaemon();
@@ -164,11 +163,7 @@ class App extends React.Component {
                   path="/tab2"
                   component={() => <Account {...this.state} />}
                 />
-                <Route
-                  exact
-                  path="/logs"
-                  component={() => <Logs logs={this.state.logs} />}
-                />
+                <Route exact path="/logs" component={() => <Logs />} />
                 <Route exact path="/tab3" component={Settings} />
               </IonRouterOutlet>
               <IonTabBar slot="bottom">

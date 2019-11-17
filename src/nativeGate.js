@@ -3,6 +3,7 @@
 
 import exits from "./pages/exitList";
 import { l10n } from "./pages/l10n";
+import axios from "axios";
 
 let electron;
 let os;
@@ -17,6 +18,66 @@ if ("require" in window) {
   isElectron = true;
 }
 
+export const platform = isElectron ? "electron" : "android";
+
+if (platform === "electron") {
+  function getOsName() {
+    if (os.platform() === "linux") {
+      if (os.arch() === "x64") {
+        return "Linux64";
+      } else {
+        return "Linux32";
+      }
+    } else if (os.platform() === "win32") {
+      return "Windows";
+    } else if (os.platform() === "darwin") {
+      return "MacOS";
+    }
+    return "";
+  }
+
+  const { dialog } = window.require("electron").remote;
+  const { shell } = window.require("electron");
+  const { app } = window.require("electron").remote;
+
+  var dialogShowed = false;
+  var currentVersion = app.getVersion();
+
+  async function checkForUpdates() {
+    const updateURL =
+      "https://raw.githubusercontent.com/geph-official/geph-autoupdate/master/stable.json";
+    try {
+      let response = await axios.get(updateURL);
+      let data = response.data;
+      let meta = data[getOsName()];
+      console.log(meta);
+      if (meta.Latest != currentVersion && !dialogShowed) {
+        dialogShowed = true;
+        let dialogOpts = {
+          type: "info",
+          buttons: [l10n["updateDownload"], l10n["updateLater"]],
+          message:
+            l10n["updateInfo"] +
+            "\n" +
+            "(" +
+            currentVersion +
+            " => " +
+            meta.Latest +
+            ")"
+        };
+        dialog.showMessageBox(dialogOpts, response => {
+          if (response === 0) {
+            shell.openExternal(meta.Mirrors[0]);
+          }
+        });
+      }
+    } finally {
+    }
+  }
+  checkForUpdates();
+  setInterval(checkForUpdates, 60 * 60 * 1000);
+}
+
 var daemonPID = null;
 
 // set essential prefs if they don't exist
@@ -24,23 +85,8 @@ if (!localStorage.getItem("prefs.autoProxy")) {
   localStorage.setItem("prefs.autoProxy", "true");
 }
 
-function getBinaryPath() {
-  if (os.platform() == "linux") {
-    if (os.arch() == "x64") {
-      return __dirname + "/assets/binaries/linux-x64/";
-    } else {
-      return __dirname + "/assets/binaries/linux-ia32/";
-    }
-  } else if (os.platform() == "win32") {
-    return __dirname + "/assets/binaries/win-ia32/";
-  } else if (os.platform() == "darwin") {
-    return __dirname + "/assets/binaries/mac-x64/";
-  }
-  throw "UNKNOWN OS";
-}
-
 function binExt() {
-  if (os.platform() == "win32") {
+  if (os.platform() === "win32") {
     return ".exe";
   } else {
     return "";
@@ -76,7 +122,8 @@ export function checkAccount(uname, pwd) {
 // spawn geph-client in binder proxy mode
 export function startBinderProxy() {
   if (!isElectron) {
-    return window.Android.jsStartProxBinder();
+    let x = window.Android.jsStartProxBinder();
+    return x;
   }
   return spawn("geph-client" + binExt(), ["-binderProxy", "127.0.0.1:23456"]);
 }
@@ -84,23 +131,28 @@ export function startBinderProxy() {
 // stop the binder proxy by handle
 export function stopBinderProxy(pid) {
   if (!isElectron) {
-    alert("cannot stop binderproxy; not electron!");
+    window.Android.jsStopProxBinder(pid);
     return;
   }
   pid.kill();
 }
 
 // spawn the geph-client daemon
-export function startDaemon(onLogLine) {
+export function startDaemon() {
+  let exitname = localStorage.getItem("prefs.exit");
+  let exit = exits[exitname];
   if (!isElectron) {
-    alert("cannot start daemon; not electron!");
+    window.Android.jsStartDaemon(
+      localStorage.getItem("prefs.uname"),
+      localStorage.getItem("prefs.pwd"),
+      exitname,
+      exit.key
+    );
     return;
   }
   if (daemonPID != null) {
     return;
   }
-  let exitname = localStorage.getItem("prefs.exit");
-  let exit = exits[exitname];
   if (exit === undefined) {
     alert("undefined exit?!");
     electron.exit();
@@ -115,11 +167,6 @@ export function startDaemon(onLogLine) {
     "-exitKey",
     exit.key
   ]);
-  daemonPID.stderr.on("data", data => {
-    if (onLogLine) {
-      onLogLine(data.toString());
-    }
-  });
   daemonPID.on("close", code => {
     if (code % 256 === 403 % 256) {
       alert(l10n.err403);
@@ -142,7 +189,7 @@ export function startDaemon(onLogLine) {
 // kill the daemon
 export function stopDaemon() {
   if (!isElectron) {
-    alert("cannot stop daemon; not electron!");
+    window.Android.jsStopDaemon();
     return;
   }
   if (daemonPID != null) {
