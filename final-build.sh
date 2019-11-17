@@ -1,7 +1,7 @@
 #!/bin/sh
 
 ISCC="/home/miyuruasuka/.wine/drive_c/Program Files (x86)/Inno Setup 6/ISCC.exe"
-export VERSION=v$(cat package.json | jq -r ".version")
+export VERSION=$(cat package.json | jq -r ".version")
 rm -rf dist
 # compile windoze
 echo "Windows!"
