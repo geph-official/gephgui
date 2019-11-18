@@ -1,7 +1,7 @@
 ﻿; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppVersion GetEnv("VERSION")
-#define MyAppPublisher "Gephyra OÃœ"
+#define MyAppPublisher "Gephyra OÜ"
 #define MyAppURL "https://geph.io/"
 #define MyAppExeName "gephgui.exe"
 
