@@ -21,6 +21,11 @@ if ("require" in window) {
 export const platform = isElectron ? "electron" : "android";
 
 if (platform === "electron") {
+  // on macOS, elevate pac permissions
+if (os.platform() === "darwin") {
+  elevatePerms();
+}
+
   function getOsName() {
     if (os.platform() === "linux") {
       if (os.arch() === "x64") {
@@ -116,9 +121,9 @@ function getBinaryPath() {
 
 export function checkAccount(uname, pwd) {
   if (!isElectron) {
-    window.Android.jsShowToast("cannot check account, just logging in anyway");
     return new Promise((resolve, reject) => {
-      resolve(0);
+      window._CALLBACK = resolve;
+      window.Android.jsCheckAccount(uname, pwd, "window._CALLBACK")
     });
   }
   return new Promise((resolve, reject) => {
@@ -266,9 +271,4 @@ function elevatePerms() {
     console.log("Setuid cleared on pac, now we run cocoasudo!");
     forceElevatePerms();
   }
-}
-
-// on macOS, elevate pac permissions
-if (os.platform() === "darwin") {
-  elevatePerms();
 }
