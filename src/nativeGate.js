@@ -76,6 +76,8 @@ if (platform === "electron") {
           }
         });
       }
+    } catch (e) {
+      alert(e);
     } finally {
     }
   }

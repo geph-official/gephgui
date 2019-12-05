@@ -34,6 +34,7 @@ import React, { useState } from "react";
 import { l10n } from "./l10n";
 import * as icons from "ionicons/icons";
 import ExitSelector from "./ExitSelector";
+import * as ngate from "../nativeGate";
 
 import "./odometer.css";
 
@@ -182,6 +183,19 @@ const NetActivityInfo = props => {
                   <SpeedLabel kbps={props.up} max={max} />
                 </IonCol>
               </IonRow>
+              {props.netstats && props.netstats.Tier === "free" && (
+                <IonRow className="ion-no-padding">
+                  <IonCol className="ion-no-padding">
+                    <small>
+                      {l10n.freelimit}
+                      <IonText color="danger">
+                        <b> 800</b>
+                      </IonText>{" "}
+                      kbps
+                    </small>
+                  </IonCol>
+                </IonRow>
+              )}
             </IonGrid>
           </IonCardContent>
         </IonCard>
@@ -266,26 +280,41 @@ const Overview = props => {
             position: "absolute",
             bottom: "0px",
             width: "100%",
-            height: "48px",
-            lineHeight: "48px",
+            height: "58px",
+            lineHeight: "38px",
+            fontSize: "90%",
             display: "block",
             background: "#ffffff",
             boxShadow: "0px -5px 5px #eeeeee",
             textAlign: "left",
             paddingLeft: "10px",
             paddingRight: "10px",
+            paddingTop: "10px",
+            paddingBottom: "10px",
             display:
               props.netstats && props.netstats.Tier === "free"
                 ? "block"
-                : "none",
-            textAlign: "center"
+                : "none"
           }}
         >
-          {l10n.freelimit}
-          <IonText color="danger">
-            <b> 800</b>
-          </IonText>{" "}
-          kbps
+          {l10n.plusblurb}
+          <IonButton
+            mode="ios"
+            size="small"
+            style={{ float: "right" }}
+            onClick={() => {
+              const extendURL = `https://geph.io/billing/login?next=%2Fbilling%2Fdashboard&uname=${encodeURI(
+                localStorage.getItem("prefs.uname")
+              )}&pwd=${encodeURI(localStorage.getItem("prefs.pwd"))}`;
+              if (ngate.platform === "android") {
+                window.location.href = extendURL;
+              } else {
+                window.open(extendURL, "_blank");
+              }
+            }}
+          >
+            {l10n.upgrade}
+          </IonButton>
         </div>
       </IonContent>
     </IonPage>

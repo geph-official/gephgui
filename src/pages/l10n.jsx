@@ -42,7 +42,11 @@ arrs["en-US"] = {
   overview: "Overview",
   password: "Password",
   passwordConfirm: "Confirm password",
-  plusblurb: "More locations and unlimited speed for $3.98/mth",
+  plusblurb: (
+    <>
+      Unlimited speed for <b>&euro;5/month</b>
+    </>
+  ),
   pwdmismatch: "Passwords do not match",
   registerblurb: "Create a new account",
   restartblurb: "Restart Geph to apply language",
@@ -58,6 +62,7 @@ arrs["en-US"] = {
   updateInfo: "A new version is available!",
   updateLater: "Remind me later",
   upgradeToPlus: "Upgrade to Plus",
+  upgrade: "Buy Plus!",
   upstream: "Upstream",
   username: "Username",
   coreblurb: (
@@ -103,6 +108,9 @@ arrs["zh-CN"] = {
   captcha: "验证码",
   connected: "连接成功",
   connectedblurb: "尽享自由的网络！",
+  updateDownload: "下载",
+  updateInfo: "迷雾通新版本已发布！",
+  updateLater: "之后提醒",
   connecting: "连接中",
   date: "日期",
   disconnected: "未连接",
@@ -124,7 +132,11 @@ arrs["zh-CN"] = {
   overview: "概览",
   password: "密码",
   passwordConfirm: "确认密码",
-  plusblurb: "更多位置、没有限速。低至$3.98/月",
+  plusblurb: (
+    <>
+      流畅看高清！<b>解除限速&euro;5/月</b>
+    </>
+  ),
   pwdmismatch: "密码和之前输入的不一样",
   registerblurb: "创建新账户",
   restartblurb: "关闭、重启迷雾通后将使用选择的语言",
@@ -135,7 +147,7 @@ arrs["zh-CN"] = {
   txlog: "付费记录",
   unameillegal: "用户名必须为5-100个字母或数字",
   unlockUnlimitedSpeed: "享受无限速度",
-  upgrade: "马上升级",
+  upgrade: "马上购买！",
   upgradeToPlus: "升级至Plus",
   upstream: "上行",
   username: "用户名",
@@ -209,6 +221,9 @@ arrs["zh-TW"] = {
   general: "通用",
   http: "HTTP代理端口",
   langname: "繁體中文",
+  updateDownload: "下載",
+  updateInfo: "迷霧通新版本已發佈！",
+  updateLater: "之後提醒",
   language: "語言",
   loginblurb: "用已有賬戶登陸",
   logout: "登出",
@@ -216,7 +231,11 @@ arrs["zh-TW"] = {
   overview: "概覽",
   password: "密碼",
   passwordConfirm: "確認密碼",
-  plusblurb: "更多位置、沒有限速。低至$3.98/月",
+  plusblurb: (
+    <>
+      流暢看高清！<b>解除限速&euro;5/月</b>
+    </>
+  ),
   pwdmismatch: "密碼和之前輸入的不一樣",
   registerblurb: "創建新賬戶",
   restartblurb: "關閉、重啓迷霧通後將使用選擇的語言",
@@ -227,7 +246,7 @@ arrs["zh-TW"] = {
   txlog: "付費記錄",
   unameillegal: "用戶名必須為5-100個字母或數字",
   unlockUnlimitedSpeed: "享受無限速度",
-  upgrade: "馬上升級",
+  upgrade: "馬上購買！",
   upgradeToPlus: "升級至Plus",
   upstream: "上行",
   username: "用戶名",
