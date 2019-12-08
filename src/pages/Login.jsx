@@ -256,8 +256,10 @@ export default class Login extends React.Component {
           this.setState({ success: true });
           localStorage.setItem("prefs.uname", this.state.uname);
           localStorage.setItem("prefs.pwd", this.state.pwd);
-        } else if (code === 147) {
+        } else if (code === 11) {
           alert("Incorrect username and password. Please try again.");
+        } else if (code === 10) {
+          alert("Timeout");
         } else {
           alert("Could not connect. ECODE " + code);
         }
@@ -274,7 +276,7 @@ export default class Login extends React.Component {
       <IonModal isOpen={!this.state.success}>
         <IonContent>
           {/* Spinner */}
-          <IonLoading isOpen={this.state.trying} message={""} />
+          {this.state.trying && <IonLoading isOpen message={""} />}
           {/* Registration modal */}
           {this.state.registerOpen ? (
             <Register
