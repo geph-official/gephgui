@@ -1,12 +1,15 @@
 {
   "name": "gephgui",
-  "version": "3.0.4",
+  "version": "3.0.5",
   "private": true,
   "homepage": ".",
   "main": "public/electron.js",
   "dependencies": {
+    "@webcomponents/webcomponentsjs": "^2.4.0",
     "axios-retry": "^3.1.2",
+    "css-vars-ponyfill": "^2.1.2",
     "electron-is-dev": "^1.1.0",
+    "react-app-polyfill": "^1.0.5",
     "whatwg-fetch": "^3.0.0"
   },
   "scripts": {
@@ -51,10 +54,7 @@
     "extends": "react-app"
   },
   "browserslist": [
-    ">0.2%",
-    "not dead",
-    "not ie <= 11",
-    "not op_mini all"
+    ">0.02%"
   ],
   "description": "An Ionic project",
   "devDependencies": {

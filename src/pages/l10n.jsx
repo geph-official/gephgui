@@ -171,6 +171,7 @@ arrs["zh-CN"] = {
     </span>
   ),
   plus: "付费",
+  paid: "付费",
   free: "免费",
 
   countries: {
@@ -270,6 +271,7 @@ arrs["zh-TW"] = {
     </span>
   ),
   plus: "付費",
+  paid: "付費",
   free: "免費",
 
   countries: {

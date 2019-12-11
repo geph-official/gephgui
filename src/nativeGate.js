@@ -49,14 +49,17 @@ if (platform === "electron") {
   var currentVersion = app.getVersion();
 
   async function checkForUpdates() {
-    const updateURL =
-      "https://raw.githubusercontent.com/geph-official/geph-autoupdate/master/stable.json";
+    const updateURLs = [
+      "https://raw.githubusercontent.com/geph-official/geph-autoupdate/master/stable.json",
+      "https://gitlab.com/bunsim/geph-autoupdate/raw/master/stable.json"
+    ];
+
     try {
-      let response = await axios.get(updateURL);
+      let response = await axios.get(updateURLs[Math.random() > 0.5 ? 1 : 0]);
       let data = response.data;
       let meta = data[getOsName()];
       console.log(meta);
-      if (meta.Latest != currentVersion && !dialogShowed) {
+      if (meta.Latest !== currentVersion && !dialogShowed) {
         dialogShowed = true;
         let dialogOpts = {
           type: "info",
@@ -77,7 +80,7 @@ if (platform === "electron") {
         });
       }
     } catch (e) {
-      alert(e);
+      console.log(e);
     } finally {
     }
   }
