@@ -73,6 +73,12 @@ arrs["en-US"] = {
   plus: "Plus",
   paid: "Plus",
   free: "Free",
+  tcp: "Use TCP mode",
+  tcpblurb: (
+    <>
+      <b>Experimental feature</b>. Reconnect to apply.
+    </>
+  ),
 
   countries: {
     bg: "Bulgaria",
@@ -151,6 +157,12 @@ arrs["zh-CN"] = {
   upgradeToPlus: "升级至Plus",
   upstream: "上行",
   username: "用户名",
+  tcp: "使用TCP模式",
+  tcpblurb: (
+    <>
+      <b>实验性功能</b>。重新连接后生效。
+    </>
+  ),
 
   upgradeblurb: (
     <span>
@@ -251,6 +263,12 @@ arrs["zh-TW"] = {
   upgradeToPlus: "升級至Plus",
   upstream: "上行",
   username: "用戶名",
+  tcp: "使用TCP模式",
+  tcpblurb: (
+    <>
+      <b>實驗性功能</b>。重新連接後生效。
+    </>
+  ),
 
   upgradeblurb: (
     <span>
@@ -298,10 +316,11 @@ arrs["zh-TW"] = {
 if (!localStorage.getItem("prefs.lang")) {
   localStorage.setItem("prefs.lang", navigator.language);
 }
-
-export var lang = localStorage.getItem("prefs.lang");
-if (lang !== "zh-CN" && lang !== "zh-TW") {
-  lang = "en-US";
-}
-
-export var l10n = arrs[lang];
+export const getl10n = () => {
+  let lang = localStorage.getItem("prefs.lang");
+  if (lang !== "zh-CN" && lang !== "zh-TW") {
+    lang = "en-US";
+  }
+  let l10n = arrs[lang];
+  return [lang, l10n];
+};

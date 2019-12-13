@@ -2,8 +2,8 @@
 // right now it only supports Electron
 
 import exits from "./pages/exitList";
-import { l10n } from "./pages/l10n";
 import axios from "axios";
+import { getl10n } from "./pages/l10n";
 
 let electron;
 let os;
@@ -59,6 +59,7 @@ if (platform === "electron") {
       let data = response.data;
       let meta = data[getOsName()];
       console.log(meta);
+      const [lang, l10n] = getl10n();
       if (meta.Latest !== currentVersion && !dialogShowed) {
         dialogShowed = true;
         let dialogOpts = {
@@ -169,6 +170,7 @@ export function stopBinderProxy(pid) {
 
 // spawn the geph-client daemon
 export function startDaemon() {
+  const [lang, l10n] = getl10n();
   let exitname = localStorage.getItem("prefs.exit");
   let exit = exits[exitname];
   if (!isElectron) {
@@ -176,7 +178,8 @@ export function startDaemon() {
       localStorage.getItem("prefs.uname"),
       localStorage.getItem("prefs.pwd"),
       exitname,
-      exit.key
+      exit.key,
+      localStorage.getItem("prefs.useTCP") ? true : false
     );
     return;
   }
@@ -195,7 +198,9 @@ export function startDaemon() {
     "-exitName",
     exitname,
     "-exitKey",
-    exit.key
+    exit.key,
+    "-useExperimentalTCP",
+    localStorage.getItem("prefs.useTCP") ? "true" : "false"
   ]);
   daemonPID.on("close", code => {
     if (code % 256 === 403 % 256) {
@@ -252,6 +257,7 @@ function arePermsCorrect() {
 }
 
 function forceElevatePerms() {
+  const [lang, l10n] = getl10n();
   const spawn = window.require("child_process").spawn;
   let lol = spawn(getBinaryPath() + "cocoasudo", [
     "--prompt=" + l10n["macPacMsg"],

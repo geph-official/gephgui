@@ -31,7 +31,7 @@ import {
 } from "@ionic/react";
 import Odometer from "react-odometerjs";
 import React, { useState } from "react";
-import { l10n } from "./l10n";
+import { getl10n } from "./l10n";
 import * as icons from "ionicons/icons";
 import ExitSelector from "./ExitSelector";
 import * as ngate from "../nativeGate";
@@ -42,6 +42,7 @@ import bglogo from "../assets/images/logo-bg.png";
 const ConnStatusInfo = props => {
   let lhs;
   let rhs;
+  const [lang, l10n] = getl10n();
 
   // disconnected state
   if (props.status === "disconnected") {
@@ -105,6 +106,7 @@ const ConnStatusInfo = props => {
 };
 
 const SpeedLabel = props => {
+  const [lang, l10n] = getl10n();
   const bwStyle = {
     fontSize: "14pt"
   };
@@ -167,6 +169,7 @@ const NetActivityInfo = props => {
   } else {
     max = 100000000;
   }
+  const [lang, l10n] = getl10n();
   return (
     <IonRow>
       <IonCol>
@@ -205,6 +208,7 @@ const NetActivityInfo = props => {
 };
 
 const Overview = props => {
+  const [lang, l10n] = getl10n();
   // calculate states
   let connState;
   if (props.running) {

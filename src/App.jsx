@@ -48,7 +48,7 @@ import "@ionic/react/css/display.css";
 import * as axios from "axios";
 import * as ngate from "./nativeGate.js";
 
-import { l10n, lang } from "./pages/l10n";
+import { getl10n } from "./pages/l10n";
 
 /* Theme variables */
 import "./theme/variables.css";
@@ -119,6 +119,7 @@ class App extends React.Component {
   }
 
   render() {
+    const [lang, l10n] = getl10n();
     return (
       <IonApp>
         <Helmet htmlAttributes={{ lang: lang }} />

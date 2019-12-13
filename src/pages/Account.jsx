@@ -25,12 +25,13 @@ import {
 } from "@ionic/react";
 import * as icons from "ionicons/icons";
 import "datejs";
-import { l10n } from "./l10n";
+import { getl10n } from "./l10n";
 import * as ngate from "../nativeGate";
 
 import "./Account.css";
 
 const Account = props => {
+  const [lang, l10n] = getl10n();
   const expiryText = props.netstats.Expiry
     ? Date.parse(props.netstats.Expiry).toString("yyyy-MM-dd")
     : "";

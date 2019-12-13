@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { l10n } from "./l10n";
+import { getl10n } from "./l10n";
 import {
   IonLabel,
   IonButton,
@@ -40,6 +40,7 @@ class ExitSelector extends React.Component {
   componentDidMount() {}
 
   render() {
+    const [lang, l10n] = getl10n();
     return (
       <IonRow>
         <IonCol>
@@ -67,6 +68,7 @@ class ExitSelector extends React.Component {
 const ExitPick = props => {
   const [showModal, setShowModal] = useState(false);
   let stats = exits[props.exit];
+  const [lang, l10n] = getl10n();
   return [
     <IonModal isOpen={showModal}>
       <IonHeader>

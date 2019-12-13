@@ -17,9 +17,10 @@ import {
 import { Link } from "react-router-dom";
 import * as ngate from "../nativeGate";
 
-import { l10n, arrs } from "./l10n";
+import { getl10n, arrs } from "./l10n";
 
 const Settings = () => {
+  const [lang, l10n] = getl10n();
   return (
     <IonPage>
       <IonContent>
@@ -32,7 +33,6 @@ const Settings = () => {
               slot="end"
               onIonChange={e => {
                 localStorage.setItem("prefs.lang", e.target.value);
-                alert(l10n.restartblurb);
               }}
             >
               {["en-US", "zh-TW", "zh-CN"].map(v => (
@@ -61,6 +61,20 @@ const Settings = () => {
           ) : (
             ""
           )}
+          <IonItem lines="full">
+            <IonLabel>
+              {l10n.tcp}
+              <br />
+              <IonNote>{l10n.tcpblurb}</IonNote>
+            </IonLabel>
+            <IonToggle
+              slot="end"
+              checked={localStorage.getItem("prefs.useTCP")}
+              onIonChange={e => {
+                localStorage.setItem("prefs.useTCP", e.target.checked);
+              }}
+            />
+          </IonItem>
           <IonItem lines="full">
             <IonLabel>{l10n.socks5}</IonLabel>
             <IonLabel slot="end" color="medium">

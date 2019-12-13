@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { l10n } from "./l10n";
+import { getl10n } from "./l10n";
 import {
   IonLabel,
   IonButton,
@@ -86,6 +86,7 @@ class Register extends React.Component {
   }
 
   doRegister() {
+    const [lang, l10n] = getl10n();
     console.log("registering!");
     this.refreshCaptcha();
     this.setState({ frozen: true });
@@ -119,6 +120,7 @@ class Register extends React.Component {
   }
 
   render() {
+    const [lang, l10n] = getl10n();
     return (
       <IonModal isOpen={true}>
         <IonHeader>
@@ -272,6 +274,7 @@ export default class Login extends React.Component {
   }
 
   render() {
+    const [lang, l10n] = getl10n();
     return (
       <IonModal isOpen={!this.state.success}>
         <IonContent>
