@@ -179,7 +179,7 @@ export function startDaemon() {
       localStorage.getItem("prefs.pwd"),
       exitname,
       exit.key,
-      localStorage.getItem("prefs.useTCP") ? true : false
+      localStorage.getItem("prefs.useTCP") === "true" ? true : false
     );
     return;
   }
@@ -200,7 +200,7 @@ export function startDaemon() {
     "-exitKey",
     exit.key,
     "-useExperimentalTCP",
-    localStorage.getItem("prefs.useTCP") ? "true" : "false"
+    localStorage.getItem("prefs.useTCP") === "true" ? "true" : "false"
   ]);
   daemonPID.on("close", code => {
     if (code % 256 === 403 % 256) {
