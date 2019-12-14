@@ -21,11 +21,6 @@ if ("require" in window) {
 export const platform = isElectron ? "electron" : "android";
 
 if (platform === "electron") {
-  // on macOS, elevate pac permissions
-  if (os.platform() === "darwin") {
-    elevatePerms();
-  }
-
   function getOsName() {
     if (os.platform() === "linux") {
       if (os.arch() === "x64") {
@@ -169,8 +164,9 @@ export function stopBinderProxy(pid) {
 }
 
 // spawn the geph-client daemon
-export function startDaemon() {
+export async function startDaemon() {
   const [lang, l10n] = getl10n();
+
   let exitname = localStorage.getItem("prefs.exit");
   let exit = exits[exitname];
   if (!isElectron) {
@@ -212,6 +208,10 @@ export function startDaemon() {
     }
   });
   if (localStorage.getItem("prefs.autoProxy") === "true") {
+    // on macOS, elevate pac permissions
+    if (os.platform() === "darwin") {
+      await elevatePerms();
+    }
     // Don't use the pac executable on Windoze!
     if (os.platform() === "win32") {
       console.log("Win32, using alternative proxy enable");
@@ -258,20 +258,25 @@ function arePermsCorrect() {
 }
 
 function forceElevatePerms() {
-  const [lang, l10n] = getl10n();
-  const spawn = window.require("child_process").spawn;
-  let lol = spawn(getBinaryPath() + "cocoasudo", [
-    "--prompt=" + l10n["macPacMsg"],
-    getBinaryPath() + "pac",
-    "setuid"
-  ]);
-  console.log(
-    "** PAC path is " + getBinaryPath() + "pac" + ", trying to elevate **"
-  );
-  lol.stderr.on("data", data => console.log(`stderr: ${data}`));
+  return new Promise((resolve, reject) => {
+    const [lang, l10n] = getl10n();
+    const spawn = window.require("child_process").spawn;
+    let lol = spawn(getBinaryPath() + "cocoasudo", [
+      "--prompt=" + l10n["macpacblurb"],
+      getBinaryPath() + "pac",
+      "setuid"
+    ]);
+    console.log(
+      "** PAC path is " + getBinaryPath() + "pac" + ", trying to elevate **"
+    );
+    lol.stderr.on("data", data => console.log(`stderr: ${data}`));
+    lol.on("close", code => {
+      resolve(code);
+    });
+  });
 }
 
-function elevatePerms() {
+async function elevatePerms() {
   const fs = window.require("fs");
   let stats = fs.statSync(getBinaryPath() + "pac");
   if (!arePermsCorrect()) {
@@ -281,6 +286,6 @@ function elevatePerms() {
     const spawnSync = window.require("child_process").spawnSync;
     spawnSync("/bin/chmod", ["ug-s", getBinaryPath() + "pac"]);
     console.log("Setuid cleared on pac, now we run cocoasudo!");
-    forceElevatePerms();
+    await forceElevatePerms();
   }
 }

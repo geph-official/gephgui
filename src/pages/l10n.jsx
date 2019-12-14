@@ -64,6 +64,8 @@ arrs["en-US"] = {
   upgradeToPlus: "Upgrade to Plus",
   upgrade: "Buy Plus!",
   upstream: "Upstream",
+  macpacblurb:
+    "Geph requires your password to set proxy settings the first time it is started.",
   username: "Username",
   coreblurb: (
     <span>
@@ -138,6 +140,7 @@ arrs["zh-CN"] = {
   overview: "概览",
   password: "密码",
   passwordConfirm: "确认密码",
+  macpacblurb: "迷雾通第一次连接时，需要您的密码以更改代理设置。",
   plusblurb: (
     <>
       流畅看高清！<b>解除限速&euro;5/月</b>
@@ -239,6 +242,7 @@ arrs["zh-TW"] = {
   updateLater: "之後提醒",
   language: "語言",
   loginblurb: "用已有賬戶登陸",
+  macpacblurb: "迷霧通第一次連接時，需要您的密碼以更改代理設置。",
   logout: "登出",
   netactivity: "網絡使用",
   overview: "概覽",
