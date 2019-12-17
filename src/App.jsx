@@ -18,6 +18,7 @@ import {
   IonToolbar,
   IonTitle
 } from "@ionic/react";
+import cssVars from "css-vars-ponyfill";
 import { IonReactHashRouter } from "@ionic/react-router";
 import * as icons from "ionicons/icons";
 import Overview from "./pages/Overview";
@@ -44,7 +45,6 @@ import "@ionic/react/css/text-alignment.css";
 import "@ionic/react/css/text-transformation.css";
 import "@ionic/react/css/flex-utils.css";
 import "@ionic/react/css/display.css";
-
 import * as axios from "axios";
 import * as ngate from "./nativeGate.js";
 
@@ -71,6 +71,9 @@ const initState = {
   updating: true,
   logs: []
 };
+
+cssVars({ onlyLegacy: true });
+alert("CSS vars!");
 
 class App extends React.Component {
   // initialize fields
@@ -122,7 +125,9 @@ class App extends React.Component {
     const [lang, l10n] = getl10n();
     return (
       <IonApp>
-        <Helmet htmlAttributes={{ lang: lang }} />
+        <Helmet htmlAttributes={{ lang: lang }}>
+          <title>{l10n.geph + " " + "v" + ngate.version}</title>
+        </Helmet>
 
         <IonReactHashRouter>
           <IonHeader mode="ios">

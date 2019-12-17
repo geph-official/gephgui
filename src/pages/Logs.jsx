@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { getl10n } from "./l10n";
 import {
   IonContent,
   IonHeader,
@@ -35,6 +36,17 @@ const Logs = props => {
   useEffect(() => {
     fetchLogs();
   }, []);
+  function downloadURI(uri, name) {
+    let link = document.createElement("a");
+    link.download = name;
+    link.href = uri;
+    link.target = "_blank";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    link.remove();
+  }
+  const [lang, l10n] = getl10n();
   return (
     <IonPage>
       <IonHeader>
@@ -42,6 +54,20 @@ const Logs = props => {
           <IonTitle>Debug logs</IonTitle>
           <IonButtons slot="start">
             <IonBackButton defaultHref="home" />
+          </IonButtons>
+          <IonButtons slot="end">
+            <IonButton
+              onClick={_ => {
+                const txt = logs.join("\n");
+                const dataUrl = "data:text/plain,btoa(txt)";
+                downloadURI(
+                  dataUrl,
+                  "geph-logs-" + new Date().getTime() + ".txt"
+                );
+              }}
+            >
+              {l10n.export}
+            </IonButton>
           </IonButtons>
         </IonToolbar>
       </IonHeader>

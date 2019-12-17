@@ -20,6 +20,8 @@ if ("require" in window) {
 
 export const platform = isElectron ? "electron" : "android";
 
+export var version = "";
+
 if (platform === "electron") {
   function getOsName() {
     if (os.platform() === "linux") {
@@ -41,13 +43,17 @@ if (platform === "electron") {
   const { app } = window.require("electron").remote;
 
   var dialogShowed = false;
-  var currentVersion = app.getVersion();
+  version = app.getVersion();
+  let currentVersion = version;
 
   async function checkForUpdates() {
     const updateURLs = [
       "https://raw.githubusercontent.com/geph-official/geph-autoupdate/master/stable.json",
       "https://gitlab.com/bunsim/geph-autoupdate/raw/master/stable.json"
     ];
+    if (/TEST/.test(currentVersion)) {
+      return;
+    }
 
     try {
       let response = await axios.get(updateURLs[Math.random() > 0.5 ? 1 : 0]);

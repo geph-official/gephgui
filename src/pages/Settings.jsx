@@ -61,20 +61,22 @@ const Settings = () => {
           ) : (
             ""
           )}
-          <IonItem lines="full">
-            <IonLabel>
-              {l10n.tcp}
-              <br />
-              <IonNote>{l10n.tcpblurb}</IonNote>
-            </IonLabel>
-            <IonToggle
-              slot="end"
-              checked={localStorage.getItem("prefs.useTCP")}
-              onIonChange={e => {
-                localStorage.setItem("prefs.useTCP", e.target.checked);
-              }}
-            />
-          </IonItem>
+          {false && (
+            <IonItem lines="full">
+              <IonLabel>
+                {l10n.tcp}
+                <br />
+                <IonNote>{l10n.tcpblurb}</IonNote>
+              </IonLabel>
+              <IonToggle
+                slot="end"
+                checked={localStorage.getItem("prefs.useTCP")}
+                onIonChange={e => {
+                  localStorage.setItem("prefs.useTCP", e.target.checked);
+                }}
+              />
+            </IonItem>
+          )}
           <IonItem lines="full">
             <IonLabel>{l10n.socks5}</IonLabel>
             <IonLabel slot="end" color="medium">
@@ -87,11 +89,11 @@ const Settings = () => {
               <tt>localhost:9910</tt>
             </IonLabel>
           </IonItem>
-          <IonItem lines="full">
-            <IonLabel>
-              <Link to="/logs">Debug logs</Link>
-            </IonLabel>
-          </IonItem>
+          <Link to="/logs">
+            <IonItem lines="full">
+              <IonLabel>Debug logs</IonLabel>
+            </IonItem>
+          </Link>
         </IonList>
       </IonContent>
     </IonPage>
