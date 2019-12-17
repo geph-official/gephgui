@@ -1,7 +1,7 @@
 // // POLYFILLS    <script src="node_modules/@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
-import "core-js/stable";
-import "browser-polyfills";
-import "@webcomponents/webcomponentsjs/webcomponents-bundle";
+// import "core-js/stable";
+// import "browser-polyfills";
+// import "@webcomponents/webcomponentsjs/webcomponents-bundle";
 
 import { fetch as fetchPolyfill } from "whatwg-fetch";
 import React from "react";

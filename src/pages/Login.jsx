@@ -100,19 +100,19 @@ class Register extends React.Component {
       .then(resp => {
         console.log("got response with status", resp.status);
         if (resp.status !== 200) {
-          if (resp.status === 403) {
-            alert(l10n.errBadCaptcha);
-          } else if (resp.status === 400) {
-            alert(l10n.errExists);
-          } else {
-            alert("unexpected status: ", +resp.status);
-          }
+          alert("unexpected status: ", +resp.status);
         } else {
           this.props.onSuccess(this.state.uname, this.state.pwd);
         }
       })
       .catch(err => {
-        alert(err.toString());
+        if (/403/.test(err.toString())) {
+          alert(l10n.errExists);
+        } else if (/400/.test(err.toString())) {
+          alert(l10n.errBadCaptcha);
+        } else {
+          alert(err.toString());
+        }
       })
       .finally(() => {
         this.setState({ frozen: false });

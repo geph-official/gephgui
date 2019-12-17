@@ -57,13 +57,21 @@ const Logs = props => {
           </IonButtons>
           <IonButtons slot="end">
             <IonButton
-              onClick={_ => {
-                const txt = logs.join("\n");
-                const dataUrl = "data:text/plain,btoa(txt)";
-                downloadURI(
-                  dataUrl,
-                  "geph-logs-" + new Date().getTime() + ".txt"
-                );
+              onClick={async _ => {
+                if (!window.Android) {
+                  const txt = logs.join("\n");
+                  const dataUrl = "data:text/plain;base64," + btoa(txt);
+                  downloadURI(
+                    dataUrl,
+                    "geph-logs-" + new Date().getTime() + ".txt"
+                  );
+                } else {
+                  const ta = document.getElementById("ta");
+                  const textar = await ta.getInputElement();
+                  textar.select();
+                  document.execCommand("copy");
+                  window.Android.jsShowToast(l10n.clipboard);
+                }
               }}
             >
               {l10n.export}
@@ -77,9 +85,10 @@ const Logs = props => {
             fontSize: "8pt",
             fontFamily: "monospace"
           }}
-        >
-          {logs.join("\n")}
-        </IonTextarea>
+          autoGrow
+          id="ta"
+          value={logs.join("\n")}
+        ></IonTextarea>
       </IonContent>
     </IonPage>
   );

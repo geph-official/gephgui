@@ -18,7 +18,6 @@ import {
   IonToolbar,
   IonTitle
 } from "@ionic/react";
-import cssVars from "css-vars-ponyfill";
 import { IonReactHashRouter } from "@ionic/react-router";
 import * as icons from "ionicons/icons";
 import Overview from "./pages/Overview";
@@ -71,9 +70,6 @@ const initState = {
   updating: true,
   logs: []
 };
-
-cssVars({ onlyLegacy: true });
-alert("CSS vars!");
 
 class App extends React.Component {
   // initialize fields
