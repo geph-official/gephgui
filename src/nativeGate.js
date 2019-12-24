@@ -192,19 +192,20 @@ export async function startDaemon() {
     alert("undefined exit?!");
     electron.exit();
   }
-  daemonPID = spawn(getBinaryPath() + "geph-client" + binExt(), [
-    "-username",
-    localStorage.getItem("prefs.uname"),
-    "-password",
-    localStorage.getItem("prefs.pwd"),
-    "-exitName",
-    exitname,
-    "-exitKey",
-    exit.key,
-    localStorage.getItem("prefs.useTCP") === "true"
-      ? "-useExperimentalTCP=true"
-      : ""
-  ]);
+  daemonPID = spawn(
+    getBinaryPath() + "geph-client" + binExt(),
+    [
+      "-username",
+      localStorage.getItem("prefs.uname"),
+      "-password",
+      localStorage.getItem("prefs.pwd"),
+      "-exitName",
+      exitname,
+      "-exitKey",
+      exit.key
+    ],
+    { stdio: "ignore" }
+  );
   daemonPID.on("close", code => {
     if (code % 256 === 403 % 256) {
       alert(l10n.err403);
