@@ -39,6 +39,7 @@ import * as ngate from "../nativeGate";
 import "./odometer.css";
 
 import bglogo from "../assets/images/logo-bg.png";
+import { continueStatement } from "@babel/types";
 const ConnStatusInfo = props => {
   let lhs;
   let rhs;
@@ -96,7 +97,10 @@ const ConnStatusInfo = props => {
   }
 
   return (
-    <IonRow style={{ height: "100px" }} className="ion-align-items-center">
+    <IonRow
+      style={{ height: "100px", marginTop: "40px" }}
+      className="ion-align-items-center"
+    >
       <IonCol size="5" style={{ textAlign: "right", paddingRight: "10px" }}>
         {lhs}
       </IonCol>
@@ -107,9 +111,7 @@ const ConnStatusInfo = props => {
 
 const SpeedLabel = props => {
   const [lang, l10n] = getl10n();
-  const bwStyle = {
-    fontSize: "14pt"
-  };
+  const bwStyle = {};
 
   function roundToTwo(num) {
     if (num < 1) {
@@ -169,41 +171,22 @@ const NetActivityInfo = props => {
   } else {
     max = 100000000;
   }
+  console.log(props.ms);
   const [lang, l10n] = getl10n();
   return (
-    <IonRow>
-      <IonCol>
-        <IonCard style={{ textAlign: "center", "--background": "white" }}>
-          <IonCardContent>
-            <IonGrid>
-              <IonRow>
-                <IonCol className="ion-no-padding">
-                  <IonLabel>{l10n.downstream}</IonLabel> <br />
-                  <SpeedLabel kbps={props.down} max={max} />
-                </IonCol>
-                <IonCol className="ion-no-padding">
-                  {l10n.upstream} <br />
-                  <SpeedLabel kbps={props.up} max={max} />
-                </IonCol>
-              </IonRow>
-              {props.netstats && props.netstats.Tier === "free" && (
-                <IonRow className="ion-no-padding">
-                  <IonCol className="ion-no-padding">
-                    <small>
-                      {l10n.freelimit}
-                      <IonText color="danger">
-                        <b> 800</b>
-                      </IonText>{" "}
-                      kbps
-                    </small>
-                  </IonCol>
-                </IonRow>
-              )}
-            </IonGrid>
-          </IonCardContent>
-        </IonCard>
-      </IonCol>
-    </IonRow>
+    <>
+      <IonIcon icon={icons.arrowDown} style={{ verticalAlign: "-10%" }} />
+      &nbsp;
+      <SpeedLabel kbps={props.down} max={max} />
+      <br />
+      <IonIcon icon={icons.arrowUp} style={{ verticalAlign: "-10%" }} />
+      &nbsp;
+      <SpeedLabel kbps={props.up} max={max} />
+      <br />
+      <IonIcon icon={icons.swap} style={{ verticalAlign: "-10%" }} />
+      &nbsp;
+      <PingLabel ms={props.ms} />
+    </>
   );
 };
 
@@ -231,7 +214,6 @@ const Overview = props => {
         <div
           style={{
             display: "flex",
-            alignItems: "center",
             justifyContent: "center",
             height: "100%"
           }}
@@ -258,24 +240,27 @@ const Overview = props => {
               </IonCol>
             </IonRow>
 
-            <ExitSelector disabled={props.running} />
-
-            <IonRow>
-              <IonCol className="ion-no-padding">
-                <tt style={{ opacity: 0.7 }}>
-                  <IPLabel ip={props.netstats && props.netstats.PublicIP} /> /{" "}
-                  <PingLabel ms={props.netstats && props.netstats.MinPing} />
-                </tt>
-              </IonCol>
-            </IonRow>
-            <NetActivityInfo
-              up={props.upspeed}
-              down={props.downspeed}
-              netstats={props.netstats}
-              free={props.netstats && props.netstats.Tier === "free"}
-            />
-
-            <IonRow style={{ height: "20px" }}></IonRow>
+            {false && (
+              <>
+                <IonRow>
+                  <IonCol className="ion-no-padding">
+                    <tt style={{ opacity: 0.7 }}>
+                      <IPLabel ip={props.netstats && props.netstats.PublicIP} />{" "}
+                      /{" "}
+                      <PingLabel
+                        ms={props.netstats && props.netstats.MinPing}
+                      />
+                    </tt>
+                  </IonCol>
+                </IonRow>
+                <NetActivityInfo
+                  up={props.upspeed}
+                  down={props.downspeed}
+                  netstats={props.netstats}
+                  free={props.netstats && props.netstats.Tier === "free"}
+                />
+              </>
+            )}
           </IonGrid>
         </div>
 
@@ -284,41 +269,37 @@ const Overview = props => {
             position: "absolute",
             bottom: "0px",
             width: "100%",
-            height: "58px",
-            lineHeight: "38px",
-            fontSize: "90%",
-            display: "block",
-            background: "#ffffff",
-            boxShadow: "0px -5px 5px #eeeeee",
-            textAlign: "left",
-            paddingLeft: "10px",
-            paddingRight: "10px",
-            paddingTop: "10px",
-            paddingBottom: "10px",
-            display:
-              props.netstats && props.netstats.Tier === "free"
-                ? "block"
-                : "none"
+            height: "40%",
+            backgroundColor: "white",
+            borderRadius: "24px 24px 0px 0px",
+            boxShadow: "0px -5px 5px #eeeeee"
           }}
         >
-          {l10n.plusblurb}
-          <IonButton
-            mode="ios"
-            size="small"
-            style={{ float: "right" }}
-            onClick={() => {
-              const extendURL = `https://geph.io/billing/login?next=%2Fbilling%2Fdashboard&uname=${encodeURI(
-                localStorage.getItem("prefs.uname")
-              )}&pwd=${encodeURI(localStorage.getItem("prefs.pwd"))}`;
-              if (ngate.platform === "android") {
-                window.location.href = extendURL;
-              } else {
-                window.open(extendURL, "_blank");
-              }
-            }}
-          >
-            {l10n.upgrade}
-          </IonButton>
+          <IonGrid>
+            <ExitSelector disabled={props.running} />
+            <IonRow style={{ fontSize: "90%" }}>
+              <IonCol>
+                <div style={{ display: "inline-block", textAlign: "left" }}>
+                  <div style={{ paddingBottom: "5px" }}>
+                    <b>
+                      <IonText color="medium">Activity</IonText>
+                    </b>
+                  </div>
+                  <NetActivityInfo
+                    free={props.netstats && props.netstats.Tier === "free"}
+                    up={props.upspeed}
+                    down={props.downspeed}
+                    ms={props.netstats && props.netstats.MinPing}
+                  />
+                </div>
+              </IonCol>
+              <IonCol>
+                <div style={{ display: "inline-block", textAlign: "left" }}>
+                  <b>Throughput</b>
+                </div>
+              </IonCol>
+            </IonRow>
+          </IonGrid>
         </div>
       </IonContent>
     </IonPage>

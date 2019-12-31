@@ -176,6 +176,10 @@ class App extends React.Component {
                 <IonTabButton tab="tab2" href="/tab2">
                   <IonIcon icon={icons.person} />
                   <IonLabel>{l10n.account}</IonLabel>
+                  {this.state.netstats &&
+                    this.state.netstats.Tier === "free" && (
+                      <IonBadge color="danger"></IonBadge>
+                    )}
                 </IonTabButton>
                 <IonTabButton tab="tab3" href="/tab3">
                   <IonIcon icon={icons.settings} />

@@ -44,7 +44,6 @@ class ExitSelector extends React.Component {
     return (
       <IonRow>
         <IonCol>
-          <IonLabel>{l10n.exitserver}</IonLabel>
           <div
             style={{
               marginBottom: "5px"
