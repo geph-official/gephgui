@@ -30,13 +30,16 @@ import {
   IonSelectOption
 } from "@ionic/react";
 import Odometer from "react-odometerjs";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { getl10n } from "./l10n";
 import * as icons from "ionicons/icons";
 import ExitSelector from "./ExitSelector";
 import * as ngate from "../nativeGate";
+import * as d3 from "d3";
+import * as dagreD3 from "dagre-d3";
+import * as dagre from "dagre";
 
-import "./odometer.css";
+import "./graph.css";
 
 import bglogo from "../assets/images/logo-bg.png";
 import { continueStatement } from "@babel/types";
@@ -98,7 +101,7 @@ const ConnStatusInfo = props => {
 
   return (
     <IonRow
-      style={{ height: "100px", marginTop: "40px" }}
+      style={{ height: "100px", paddingTop: "10px" }}
       className="ion-align-items-center"
     >
       <IonCol size="5" style={{ textAlign: "right", paddingRight: "10px" }}>
@@ -164,6 +167,109 @@ const PingLabel = props => {
 
 const IPLabel = props => <b>{props.ip ? props.ip : "-"}</b>;
 
+const censorIP = ip => {
+  const splitted = ip.split(".");
+  if (splitted.length === 4) {
+    splitted[2] = "*";
+    splitted[3] = "*";
+    return splitted.join(".");
+  }
+  return ip;
+};
+
+const ConnInfo = props => {
+  useEffect(() => {
+    let g = new dagreD3.graphlib.Graph().setGraph({
+      edgesep: 5,
+      ranksep: 20,
+      nodesep: 10,
+      directed: false,
+      rankdir: "LR"
+    });
+    g.setNode("START", {
+      label: props.l10n.you,
+      shape: "diamond"
+    });
+    if (props.PublicIP) {
+      g.setNode("END", {
+        label: props.PublicIP,
+        shape: "rect",
+        labelStyle: "font-weight: bold"
+      });
+      let total = 1;
+      if (!props.Bridges || props.Bridges.length === 0) {
+        g.setEdge("START", "END", {
+          arrowhead: "undirected"
+        });
+      } else {
+        props.Bridges.forEach(bdesc => (total += bdesc.RecvCnt));
+        props.Bridges.forEach(bdesc => {
+          if (bdesc.Ping < 10000) {
+            const id = bdesc.RecvCnt.toFixed(0);
+            const strokeWidth = 0.4 + (5 * bdesc.RecvCnt) / total;
+            if (bdesc.RecvCnt < 1) {
+              g.setNode(id, {
+                label: censorIP(bdesc.RemoteIP) + " [TCP]",
+                style: "fill: #ddd"
+              });
+            } else {
+              let nodeColor = "#ffb0b0";
+              if (bdesc.LossPct < 0.1) {
+                nodeColor = "#afd9a8";
+              } else if (bdesc.LossPct < 0.2) {
+                nodeColor = "#fff199";
+              }
+              g.setNode(id, {
+                label:
+                  censorIP(bdesc.RemoteIP) +
+                  " / " +
+                  bdesc.Ping.toFixed(0) +
+                  "ms / " +
+                  (bdesc.LossPct * 100).toFixed(0) +
+                  "%",
+                style:
+                  "fill: " +
+                  nodeColor +
+                  "; stroke-width:" +
+                  strokeWidth.toFixed(4) +
+                  "px"
+              });
+            }
+            g.setEdge("START", id, {
+              arrowhead: "undirected"
+            });
+            g.setEdge(id, "END", { label: "", arrowhead: "undirected" });
+          }
+        });
+      }
+    }
+    let svg = d3.select("svg"),
+      inner = svg.select("g");
+    var render = new dagreD3.render();
+    render(inner, g);
+    var padding = 40,
+      bBox = svg.node().getBoundingClientRect(),
+      hRatio = (bBox.height - padding) / g.graph().height,
+      wRatio = (bBox.width - padding) / g.graph().width;
+    let ratio = Math.min(1.0, Math.min(hRatio, wRatio)).toFixed(10);
+    var xCenterOffset = (bBox.width - g.graph().width * ratio) / 2;
+    console.log(bBox.height);
+    console.log(g.graph().height);
+    console.log(ratio);
+    var yCenterOffset = (bBox.height - g.graph().height * ratio) / 2;
+    inner.attr(
+      "transform",
+      "translate(" + xCenterOffset + `,` + yCenterOffset + `) scale(${ratio})`
+    );
+  });
+
+  return (
+    <svg style={{ width: "100%", height: "90%", padding: "0" }}>
+      <g style={{ width: "100%", height: "90%", padding: "0" }} />
+    </svg>
+  );
+};
+
 const NetActivityInfo = props => {
   let max;
   if (props.free) {
@@ -171,24 +277,65 @@ const NetActivityInfo = props => {
   } else {
     max = 100000000;
   }
-  console.log(props.ms);
   const [lang, l10n] = getl10n();
   return (
     <>
       <IonIcon icon={icons.arrowDown} style={{ verticalAlign: "-10%" }} />
       &nbsp;
       <SpeedLabel kbps={props.down} max={max} />
-      <br />
+      &emsp;
       <IonIcon icon={icons.arrowUp} style={{ verticalAlign: "-10%" }} />
       &nbsp;
       <SpeedLabel kbps={props.up} max={max} />
-      <br />
+      &emsp;
       <IonIcon icon={icons.swap} style={{ verticalAlign: "-10%" }} />
       &nbsp;
-      <PingLabel ms={props.ms} />
+      <PingLabel ms={props.ms} /> <br />
+      {props.free && (
+        <small>
+          {l10n.freelimit}{" "}
+          <b>
+            <IonText color="danger">800</IonText>
+          </b>{" "}
+          kbps
+        </small>
+      )}
     </>
   );
 };
+
+const formatRemaining = dateString => {
+  const [_, l10n] = getl10n();
+  const date = Date.parse(dateString);
+  const msPerDay = 24 * 60 * 60 * 1000;
+  const timeLeft = date.getTime() - new Date().getTime();
+  const daysLeft = timeLeft / msPerDay;
+  return l10n.fmtDaysLeft(daysLeft.toFixed(0));
+};
+
+const PayBanner = props => (
+  <IonRow
+    style={{
+      backgroundColor: props.expiry ? "#eeeeee" : "#316745",
+      color: props.expiry ? "black" : "white",
+      display: "flex",
+      padding: "4px",
+      fontSize: "90%",
+      justifyContent: "center",
+      alignItems: "center",
+      visibility: props.visible ? "visible" : "hidden"
+    }}
+  >
+    <IonCol style={{ textAlign: "left" }}>
+      {props.expiry ? formatRemaining(props.expiry) : props.l10n.plusblurb}
+    </IonCol>
+    <IonCol style={{ textAlign: "right" }} size="auto">
+      <IonButton size="small" color="light">
+        {props.expiry ? props.l10n.manage : props.l10n.upgrade}
+      </IonButton>
+    </IonCol>
+  </IonRow>
+);
 
 const Overview = props => {
   const [lang, l10n] = getl10n();
@@ -208,7 +355,7 @@ const Overview = props => {
       <IonContent
         style={{
           textAlign: "center",
-          "--background": "center top no-repeat " + `url(${bglogo})`
+          "--background": "#fefefe"
         }}
       >
         <div
@@ -218,10 +365,18 @@ const Overview = props => {
             height: "100%"
           }}
         >
-          <IonGrid>
+          <IonGrid className="ion-no-padding">
+            <PayBanner
+              l10n={l10n}
+              visible={connState === "connected"}
+              expiry={
+                connState === "connected" &&
+                props.netstats.Tier === "paid" &&
+                props.netstats.Expiry
+              }
+            />
             <ConnStatusInfo status={connState} />
-
-            <IonRow style={{ paddingTop: "20px", paddingBottom: "20px" }}>
+            <IonRow style={{ paddingTop: "10px", paddingBottom: "20px" }}>
               <IonCol>
                 <IonToggle
                   style={{ transform: "scale(1.7)" }}
@@ -239,28 +394,6 @@ const Overview = props => {
                 />
               </IonCol>
             </IonRow>
-
-            {false && (
-              <>
-                <IonRow>
-                  <IonCol className="ion-no-padding">
-                    <tt style={{ opacity: 0.7 }}>
-                      <IPLabel ip={props.netstats && props.netstats.PublicIP} />{" "}
-                      /{" "}
-                      <PingLabel
-                        ms={props.netstats && props.netstats.MinPing}
-                      />
-                    </tt>
-                  </IonCol>
-                </IonRow>
-                <NetActivityInfo
-                  up={props.upspeed}
-                  down={props.downspeed}
-                  netstats={props.netstats}
-                  free={props.netstats && props.netstats.Tier === "free"}
-                />
-              </>
-            )}
           </IonGrid>
         </div>
 
@@ -269,37 +402,37 @@ const Overview = props => {
             position: "absolute",
             bottom: "0px",
             width: "100%",
-            height: "40%",
+            height: "50%",
             backgroundColor: "white",
             borderRadius: "24px 24px 0px 0px",
-            boxShadow: "0px -5px 5px #eeeeee"
+            boxShadow: "0px -5px 5px #eeeeee",
+            display: "flex",
+            flexDirection: "column"
           }}
         >
-          <IonGrid>
-            <ExitSelector disabled={props.running} />
-            <IonRow style={{ fontSize: "90%" }}>
-              <IonCol>
-                <div style={{ display: "inline-block", textAlign: "left" }}>
-                  <div style={{ paddingBottom: "5px" }}>
-                    <b>
-                      <IonText color="medium">Activity</IonText>
-                    </b>
-                  </div>
-                  <NetActivityInfo
-                    free={props.netstats && props.netstats.Tier === "free"}
-                    up={props.upspeed}
-                    down={props.downspeed}
-                    ms={props.netstats && props.netstats.MinPing}
-                  />
-                </div>
-              </IonCol>
-              <IonCol>
-                <div style={{ display: "inline-block", textAlign: "left" }}>
-                  <b>Throughput</b>
-                </div>
-              </IonCol>
-            </IonRow>
-          </IonGrid>
+          <ExitSelector disabled={props.running} />
+          <div>
+            <NetActivityInfo
+              free={props.netstats && props.netstats.Tier === "free"}
+              up={props.upspeed}
+              down={props.downspeed}
+              ms={props.netstats && props.netstats.MinPing}
+            />
+          </div>
+          <div style={{ flex: "1" }}>
+            {connState === "connected" ? (
+              <ConnInfo
+                PublicIP={props.netstats.PublicIP}
+                Bridges={props.netstats.Bridges}
+                l10n={l10n}
+              />
+            ) : (
+              <img
+                src={require("../assets/images/logo-naked.svg")}
+                style={{ width: "80px", opacity: "0.2" }}
+              />
+            )}
+          </div>
         </div>
       </IonContent>
     </IonPage>

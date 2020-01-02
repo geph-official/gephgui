@@ -42,24 +42,20 @@ class ExitSelector extends React.Component {
   render() {
     const [lang, l10n] = getl10n();
     return (
-      <IonRow>
-        <IonCol>
-          <div
-            style={{
-              marginBottom: "5px"
-            }}
-          >
-            <ExitPick
-              disabled={this.props.disabled}
-              exit={this.state.exit}
-              onSelect={exit => {
-                localStorage.setItem("prefs.exit", exit);
-                this.setState({ exit: exit });
-              }}
-            />
-          </div>
-        </IonCol>
-      </IonRow>
+      <div
+        style={{
+          marginBottom: "5px"
+        }}
+      >
+        <ExitPick
+          disabled={this.props.disabled}
+          exit={this.state.exit}
+          onSelect={exit => {
+            localStorage.setItem("prefs.exit", exit);
+            this.setState({ exit: exit });
+          }}
+        />
+      </div>
     );
   }
 }
