@@ -4,6 +4,12 @@ import { IonText } from "@ionic/react";
 export var arrs = {};
 
 arrs["en-US"] = {
+  fmtDaysLeft: days => (
+    <>
+      Plus expires in <b>{days}</b> days
+    </>
+  ),
+  you: "You",
   accinfo: "Login info",
   account: "Account",
   advanced: "Advanced",
@@ -55,6 +61,7 @@ arrs["en-US"] = {
   seePlans: "See plans",
   selectExit: "Exit selection",
   settings: "Settings",
+  manage: "Manage",
   socks5: "SOCKS5 proxy",
   subscription: "Subscription",
   txlog: "Past transactions",
@@ -65,6 +72,7 @@ arrs["en-US"] = {
   updateLater: "Remind me later",
   upgradeToPlus: "Upgrade to Plus",
   upgrade: "Buy Plus!",
+  forcebridges: "Always use bridges",
   export: "Export",
   upstream: "Upstream",
   macpacblurb:
@@ -79,11 +87,7 @@ arrs["en-US"] = {
   paid: "Plus",
   free: "Free",
   tcp: "Use TCP mode",
-  tcpblurb: (
-    <>
-      <b>Experimental feature</b>. Reconnect to apply.
-    </>
-  ),
+  tcpblurb: <>Reconnect to apply.</>,
 
   countries: {
     bg: "Bulgaria",
@@ -107,6 +111,12 @@ arrs["en-US"] = {
 };
 
 arrs["zh-CN"] = {
+  fmtDaysLeft: days => (
+    <>
+      迷雾通Plus剩余<b>{days}</b>天到期
+    </>
+  ),
+  you: "您",
   accinfo: "登录信息",
   account: "用户",
   advanced: "高级",
@@ -130,12 +140,14 @@ arrs["zh-CN"] = {
   errBadCaptcha: "验证码错误",
   clipboard: "日志已存入剪贴板",
   geph: "迷雾通",
+  manage: "管理",
   errExists: "用戶已经存在！",
   exitserver: "出口端位置",
   expiry: "到期时间",
   extend: "延长Plus用户",
   freelimit: "免费用户限速：",
   general: "通用",
+  forcebridges: "强制使用桥接",
   http: "HTTP代理端口",
   langname: "简体中文",
   language: "语言",
@@ -153,6 +165,7 @@ arrs["zh-CN"] = {
     </>
   ),
   pwdmismatch: "密码和之前输入的不一样",
+  network: "网络",
   registerblurb: "创建新账户",
   restartblurb: "关闭、重启迷雾通后将使用选择的语言",
   seePlans: "升级",
@@ -167,11 +180,7 @@ arrs["zh-CN"] = {
   upstream: "上行",
   username: "用户名",
   tcp: "使用TCP模式",
-  tcpblurb: (
-    <>
-      <b>实验性功能</b>。重新连接后生效。
-    </>
-  ),
+  tcpblurb: <>重新连接后生效。</>,
 
   upgradeblurb: (
     <span>
@@ -217,6 +226,12 @@ arrs["zh-CN"] = {
 };
 
 arrs["zh-TW"] = {
+  fmtDaysLeft: days => (
+    <>
+      迷霧通Plus剩餘<b>{days}</b>天到期
+    </>
+  ),
+  you: "您",
   accinfo: "登錄信息",
   account: "用戶",
   advanced: "高級",
@@ -231,6 +246,7 @@ arrs["zh-TW"] = {
   connected: "連接成功",
   connectedblurb: "盡享自由的網絡！",
   clipboard: "日誌已存入剪貼板",
+  network: "網絡",
   connecting: "連接中",
   date: "日期",
   disconnected: "未連接",
@@ -238,10 +254,12 @@ arrs["zh-TW"] = {
   err403: "您沒有資格登錄這個出口端！",
   errBadCaptcha: "驗證碼錯誤",
   errExists: "用戶已經存在！",
+  manage: "管理",
   exitserver: "出口端位置",
   geph: "迷霧通",
   expiry: "到期時間",
   extend: "延長Plus用戶",
+  forcebridges: "強制使用橋接",
   freelimit: "免費用戶限速：",
   general: "通用",
   http: "HTTP代理端口",
@@ -277,11 +295,7 @@ arrs["zh-TW"] = {
   upstream: "上行",
   username: "用戶名",
   tcp: "使用TCP模式",
-  tcpblurb: (
-    <>
-      <b>實驗性功能</b>。重新連接後生效。
-    </>
-  ),
+  tcpblurb: <>重新連接後生效。</>,
 
   upgradeblurb: (
     <span>

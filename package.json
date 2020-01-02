@@ -6,6 +6,7 @@
   "main": "public/electron.js",
   "dependencies": {
     "axios-retry": "^3.1.2",
+    "dagre-d3": "^0.6.4",
     "electron-is-dev": "^1.1.0",
     "react-app-polyfill": "^1.0.5",
     "whatwg-fetch": "^3.0.0"

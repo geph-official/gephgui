@@ -1,0 +1,29 @@
+g {
+  font-size: 16px;
+}
+
+.node rect {
+  stroke: #333;
+  fill: #fff;
+}
+
+.node circle {
+  stroke: #333;
+  fill: #fff;
+}
+
+.node ellipse {
+  stroke: #333;
+  fill: #fff;
+}
+
+.node polygon {
+  stroke: #333;
+  fill: #fff;
+}
+
+.edgePath path {
+  stroke: #333;
+  fill: #333;
+  stroke-width: 1.5px;
+}

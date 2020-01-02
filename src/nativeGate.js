@@ -181,7 +181,8 @@ export async function startDaemon() {
       localStorage.getItem("prefs.pwd"),
       exitname,
       exit.key,
-      localStorage.getItem("prefs.useTCP") === "true" ? true : false
+      localStorage.getItem("prefs.useTCP") === "true" ? true : false,
+      localStorage.getItem("prefs.forceBridges") === "true" ? true : false
     );
     return;
   }
@@ -202,7 +203,11 @@ export async function startDaemon() {
       "-exitName",
       exitname,
       "-exitKey",
-      exit.key
+      exit.key,
+      "-useTCP",
+      localStorage.getItem("prefs.useTCP") === "true" ? "true" : "false",
+      "-forceBridges",
+      localStorage.getItem("prefs.forceBridges") === "true" ? "true" : "false"
     ],
     { stdio: "ignore" }
   );

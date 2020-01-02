@@ -42,7 +42,35 @@ const Settings = () => {
           </IonItem>
         </IonList>
         <IonList>
-          <IonListHeader mode="ios">{l10n.advanced}</IonListHeader>
+          <IonListHeader mode="ios">{l10n.network}</IonListHeader>
+          <IonItem lines="full">
+            <IonLabel>
+              {l10n.tcp}
+              <br />
+              <IonNote>{l10n.tcpblurb}</IonNote>
+            </IonLabel>
+            <IonToggle
+              slot="end"
+              checked={localStorage.getItem("prefs.useTCP")}
+              onIonChange={e => {
+                localStorage.setItem("prefs.useTCP", e.target.checked);
+              }}
+            />
+          </IonItem>
+          <IonItem lines="full">
+            <IonLabel>
+              {l10n.forcebridges}
+              <br />
+              <IonNote>{l10n.tcpblurb}</IonNote>
+            </IonLabel>
+            <IonToggle
+              slot="end"
+              checked={localStorage.getItem("prefs.forceBridges")}
+              onIonChange={e => {
+                localStorage.setItem("prefs.forceBridges", e.target.checked);
+              }}
+            />
+          </IonItem>
           {ngate.platform === "electron" ? (
             <IonItem lines="full">
               <IonLabel>
@@ -61,22 +89,6 @@ const Settings = () => {
           ) : (
             ""
           )}
-          {false && (
-            <IonItem lines="full">
-              <IonLabel>
-                {l10n.tcp}
-                <br />
-                <IonNote>{l10n.tcpblurb}</IonNote>
-              </IonLabel>
-              <IonToggle
-                slot="end"
-                checked={localStorage.getItem("prefs.useTCP")}
-                onIonChange={e => {
-                  localStorage.setItem("prefs.useTCP", e.target.checked);
-                }}
-              />
-            </IonItem>
-          )}
           <IonItem lines="full">
             <IonLabel>{l10n.socks5}</IonLabel>
             <IonLabel slot="end" color="medium">
@@ -89,6 +101,9 @@ const Settings = () => {
               <tt>localhost:9910</tt>
             </IonLabel>
           </IonItem>
+        </IonList>
+        <IonList>
+          <IonListHeader mode="ios">{l10n.advanced}</IonListHeader>
           <Link to="/logs">
             <IonItem lines="full">
               <IonLabel>Debug logs</IonLabel>

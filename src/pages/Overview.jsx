@@ -30,15 +30,19 @@ import {
   IonSelectOption
 } from "@ionic/react";
 import Odometer from "react-odometerjs";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { getl10n } from "./l10n";
 import * as icons from "ionicons/icons";
 import ExitSelector from "./ExitSelector";
 import * as ngate from "../nativeGate";
+import * as d3 from "d3";
+import * as dagreD3 from "dagre-d3";
+import * as dagre from "dagre";
 
-import "./odometer.css";
+import "./graph.css";
 
 import bglogo from "../assets/images/logo-bg.png";
+import { continueStatement } from "@babel/types";
 const ConnStatusInfo = props => {
   let lhs;
   let rhs;
@@ -96,7 +100,10 @@ const ConnStatusInfo = props => {
   }
 
   return (
-    <IonRow style={{ height: "100px" }} className="ion-align-items-center">
+    <IonRow
+      style={{ height: "100px", paddingTop: "10px" }}
+      className="ion-align-items-center"
+    >
       <IonCol size="5" style={{ textAlign: "right", paddingRight: "10px" }}>
         {lhs}
       </IonCol>
@@ -107,9 +114,7 @@ const ConnStatusInfo = props => {
 
 const SpeedLabel = props => {
   const [lang, l10n] = getl10n();
-  const bwStyle = {
-    fontSize: "14pt"
-  };
+  const bwStyle = {};
 
   function roundToTwo(num) {
     if (num < 1) {
@@ -162,6 +167,109 @@ const PingLabel = props => {
 
 const IPLabel = props => <b>{props.ip ? props.ip : "-"}</b>;
 
+const censorIP = ip => {
+  const splitted = ip.split(".");
+  if (splitted.length === 4) {
+    splitted[2] = "*";
+    splitted[3] = "*";
+    return splitted.join(".");
+  }
+  return ip;
+};
+
+const ConnInfo = props => {
+  useEffect(() => {
+    let g = new dagreD3.graphlib.Graph().setGraph({
+      edgesep: 5,
+      ranksep: 20,
+      nodesep: 10,
+      directed: false,
+      rankdir: "LR"
+    });
+    g.setNode("START", {
+      label: props.l10n.you,
+      shape: "diamond"
+    });
+    if (props.PublicIP) {
+      g.setNode("END", {
+        label: props.PublicIP,
+        shape: "rect",
+        labelStyle: "font-weight: bold"
+      });
+      let total = 1;
+      if (!props.Bridges || props.Bridges.length === 0) {
+        g.setEdge("START", "END", {
+          arrowhead: "undirected"
+        });
+      } else {
+        props.Bridges.forEach(bdesc => (total += bdesc.RecvCnt));
+        props.Bridges.forEach(bdesc => {
+          if (bdesc.Ping < 10000) {
+            const id = bdesc.RecvCnt.toFixed(0);
+            const strokeWidth = 0.4 + (5 * bdesc.RecvCnt) / total;
+            if (bdesc.RecvCnt < 1) {
+              g.setNode(id, {
+                label: censorIP(bdesc.RemoteIP) + " [TCP]",
+                style: "fill: #ddd"
+              });
+            } else {
+              let nodeColor = "#ffb0b0";
+              if (bdesc.LossPct < 0.1) {
+                nodeColor = "#afd9a8";
+              } else if (bdesc.LossPct < 0.2) {
+                nodeColor = "#fff199";
+              }
+              g.setNode(id, {
+                label:
+                  censorIP(bdesc.RemoteIP) +
+                  " / " +
+                  bdesc.Ping.toFixed(0) +
+                  "ms / " +
+                  (bdesc.LossPct * 100).toFixed(0) +
+                  "%",
+                style:
+                  "fill: " +
+                  nodeColor +
+                  "; stroke-width:" +
+                  strokeWidth.toFixed(4) +
+                  "px"
+              });
+            }
+            g.setEdge("START", id, {
+              arrowhead: "undirected"
+            });
+            g.setEdge(id, "END", { label: "", arrowhead: "undirected" });
+          }
+        });
+      }
+    }
+    let svg = d3.select("svg"),
+      inner = svg.select("g");
+    var render = new dagreD3.render();
+    render(inner, g);
+    var padding = 40,
+      bBox = svg.node().getBoundingClientRect(),
+      hRatio = (bBox.height - padding) / g.graph().height,
+      wRatio = (bBox.width - padding) / g.graph().width;
+    let ratio = Math.min(1.0, Math.min(hRatio, wRatio)).toFixed(10);
+    var xCenterOffset = (bBox.width - g.graph().width * ratio) / 2;
+    console.log(bBox.height);
+    console.log(g.graph().height);
+    console.log(ratio);
+    var yCenterOffset = (bBox.height - g.graph().height * ratio) / 2;
+    inner.attr(
+      "transform",
+      "translate(" + xCenterOffset + `,` + yCenterOffset + `) scale(${ratio})`
+    );
+  });
+
+  return (
+    <svg style={{ width: "100%", height: "90%", padding: "0" }}>
+      <g style={{ width: "100%", height: "90%", padding: "0" }} />
+    </svg>
+  );
+};
+
 const NetActivityInfo = props => {
   let max;
   if (props.free) {
@@ -171,41 +279,63 @@ const NetActivityInfo = props => {
   }
   const [lang, l10n] = getl10n();
   return (
-    <IonRow>
-      <IonCol>
-        <IonCard style={{ textAlign: "center", "--background": "white" }}>
-          <IonCardContent>
-            <IonGrid>
-              <IonRow>
-                <IonCol className="ion-no-padding">
-                  <IonLabel>{l10n.downstream}</IonLabel> <br />
-                  <SpeedLabel kbps={props.down} max={max} />
-                </IonCol>
-                <IonCol className="ion-no-padding">
-                  {l10n.upstream} <br />
-                  <SpeedLabel kbps={props.up} max={max} />
-                </IonCol>
-              </IonRow>
-              {props.netstats && props.netstats.Tier === "free" && (
-                <IonRow className="ion-no-padding">
-                  <IonCol className="ion-no-padding">
-                    <small>
-                      {l10n.freelimit}
-                      <IonText color="danger">
-                        <b> 800</b>
-                      </IonText>{" "}
-                      kbps
-                    </small>
-                  </IonCol>
-                </IonRow>
-              )}
-            </IonGrid>
-          </IonCardContent>
-        </IonCard>
-      </IonCol>
-    </IonRow>
+    <>
+      <IonIcon icon={icons.arrowDown} style={{ verticalAlign: "-10%" }} />
+      &nbsp;
+      <SpeedLabel kbps={props.down} max={max} />
+      &emsp;
+      <IonIcon icon={icons.arrowUp} style={{ verticalAlign: "-10%" }} />
+      &nbsp;
+      <SpeedLabel kbps={props.up} max={max} />
+      &emsp;
+      <IonIcon icon={icons.swap} style={{ verticalAlign: "-10%" }} />
+      &nbsp;
+      <PingLabel ms={props.ms} /> <br />
+      {props.free && (
+        <small>
+          {l10n.freelimit}{" "}
+          <b>
+            <IonText color="danger">800</IonText>
+          </b>{" "}
+          kbps
+        </small>
+      )}
+    </>
   );
 };
+
+const formatRemaining = dateString => {
+  const [_, l10n] = getl10n();
+  const date = Date.parse(dateString);
+  const msPerDay = 24 * 60 * 60 * 1000;
+  const timeLeft = date.getTime() - new Date().getTime();
+  const daysLeft = timeLeft / msPerDay;
+  return l10n.fmtDaysLeft(daysLeft.toFixed(0));
+};
+
+const PayBanner = props => (
+  <IonRow
+    style={{
+      backgroundColor: props.expiry ? "#eeeeee" : "#316745",
+      color: props.expiry ? "black" : "white",
+      display: "flex",
+      padding: "4px",
+      fontSize: "90%",
+      justifyContent: "center",
+      alignItems: "center",
+      visibility: props.visible ? "visible" : "hidden"
+    }}
+  >
+    <IonCol style={{ textAlign: "left" }}>
+      {props.expiry ? formatRemaining(props.expiry) : props.l10n.plusblurb}
+    </IonCol>
+    <IonCol style={{ textAlign: "right" }} size="auto">
+      <IonButton size="small" color="light">
+        {props.expiry ? props.l10n.manage : props.l10n.upgrade}
+      </IonButton>
+    </IonCol>
+  </IonRow>
+);
 
 const Overview = props => {
   const [lang, l10n] = getl10n();
@@ -225,21 +355,28 @@ const Overview = props => {
       <IonContent
         style={{
           textAlign: "center",
-          "--background": "center top no-repeat " + `url(${bglogo})`
+          "--background": "#fefefe"
         }}
       >
         <div
           style={{
             display: "flex",
-            alignItems: "center",
             justifyContent: "center",
             height: "100%"
           }}
         >
-          <IonGrid>
+          <IonGrid className="ion-no-padding">
+            <PayBanner
+              l10n={l10n}
+              visible={connState === "connected"}
+              expiry={
+                connState === "connected" &&
+                props.netstats.Tier === "paid" &&
+                props.netstats.Expiry
+              }
+            />
             <ConnStatusInfo status={connState} />
-
-            <IonRow style={{ paddingTop: "20px", paddingBottom: "20px" }}>
+            <IonRow style={{ paddingTop: "10px", paddingBottom: "20px" }}>
               <IonCol>
                 <IonToggle
                   style={{ transform: "scale(1.7)" }}
@@ -257,25 +394,6 @@ const Overview = props => {
                 />
               </IonCol>
             </IonRow>
-
-            <ExitSelector disabled={props.running} />
-
-            <IonRow>
-              <IonCol className="ion-no-padding">
-                <tt style={{ opacity: 0.7 }}>
-                  <IPLabel ip={props.netstats && props.netstats.PublicIP} /> /{" "}
-                  <PingLabel ms={props.netstats && props.netstats.MinPing} />
-                </tt>
-              </IonCol>
-            </IonRow>
-            <NetActivityInfo
-              up={props.upspeed}
-              down={props.downspeed}
-              netstats={props.netstats}
-              free={props.netstats && props.netstats.Tier === "free"}
-            />
-
-            <IonRow style={{ height: "20px" }}></IonRow>
           </IonGrid>
         </div>
 
@@ -284,41 +402,37 @@ const Overview = props => {
             position: "absolute",
             bottom: "0px",
             width: "100%",
-            height: "58px",
-            lineHeight: "38px",
-            fontSize: "90%",
-            display: "block",
-            background: "#ffffff",
+            height: "50%",
+            backgroundColor: "white",
+            borderRadius: "24px 24px 0px 0px",
             boxShadow: "0px -5px 5px #eeeeee",
-            textAlign: "left",
-            paddingLeft: "10px",
-            paddingRight: "10px",
-            paddingTop: "10px",
-            paddingBottom: "10px",
-            display:
-              props.netstats && props.netstats.Tier === "free"
-                ? "block"
-                : "none"
+            display: "flex",
+            flexDirection: "column"
           }}
         >
-          {l10n.plusblurb}
-          <IonButton
-            mode="ios"
-            size="small"
-            style={{ float: "right" }}
-            onClick={() => {
-              const extendURL = `https://geph.io/billing/login?next=%2Fbilling%2Fdashboard&uname=${encodeURI(
-                localStorage.getItem("prefs.uname")
-              )}&pwd=${encodeURI(localStorage.getItem("prefs.pwd"))}`;
-              if (ngate.platform === "android") {
-                window.location.href = extendURL;
-              } else {
-                window.open(extendURL, "_blank");
-              }
-            }}
-          >
-            {l10n.upgrade}
-          </IonButton>
+          <ExitSelector disabled={props.running} />
+          <div>
+            <NetActivityInfo
+              free={props.netstats && props.netstats.Tier === "free"}
+              up={props.upspeed}
+              down={props.downspeed}
+              ms={props.netstats && props.netstats.MinPing}
+            />
+          </div>
+          <div style={{ flex: "1" }}>
+            {connState === "connected" ? (
+              <ConnInfo
+                PublicIP={props.netstats.PublicIP}
+                Bridges={props.netstats.Bridges}
+                l10n={l10n}
+              />
+            ) : (
+              <img
+                src={require("../assets/images/logo-naked.svg")}
+                style={{ width: "80px", opacity: "0.2" }}
+              />
+            )}
+          </div>
         </div>
       </IonContent>
     </IonPage>
