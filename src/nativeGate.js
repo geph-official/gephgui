@@ -48,7 +48,6 @@ if (platform === "electron") {
 
   async function checkForUpdates() {
     const updateURLs = [
-      "https://raw.githubusercontent.com/geph-official/geph-autoupdate/master/stable.json",
       "https://gitlab.com/bunsim/geph-autoupdate/raw/master/stable.json"
     ];
     if (/TEST/.test(currentVersion)) {
@@ -56,7 +55,7 @@ if (platform === "electron") {
     }
 
     try {
-      let response = await axios.get(updateURLs[Math.random() > 0.5 ? 1 : 0]);
+      let response = await axios.get(updateURLs[0]);
       let data = response.data;
       let meta = data[getOsName()];
       console.log(meta);
@@ -204,10 +203,12 @@ export async function startDaemon() {
       exitname,
       "-exitKey",
       exit.key,
-      "-useTCP",
-      localStorage.getItem("prefs.useTCP") === "true" ? "true" : "false",
-      "-forceBridges",
-      localStorage.getItem("prefs.forceBridges") === "true" ? "true" : "false"
+      "-useTCP=" +
+        (localStorage.getItem("prefs.useTCP") === "true" ? "true" : "false"),
+      "-forceBridges=" +
+        (localStorage.getItem("prefs.forceBridges") === "true"
+          ? "true"
+          : "false")
     ],
     { stdio: "ignore" }
   );

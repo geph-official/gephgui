@@ -30,7 +30,7 @@ import {
   IonSelectOption
 } from "@ionic/react";
 import Odometer from "react-odometerjs";
-import React, { useState, useEffect } from "react";
+import React, { useRef, useEffect, useLayoutEffect } from "react";
 import { getl10n } from "./l10n";
 import * as icons from "ionicons/icons";
 import ExitSelector from "./ExitSelector";
@@ -243,19 +243,16 @@ const ConnInfo = props => {
         });
       }
     }
-    let svg = d3.select("svg"),
-      inner = svg.select("g");
+    let svg = d3.select("svg");
+    let inner = svg.select("g");
     var render = new dagreD3.render();
     render(inner, g);
-    var padding = 40,
+    var padding = 30,
       bBox = svg.node().getBoundingClientRect(),
       hRatio = (bBox.height - padding) / g.graph().height,
       wRatio = (bBox.width - padding) / g.graph().width;
     let ratio = Math.min(1.0, Math.min(hRatio, wRatio)).toFixed(10);
     var xCenterOffset = (bBox.width - g.graph().width * ratio) / 2;
-    console.log(bBox.height);
-    console.log(g.graph().height);
-    console.log(ratio);
     var yCenterOffset = (bBox.height - g.graph().height * ratio) / 2;
     inner.attr(
       "transform",
@@ -264,7 +261,7 @@ const ConnInfo = props => {
   });
 
   return (
-    <svg style={{ width: "100%", height: "90%", padding: "0" }}>
+    <svg style={{ width: "100%", height: "90%", padding: "0" }} id="thesvg">
       <g style={{ width: "100%", height: "90%", padding: "0" }} />
     </svg>
   );
@@ -313,6 +310,10 @@ const formatRemaining = dateString => {
   return l10n.fmtDaysLeft(daysLeft.toFixed(0));
 };
 
+const extendURL = `https://geph.io/billing/login?next=%2Fbilling%2Fdashboard&uname=${encodeURI(
+  localStorage.getItem("prefs.uname")
+)}&pwd=${encodeURI(localStorage.getItem("prefs.pwd"))}`;
+
 const PayBanner = props => (
   <IonRow
     style={{
@@ -330,7 +331,17 @@ const PayBanner = props => (
       {props.expiry ? formatRemaining(props.expiry) : props.l10n.plusblurb}
     </IonCol>
     <IonCol style={{ textAlign: "right" }} size="auto">
-      <IonButton size="small" color="light">
+      <IonButton
+        size="small"
+        color="light"
+        onClick={() => {
+          if (ngate.platform === "android") {
+            window.location.href = extendURL;
+          } else {
+            window.open(extendURL, "_blank");
+          }
+        }}
+      >
         {props.expiry ? props.l10n.manage : props.l10n.upgrade}
       </IonButton>
     </IonCol>
