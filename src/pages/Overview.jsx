@@ -387,7 +387,7 @@ const Overview = props => {
               }
             />
             <ConnStatusInfo status={connState} />
-            <IonRow style={{ paddingTop: "10px", paddingBottom: "20px" }}>
+            <IonRow style={{ paddingTop: "16px", paddingBottom: "20px" }}>
               <IonCol>
                 <IonToggle
                   style={{ transform: "scale(1.7)" }}
@@ -430,7 +430,16 @@ const Overview = props => {
               ms={props.netstats && props.netstats.MinPing}
             />
           </div>
-          <div style={{ flex: "1" }}>
+          <div
+            style={{
+              flex: "1",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              flexDirection: "column",
+              backgroundImage: require("../assets/images/logo-naked.svg")
+            }}
+          >
             {connState === "connected" ? (
               <ConnInfo
                 PublicIP={props.netstats.PublicIP}
@@ -440,7 +449,12 @@ const Overview = props => {
             ) : (
               <img
                 src={require("../assets/images/logo-naked.svg")}
-                style={{ width: "80px", opacity: "0.2" }}
+                style={{
+                  height: "100px",
+                  width: "100%",
+                  objectFit: "contain",
+                  opacity: "0.2"
+                }}
               />
             )}
           </div>
