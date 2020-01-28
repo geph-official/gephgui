@@ -310,9 +310,10 @@ const formatRemaining = dateString => {
   return l10n.fmtDaysLeft(daysLeft.toFixed(0));
 };
 
-const extendURL = `https://geph.io/billing/login?next=%2Fbilling%2Fdashboard&uname=${encodeURI(
-  localStorage.getItem("prefs.uname")
-)}&pwd=${encodeURI(localStorage.getItem("prefs.pwd"))}`;
+const getExtendURL = () =>
+  `https://geph.io/billing/login?next=%2Fbilling%2Fdashboard&uname=${encodeURI(
+    localStorage.getItem("prefs.uname")
+  )}&pwd=${encodeURI(localStorage.getItem("prefs.pwd"))}`;
 
 const PayBanner = props => (
   <IonRow
@@ -336,9 +337,9 @@ const PayBanner = props => (
         color="light"
         onClick={() => {
           if (ngate.platform === "android") {
-            window.location.href = extendURL;
+            window.location.href = getExtendURL();
           } else {
-            window.open(extendURL, "_blank");
+            window.open(getExtendURL(), "_blank");
           }
         }}
       >
