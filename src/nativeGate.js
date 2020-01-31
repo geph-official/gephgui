@@ -257,11 +257,16 @@ export function stopDaemon() {
 }
 
 // kill the daemon when we exit
-window.onbeforeunload = function(e) {
-  if (daemonPID != null) {
-    return false;
-  }
-};
+if (isElectron) {
+  window.onbeforeunload = function(e) {
+    if (daemonPID != null) {
+      e.returnValue = false;
+      const { remote } = window.require("electron");
+      remote.BrowserWindow.getFocusedWindow().hide();
+      return false;
+    }
+  };
+}
 
 function arePermsCorrect() {
   const fs = window.require("fs");
