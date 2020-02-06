@@ -53,6 +53,9 @@ if (platform === "electron") {
     if (/TEST/.test(currentVersion)) {
       return;
     }
+    if (window.require("electron").remote.getGlobal("process").env.NOUPDATE) {
+      return;
+    }
 
     try {
       let response = await axios.get(updateURLs[0]);

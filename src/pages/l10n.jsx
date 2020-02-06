@@ -104,6 +104,7 @@ arrs["en-US"] = {
     gva: "Geneva",
     mtl: "Montreal",
     sfo: "San Francisco",
+    pdx: "Portland",
     sgp: "Singapore",
     sof: "Sofia",
     tyo: "Tokyo"
@@ -219,6 +220,7 @@ arrs["zh-CN"] = {
     mtl: "蒙特利尔",
     sfo: "旧金山",
     sgp: "新加坡",
+    pdx: "波特兰",
     sof: "索菲亚",
     tyo: "东京",
     gva: "日内瓦"
@@ -335,6 +337,7 @@ arrs["zh-TW"] = {
     sfo: "舊金山",
     sgp: "新加坡",
     sof: "索菲亞",
+    pdx: "波特蘭",
     tyo: "東京",
     gva: "日內瓦"
   }
