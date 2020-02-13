@@ -95,7 +95,8 @@ arrs["en-US"] = {
     ca: "Canada",
     jp: "Japan",
     sg: "Singapore",
-    us: "USA"
+    us: "USA",
+    hk: "Hong Kong"
   },
 
   cities: {
@@ -107,7 +108,8 @@ arrs["en-US"] = {
     pdx: "Portland",
     sgp: "Singapore",
     sof: "Sofia",
-    tyo: "Tokyo"
+    tyo: "Tokyo",
+    hkgnt: "New Territories"
   }
 };
 
@@ -211,7 +213,8 @@ arrs["zh-CN"] = {
     jp: "日本",
     sg: "新加坡",
     us: "美国",
-    ch: "瑞士"
+    ch: "瑞士",
+    hk: "香港"
   },
 
   cities: {
@@ -223,7 +226,8 @@ arrs["zh-CN"] = {
     pdx: "波特兰",
     sof: "索菲亚",
     tyo: "东京",
-    gva: "日内瓦"
+    gva: "日内瓦",
+    hkgnt: "新界"
   }
 };
 
@@ -327,7 +331,8 @@ arrs["zh-TW"] = {
     jp: "日本",
     sg: "新加坡",
     us: "美國",
-    ch: "瑞士"
+    ch: "瑞士",
+    hk: "香港"
   },
 
   cities: {
@@ -339,7 +344,8 @@ arrs["zh-TW"] = {
     sof: "索菲亞",
     pdx: "波特蘭",
     tyo: "東京",
-    gva: "日內瓦"
+    gva: "日內瓦",
+    hkgnt: "新界"
   }
 };
 

@@ -129,6 +129,7 @@ const ExitPick = props => {
       color="dark"
       fill="clear"
       size="large"
+      mode="ios"
       onClick={() => setShowModal(true)}
       disabled={props.disabled ? true : false}
     >
