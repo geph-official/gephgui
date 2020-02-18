@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { getl10n } from "./l10n";
+import { getl10n } from "../redux/l10n";
 import {
   IonLabel,
   IonButton,
@@ -30,7 +30,7 @@ import * as axios from "axios";
 import axiosRetry from "axios-retry";
 import Flag from "react-world-flags";
 import * as icons from "ionicons/icons";
-import exits from "./exitList";
+import exits from "../fragments/exitList";
 import * as ngate from "../nativeGate";
 import "./Login.css";
 

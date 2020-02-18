@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { getl10n } from "./l10n";
+import { getl10n } from "../redux/l10n";
 import {
   IonLabel,
   IonButton,
@@ -22,7 +22,7 @@ import {
 } from "@ionic/react";
 import Flag from "react-world-flags";
 import * as icons from "ionicons/icons";
-import exits from "./exitList";
+import exits from "../fragments/exitList";
 
 class ExitSelector extends React.Component {
   constructor(props) {

@@ -25,7 +25,7 @@ import {
 } from "@ionic/react";
 import * as icons from "ionicons/icons";
 import "datejs";
-import { getl10n } from "./l10n";
+import { getl10n } from "../redux/l10n";
 import * as ngate from "../nativeGate";
 
 import "./Account.css";

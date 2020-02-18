@@ -17,7 +17,7 @@ import {
 import { Link } from "react-router-dom";
 import * as ngate from "../nativeGate";
 
-import { getl10n, arrs } from "./l10n";
+import { getl10n, arrs } from "../redux/l10n";
 
 const Settings = () => {
   const [lang, l10n] = getl10n();

@@ -31,7 +31,7 @@ import {
 } from "@ionic/react";
 import Odometer from "react-odometerjs";
 import React, { useRef, useEffect, useLayoutEffect } from "react";
-import { getl10n } from "./l10n";
+import { getl10n } from "../redux/l10n";
 import * as icons from "ionicons/icons";
 import ExitSelector from "./ExitSelector";
 import * as ngate from "../nativeGate";

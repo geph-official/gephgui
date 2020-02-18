@@ -1,10 +1,8 @@
 import React from "react";
-import { IonText } from "@ionic/react";
+import { GlobalState } from ".";
 
-export var arrs = {};
-
-arrs["en-US"] = {
-  fmtDaysLeft: days => (
+const enUSBindings = {
+  fmtDaysLeft: (days: number) => (
     <>
       Plus expires in <b>{days}</b> days
     </>
@@ -48,6 +46,7 @@ arrs["en-US"] = {
   network: "Network",
   nomoretx: "No more transactions",
   overview: "Overview",
+  plusonly: "Plus only",
   password: "Password",
   passwordConfirm: "Confirm password",
   plusblurb: (
@@ -95,9 +94,9 @@ arrs["en-US"] = {
     ca: "Canada",
     jp: "Japan",
     sg: "Singapore",
-    us: "USA",
+    us: "United States",
     hk: "Hong Kong"
-  },
+  } as Record<string, string>,
 
   cities: {
     dal: "Dallas",
@@ -110,11 +109,11 @@ arrs["en-US"] = {
     sof: "Sofia",
     tyo: "Tokyo",
     hkgnt: "New Territories"
-  }
+  } as Record<string, string>
 };
 
-arrs["zh-CN"] = {
-  fmtDaysLeft: days => (
+const zhCNBindings = {
+  fmtDaysLeft: (days: number) => (
     <>
       迷雾通Plus剩余<b>{days}</b>天到期
     </>
@@ -147,6 +146,7 @@ arrs["zh-CN"] = {
   errExists: "用戶已经存在！",
   exitserver: "出口端位置",
   expiry: "到期时间",
+  plusonly: "付费专用",
   extend: "延长Plus用户",
   freelimit: "免费用户限速：",
   general: "通用",
@@ -188,10 +188,7 @@ arrs["zh-CN"] = {
   upgradeblurb: (
     <span>
       升级至Plus用户，享受
-      <b>
-        <IonText color="primary">超快速度</IonText>
-      </b>
-      ！
+      <b>超快速度</b>！
     </span>
   ),
 
@@ -215,7 +212,7 @@ arrs["zh-CN"] = {
     us: "美国",
     ch: "瑞士",
     hk: "香港"
-  },
+  } as Record<string, string>,
 
   cities: {
     dal: "达拉斯",
@@ -228,11 +225,11 @@ arrs["zh-CN"] = {
     tyo: "东京",
     gva: "日内瓦",
     hkgnt: "新界"
-  }
+  } as Record<string, string>
 };
 
-arrs["zh-TW"] = {
-  fmtDaysLeft: days => (
+const zhTWBindings = {
+  fmtDaysLeft: (days: number) => (
     <>
       迷霧通Plus剩餘<b>{days}</b>天到期
     </>
@@ -244,6 +241,7 @@ arrs["zh-TW"] = {
   amount: "金額",
   autoconn: "自動連接",
   autoconnblurb: "開啓迷霧通時自動連接",
+  plusonly: "付費專用",
   autoproxy: "自動設置代理",
   autoproxyblurb: "主流浏覽器之外可能需要手動設定",
   cancel: "取消",
@@ -306,10 +304,7 @@ arrs["zh-TW"] = {
   upgradeblurb: (
     <span>
       升級至Plus用戶，享受
-      <b>
-        <IonText color="primary">超快速度</IonText>
-      </b>
-      ！
+      <b>超快速度</b>！
     </span>
   ),
 
@@ -333,7 +328,7 @@ arrs["zh-TW"] = {
     us: "美國",
     ch: "瑞士",
     hk: "香港"
-  },
+  } as Record<string, string>,
 
   cities: {
     dal: "達拉斯",
@@ -346,17 +341,21 @@ arrs["zh-TW"] = {
     tyo: "東京",
     gva: "日內瓦",
     hkgnt: "新界"
+  } as Record<string, string>
+};
+export const getl10n = (lang: string) => {
+  switch (lang) {
+    case "zh-TW":
+      return zhTWBindings;
+    case "zh-CN":
+      return zhCNBindings;
+    default:
+      return enUSBindings;
   }
 };
 
-if (!localStorage.getItem("prefs.lang")) {
-  localStorage.setItem("prefs.lang", navigator.language);
-}
-export const getl10n = () => {
-  let lang = localStorage.getItem("prefs.lang");
-  if (lang !== "zh-CN" && lang !== "zh-TW") {
-    lang = "en-US";
-  }
-  let l10n = arrs[lang];
-  return [lang, l10n];
-};
+export const l10nSelector = (state: GlobalState) =>
+  getl10n(state.prefState.lang);
+
+export const langSelector = (state: GlobalState) =>
+  state.prefState.lang ? state.prefState.lang : "en-US";

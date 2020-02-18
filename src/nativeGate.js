@@ -1,9 +1,9 @@
 // this module will eventually be a wrapper for every platform.
 // right now it only supports Electron
 
-import exits from "./pages/exitList";
+import exits from "./fragments/exitList";
 import axios from "axios";
-import { getl10n } from "./pages/l10n";
+import { getl10n } from "./redux/l10n";
 
 let electron;
 let os;

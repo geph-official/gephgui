@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { getl10n } from "./l10n";
+import { getl10n } from "../redux/l10n";
 import {
   IonContent,
   IonHeader,
