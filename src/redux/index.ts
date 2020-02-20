@@ -1,5 +1,4 @@
 import { createStore, combineReducers } from "redux";
-import Login from "../pages/Login";
 import { PrefState, prefReducer } from "./prefs";
 import { ConnState, connReducer } from "./connState";
 

@@ -112,7 +112,7 @@ const LoginFrag: React.FC = props => {
         alignItems="center"
         style={{ height: "90vh" }}
       >
-        <Grid item>
+        <Grid item style={{ width: "80vw", textAlign: "center" }}>
           <img
             style={{
               maxHeight: "20vh",
@@ -120,9 +120,8 @@ const LoginFrag: React.FC = props => {
               paddingBottom: "30px"
             }}
             src={require("../assets/images/logo-naked.svg")}
-          />
-        </Grid>
-        <Grid item style={{ width: "80vw", textAlign: "center" }}>
+          />{" "}
+          <br />
           <form
             onSubmit={async e => {
               e.preventDefault();
@@ -291,7 +290,7 @@ const Register = (props: {
 
 const proxClient = axios.create({ baseURL: "http://127.0.0.1:23456" });
 axiosRetry(proxClient, {
-  retries: 100,
+  retries: 1000,
   retryDelay: exponentialDelay
 });
 
@@ -319,24 +318,28 @@ const registerAccount = async (
 ) => {
   const pid = startBinderProxy();
   try {
-    const resp = await proxClient.post("/register", {
-      Username: username,
-      Password: password,
-      CaptchaID: captchaID,
-      CaptchaSoln: captchaSoln
-    });
-    if (resp.status !== 200) {
-      return codeBadNet;
-    } else {
-      return codeOK;
-    }
-  } catch (err) {
-    if (/403/.test(err.toString())) {
-      return codeExists;
-    } else if (/400/.test(err.toString())) {
-      return codeBadCaptcha;
-    } else {
-      return codeBadNet;
+    while (true) {
+      try {
+        const resp = await proxClient.post("/register", {
+          Username: username,
+          Password: password,
+          CaptchaID: captchaID,
+          CaptchaSoln: captchaSoln
+        });
+        if (resp.status !== 200) {
+          return codeBadNet;
+        } else {
+          return codeOK;
+        }
+      } catch (err) {
+        if (/403/.test(err.toString())) {
+          return codeExists;
+        } else if (/400/.test(err.toString())) {
+          return codeBadCaptcha;
+        } else {
+          continue;
+        }
+      }
     }
   } finally {
     stopBinderProxy(pid);
