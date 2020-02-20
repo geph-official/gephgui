@@ -1,7 +1,6 @@
 // this module will eventually be a wrapper for every platform.
 // right now it only supports Electron
 
-import exits from "./fragments/exitList";
 import axios from "axios";
 import { getl10n } from "./redux/l10n";
 
@@ -22,77 +21,89 @@ export const platform = isElectron ? "electron" : "android";
 
 export var version = "";
 
-if (platform === "electron") {
-  function getOsName() {
-    if (os.platform() === "linux") {
-      if (os.arch() === "x64") {
-        return "Linux64";
-      } else {
-        return "Linux32";
-      }
-    } else if (os.platform() === "win32") {
-      return "Windows";
-    } else if (os.platform() === "darwin") {
-      return "MacOS";
-    }
-    return "";
+export function getVersion() {
+  if (platform === "electron") {
+    const { app } = window.require("electron").remote;
+    return app.getVersion();
   }
+  return "0.0.0";
+}
 
-  const { dialog } = window.require("electron").remote;
-  const { shell } = window.require("electron");
-  const { app } = window.require("electron").remote;
-
-  var dialogShowed = false;
-  version = app.getVersion();
-  let currentVersion = version;
-
-  async function checkForUpdates() {
-    const updateURLs = [
-      "https://gitlab.com/bunsim/geph-autoupdate/raw/master/stable.json"
-    ];
-    if (/TEST/.test(currentVersion)) {
-      return;
-    }
-    if (window.require("electron").remote.getGlobal("process").env.NOUPDATE) {
-      return;
-    }
-
-    try {
-      let response = await axios.get(updateURLs[0]);
-      let data = response.data;
-      let meta = data[getOsName()];
-      console.log(meta);
-      const [lang, l10n] = getl10n();
-      if (meta.Latest !== currentVersion && !dialogShowed) {
-        dialogShowed = true;
-        let dialogOpts = {
-          type: "info",
-          buttons: [l10n["updateDownload"], l10n["updateLater"]],
-          message:
-            l10n["updateInfo"] +
-            "\n" +
-            "(" +
-            currentVersion +
-            " => " +
-            meta.Latest +
-            ")"
-        };
-        dialog.showMessageBox(dialogOpts, response => {
-          if (response === 0) {
-            shell.openExternal(meta.Mirrors[0]);
-          }
-        });
+export function startUpdateChecks(l10n) {
+  if (platform === "electron") {
+    function getOsName() {
+      if (os.platform() === "linux") {
+        if (os.arch() === "x64") {
+          return "Linux64";
+        } else {
+          return "Linux32";
+        }
+      } else if (os.platform() === "win32") {
+        return "Windows";
+      } else if (os.platform() === "darwin") {
+        return "MacOS";
       }
-    } catch (e) {
-      console.log(e);
-    } finally {
+      return "";
     }
+
+    const { dialog } = window.require("electron").remote;
+    const { shell } = window.require("electron");
+    const { app } = window.require("electron").remote;
+
+    var dialogShowed = false;
+    version = app.getVersion();
+    let currentVersion = version;
+
+    async function checkForUpdates() {
+      const updateURLs = [
+        "https://gitlab.com/bunsim/geph-autoupdate/raw/master/stable.json"
+      ];
+      if (/TEST/.test(currentVersion)) {
+        return;
+      }
+      if (window.require("electron").remote.getGlobal("process").env.NOUPDATE) {
+        return;
+      }
+
+      try {
+        let response = await axios.get(updateURLs[0]);
+        let data = response.data;
+        let meta = data[getOsName()];
+        if (meta.Latest !== currentVersion && !dialogShowed) {
+          dialogShowed = true;
+          let dialogOpts = {
+            type: "info",
+            buttons: [l10n["updateDownload"], l10n["updateLater"]],
+            message:
+              l10n["updateInfo"] +
+              "\n" +
+              "(" +
+              currentVersion +
+              " => " +
+              meta.Latest +
+              ")"
+          };
+          dialog.showMessageBox(dialogOpts, response => {
+            if (response === 0) {
+              shell.openExternal(meta.Mirrors[0]);
+            }
+          });
+        }
+      } catch (e) {
+        console.log(e);
+      } finally {
+      }
+    }
+    checkForUpdates();
+    setInterval(checkForUpdates, 60 * 60 * 1000);
   }
-  checkForUpdates();
-  setInterval(checkForUpdates, 60 * 60 * 1000);
 }
 
 var daemonPID = null;
+
+export function getPlatform() {
+  return platform;
+}
 
 // set essential prefs if they don't exist
 if (!localStorage.getItem("prefs.autoProxy")) {
@@ -156,10 +167,11 @@ export function startBinderProxy() {
     let x = window.Android.jsStartProxBinder();
     return x;
   }
-  return spawn(getBinaryPath() + "geph-client" + binExt(), [
-    "-binderProxy",
-    "127.0.0.1:23456"
-  ]);
+  return spawn(
+    getBinaryPath() + "geph-client" + binExt(),
+    ["-binderProxy", "127.0.0.1:23456"],
+    { stdio: "inherit" }
+  );
 }
 
 // stop the binder proxy by handle
@@ -168,62 +180,55 @@ export function stopBinderProxy(pid) {
     window.Android.jsStopProxBinder(pid);
     return;
   }
-  pid.kill();
+  pid.kill("SIGKILL");
 }
 
 // spawn the geph-client daemon
-export async function startDaemon() {
-  const [lang, l10n] = getl10n();
-
-  let exitname = localStorage.getItem("prefs.exit");
-  let exit = exits[exitname];
+export async function startDaemon(
+  exitName,
+  exitKey,
+  username,
+  password,
+  useTCP,
+  forceBridges,
+  autoProxy
+) {
   if (!isElectron) {
     window.Android.jsStartDaemon(
-      localStorage.getItem("prefs.uname"),
-      localStorage.getItem("prefs.pwd"),
-      exitname,
-      exit.key,
-      localStorage.getItem("prefs.useTCP") === "true" ? true : false,
-      localStorage.getItem("prefs.forceBridges") === "true" ? true : false
+      username,
+      password,
+      exitName,
+      exitKey,
+      useTCP,
+      forceBridges
     );
     return;
   }
-  if (daemonPID != null) {
-    return;
-  }
-  if (exit === undefined) {
-    alert("undefined exit?!");
-    electron.exit();
+  if (daemonPID !== null) {
+    throw "daemon started when it really shouldn't be";
   }
   daemonPID = spawn(
     getBinaryPath() + "geph-client" + binExt(),
     [
       "-username",
-      localStorage.getItem("prefs.uname"),
+      username,
       "-password",
-      localStorage.getItem("prefs.pwd"),
+      password,
       "-exitName",
-      exitname,
+      exitName,
       "-exitKey",
-      exit.key,
-      "-useTCP=" +
-        (localStorage.getItem("prefs.useTCP") === "true" ? "true" : "false"),
-      "-forceBridges=" +
-        (localStorage.getItem("prefs.forceBridges") === "true"
-          ? "true"
-          : "false")
+      exitKey,
+      "-useTCP=" + useTCP,
+      "-forceBridges=" + forceBridges
     ],
-    { stdio: "ignore" }
+    { stdio: "inherit" }
   );
   daemonPID.on("close", code => {
-    if (code % 256 === 403 % 256) {
-      alert(l10n.err403);
-    }
     if (daemonPID !== null) {
       daemonPID = null;
     }
   });
-  if (localStorage.getItem("prefs.autoProxy") === "true") {
+  if (autoProxy) {
     // on macOS, elevate pac permissions
     if (os.platform() === "darwin") {
       await elevatePerms();
@@ -231,12 +236,15 @@ export async function startDaemon() {
     // Don't use the pac executable on Windoze!
     if (os.platform() === "win32") {
       console.log("Win32, using alternative proxy enable");
-      spawn(getBinaryPath() + "ProxyToggle.exe", ["127.0.0.1:9910"]);
+      spawn(getBinaryPath() + "ProxyToggle.exe", ["127.0.0.1:9910"], {
+        stdio: "ignore"
+      });
     } else {
-      spawn(getBinaryPath() + "pac" + binExt(), [
-        "on",
-        "http://127.0.0.1:9809/proxy.pac"
-      ]);
+      spawn(
+        getBinaryPath() + "pac" + binExt(),
+        ["on", "http://127.0.0.1:9809/proxy.pac"],
+        { stdio: "ignore" }
+      );
     }
   }
 }
@@ -250,7 +258,7 @@ export function stopDaemon() {
   if (daemonPID != null) {
     let dp = daemonPID;
     daemonPID = null;
-    dp.kill();
+    dp.kill("SIGKILL");
   }
   if (os.platform() === "win32") {
     spawn(getBinaryPath() + "ProxyToggle.exe", []);

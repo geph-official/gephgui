@@ -2,9 +2,14 @@ import React from "react";
 import { GlobalState } from ".";
 
 const enUSBindings = {
-  fmtDaysLeft: (days: number) => (
+  fmtDaysLeft: (days: string) => (
     <>
       Plus expires in <b>{days}</b> days
+    </>
+  ),
+  fmtDaysLeftShort: (days: string) => (
+    <>
+      <b>{days}</b> days left
     </>
   ),
   you: "You",
@@ -21,6 +26,7 @@ const enUSBindings = {
   connected: "Connected",
   connectedblurb: "Enjoy an open Internet!",
   connecting: "Connecting",
+  loggingin: "Logging in...",
   geph: "Geph",
   core: "Highsec",
   clipboard: "Logs copied to clipboard",
@@ -29,16 +35,18 @@ const enUSBindings = {
   downstream: "Downstream",
   err403: "You're not allowed on this exit. An upgrade may be needed.",
   errBadCaptcha: "CAPTCHA wrong",
+  errBadCred: "Incorrect username or password. Please try again.",
   errExists: "User already exists",
   exitserver: "Exit location:",
   expiry: "Expiration date",
-  extend: "Add more time",
+  extend: "Extend",
   freelimit: "Free account limit:",
   general: "General",
   http: "HTTP proxy",
   langname: "English",
   language: "Language",
   locations: "Locations",
+  errBadNet: "Network failed",
   loginblurb: "Log in with existing account",
   logout: "Log out",
   logs: "Logs",
@@ -56,6 +64,8 @@ const enUSBindings = {
   ),
   pwdmismatch: "Passwords do not match",
   registerblurb: "Create a new account",
+  show: "Show",
+  hide: "Hide",
   restartblurb: "Restart Geph to apply language",
   seePlans: "See plans",
   selectExit: "Exit selection",
@@ -64,8 +74,9 @@ const enUSBindings = {
   socks5: "SOCKS5 proxy",
   subscription: "Subscription",
   txlog: "Past transactions",
+  subinfoblurb: "Connect to Geph to manage subscription",
   unameillegal: "Username must be 5 to 100 alphanumeric characters",
-  unlockUnlimitedSpeed: "Unlock unlimited speed",
+  unlockUnlimitedSpeed: "Get unlimited speed",
   updateDownload: "Download",
   updateInfo: "A new version is available!",
   updateLater: "Remind me later",
@@ -86,7 +97,7 @@ const enUSBindings = {
   paid: "Plus",
   free: "Free",
   tcp: "Use TCP mode",
-  tcpblurb: <>Reconnect to apply.</>,
+  tcpblurb: "Reconnect to apply.",
 
   countries: {
     bg: "Bulgaria",
@@ -113,9 +124,14 @@ const enUSBindings = {
 };
 
 const zhCNBindings = {
-  fmtDaysLeft: (days: number) => (
+  fmtDaysLeft: (days: string) => (
     <>
       迷雾通Plus剩余<b>{days}</b>天到期
+    </>
+  ),
+  fmtDaysLeftShort: (days: string) => (
+    <>
+      剩余<b>{days}</b>天
     </>
   ),
   you: "您",
@@ -134,20 +150,24 @@ const zhCNBindings = {
   updateDownload: "下载",
   updateInfo: "迷雾通新版本已发布！",
   updateLater: "之后提醒",
+  errBadCred: "用戶名或密码错误，请重试",
   connecting: "连接中",
+  loggingin: "正在登录...",
   date: "日期",
   disconnected: "未连接",
   downstream: "下行",
   err403: "您没有资格登录这个出口端！",
   errBadCaptcha: "验证码错误",
   clipboard: "日志已存入剪贴板",
+  errBadNet: "网络故障",
   geph: "迷雾通",
   manage: "管理",
   errExists: "用戶已经存在！",
+  subinfoblurb: "管理帐号需要连接迷雾通",
   exitserver: "出口端位置",
   expiry: "到期时间",
   plusonly: "付费专用",
-  extend: "延长Plus用户",
+  extend: "延长",
   freelimit: "免费用户限速：",
   general: "通用",
   forcebridges: "强制使用桥接",
@@ -158,6 +178,8 @@ const zhCNBindings = {
   logout: "登出",
   export: "导出",
   netactivity: "网络使用",
+  show: "显示",
+  hide: "隐藏",
   overview: "概览",
   password: "密码",
   passwordConfirm: "确认密码",
@@ -183,7 +205,7 @@ const zhCNBindings = {
   upstream: "上行",
   username: "用户名",
   tcp: "使用TCP模式",
-  tcpblurb: <>重新连接后生效。</>,
+  tcpblurb: "重新连接后生效。",
 
   upgradeblurb: (
     <span>
@@ -229,9 +251,14 @@ const zhCNBindings = {
 };
 
 const zhTWBindings = {
-  fmtDaysLeft: (days: number) => (
+  fmtDaysLeft: (days: string) => (
     <>
       迷霧通Plus剩餘<b>{days}</b>天到期
+    </>
+  ),
+  fmtDaysLeftShort: (days: string) => (
+    <>
+      剩餘<b>{days}</b>天
     </>
   ),
   you: "您",
@@ -239,16 +266,20 @@ const zhTWBindings = {
   account: "用戶",
   advanced: "高級",
   amount: "金額",
+  show: "顯示",
+  hide: "隱藏",
   autoconn: "自動連接",
   autoconnblurb: "開啓迷霧通時自動連接",
   plusonly: "付費專用",
   autoproxy: "自動設置代理",
   autoproxyblurb: "主流浏覽器之外可能需要手動設定",
+  errBadCred: "用戶名或密碼錯誤，請重試",
   cancel: "取消",
   export: "導出",
   captcha: "驗證碼",
   connected: "連接成功",
   connectedblurb: "盡享自由的網絡！",
+  subinfoblurb: "管理帳號需連接迷霧通",
   clipboard: "日誌已存入剪貼板",
   network: "網絡",
   connecting: "連接中",
@@ -257,12 +288,14 @@ const zhTWBindings = {
   downstream: "下行",
   err403: "您沒有資格登錄這個出口端！",
   errBadCaptcha: "驗證碼錯誤",
+  loggingin: "正在登錄...",
   errExists: "用戶已經存在！",
   manage: "管理",
+  errBadNet: "網絡故障",
   exitserver: "出口端位置",
   geph: "迷霧通",
   expiry: "到期時間",
-  extend: "延長Plus用戶",
+  extend: "延長",
   forcebridges: "強制使用橋接",
   freelimit: "免費用戶限速：",
   general: "通用",
@@ -299,7 +332,7 @@ const zhTWBindings = {
   upstream: "上行",
   username: "用戶名",
   tcp: "使用TCP模式",
-  tcpblurb: <>重新連接後生效。</>,
+  tcpblurb: "重新連接後生效。",
 
   upgradeblurb: (
     <span>

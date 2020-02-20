@@ -18,13 +18,13 @@ import {
 import { l10nSelector } from "../redux/l10n";
 import * as icons from "@material-ui/icons";
 import Flag from "react-world-flags";
+import { prefSelector } from "../redux/prefs";
+import { ConnectionStatus } from "../redux/connState";
 
 const ExitSelectorFrag = (props: {}) => {
-  const exitName = useSelector((state: GlobalState) => {
-    const x = state.prefState["exit"];
-    return x ? x : "us-sfo-01.exits.geph.io";
-  });
+  const exitName = useSelector(prefSelector("exit", "us-sfo-01.exits.geph.io"));
   const l10n = useSelector(l10nSelector);
+  const connstate = useSelector((state: GlobalState) => state.connState);
   const dispatch = useDispatch();
   const setExit = (ename: string) => {
     dispatch({ type: "PREF", key: "exit", value: ename });
@@ -40,6 +40,10 @@ const ExitSelectorFrag = (props: {}) => {
           fontWeight: "normal",
           letterSpacing: "-0.5px"
         }}
+        disabled={
+          !connstate.fresh ||
+          connstate.connected !== ConnectionStatus.Disconnected
+        }
         onClick={_ => setPickerOpened(!pickerOpened)}
       >
         <Flag
@@ -53,7 +57,7 @@ const ExitSelectorFrag = (props: {}) => {
             marginLeft: "10px"
           }}
         />
-        <b>{l10n.countries[exitInfo.country]}</b>/{l10n.cities[exitInfo.city]}
+        <b>{l10n.countries[exitInfo.country]}</b>/{l10n.cities[exitInfo.city]} »
       </Button>
       <Dialog
         open={pickerOpened}

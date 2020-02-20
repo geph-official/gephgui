@@ -2,6 +2,8 @@
 import "core-js/stable";
 import "core-js/es/map";
 import "core-js/es/set";
+import "web-animations-js";
+import "regenerator-runtime/runtime";
 
 // import "browser-polyfills";
 // import "@webcomponents/webcomponentsjs/webcomponents-bundle";

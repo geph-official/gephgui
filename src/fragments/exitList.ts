@@ -12,6 +12,12 @@ export const exitList: { [key: string]: exitInfo } = {
     city: "pdx",
     plus: false
   },
+  "ca-mtl-01.exits.geph.io": {
+    key: "8d848fe736ead2f0b78cd13e81293944936fe840ea449b8f87438340ecdaaaf6",
+    country: "ca",
+    city: "mtl",
+    plus: false
+  },
   "ch-gva-01.exits.geph.io": {
     key: "c1b74b5d47286d97dd6a56ec574488775210ca7e44da506c011b17764660a34a",
     country: "ch",

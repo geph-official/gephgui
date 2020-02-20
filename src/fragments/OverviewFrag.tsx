@@ -1,7 +1,8 @@
 import React, { useState, Props } from "react";
 import { l10nSelector } from "../redux/l10n";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import * as icons from "@material-ui/icons";
+import Alert from "@material-ui/lab/Alert";
 import {
   Grid,
   makeStyles,
@@ -12,12 +13,18 @@ import {
   createStyles,
   Card,
   CardContent,
-  Typography
+  Typography,
+  Button
 } from "@material-ui/core";
 import { GlobalState } from "../redux";
-import { ConnectionStatus, Tier } from "../redux/connState";
+import { ConnectionStatus, Tier, SpecialConnStates } from "../redux/connState";
 import { IOSSwitch, AntSwitch } from "./Switches";
 import ExitSelectorFrag from "./ExitSelectorFrag";
+import { startDaemon, getPlatform } from "../nativeGate";
+import { prefSelector } from "../redux/prefs";
+import { exitList } from "./exitList";
+import { stopDaemon } from "../nativeGate";
+import { ConnInfo } from "./ConnInfo";
 
 const useStyles = makeStyles({
   verticalGrid: {
@@ -38,15 +45,27 @@ const useStyles = makeStyles({
 
 const OverviewFrag: React.FC = props => {
   const l10n = useSelector(l10nSelector);
+  const connState = useSelector((state: GlobalState) => state.connState);
   const classes = useStyles();
   return (
     <>
+      <PayBanner
+        visible={
+          connState.fresh && connState.connected === ConnectionStatus.Connected
+        }
+        expiry={
+          connState.fresh && connState.tier === Tier.Paid
+            ? connState.expiry
+            : false
+        }
+      />
       <Grid
         container
         className={classes.verticalGrid}
         direction="column"
         justify="space-around"
         alignItems="center"
+        style={{ paddingTop: "48px" }}
       >
         <Grid item>
           <ConnStatusInfo />
@@ -63,9 +82,43 @@ const OverviewFrag: React.FC = props => {
           className={classes.center}
         >
           <Card className={classes.card}>
-            <CardContent>
-              <ExitSelectorFrag /> <br />
-              <NetActivityInfo />
+            <CardContent style={{ height: "100%" }}>
+              <Grid
+                container
+                direction="column"
+                alignItems="center"
+                justify="space-between"
+                style={{ height: "100%" }}
+              >
+                <Grid item style={{ height: "64px" }}>
+                  <ExitSelectorFrag /> <br />
+                  <NetActivityInfo />
+                </Grid>
+                <Grid
+                  item
+                  style={{ width: "100%", height: "calc(100% - 64px)" }}
+                >
+                  {connState.fresh &&
+                  connState.connected === ConnectionStatus.Connected ? (
+                    <ConnInfo
+                      PublicIP={connState.publicIP}
+                      Bridges={connState.bridgeData}
+                      l10n={l10n}
+                    />
+                  ) : (
+                    <img
+                      src={require("../assets/images/logo-naked.svg")}
+                      style={{
+                        height: "100px",
+                        width: "100%",
+                        objectFit: "contain",
+                        opacity: "0.2",
+                        paddingTop: "15px"
+                      }}
+                    />
+                  )}
+                </Grid>
+              </Grid>
             </CardContent>
           </Card>
         </Grid>
@@ -74,8 +127,102 @@ const OverviewFrag: React.FC = props => {
   );
 };
 
+const formatRemaining = (l10n: Record<string, any>, dateString: string) => {
+  const date = new Date(Date.parse(dateString));
+  const msPerDay = 24 * 60 * 60 * 1000;
+  const timeLeft = date.getTime() - new Date().getTime();
+  const daysLeft = timeLeft / msPerDay;
+  const nana = l10n.fmtDaysLeft as (x: string) => string;
+  return l10n.fmtDaysLeft(daysLeft.toFixed(0));
+};
+
+const PayBanner = props => {
+  const l10n = useSelector(l10nSelector);
+  const username = useSelector(prefSelector("username", ""));
+  const password = useSelector(prefSelector("password", ""));
+  const extendURL = `https://geph.io/billing/login?next=%2Fbilling%2Fdashboard&uname=${username}&pwd=${password}`;
+  return (
+    <Grid
+      container
+      justify="space-between"
+      alignItems="center"
+      style={{
+        backgroundColor: props.expiry ? "#eeeeee" : "#316745",
+        color: props.expiry ? "black" : "white",
+        display: "flex",
+        padding: "0px",
+        paddingLeft: "8px",
+        paddingRight: "8px",
+        margin: "0px",
+        top: "0px",
+        left: "0px",
+        width: "100%",
+        fontSize: "90%",
+        height: "48px",
+        visibility: props.visible ? "visible" : "hidden",
+        position: "absolute"
+      }}
+    >
+      <Grid item style={{ textAlign: "left" }}>
+        {props.expiry ? formatRemaining(l10n, props.expiry) : l10n.plusblurb}
+      </Grid>
+      <Grid item style={{ textAlign: "right" }}>
+        <Button
+          onClick={() => {
+            if (getPlatform() === "android") {
+              window.location.href = extendURL;
+            } else {
+              window.open(extendURL, "_blank");
+            }
+          }}
+          variant="contained"
+        >
+          {props.expiry ? l10n.manage : l10n.upgrade}
+        </Button>
+      </Grid>
+    </Grid>
+  );
+};
+
 const ConnToggle = (props: {}) => {
-  return <IOSSwitch />;
+  const stateUncertain = useSelector(
+    (state: GlobalState) => !state.connState.fresh
+  );
+  const stateConnected = useSelector(
+    (state: GlobalState) => state.connState.connected
+  );
+  const username = useSelector(prefSelector("username", "dorbie"));
+  const password = useSelector(prefSelector("password", "fc9dfc3d"));
+  const exitName = useSelector(prefSelector("exit", "us-sfo-01.exits.geph.io"));
+  const exitKey = exitList[exitName].key;
+  const useTCPStr = useSelector(prefSelector("useTCP", "false"));
+  const forceBridgesStr = useSelector(prefSelector("forceBridges", "false"));
+  const autoProxyStr = useSelector(prefSelector("autoProxy", "true"));
+  const dispatch = useDispatch();
+  return (
+    <IOSSwitch
+      disabled={stateUncertain}
+      checked={stateConnected !== ConnectionStatus.Disconnected}
+      onClick={async _ => {
+        if (!stateConnected) {
+          // we first set the state to unknown
+          dispatch({ type: "CONN", rawJson: SpecialConnStates.Connecting });
+          await startDaemon(
+            exitName,
+            exitKey,
+            username,
+            password,
+            useTCPStr === "true",
+            forceBridgesStr === "true",
+            autoProxyStr === "true"
+          );
+        } else {
+          dispatch({ type: "CONN", rawJson: SpecialConnStates.Dead });
+          stopDaemon();
+        }
+      }}
+    />
+  );
 };
 
 const ConnStatusInfo = (props: {}) => {
@@ -119,7 +266,12 @@ const ConnStatusInfo = (props: {}) => {
   }
 
   return (
-    <Grid container justify="center" alignItems="center">
+    <Grid
+      container
+      justify="center"
+      alignItems="center"
+      style={{ height: "40px" }}
+    >
       <Grid item style={{ marginRight: "20px" }}>
         {lhs}
       </Grid>
@@ -131,32 +283,47 @@ const ConnStatusInfo = (props: {}) => {
 const NetActivityInfo = (props: {}) => {
   const l10n = useSelector(l10nSelector);
   const connState = useSelector((state: GlobalState) => state.connState);
+  const isValid = useSelector(
+    (state: GlobalState) =>
+      state.connState.connected === ConnectionStatus.Connected
+  );
   let max;
   if (connState.tier === Tier.Free) {
     max = 800;
   } else {
     max = 100000000;
   }
+  const upSpeed =
+    !isValid || connState.oldUpBytes < 0
+      ? 0
+      : connState.upBytes - connState.oldUpBytes;
+  const downSpeed =
+    !isValid || connState.oldDownBytes < 0
+      ? 0
+      : connState.downBytes - connState.oldDownBytes;
   return (
-    <>
-      <icons.ArrowDownward fontSize="small" />
+    <span style={{ fontSize: "90%" }}>
+      <icons.ArrowDownward fontSize="small" style={{ marginBottom: "-4px" }} />
       &nbsp;
-      <SpeedLabel kbps={0} max={max} />
+      <SpeedLabel kbps={(8 * downSpeed) / 1000} max={max} />
       &emsp;
-      <icons.ArrowUpward />
+      <icons.ArrowUpward fontSize="small" style={{ marginBottom: "-4px" }} />
       &nbsp;
-      <SpeedLabel kbps={0} max={max} />
+      <SpeedLabel kbps={(8 * upSpeed) / 1000} max={max} />
       &emsp;
-      <icons.ImportExport />
+      <icons.ImportExport fontSize="small" style={{ marginBottom: "-4px" }} />
       &nbsp;
-      <PingLabel ms={connState.ping} /> <br />
-      {connState.tier === Tier.Free && (
+      <PingLabel ms={isValid && connState.ping} /> <br />
+      {connState.connected === ConnectionStatus.Connected &&
+      connState.tier === Tier.Free ? (
         <small>
           {l10n.freelimit} <b style={{ color: "red" }}>800</b>
           &nbsp;kbps
         </small>
+      ) : (
+        ""
       )}
-    </>
+    </span>
   );
 };
 
