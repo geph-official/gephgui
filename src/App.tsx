@@ -31,6 +31,8 @@ import { startUpdateChecks, getVersion } from "./nativeGate";
 
 const store = createStore(rootReducer, persistState("prefState", {}));
 
+//alert(JSON.stringify(localStorage));
+
 const useStyles = makeStyles({
   stickToBottom: {
     width: "100%",
