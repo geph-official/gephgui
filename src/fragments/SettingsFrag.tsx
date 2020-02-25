@@ -115,40 +115,6 @@ const SettingsFrag: React.FC = props => {
           <span style={{ color: "#666" }}>localhost:9910</span>
         </ListItem>
       </List>
-      <Divider />
-      <List
-        subheader={
-          <ListSubheader component="div">{l10n.advanced}</ListSubheader>
-        }
-      >
-        <ListItem
-          button
-          onClick={() => {
-            const logsURL = "http://localhost:9809/logs";
-            if (getPlatform() === "android") {
-              window.location.href = logsURL;
-            } else {
-              window.open(logsURL, "_blank");
-            }
-          }}
-        >
-          <ListItemText primary="Daemon logs" />
-        </ListItem>
-        <ListItem
-          button
-          onClick={() => {
-            const logsURL = "http://localhost:9809/stacktrace";
-            if (getPlatform() === "android") {
-              window.location.href = logsURL;
-            } else {
-              window.open(logsURL, "_blank");
-            }
-          }}
-        >
-          <ListItemText primary="Stacktrace" />
-        </ListItem>
-      </List>
-      <div style={{ height: "30vh" }} />
     </>
   );
 };

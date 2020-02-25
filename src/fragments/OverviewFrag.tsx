@@ -201,7 +201,6 @@ const ConnToggle = (props: {}) => {
   const dispatch = useDispatch();
   return (
     <IOSSwitch
-      disabled={stateUncertain}
       checked={stateConnected !== ConnectionStatus.Disconnected}
       onClick={async _ => {
         if (!stateConnected) {
@@ -217,8 +216,8 @@ const ConnToggle = (props: {}) => {
             autoProxyStr === "true"
           );
         } else {
+          await stopDaemon();
           dispatch({ type: "CONN", rawJson: SpecialConnStates.Dead });
-          stopDaemon();
         }
       }}
     />

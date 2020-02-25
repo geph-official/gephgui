@@ -8,7 +8,7 @@ export async function startDaemon(
   autoProxy: boolean
 );
 
-export function stopDaemon();
+export async function stopDaemon();
 
 export function getPlatform(): string;
 

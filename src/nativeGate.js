@@ -2,9 +2,7 @@
 // right now it only supports Electron
 
 import axios from "axios";
-import {
-  getl10n
-} from "./redux/l10n";
+import { getl10n } from "./redux/l10n";
 
 let electron;
 let os;
@@ -25,9 +23,7 @@ export var version = "";
 
 export function getVersion() {
   if (platform === "electron") {
-    const {
-      app
-    } = window.require("electron").remote;
+    const { app } = window.require("electron").remote;
     return app.getVersion();
   }
   return "0.0.0";
@@ -36,7 +32,7 @@ export function getVersion() {
 var globl10n;
 
 export function startUpdateChecks(l10n) {
-  globl10n = l10n
+  globl10n = l10n;
   if (platform === "electron") {
     function getOsName() {
       if (os.platform() === "linux") {
@@ -53,15 +49,9 @@ export function startUpdateChecks(l10n) {
       return "";
     }
 
-    const {
-      dialog
-    } = window.require("electron").remote;
-    const {
-      shell
-    } = window.require("electron");
-    const {
-      app
-    } = window.require("electron").remote;
+    const { dialog } = window.require("electron").remote;
+    const { shell } = window.require("electron");
+    const { app } = window.require("electron").remote;
 
     var dialogShowed = false;
     version = app.getVersion();
@@ -87,7 +77,8 @@ export function startUpdateChecks(l10n) {
           let dialogOpts = {
             type: "info",
             buttons: [l10n["updateDownload"], l10n["updateLater"]],
-            message: l10n["updateInfo"] +
+            message:
+              l10n["updateInfo"] +
               "\n" +
               "(" +
               currentVersion +
@@ -103,7 +94,8 @@ export function startUpdateChecks(l10n) {
         }
       } catch (e) {
         console.log(e);
-      } finally {}
+      } finally {
+      }
     }
     checkForUpdates();
     setInterval(checkForUpdates, 60 * 60 * 1000);
@@ -129,9 +121,7 @@ export function daemonRunning() {
 }
 
 function getBinaryPath() {
-  const {
-    remote
-  } = window.require("electron");
+  const { remote } = window.require("electron");
   const myPath = remote.app.getAppPath();
   if (os.platform() == "linux") {
     if (os.arch() == "x64") {
@@ -177,7 +167,8 @@ export function startBinderProxy() {
   }
   return spawn(
     getBinaryPath() + "geph-client" + binExt(),
-    ["-binderProxy", "127.0.0.1:23456"], {
+    ["-binderProxy", "127.0.0.1:23456"],
+    {
       stdio: "inherit"
     }
   );
@@ -189,7 +180,7 @@ export function stopBinderProxy(pid) {
     window.Android.jsStopProxBinder(pid);
     return;
   }
-  pid.kill("SIGKILL");
+  pid.kill();
 }
 
 // spawn the geph-client daemon
@@ -229,7 +220,8 @@ export async function startDaemon(
       exitKey,
       "-useTCP=" + useTCP,
       "-forceBridges=" + forceBridges
-    ], {
+    ],
+    {
       stdio: "inherit"
     }
   );
@@ -252,7 +244,8 @@ export async function startDaemon(
     } else {
       spawn(
         getBinaryPath() + "pac" + binExt(),
-        ["on", "http://127.0.0.1:9809/proxy.pac"], {
+        ["on", "http://127.0.0.1:9809/proxy.pac"],
+        {
           stdio: "ignore"
         }
       );
@@ -263,10 +256,8 @@ export async function startDaemon(
 // kill the daemon
 export async function stopDaemon() {
   try {
-    await axios.get("http://localhost:9809/kill")
-  } catch {
-
-  }
+    await axios.get("http://localhost:9809/kill");
+  } catch {}
   // before anything else, send a kill request
   if (!isElectron) {
     //window.Android.jsStopDaemon();
@@ -275,7 +266,7 @@ export async function stopDaemon() {
   if (daemonPID != null) {
     let dp = daemonPID;
     daemonPID = null;
-    dp.kill("SIGKILL");
+    dp.kill();
   }
   if (os.platform() === "win32") {
     spawn(getBinaryPath() + "ProxyToggle.exe", []);
@@ -286,13 +277,11 @@ export async function stopDaemon() {
 
 // kill the daemon when we exit
 if (isElectron) {
-  window.onbeforeunload = function (e) {
+  window.onbeforeunload = function(e) {
     if (daemonPID != null) {
-      e.preventDefault()
+      e.preventDefault();
       e.returnValue = false;
-      const {
-        remote
-      } = window.require("electron");
+      const { remote } = window.require("electron");
       remote.BrowserWindow.getFocusedWindow().hide();
       return false;
     }
