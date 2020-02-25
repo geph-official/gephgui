@@ -70,10 +70,6 @@ export const connReducer = (
     return { ...state, fresh: false, connected: ConnectionStatus.Connecting };
   }
   if (action.rawJson === SpecialConnStates.Dead) {
-    // don't trust dead actions when we are connecting
-    if (state.connected === ConnectionStatus.Connecting && !state.fresh) {
-      return state;
-    }
     return { ...state, fresh: true, connected: ConnectionStatus.Disconnected };
   }
   const j = action.rawJson;

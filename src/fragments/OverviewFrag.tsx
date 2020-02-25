@@ -203,7 +203,7 @@ const ConnToggle = (props: {}) => {
     <IOSSwitch
       checked={stateConnected !== ConnectionStatus.Disconnected}
       onClick={async _ => {
-        if (!stateConnected) {
+        if (stateConnected === ConnectionStatus.Disconnected) {
           // we first set the state to unknown
           dispatch({ type: "CONN", rawJson: SpecialConnStates.Connecting });
           await startDaemon(
