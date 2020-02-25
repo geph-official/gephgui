@@ -63,6 +63,7 @@ const AccountFrag: React.FC = props => {
               variant="outlined"
               disableElevation
               onClick={() => {
+                localStorage.clear();
                 dispatch({ type: "CONN", rawJson: SpecialConnStates.Dead });
                 stopDaemon();
                 dispatch({ type: "PREF", key: "username", value: "" });

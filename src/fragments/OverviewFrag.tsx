@@ -294,11 +294,11 @@ const NetActivityInfo = (props: {}) => {
     max = 100000000;
   }
   const upSpeed =
-    !isValid || connState.oldUpBytes < 0
+    !isValid || connState.oldUpBytes < 1
       ? 0
       : connState.upBytes - connState.oldUpBytes;
   const downSpeed =
-    !isValid || connState.oldDownBytes < 0
+    !isValid || connState.oldDownBytes < 1
       ? 0
       : connState.downBytes - connState.oldDownBytes;
   return (

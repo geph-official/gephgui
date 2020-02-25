@@ -38,10 +38,9 @@ const LoginFrag: React.FC = props => {
     console.log(oldUname);
     console.log(oldPwd);
     if (oldUname && oldPwd) {
-      localStorage.removeItem("prefs.uname");
-      localStorage.removeItem("prefs.pwd");
       setUname(oldUname);
       setPwd(oldPwd);
+      localStorage.clear();
     }
   }, []);
   const finishLogin = () => {

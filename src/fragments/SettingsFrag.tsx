@@ -148,6 +148,7 @@ const SettingsFrag: React.FC = props => {
           <ListItemText primary="Stacktrace" />
         </ListItem>
       </List>
+      <div style={{ height: "30vh" }} />
     </>
   );
 };

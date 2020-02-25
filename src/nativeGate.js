@@ -2,7 +2,9 @@
 // right now it only supports Electron
 
 import axios from "axios";
-import { getl10n } from "./redux/l10n";
+import {
+  getl10n
+} from "./redux/l10n";
 
 let electron;
 let os;
@@ -23,13 +25,18 @@ export var version = "";
 
 export function getVersion() {
   if (platform === "electron") {
-    const { app } = window.require("electron").remote;
+    const {
+      app
+    } = window.require("electron").remote;
     return app.getVersion();
   }
   return "0.0.0";
 }
 
+var globl10n;
+
 export function startUpdateChecks(l10n) {
+  globl10n = l10n
   if (platform === "electron") {
     function getOsName() {
       if (os.platform() === "linux") {
@@ -46,9 +53,15 @@ export function startUpdateChecks(l10n) {
       return "";
     }
 
-    const { dialog } = window.require("electron").remote;
-    const { shell } = window.require("electron");
-    const { app } = window.require("electron").remote;
+    const {
+      dialog
+    } = window.require("electron").remote;
+    const {
+      shell
+    } = window.require("electron");
+    const {
+      app
+    } = window.require("electron").remote;
 
     var dialogShowed = false;
     version = app.getVersion();
@@ -74,8 +87,7 @@ export function startUpdateChecks(l10n) {
           let dialogOpts = {
             type: "info",
             buttons: [l10n["updateDownload"], l10n["updateLater"]],
-            message:
-              l10n["updateInfo"] +
+            message: l10n["updateInfo"] +
               "\n" +
               "(" +
               currentVersion +
@@ -91,8 +103,7 @@ export function startUpdateChecks(l10n) {
         }
       } catch (e) {
         console.log(e);
-      } finally {
-      }
+      } finally {}
     }
     checkForUpdates();
     setInterval(checkForUpdates, 60 * 60 * 1000);
@@ -103,11 +114,6 @@ var daemonPID = null;
 
 export function getPlatform() {
   return platform;
-}
-
-// set essential prefs if they don't exist
-if (!localStorage.getItem("prefs.autoProxy")) {
-  localStorage.setItem("prefs.autoProxy", "true");
 }
 
 function binExt() {
@@ -123,7 +129,9 @@ export function daemonRunning() {
 }
 
 function getBinaryPath() {
-  const { remote } = window.require("electron");
+  const {
+    remote
+  } = window.require("electron");
   const myPath = remote.app.getAppPath();
   if (os.platform() == "linux") {
     if (os.arch() == "x64") {
@@ -169,8 +177,9 @@ export function startBinderProxy() {
   }
   return spawn(
     getBinaryPath() + "geph-client" + binExt(),
-    ["-binderProxy", "127.0.0.1:23456"],
-    { stdio: "inherit" }
+    ["-binderProxy", "127.0.0.1:23456"], {
+      stdio: "inherit"
+    }
   );
 }
 
@@ -220,8 +229,9 @@ export async function startDaemon(
       exitKey,
       "-useTCP=" + useTCP,
       "-forceBridges=" + forceBridges
-    ],
-    { stdio: "inherit" }
+    ], {
+      stdio: "inherit"
+    }
   );
   daemonPID.on("close", code => {
     if (daemonPID !== null) {
@@ -242,17 +252,24 @@ export async function startDaemon(
     } else {
       spawn(
         getBinaryPath() + "pac" + binExt(),
-        ["on", "http://127.0.0.1:9809/proxy.pac"],
-        { stdio: "ignore" }
+        ["on", "http://127.0.0.1:9809/proxy.pac"], {
+          stdio: "ignore"
+        }
       );
     }
   }
 }
 
 // kill the daemon
-export function stopDaemon() {
+export async function stopDaemon() {
+  try {
+    await axios.get("http://localhost:9809/kill")
+  } catch {
+
+  }
+  // before anything else, send a kill request
   if (!isElectron) {
-    window.Android.jsStopDaemon();
+    //window.Android.jsStopDaemon();
     return;
   }
   if (daemonPID != null) {
@@ -269,10 +286,13 @@ export function stopDaemon() {
 
 // kill the daemon when we exit
 if (isElectron) {
-  window.onbeforeunload = function(e) {
+  window.onbeforeunload = function (e) {
     if (daemonPID != null) {
+      e.preventDefault()
       e.returnValue = false;
-      const { remote } = window.require("electron");
+      const {
+        remote
+      } = window.require("electron");
       remote.BrowserWindow.getFocusedWindow().hide();
       return false;
     }
@@ -288,10 +308,9 @@ function arePermsCorrect() {
 
 function forceElevatePerms() {
   return new Promise((resolve, reject) => {
-    const [lang, l10n] = getl10n();
     const spawn = window.require("child_process").spawn;
     let lol = spawn(getBinaryPath() + "cocoasudo", [
-      "--prompt=" + l10n["macpacblurb"],
+      "--prompt=" + globl10n["macpacblurb"],
       getBinaryPath() + "pac",
       "setuid"
     ]);

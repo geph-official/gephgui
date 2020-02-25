@@ -1,5 +1,6 @@
 import React from "react";
 import { GlobalState } from ".";
+import detectNearestBrowserLocale from "detect-nearest-browser-locale";
 
 const enUSBindings = {
   fmtDaysLeft: (days: string) => (
@@ -394,7 +395,10 @@ export const getl10n = (lang: string) => {
 };
 
 export const l10nSelector = (state: GlobalState) =>
-  getl10n(state.prefState.lang);
+  getl10n(langSelector(state));
 
 export const langSelector = (state: GlobalState) =>
   state.prefState.lang ? state.prefState.lang : "en-US";
+
+export const defaultLang = () =>
+  detectNearestBrowserLocale(["en-US", "zh-TW", "zh-CN"]) as string;
