@@ -28,6 +28,7 @@ import LoginFrag from "./fragments/LoginFrag";
 import AccountFrag from "./fragments/AccountFrag";
 import SettingsFrag from "./fragments/SettingsFrag";
 import { startUpdateChecks, getVersion } from "./nativeGate";
+import Details from "./fragments/Details";
 
 const store = createStore(rootReducer, persistState("prefState", {}));
 
@@ -35,7 +36,10 @@ const useStyles = makeStyles({
   stickToBottom: {
     width: "100%",
     position: "fixed",
-    bottom: 0
+    bottom: 0,
+    left: 0,
+    padding: 0,
+    margin: 0
   }
 });
 
@@ -89,8 +93,10 @@ const App: React.FC = props => {
           case 0:
             return <OverviewFrag />;
           case 1:
-            return <AccountFrag />;
+            return <Details />;
           case 2:
+            return <AccountFrag />;
+          case 3:
             return <SettingsFrag />;
         }
       })()}
@@ -111,6 +117,7 @@ const App: React.FC = props => {
           label={l10n.overview}
           icon={<icons.Dashboard />}
         />
+        <BottomNavigationAction label={l10n.details} icon={<icons.Details />} />
         <BottomNavigationAction
           label={l10n.account}
           icon={<icons.AccountCircle />}
