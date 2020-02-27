@@ -59,6 +59,7 @@ const enUSBindings = {
   netactivity: "Network activity",
   network: "Network",
   nomoretx: "No more transactions",
+  choose: "Choose",
   overview: "Overview",
   plusonly: "Plus only",
   password: "Password",
@@ -105,6 +106,10 @@ const enUSBindings = {
   free: "Free",
   tcp: "Use TCP mode",
   tcpblurb: "Reconnect to apply.",
+  excludeapps: "Exclude apps",
+  excludeappsblurb: "Let apps bypass Geph",
+  excludecn: "Exclude Chinese traffic",
+  excludecnblurb: "Let PR Chinese traffic bypass Geph",
 
   countries: {
     bg: "Bulgaria",
@@ -160,6 +165,7 @@ const zhCNBindings = {
   details: "细节",
   updateInfo: "迷雾通新版本已发布！",
   updateLater: "之后提醒",
+  choose: "选择",
   errBadCred: "用戶名或密码错误，请重试",
   connecting: "连接中",
   loggingin: "正在登录...",
@@ -218,6 +224,8 @@ const zhCNBindings = {
   username: "用户名",
   tcp: "使用TCP模式",
   tcpblurb: "重新连接后生效。",
+  excludecn: "中国流量分流",
+  excludecnblurb: "对中国大陆流量不进行代理",
 
   upgradeblurb: (
     <span>
@@ -295,6 +303,7 @@ const zhTWBindings = {
   connectedblurb: "盡享自由的網絡！",
   subinfoblurb: "管理帳號需連接迷霧通",
   clipboard: "日誌已存入剪貼板",
+  choose: "選擇",
   network: "網絡",
   connecting: "連接中",
   date: "日期",
@@ -350,6 +359,10 @@ const zhTWBindings = {
   username: "用戶名",
   tcp: "使用TCP模式",
   tcpblurb: "重新連接後生效。",
+  excludeapps: "應用例外",
+  excludeappsblurb: "允許特定應用繞過迷霧通聯網",
+  excludecn: "中國流量分流",
+  excludecnblurb: "對中國大陸流量不進行代理",
 
   upgradeblurb: (
     <span>

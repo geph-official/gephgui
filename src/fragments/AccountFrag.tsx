@@ -54,7 +54,13 @@ const AccountFrag: React.FC = props => {
           <ListItemIcon>
             <AccountCircle />
           </ListItemIcon>
-          <ListItemText>
+          <ListItemText
+            style={{
+              overflow: "hidden",
+              maxWidth: "calc(100vw - 200px)",
+              textOverflow: "ellipsis"
+            }}
+          >
             <b>{username}</b>
           </ListItemText>
           <ListItemSecondaryAction>

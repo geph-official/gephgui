@@ -191,7 +191,8 @@ export async function startDaemon(
   password,
   useTCP,
   forceBridges,
-  autoProxy
+  autoProxy,
+  bypassChinese
 ) {
   if (!isElectron) {
     window.Android.jsStartDaemon(
@@ -200,7 +201,8 @@ export async function startDaemon(
       exitName,
       exitKey,
       useTCP,
-      forceBridges
+      forceBridges,
+      bypassChinese
     );
     return;
   }
@@ -219,7 +221,8 @@ export async function startDaemon(
       "-exitKey",
       exitKey,
       "-useTCP=" + useTCP,
-      "-forceBridges=" + forceBridges
+      "-forceBridges=" + forceBridges,
+      "-bypassChinese=" + bypassChinese
     ],
     {
       stdio: "inherit"

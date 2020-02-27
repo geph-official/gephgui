@@ -8,7 +8,7 @@ export interface PrefState {
 export interface PrefAction {
   type: "PREF";
   key: string;
-  value?: string;
+  value: any;
 }
 
 export function prefReducer(state: PrefState = {}, action: PrefAction) {
@@ -22,7 +22,7 @@ export function prefReducer(state: PrefState = {}, action: PrefAction) {
 }
 
 // returns a selector for given key that returns the given default value
-export const prefSelector = (prefKey: string, defaultValue: string) => (
+export const prefSelector = (prefKey: string, defaultValue: any) => (
   state: GlobalState
 ) => {
   const x = state.prefState[prefKey];

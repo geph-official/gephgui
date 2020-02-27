@@ -8,7 +8,11 @@ import {
   ListItemSecondaryAction,
   Divider,
   Select,
-  MenuItem
+  MenuItem,
+  Button,
+  Dialog,
+  AppBar,
+  DialogTitle
 } from "@material-ui/core";
 import { useSelector, useDispatch } from "react-redux";
 import { l10nSelector, langSelector } from "../redux/l10n";
@@ -46,6 +50,21 @@ const BooleanSetting = (props: {
   );
 };
 
+// const ExclusionDialog = (props: { open: boolean }) => {
+//   const l10n = useSelector(l10nSelector);
+//   const dispatch = useDispatch();
+//   const currList = useSelector(prefSelector("excludedApps", []));
+//   const appList = {
+//     weixin: "WeChat"
+//   };
+
+//   return (
+//     <Dialog open={props.open} scroll="paper" fullWidth>
+//       <DialogTitle>{l10n.excludeapps}</DialogTitle>
+//     </Dialog>
+//   );
+// };
+
 const SettingsFrag: React.FC = props => {
   const l10n = useSelector(l10nSelector);
   const lang = useSelector(langSelector);
@@ -77,6 +96,12 @@ const SettingsFrag: React.FC = props => {
             </Select>
           </ListItemSecondaryAction>
         </ListItem>
+        <BooleanSetting
+          propKey="bypassChinese"
+          defValue={false}
+          primary={l10n.excludecn}
+          secondary={l10n.excludecnblurb}
+        />
         {getPlatform() === "android" ? (
           ""
         ) : (

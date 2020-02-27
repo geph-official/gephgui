@@ -198,10 +198,20 @@ const ConnToggle = (props: {}) => {
   const useTCPStr = useSelector(prefSelector("useTCP", "false"));
   const forceBridgesStr = useSelector(prefSelector("forceBridges", "false"));
   const autoProxyStr = useSelector(prefSelector("autoProxy", "true"));
+  const bypassChineseStr = useSelector(prefSelector("bypassChinese", "true"));
   const dispatch = useDispatch();
+  const [forceState, setForceState] = useState("ind");
   return (
     <IOSSwitch
-      checked={stateConnected !== ConnectionStatus.Disconnected}
+      checked={(() => {
+        if (forceState === "yes") {
+          return true;
+        }
+        if (forceState === "no") {
+          return false;
+        }
+        return stateConnected !== ConnectionStatus.Disconnected;
+      })()}
       onClick={async _ => {
         if (stateConnected === ConnectionStatus.Disconnected) {
           // we first set the state to unknown
@@ -213,9 +223,12 @@ const ConnToggle = (props: {}) => {
             password,
             useTCPStr === "true",
             forceBridgesStr === "true",
-            autoProxyStr === "true"
+            autoProxyStr === "true",
+            bypassChineseStr === "true"
           );
+          setForceState("yes");
         } else {
+          setForceState("no");
           await stopDaemon();
           dispatch({ type: "CONN", rawJson: SpecialConnStates.Dead });
         }

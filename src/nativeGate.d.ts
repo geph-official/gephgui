@@ -5,7 +5,8 @@ export async function startDaemon(
   password: string,
   useTCP: boolean,
   forceBridges: boolean,
-  autoProxy: boolean
+  autoProxy: boolean,
+  bypassChinese: boolean
 );
 
 export async function stopDaemon();
