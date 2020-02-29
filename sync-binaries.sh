@@ -1,6 +1,6 @@
 #!/bin/sh
 export PREFIX="https://binaries.geph.io"
-export VERSION="v0.18.11"
+export VERSION="v0.18.14"
 
 curl "$PREFIX/geph-client-windows-i386-$VERSION.exe" > binaries/win-ia32/geph-client.exe
 curl "$PREFIX/geph-client-linux-i386-$VERSION" > binaries/linux-ia32/geph-client

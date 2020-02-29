@@ -7,6 +7,7 @@ import { getl10n } from "./redux/l10n";
 let electron;
 let os;
 let spawn;
+let spawnSync;
 
 let isElectron = false;
 
@@ -14,6 +15,7 @@ if ("require" in window) {
   electron = window.require("electron");
   os = window.require("os");
   spawn = window.require("child_process").spawn;
+  spawnSync = window.require("child_process").spawnSync;
   isElectron = true;
 }
 
@@ -234,6 +236,7 @@ export async function startDaemon(
     }
   });
   if (autoProxy) {
+    proxySet = true;
     // on macOS, elevate pac permissions
     if (os.platform() === "darwin") {
       await elevatePerms();
@@ -256,6 +259,8 @@ export async function startDaemon(
   }
 }
 
+var proxySet = false;
+
 // kill the daemon
 export async function stopDaemon() {
   try {
@@ -266,15 +271,21 @@ export async function stopDaemon() {
     //window.Android.jsStopDaemon();
     return;
   }
-  if (daemonPID != null) {
-    let dp = daemonPID;
-    daemonPID = null;
-    dp.kill();
-  }
-  if (os.platform() === "win32") {
-    spawn(getBinaryPath() + "ProxyToggle.exe", []);
-  } else {
-    spawn(getBinaryPath() + "pac" + binExt(), ["off"]);
+  try {
+    if (daemonPID != null) {
+      let dp = daemonPID;
+      daemonPID = null;
+      dp.kill();
+    }
+  } finally {
+    if (proxySet) {
+      if (os.platform() === "win32") {
+        spawnSync(getBinaryPath() + "ProxyToggle.exe", []);
+      } else {
+        spawnSync(getBinaryPath() + "pac" + binExt(), ["off"]);
+      }
+    }
+    proxySet = false;
   }
 }
 
