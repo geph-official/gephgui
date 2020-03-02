@@ -198,7 +198,7 @@ const ConnToggle = (props: {}) => {
   const useTCPStr = useSelector(prefSelector("useTCP", "false"));
   const forceBridgesStr = useSelector(prefSelector("forceBridges", "false"));
   const autoProxyStr = useSelector(prefSelector("autoProxy", "true"));
-  const bypassChineseStr = useSelector(prefSelector("bypassChinese", "true"));
+  const bypassChineseStr = useSelector(prefSelector("bypassChinese", "false"));
   const dispatch = useDispatch();
   const [forceState, setForceState] = useState("ind");
   return (
