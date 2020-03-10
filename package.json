@@ -1,6 +1,10 @@
 {
   "name": "gephgui",
+<<<<<<< Updated upstream
   "version": "3.4.5",
+=======
+  "version": "3.4.3",
+>>>>>>> Stashed changes
   "private": true,
   "homepage": ".",
   "main": "public/electron.js",

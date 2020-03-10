@@ -244,7 +244,7 @@ export async function startDaemon(
     // Don't use the pac executable on Windoze!
     if (os.platform() === "win32") {
       console.log("Win32, using alternative proxy enable");
-      spawn(getBinaryPath() + "ProxyToggle.exe", ["127.0.0.1:9910"], {
+      spawn(getBinaryPath() + "winproxy.exe", ["-autoproxy", "http://127.0.0.1:9809/proxy.pac"], {
         stdio: "ignore"
       });
     } else {
@@ -265,33 +265,27 @@ var proxySet = false;
 export async function stopDaemon() {
   try {
     await axios.get("http://localhost:9809/kill");
-  } catch {}
+  } catch { }
   // before anything else, send a kill request
   if (!isElectron) {
     //window.Android.jsStopDaemon();
     return;
   }
-  try {
-    if (daemonPID != null) {
-      let dp = daemonPID;
-      daemonPID = null;
-      dp.kill();
-    }
-  } finally {
-    if (proxySet) {
-      if (os.platform() === "win32") {
-        spawnSync(getBinaryPath() + "ProxyToggle.exe", []);
-      } else {
-        spawnSync(getBinaryPath() + "pac" + binExt(), ["off"]);
-      }
-    }
-    proxySet = false;
+  if (os.platform() === "win32") {
+    spawn(getBinaryPath() + "winproxy.exe", ["-unproxy"]);
+  } else {
+    spawn(getBinaryPath() + "pac" + binExt(), ["off"]);
+  }
+  if (daemonPID != null) {
+    let dp = daemonPID;
+    daemonPID = null;
+    dp.kill("SIGKILL");
   }
 }
 
 // kill the daemon when we exit
 if (isElectron) {
-  window.onbeforeunload = function(e) {
+  window.onbeforeunload = function (e) {
     if (daemonPID != null) {
       e.preventDefault();
       e.returnValue = false;
