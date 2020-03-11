@@ -105,13 +105,13 @@ const SettingsFrag: React.FC = props => {
         {getPlatform() === "android" ? (
           ""
         ) : (
-          <BooleanSetting
-            propKey="autoProxy"
-            defValue={true}
-            primary={l10n.autoproxy}
-            secondary={l10n.autoproxyblurb}
-          />
-        )}
+            <BooleanSetting
+              propKey="autoProxy"
+              defValue={true}
+              primary={l10n.autoproxy}
+              secondary={l10n.autoproxyblurb}
+            />
+          )}
       </List>
       <Divider />
       <List

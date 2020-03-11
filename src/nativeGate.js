@@ -244,7 +244,10 @@ export async function startDaemon(
     // Don't use the pac executable on Windoze!
     if (os.platform() === "win32") {
       console.log("Win32, using alternative proxy enable");
-      spawn(getBinaryPath() + "winproxy.exe", ["-autoproxy", "http://127.0.0.1:9809/proxy.pac"], {
+      spawnSync(getBinaryPath() + "winproxy.exe", ["-proxy", "http://127.0.0.1:9910"], {
+        stdio: "ignore"
+      });
+      spawnSync(getBinaryPath() + "winproxy.exe", ["-autoproxy", "http://127.0.0.1:9809/proxy.pac"], {
         stdio: "ignore"
       });
     } else {
@@ -268,7 +271,7 @@ export async function stopDaemon() {
   } catch { }
   // before anything else, send a kill request
   if (!isElectron) {
-    //window.Android.jsStopDaemon();
+    window.Android.jsStopDaemon();
     return;
   }
   if (os.platform() === "win32") {

@@ -99,24 +99,24 @@ const OverviewFrag: React.FC = props => {
                   style={{ width: "100%", height: "calc(100% - 64px)" }}
                 >
                   {connState.fresh &&
-                  connState.connected === ConnectionStatus.Connected ? (
-                    <ConnInfo
-                      PublicIP={connState.publicIP}
-                      Bridges={connState.bridgeData}
-                      l10n={l10n}
-                    />
-                  ) : (
-                    <img
-                      src={require("../assets/images/logo-naked.svg")}
-                      style={{
-                        height: "100px",
-                        width: "100%",
-                        objectFit: "contain",
-                        opacity: "0.2",
-                        paddingTop: "15px"
-                      }}
-                    />
-                  )}
+                    connState.connected === ConnectionStatus.Connected ? (
+                      <ConnInfo
+                        PublicIP={connState.publicIP}
+                        Bridges={connState.bridgeData}
+                        l10n={l10n}
+                      />
+                    ) : (
+                      <img
+                        src={require("../assets/images/logo-naked.svg")}
+                        style={{
+                          height: "100px",
+                          width: "100%",
+                          objectFit: "contain",
+                          opacity: "0.2",
+                          paddingTop: "15px"
+                        }}
+                      />
+                    )}
                 </Grid>
               </Grid>
             </CardContent>
@@ -327,14 +327,14 @@ const NetActivityInfo = (props: {}) => {
       &nbsp;
       <PingLabel ms={isValid && connState.ping} /> <br />
       {connState.connected === ConnectionStatus.Connected &&
-      connState.tier === Tier.Free ? (
-        <small>
-          {l10n.freelimit} <b style={{ color: "red" }}>800</b>
-          &nbsp;kbps
+        connState.tier === Tier.Free ? (
+          <small>
+            {l10n.freelimit} <b style={{ color: "red" }}>800</b>
+            &nbsp;kbps
         </small>
-      ) : (
-        ""
-      )}
+        ) : (
+          ""
+        )}
     </span>
   );
 };
