@@ -20,7 +20,7 @@ AppUpdatesURL={#MyAppURL}
 DefaultDirName={pf}\{cm:MyAppName}
 DefaultGroupName={cm:MyAppName}
 OutputBaseFilename=geph-windows-setup
-Compression=bzip
+Compression=lzma2
 SolidCompression=yes
 
 [Languages]
