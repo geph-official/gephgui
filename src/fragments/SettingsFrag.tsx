@@ -120,12 +120,6 @@ const SettingsFrag: React.FC = props => {
         }
       >
         <BooleanSetting
-          propKey="useTCP"
-          defValue={false}
-          primary={l10n.tcp}
-          secondary={l10n.tcpblurb}
-        />
-        <BooleanSetting
           propKey="forceBridges"
           defValue={false}
           primary={l10n.forcebridges}

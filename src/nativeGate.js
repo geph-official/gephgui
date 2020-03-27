@@ -146,7 +146,7 @@ export function checkAccount(uname, pwd) {
       window.Android.jsCheckAccount(uname, pwd, "window._CALLBACK");
     });
   }
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve, refject) => {
     console.log("checking account");
     let pid = spawn(getBinaryPath() + "geph-client" + binExt(), [
       "-username",
@@ -202,7 +202,7 @@ export async function startDaemon(
       password,
       exitName,
       exitKey,
-      useTCP,
+      false,
       forceBridges,
       bypassChinese
     );
@@ -222,7 +222,6 @@ export async function startDaemon(
       exitName,
       "-exitKey",
       exitKey,
-      "-useTCP=" + useTCP,
       "-forceBridges=" + forceBridges,
       "-bypassChinese=" + bypassChinese
     ],
@@ -244,10 +243,10 @@ export async function startDaemon(
     // Don't use the pac executable on Windoze!
     if (os.platform() === "win32") {
       console.log("Win32, using alternative proxy enable");
-      spawnSync(getBinaryPath() + "winproxy.exe", ["-proxy", "http://127.0.0.1:9910"], {
+      spawnSync(getBinaryPath() + "winproxy-stripped.exe", ["-proxy", "http://127.0.0.1:9910"], {
         stdio: "ignore"
       });
-      spawnSync(getBinaryPath() + "winproxy.exe", ["-autoproxy", "http://127.0.0.1:9809/proxy.pac"], {
+      spawnSync(getBinaryPath() + "winproxy-stripped.exe", ["-autoproxy", "http://127.0.0.1:9809/proxy.pac"], {
         stdio: "ignore"
       });
     } else {
@@ -275,7 +274,7 @@ export async function stopDaemon() {
     return;
   }
   if (os.platform() === "win32") {
-    spawn(getBinaryPath() + "winproxy.exe", ["-unproxy"]);
+    spawn(getBinaryPath() + "winproxy-stripped.exe", ["-unproxy"]);
   } else {
     spawn(getBinaryPath() + "pac" + binExt(), ["off"]);
   }

@@ -36,57 +36,37 @@ export const ConnInfo = props => {
         style: "fill: #fff; stroke: #000",
         labelStyle: "font-weight: bold"
       });
+      let sty = {
+        arrowhead: "undirected",
+        style: "fill: #fff; stroke: #000"
+      }
       let total = 1;
-      if (!props.Bridges || props.Bridges.length === 0) {
+      if (!props.Bridges || Object.keys(props.Bridges).length === 0) {
         console.log("drawing start to end");
         g.setEdge("START", "END", {
           arrowhead: "undirected",
           style: "fill: #fff; stroke: #000"
         });
       } else {
-        props.Bridges.forEach(bdesc => (total += bdesc.RecvCnt));
-        props.Bridges.forEach(bdesc => {
-          if (bdesc.Ping < 10000) {
-            const id = bdesc.RecvCnt.toFixed(0);
-            const strokeWidth = 0.4 + (5 * bdesc.RecvCnt) / total;
-            if (bdesc.RecvCnt < 1) {
-              g.setNode(id, {
-                label: censorIP(bdesc.RemoteIP) + " [TCP]",
-                style: "fill: #ddd; stroke: #000"
-              });
-            } else {
-              let nodeColor = "#ffb0b0";
-              if (bdesc.LossPct < 0.1) {
-                nodeColor = "#afd9a8";
-              } else if (bdesc.LossPct < 0.2) {
-                nodeColor = "#fff199";
-              }
-              g.setNode(id, {
-                label:
-                  censorIP(bdesc.RemoteIP) +
-                  " / " +
-                  bdesc.Ping.toFixed(0) +
-                  "ms / " +
-                  (bdesc.LossPct * 100).toFixed(0) +
-                  "%",
-                style:
-                  "fill: " +
-                  nodeColor +
-                  "; stroke-width:" +
-                  strokeWidth.toFixed(4) +
-                  "px; stroke: #000"
-              });
-            }
-            g.setEdge("START", id, {
-              arrowhead: "undirected",
-              style: "fill: #fff; stroke: #000"
-            });
-            g.setEdge(id, "END", {
-              label: "",
-              arrowhead: "undirected",
-              style: "fill: #fff; stroke: #000"
-            });
-          }
+        let counter = 0
+        console.log(props.Bridges)
+        Object.keys(props.Bridges).forEach(key => {
+          const label = key.split("//")[0]
+          const id = counter;
+          counter++;
+          g.setNode(id, {
+            label: censorIP(label) + " [" + props.Bridges[key] + "]",
+            style: "fill: #ddd; stroke: #000"
+          });
+          g.setEdge("START", id, {
+            arrowhead: "undirected",
+            style: "fill: #fff; stroke: #000"
+          });
+          g.setEdge(id, "END", {
+            label: "",
+            arrowhead: "undirected",
+            style: "fill: #fff; stroke: #000"
+          });
         });
       }
     }
