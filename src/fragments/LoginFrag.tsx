@@ -135,7 +135,7 @@ const LoginFrag: React.FC = props => {
               style={{ paddingBottom: "16px" }}
               onChange={evt => setUname(evt.target.value)}
               value={uname}
-              type="email"
+              autoCapitalize="off"
             />
             <TextField
               id="pwd"
