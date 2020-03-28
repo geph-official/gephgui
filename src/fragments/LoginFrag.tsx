@@ -135,6 +135,7 @@ const LoginFrag: React.FC = props => {
               style={{ paddingBottom: "16px" }}
               onChange={evt => setUname(evt.target.value)}
               value={uname}
+              type="email"
             />
             <TextField
               id="pwd"
@@ -186,6 +187,8 @@ const Register = (props: {
   const [busy, setBusy] = useState(false);
   const [errString, setErrString] = useState("");
 
+  const validUnameRegex = /^[a-zA-Z0-9]{5,200}$/;
+
   const fetchCaptcha = async () => {
     const [id, c] = await getCaptcha();
     console.log(c);
@@ -195,23 +198,32 @@ const Register = (props: {
   const doRegister = async () => {
     setBusy(true);
     try {
-      console.log("attempting to register account");
-      const retcode = await registerAccount(uname, pwd, captchaID, captchaSoln);
-      switch (retcode) {
-        case codeOK:
-          setErrString("");
-          props.onSuccess(uname, pwd);
-          break;
-        case codeExists:
-          setErrString(l10n.errExists);
-          break;
-        case codeBadCaptcha:
-          setErrString(l10n.errBadCaptcha);
-          fetchCaptcha();
-          break;
-        case codeBadNet:
-          setErrString(l10n.errBadNet);
-          break;
+      if (!uname.match(validUnameRegex)) {
+        setErrString(l10n.unameillegal);
+      } else {
+        console.log("attempting to register account");
+        const retcode = await registerAccount(
+          uname,
+          pwd,
+          captchaID,
+          captchaSoln
+        );
+        switch (retcode) {
+          case codeOK:
+            setErrString("");
+            props.onSuccess(uname, pwd);
+            break;
+          case codeExists:
+            setErrString(l10n.errExists);
+            break;
+          case codeBadCaptcha:
+            setErrString(l10n.errBadCaptcha);
+            fetchCaptcha();
+            break;
+          case codeBadNet:
+            setErrString(l10n.errBadNet);
+            break;
+        }
       }
     } finally {
       setBusy(false);
