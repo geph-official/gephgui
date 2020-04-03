@@ -39,7 +39,7 @@ export const ConnInfo = props => {
       let sty = {
         arrowhead: "undirected",
         style: "fill: #fff; stroke: #000"
-      }
+      };
       let total = 1;
       if (!props.Bridges || Object.keys(props.Bridges).length === 0) {
         console.log("drawing start to end");
@@ -48,15 +48,18 @@ export const ConnInfo = props => {
           style: "fill: #fff; stroke: #000"
         });
       } else {
-        let counter = 0
-        console.log(props.Bridges)
+        let counter = 0;
+        console.log(props.Bridges);
         Object.keys(props.Bridges).forEach(key => {
-          const label = key.split("//")[0]
+          const label = key.split("//")[0];
           const id = counter;
           counter++;
           g.setNode(id, {
             label: censorIP(label) + " [" + props.Bridges[key] + "]",
-            style: "fill: #ddd; stroke: #000"
+            style:
+              label === "warpfront"
+                ? "fill:#ff8888; stroke: #000"
+                : "fill: #ddd; stroke: #000"
           });
           g.setEdge("START", id, {
             arrowhead: "undirected",
