@@ -2,6 +2,7 @@
 // right now it only supports Electron
 
 import axios from "axios";
+import semver from "semver";
 import { getl10n } from "./redux/l10n";
 
 let electron;
@@ -61,7 +62,7 @@ export function startUpdateChecks(l10n) {
 
     async function checkForUpdates() {
       const updateURLs = [
-        "https://gitlab.com/bunsim/geph-autoupdate/raw/master/stable.json"
+        "https://gitlab.com/bunsim/geph-autoupdate/raw/master/stable.json",
       ];
       if (/TEST/.test(currentVersion)) {
         return;
@@ -74,7 +75,7 @@ export function startUpdateChecks(l10n) {
         let response = await axios.get(updateURLs[0]);
         let data = response.data;
         let meta = data[getOsName()];
-        if (meta.Latest !== currentVersion && !dialogShowed) {
+        if (semver.gt(meta.Latest, currentVersion) && !dialogShowed) {
           dialogShowed = true;
           let dialogOpts = {
             type: "info",
@@ -86,9 +87,9 @@ export function startUpdateChecks(l10n) {
               currentVersion +
               " => " +
               meta.Latest +
-              ")"
+              ")",
           };
-          dialog.showMessageBox(dialogOpts, response => {
+          dialog.showMessageBox(dialogOpts, (response) => {
             if (response === 0) {
               shell.openExternal(meta.Mirrors[0]);
             }
@@ -153,9 +154,9 @@ export function checkAccount(uname, pwd) {
       uname,
       "-password",
       pwd,
-      "-loginCheck"
+      "-loginCheck",
     ]);
-    pid.on("close", code => {
+    pid.on("close", (code) => {
       resolve(code);
     });
   });
@@ -171,7 +172,7 @@ export function startBinderProxy() {
     getBinaryPath() + "geph-client" + binExt(),
     ["-binderProxy", "127.0.0.1:23456"],
     {
-      stdio: "inherit"
+      stdio: "inherit",
     }
   );
 }
@@ -223,13 +224,13 @@ export async function startDaemon(
       "-exitKey",
       exitKey,
       "-forceBridges=" + forceBridges,
-      "-bypassChinese=" + bypassChinese
+      "-bypassChinese=" + bypassChinese,
     ],
     {
-      stdio: "inherit"
+      stdio: "inherit",
     }
   );
-  daemonPID.on("close", code => {
+  daemonPID.on("close", (code) => {
     if (daemonPID !== null) {
       daemonPID = null;
     }
@@ -243,18 +244,26 @@ export async function startDaemon(
     // Don't use the pac executable on Windoze!
     if (os.platform() === "win32") {
       console.log("Win32, using alternative proxy enable");
-      spawnSync(getBinaryPath() + "winproxy-stripped.exe", ["-proxy", "http://127.0.0.1:9910"], {
-        stdio: "ignore"
-      });
-      spawnSync(getBinaryPath() + "winproxy-stripped.exe", ["-autoproxy", "http://127.0.0.1:9809/proxy.pac"], {
-        stdio: "ignore"
-      });
+      spawnSync(
+        getBinaryPath() + "winproxy-stripped.exe",
+        ["-proxy", "http://127.0.0.1:9910"],
+        {
+          stdio: "ignore",
+        }
+      );
+      spawnSync(
+        getBinaryPath() + "winproxy-stripped.exe",
+        ["-autoproxy", "http://127.0.0.1:9809/proxy.pac"],
+        {
+          stdio: "ignore",
+        }
+      );
     } else {
       spawn(
         getBinaryPath() + "pac" + binExt(),
         ["on", "http://127.0.0.1:9809/proxy.pac"],
         {
-          stdio: "ignore"
+          stdio: "ignore",
         }
       );
     }
@@ -267,7 +276,7 @@ var proxySet = false;
 export async function stopDaemon() {
   try {
     await axios.get("http://localhost:9809/kill");
-  } catch { }
+  } catch {}
   // before anything else, send a kill request
   if (!isElectron) {
     window.Android.jsStopDaemon();
@@ -311,13 +320,13 @@ function forceElevatePerms() {
     let lol = spawn(getBinaryPath() + "cocoasudo", [
       "--prompt=" + globl10n["macpacblurb"],
       getBinaryPath() + "pac",
-      "setuid"
+      "setuid",
     ]);
     console.log(
       "** PAC path is " + getBinaryPath() + "pac" + ", trying to elevate **"
     );
-    lol.stderr.on("data", data => console.log(`stderr: ${data}`));
-    lol.on("close", code => {
+    lol.stderr.on("data", (data) => console.log(`stderr: ${data}`));
+    lol.on("close", (code) => {
       resolve(code);
     });
   });

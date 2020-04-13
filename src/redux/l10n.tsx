@@ -14,6 +14,7 @@ const enUSBindings = {
     </>
   ),
   you: "You",
+  announcements: "News",
   accinfo: "Login info",
   account: "Account",
   advanced: "Advanced",
@@ -29,8 +30,7 @@ const enUSBindings = {
   connectedblurb: "Enjoy an open Internet!",
   connecting: "Connecting",
   feedback: "Send feedback",
-  feedbackblurb:
-    "Send the debug pack to customer support to report problems with Geph.",
+  feedbackblurb: "Use the debug pack to report problems with Geph.",
   loggingin: "Logging in...",
   geph: "Geph",
   core: "Highsec",
@@ -118,7 +118,7 @@ const enUSBindings = {
     jp: "Japan",
     sg: "Singapore",
     us: "United States",
-    hk: "Hong Kong"
+    hk: "Hong Kong",
   } as Record<string, string>,
 
   cities: {
@@ -131,8 +131,8 @@ const enUSBindings = {
     sgp: "Singapore",
     sof: "Sofia",
     tyo: "Tokyo",
-    hkgnt: "New Territories"
-  } as Record<string, string>
+    hkgnt: "New Territories",
+  } as Record<string, string>,
 };
 
 const zhCNBindings = {
@@ -155,6 +155,7 @@ const zhCNBindings = {
   autoconn: "自动连接",
   autoconnblurb: "开启迷雾通时自动连接",
   feedback: "用户反馈",
+  announcements: "通知",
   autoproxy: "自动设置代理",
   autoproxyblurb: "主流浏览器之外可能需要手动设定",
   cancel: "取消",
@@ -253,7 +254,7 @@ const zhCNBindings = {
     sg: "新加坡",
     us: "美国",
     ch: "瑞士",
-    hk: "香港"
+    hk: "香港",
   } as Record<string, string>,
 
   cities: {
@@ -266,8 +267,8 @@ const zhCNBindings = {
     sof: "索菲亚",
     tyo: "东京",
     gva: "日内瓦",
-    hkgnt: "新界"
-  } as Record<string, string>
+    hkgnt: "新界",
+  } as Record<string, string>,
 };
 
 const zhTWBindings = {
@@ -288,6 +289,7 @@ const zhTWBindings = {
   amount: "金額",
   show: "顯示",
   hide: "隱藏",
+  announcements: "通知",
   autoconn: "自動連接",
   debuglogs: "調試日誌",
   details: "細節",
@@ -390,7 +392,7 @@ const zhTWBindings = {
     sg: "新加坡",
     us: "美國",
     ch: "瑞士",
-    hk: "香港"
+    hk: "香港",
   } as Record<string, string>,
 
   cities: {
@@ -403,8 +405,8 @@ const zhTWBindings = {
     pdx: "波特蘭",
     tyo: "東京",
     gva: "日內瓦",
-    hkgnt: "新界"
-  } as Record<string, string>
+    hkgnt: "新界",
+  } as Record<string, string>,
 };
 export const getl10n = (lang: string) => {
   switch (lang) {

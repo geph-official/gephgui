@@ -12,12 +12,14 @@ import {
   Button,
   Dialog,
   AppBar,
-  DialogTitle
+  DialogTitle,
 } from "@material-ui/core";
 import { useSelector, useDispatch } from "react-redux";
 import { l10nSelector, langSelector } from "../redux/l10n";
 import { prefSelector } from "../redux/prefs";
 import { getPlatform } from "../nativeGate";
+import { GlobalState } from "../redux";
+import { ConnectionStatus } from "../redux/connState";
 
 const BooleanSetting = (props: {
   propKey: string;
@@ -41,7 +43,7 @@ const BooleanSetting = (props: {
             dispatch({
               type: "PREF",
               key: props.propKey,
-              value: currValue === "true" ? "false" : "true"
+              value: currValue === "true" ? "false" : "true",
             });
           }}
         />
@@ -65,9 +67,12 @@ const BooleanSetting = (props: {
 //   );
 // };
 
-const SettingsFrag: React.FC = props => {
+const SettingsFrag: React.FC = (props) => {
   const l10n = useSelector(l10nSelector);
   const lang = useSelector(langSelector);
+  const stateConnected = useSelector(
+    (state: GlobalState) => state.connState.connected
+  );
   const dispatch = useDispatch();
   return (
     <>
@@ -82,11 +87,11 @@ const SettingsFrag: React.FC = props => {
             <Select
               value={lang}
               disableUnderline
-              onChange={event => {
+              onChange={(event) => {
                 dispatch({
                   type: "PREF",
                   key: "lang",
-                  value: event.target.value
+                  value: event.target.value,
                 });
               }}
             >
@@ -105,13 +110,13 @@ const SettingsFrag: React.FC = props => {
         {getPlatform() === "android" ? (
           ""
         ) : (
-            <BooleanSetting
-              propKey="autoProxy"
-              defValue={true}
-              primary={l10n.autoproxy}
-              secondary={l10n.autoproxyblurb}
-            />
-          )}
+          <BooleanSetting
+            propKey="autoProxy"
+            defValue={true}
+            primary={l10n.autoproxy}
+            secondary={l10n.autoproxyblurb}
+          />
+        )}
       </List>
       <Divider />
       <List
@@ -134,6 +139,37 @@ const SettingsFrag: React.FC = props => {
           <span style={{ color: "#666" }}>localhost:9910</span>
         </ListItem>
       </List>
+      <Divider />
+      <List
+        subheader={
+          <ListSubheader component="div">{l10n.details}</ListSubheader>
+        }
+      >
+        <ListItem>
+          <ListItemText
+            primary={l10n.feedback}
+            secondary={l10n.feedbackblurb}
+            style={{ maxWidth: "60vw" }}
+          />
+          <ListItemSecondaryAction>
+            <Button
+              color="primary"
+              onClick={() => {
+                const url = "http://localhost:9809/debugpack";
+                if (getPlatform() === "android") {
+                  window.location.href = url;
+                } else {
+                  window.open(url, "_blank");
+                }
+              }}
+              disabled={stateConnected === ConnectionStatus.Disconnected}
+            >
+              {l10n.export}
+            </Button>
+          </ListItemSecondaryAction>
+        </ListItem>
+      </List>
+      <div style={{ height: 50 }} />
     </>
   );
 };

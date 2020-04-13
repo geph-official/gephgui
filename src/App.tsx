@@ -14,7 +14,8 @@ import {
   makeStyles,
   Box,
   createMuiTheme,
-  ThemeProvider
+  ThemeProvider,
+  Badge,
 } from "@material-ui/core";
 import * as icons from "@material-ui/icons";
 import { rootReducer, GlobalState } from "./redux";
@@ -28,7 +29,7 @@ import LoginFrag from "./fragments/LoginFrag";
 import AccountFrag from "./fragments/AccountFrag";
 import SettingsFrag from "./fragments/SettingsFrag";
 import { startUpdateChecks, getVersion } from "./nativeGate";
-import Details from "./fragments/Details";
+import Announcements, { getAnnouncementFeed } from "./fragments/Announcements";
 
 const store = createStore(rootReducer, persistState("prefState", {}));
 
@@ -41,19 +42,19 @@ const useStyles = makeStyles({
     bottom: 0,
     left: 0,
     padding: 0,
-    margin: 0
-  }
+    margin: 0,
+  },
 });
 
 // custom theme
 const theme = createMuiTheme({
   palette: {
     primary: { main: "#007bbb" },
-    secondary: { main: "#c9171e" }
-  }
+    secondary: { main: "#c9171e" },
+  },
 });
 
-const App: React.FC = props => {
+const App: React.FC = (props) => {
   const classes = useStyles();
   const l10n = useSelector(l10nSelector);
   const lang = useSelector(langSelector);
@@ -61,8 +62,15 @@ const App: React.FC = props => {
   const dispatch = useDispatch();
   const [activePage, setActivePage] = useState(0);
   const statsURL = "http://localhost:9809";
+  const announcements = useSelector(prefSelector("announceCache", []));
+  const lastReadAnnounce = useSelector(
+    prefSelector("lastReadAnnounce", new Date("1900-01-01"))
+  );
+  const unreadCount = announcements.filter(
+    (item) => new Date(item.date) > lastReadAnnounce
+  ).length;
 
-  const updateData = async () => {
+  const refreshConnData = async () => {
     if (username === "") {
       return;
     }
@@ -75,12 +83,38 @@ const App: React.FC = props => {
     }
   };
 
+  // load announcements
+  const refreshAnnouncement = async () => {
+    dispatch({
+      type: "PREF",
+      key: "announceBusy",
+      value: true,
+    });
+    try {
+      dispatch({
+        type: "PREF",
+        key: "announceCache",
+        value: await getAnnouncementFeed(),
+      });
+    } finally {
+      dispatch({
+        type: "PREF",
+        key: "announceBusy",
+        value: false,
+      });
+    }
+  };
   useInterval(() => {
-    updateData();
+    refreshAnnouncement();
+  }, 600000);
+
+  useInterval(() => {
+    refreshConnData();
   }, 1000);
 
   useEffect(() => {
-    updateData();
+    refreshConnData();
+    refreshAnnouncement();
     startUpdateChecks(l10n);
   }, []);
 
@@ -90,39 +124,55 @@ const App: React.FC = props => {
 
   return (
     <>
-      {(() => {
-        switch (activePage) {
-          case 0:
-            return <OverviewFrag />;
-          case 2:
-            return <Details />;
-          case 1:
-            return <AccountFrag />;
-          case 3:
-            return <SettingsFrag />;
-        }
-      })()}
       <Helmet htmlAttributes={{ lang: lang }}>
         <title>
           {l10n.geph} {getVersion()}
         </title>
       </Helmet>
+      <div
+        style={{
+          height: "calc(100vh - 64px)",
+          maxHeight: "calc(100vh - 64px)",
+          overflow: "auto",
+        }}
+      >
+        {(() => {
+          switch (activePage) {
+            case 0:
+              return <OverviewFrag />;
+            case 2:
+              return <AccountFrag />;
+            case 1:
+              return <Announcements />;
+            case 3:
+              return <SettingsFrag />;
+          }
+        })()}
+      </div>
       <BottomNavigation
         className={classes.stickToBottom}
         value={activePage}
         onChange={(event, newValue) => {
           setActivePage(newValue);
         }}
+        showLabels
       >
         <BottomNavigationAction
           label={l10n.overview}
           icon={<icons.Dashboard />}
         />
         <BottomNavigationAction
+          label={l10n.announcements}
+          icon={
+            <Badge badgeContent={unreadCount} color="secondary">
+              <icons.Notifications />
+            </Badge>
+          }
+        />
+        <BottomNavigationAction
           label={l10n.account}
           icon={<icons.AccountCircle />}
         />
-        <BottomNavigationAction label={l10n.details} icon={<icons.Details />} />
         <BottomNavigationAction
           label={l10n.settings}
           icon={<icons.Settings />}
@@ -132,7 +182,7 @@ const App: React.FC = props => {
   );
 };
 
-const WrappedApp: React.FC = props => (
+const WrappedApp: React.FC = (props) => (
   <Provider store={store}>
     <ThemeProvider theme={theme}>
       <App />

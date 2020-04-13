@@ -1,11 +1,17 @@
 {
   "name": "gephgui",
-  "version": "3.5.4",
+  "version": "3.6.0",
   "private": true,
   "homepage": ".",
   "main": "public/electron.js",
   "dependencies": {
-    "electron-is-dev": "^1.1.0"
+    "chinese-conv": "^1.0.1",
+    "electron-is-dev": "^1.1.0",
+    "franc": "^5.0.0",
+    "rss-parser": "^3.7.6",
+    "sanitize-html": "^1.23.0",
+    "semver": "^7.2.2",
+    "zh_cn_zh_tw": "^1.0.6"
   },
   "scripts": {
     "electron:start": "electron . --no-sandbox",

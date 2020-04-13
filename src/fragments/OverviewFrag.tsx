@@ -14,7 +14,7 @@ import {
   Card,
   CardContent,
   Typography,
-  Button
+  Button,
 } from "@material-ui/core";
 import { GlobalState } from "../redux";
 import { ConnectionStatus, Tier, SpecialConnStates } from "../redux/connState";
@@ -28,22 +28,22 @@ import { ConnInfo } from "./ConnInfo";
 
 const useStyles = makeStyles({
   verticalGrid: {
-    height: "calc(100vh - 50px)",
-    padding: 0
+    height: "calc(100vh - 64px)",
+    padding: 0,
   },
   card: {
     width: "100%",
     backgroundColor: "white",
     borderRadius: "24px 24px 0px 0px",
     boxShadow: "0px -5px 5px #eeeeee",
-    height: "100%"
+    height: "100%",
   },
   center: {
-    textAlign: "center"
-  }
+    textAlign: "center",
+  },
 });
 
-const OverviewFrag: React.FC = props => {
+const OverviewFrag: React.FC = (props) => {
   const l10n = useSelector(l10nSelector);
   const connState = useSelector((state: GlobalState) => state.connState);
   const classes = useStyles();
@@ -77,7 +77,7 @@ const OverviewFrag: React.FC = props => {
           item
           style={{
             height: "40vh",
-            width: "100%"
+            width: "100%",
           }}
           className={classes.center}
         >
@@ -99,24 +99,24 @@ const OverviewFrag: React.FC = props => {
                   style={{ width: "100%", height: "calc(100% - 64px)" }}
                 >
                   {connState.fresh &&
-                    connState.connected === ConnectionStatus.Connected ? (
-                      <ConnInfo
-                        PublicIP={connState.publicIP}
-                        Bridges={connState.bridgeData}
-                        l10n={l10n}
-                      />
-                    ) : (
-                      <img
-                        src={require("../assets/images/logo-naked.svg")}
-                        style={{
-                          height: "100px",
-                          width: "100%",
-                          objectFit: "contain",
-                          opacity: "0.2",
-                          paddingTop: "15px"
-                        }}
-                      />
-                    )}
+                  connState.connected === ConnectionStatus.Connected ? (
+                    <ConnInfo
+                      PublicIP={connState.publicIP}
+                      Bridges={connState.bridgeData}
+                      l10n={l10n}
+                    />
+                  ) : (
+                    <img
+                      src={require("../assets/images/logo-naked.svg")}
+                      style={{
+                        height: "100px",
+                        width: "100%",
+                        objectFit: "contain",
+                        opacity: "0.2",
+                        paddingTop: "15px",
+                      }}
+                    />
+                  )}
                 </Grid>
               </Grid>
             </CardContent>
@@ -136,7 +136,7 @@ const formatRemaining = (l10n: Record<string, any>, dateString: string) => {
   return l10n.fmtDaysLeft(daysLeft.toFixed(0));
 };
 
-const PayBanner = props => {
+const PayBanner = (props) => {
   const l10n = useSelector(l10nSelector);
   const username = useSelector(prefSelector("username", ""));
   const password = useSelector(prefSelector("password", ""));
@@ -160,7 +160,7 @@ const PayBanner = props => {
         fontSize: "90%",
         height: "48px",
         visibility: props.visible ? "visible" : "hidden",
-        position: "absolute"
+        position: "absolute",
       }}
     >
       <Grid item style={{ textAlign: "left" }}>
@@ -212,7 +212,7 @@ const ConnToggle = (props: {}) => {
         }
         return stateConnected !== ConnectionStatus.Disconnected;
       })()}
-      onClick={async _ => {
+      onClick={async (_) => {
         if (stateConnected === ConnectionStatus.Disconnected) {
           // we first set the state to unknown
           dispatch({ type: "CONN", rawJson: SpecialConnStates.Connecting });
@@ -327,19 +327,19 @@ const NetActivityInfo = (props: {}) => {
       &nbsp;
       <PingLabel ms={isValid && connState.ping} /> <br />
       {connState.connected === ConnectionStatus.Connected &&
-        connState.tier === Tier.Free ? (
-          <small>
-            {l10n.freelimit} <b style={{ color: "red" }}>800</b>
-            &nbsp;kbps
+      connState.tier === Tier.Free ? (
+        <small>
+          {l10n.freelimit} <b style={{ color: "red" }}>800</b>
+          &nbsp;kbps
         </small>
-        ) : (
-          ""
-        )}
+      ) : (
+        ""
+      )}
     </span>
   );
 };
 
-const SpeedLabel = props => {
+const SpeedLabel = (props) => {
   const bwStyle = {};
 
   function roundToTwo(num) {
@@ -361,7 +361,7 @@ const SpeedLabel = props => {
   // compute the color
   let intensity = Math.min(1, Math.pow(props.kbps / props.max, 5));
   let beestyle = {
-    color: "rgba(" + intensity * 255 + ", 50, 50, 255)"
+    color: "rgba(" + intensity * 255 + ", 50, 50, 255)",
   };
 
   return (
@@ -371,7 +371,7 @@ const SpeedLabel = props => {
   );
 };
 
-const PingLabel = props => {
+const PingLabel = (props) => {
   let style = {};
   if (props.ms) {
     if (props.ms < 100) {
