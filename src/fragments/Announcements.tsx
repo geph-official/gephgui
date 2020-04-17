@@ -47,12 +47,16 @@ export const getAnnouncementFeed = async () => {
     (await axios.get("https://channel2rss.bitmachine.org/rss/gephannounce"))
       .data
   );
+  console.log(feedContents);
   if (feedContents.items) {
     return feedContents.items
       .map((item) => {
         return item
           ? {
-              text: sanitizeHtml(item.content) as string,
+              text: sanitizeHtml(item.content).replace(
+                "<a",
+                "<a target='blank'"
+              ) as string,
               date: item.isoDate as string,
             }
           : { text: "", date: "" };
@@ -106,7 +110,7 @@ const Announcements = (props) => {
           };
 
           return (
-            <ListItem>
+            <ListItem key={msg.date}>
               <Card
                 style={{
                   width: "100%",

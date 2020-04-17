@@ -3,7 +3,7 @@ export async function startDaemon(
   exitKey: string,
   username: string,
   password: string,
-  useTCP: boolean,
+  listenAll: boolean,
   forceBridges: boolean,
   autoProxy: boolean,
   bypassChinese: boolean

@@ -195,7 +195,7 @@ const ConnToggle = (props: {}) => {
   const password = useSelector(prefSelector("password", "fc9dfc3d"));
   const exitName = useSelector(prefSelector("exit", "us-sfo-01.exits.geph.io"));
   const exitKey = exitList[exitName].key;
-  const useTCPStr = useSelector(prefSelector("useTCP", "false"));
+  const listenAllStr = useSelector(prefSelector("listenAll", "false"));
   const forceBridgesStr = useSelector(prefSelector("forceBridges", "false"));
   const autoProxyStr = useSelector(prefSelector("autoProxy", "true"));
   const bypassChineseStr = useSelector(prefSelector("bypassChinese", "false"));
@@ -221,7 +221,7 @@ const ConnToggle = (props: {}) => {
             exitKey,
             username,
             password,
-            useTCPStr === "true",
+            listenAllStr === "true",
             forceBridgesStr === "true",
             autoProxyStr === "true",
             bypassChineseStr === "true"

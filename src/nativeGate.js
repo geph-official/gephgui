@@ -192,7 +192,7 @@ export async function startDaemon(
   exitKey,
   username,
   password,
-  useTCP,
+  listenAll,
   forceBridges,
   autoProxy,
   bypassChinese
@@ -203,7 +203,7 @@ export async function startDaemon(
       password,
       exitName,
       exitKey,
-      false,
+      listenAll,
       forceBridges,
       bypassChinese
     );
@@ -225,6 +225,10 @@ export async function startDaemon(
       exitKey,
       "-forceBridges=" + forceBridges,
       "-bypassChinese=" + bypassChinese,
+      "-socksAddr",
+      listenAll ? "0.0.0.0:9909" : "127.0.0.1:9909",
+      "-httpAddr",
+      listenAll ? "0.0.0.0:9910" : "127.0.0.1:9910",
     ],
     {
       stdio: "inherit",

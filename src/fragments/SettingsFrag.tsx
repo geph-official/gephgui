@@ -17,6 +17,7 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 import { l10nSelector, langSelector } from "../redux/l10n";
 import { prefSelector } from "../redux/prefs";
+import { version } from "../../package.json";
 import { getPlatform } from "../nativeGate";
 import { GlobalState } from "../redux";
 import { ConnectionStatus } from "../redux/connState";
@@ -70,6 +71,7 @@ const BooleanSetting = (props: {
 const SettingsFrag: React.FC = (props) => {
   const l10n = useSelector(l10nSelector);
   const lang = useSelector(langSelector);
+  const listenAll = useSelector(prefSelector("listenAll", false));
   const stateConnected = useSelector(
     (state: GlobalState) => state.connState.connected
   );
@@ -130,13 +132,23 @@ const SettingsFrag: React.FC = (props) => {
           primary={l10n.forcebridges}
           secondary={l10n.tcpblurb}
         />
+        <BooleanSetting
+          propKey="listenAll"
+          defValue={false}
+          primary={l10n.listenall}
+          secondary={l10n.listenallblurb}
+        />
         <ListItem>
           <ListItemText primary={l10n.socks5} />
-          <span style={{ color: "#666" }}>localhost:9909</span>
+          <span style={{ color: "#666" }}>
+            {listenAll == "true" ? "0.0.0.0" : "127.0.0.1"}:9909
+          </span>
         </ListItem>
         <ListItem>
           <ListItemText primary={l10n.http} />
-          <span style={{ color: "#666" }}>localhost:9910</span>
+          <span style={{ color: "#666" }}>
+            {listenAll == "true" ? "0.0.0.0" : "127.0.0.1"}:9910
+          </span>
         </ListItem>
       </List>
       <Divider />
@@ -167,6 +179,10 @@ const SettingsFrag: React.FC = (props) => {
               {l10n.export}
             </Button>
           </ListItemSecondaryAction>
+        </ListItem>
+        <ListItem>
+          <ListItemText primary={l10n.version} />
+          <span style={{ color: "#666" }}>{version}</span>
         </ListItem>
       </List>
       <div style={{ height: 50 }} />
