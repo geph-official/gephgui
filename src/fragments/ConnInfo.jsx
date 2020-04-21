@@ -2,9 +2,9 @@ import React, { useEffect } from "react";
 import * as d3 from "d3";
 import * as dagreD3 from "dagre-d3";
 
-const IPLabel = props => <b>{props.ip ? props.ip : "-"}</b>;
+const IPLabel = (props) => <b>{props.ip ? props.ip : "-"}</b>;
 
-const censorIP = ip => {
+const censorIP = (ip) => {
   const splitted = ip.split(".");
   if (splitted.length === 4) {
     splitted[2] = "*";
@@ -14,7 +14,7 @@ const censorIP = ip => {
   return ip;
 };
 
-export const ConnInfo = props => {
+export const ConnInfo = (props) => {
   useEffect(() => {
     console.log(props);
     let g = new dagreD3.graphlib.Graph().setGraph({
@@ -22,36 +22,36 @@ export const ConnInfo = props => {
       ranksep: 20,
       nodesep: 10,
       directed: false,
-      rankdir: "LR"
+      rankdir: "LR",
     });
     g.setNode("START", {
       label: props.l10n.you,
       shape: "diamond",
-      style: "fill: #fff; stroke: #000"
+      style: "fill: #fff; stroke: #000",
     });
     if (props.PublicIP) {
       g.setNode("END", {
         label: props.PublicIP,
         shape: "rect",
         style: "fill: #fff; stroke: #000",
-        labelStyle: "font-weight: bold"
+        labelStyle: "font-weight: bold",
       });
       let sty = {
         arrowhead: "undirected",
-        style: "fill: #fff; stroke: #000"
+        style: "fill: #fff; stroke: #000",
       };
       let total = 1;
       if (!props.Bridges || Object.keys(props.Bridges).length === 0) {
         console.log("drawing start to end");
         g.setEdge("START", "END", {
           arrowhead: "undirected",
-          style: "fill: #fff; stroke: #000"
+          style: "fill: #fff; stroke: #000",
         });
       } else {
         let counter = 0;
         console.log(props.Bridges);
-        Object.keys(props.Bridges).forEach(key => {
-          const label = key.split("//")[0];
+        Object.keys(props.Bridges).forEach((key) => {
+          const label = key;
           const id = counter;
           counter++;
           g.setNode(id, {
@@ -59,16 +59,16 @@ export const ConnInfo = props => {
             style:
               label === "warpfront"
                 ? "fill:#ff8888; stroke: #000"
-                : "fill: #ddd; stroke: #000"
+                : "fill: #ddd; stroke: #000",
           });
           g.setEdge("START", id, {
             arrowhead: "undirected",
-            style: "fill: #fff; stroke: #000"
+            style: "fill: #fff; stroke: #000",
           });
           g.setEdge(id, "END", {
             label: "",
             arrowhead: "undirected",
-            style: "fill: #fff; stroke: #000"
+            style: "fill: #fff; stroke: #000",
           });
         });
       }
