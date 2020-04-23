@@ -66,9 +66,9 @@ const App: React.FC = (props) => {
   const lastReadAnnounce = useSelector(
     prefSelector("lastReadAnnounce", new Date("1900-01-01"))
   );
-  const unreadCount = announcements.filter(
-    (item) => new Date(item.date) > lastReadAnnounce
-  ).length;
+  const unreadCount = announcements.filter((item) => {
+    return new Date(item.date).getTime() > new Date(lastReadAnnounce).getTime();
+  }).length;
 
   const refreshConnData = async () => {
     if (username === "") {

@@ -85,7 +85,8 @@ const Announcements = (props) => {
       }
     }, 1000);
   }, []);
-  const isNew = (annDate: string) => new Date(annDate) > lastReadAnnounce;
+  const isNew = (annDate: string) =>
+    new Date(annDate).getTime() > new Date(lastReadAnnounce).getTime();
   const filterMsg = (msg: string) => {
     if (lang === "zh-CN") return sify(filterByLanguage("cmn", msg)) as string;
     else if (lang === "zh-TW")
