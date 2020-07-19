@@ -122,6 +122,8 @@ const enUSBindings = {
     sg: "Singapore",
     us: "United States",
     hk: "Hong Kong",
+    fi: "Finland",
+    tw: "Taiwan",
   } as Record<string, string>,
 
   cities: {
@@ -133,6 +135,8 @@ const enUSBindings = {
     pdx: "Portland",
     sgp: "Singapore",
     sof: "Sofia",
+    tpe: "Taipei",
+    hel: "Helsinki",
     tyo: "Tokyo",
     hkgnt: "New Territories",
   } as Record<string, string>,
@@ -261,6 +265,8 @@ const zhCNBindings = {
     us: "美国",
     ch: "瑞士",
     hk: "香港",
+    tw: "台湾",
+    fi: "芬兰",
   } as Record<string, string>,
 
   cities: {
@@ -273,7 +279,9 @@ const zhCNBindings = {
     sof: "索菲亚",
     tyo: "东京",
     gva: "日内瓦",
+    tpe: "台北",
     hkgnt: "新界",
+    hel: "赫尔辛基",
   } as Record<string, string>,
 };
 
@@ -400,6 +408,8 @@ const zhTWBindings = {
     jp: "日本",
     sg: "新加坡",
     us: "美國",
+    tw: "台灣",
+    fi: "芬蘭",
     ch: "瑞士",
     hk: "香港",
   } as Record<string, string>,
@@ -412,7 +422,9 @@ const zhTWBindings = {
     sgp: "新加坡",
     sof: "索菲亞",
     pdx: "波特蘭",
+    hel: "赫爾辛基",
     tyo: "東京",
+    tpe: "台北",
     gva: "日內瓦",
     hkgnt: "新界",
   } as Record<string, string>,
@@ -432,7 +444,7 @@ export const l10nSelector = (state: GlobalState) =>
   getl10n(langSelector(state));
 
 export const langSelector = (state: GlobalState) =>
-  state.prefState.lang ? state.prefState.lang : "en-US";
+  state.prefState.lang ? state.prefState.lang : defaultLang();
 
 export const defaultLang = () =>
   detectNearestBrowserLocale(["en-US", "zh-TW", "zh-CN"]) as string;

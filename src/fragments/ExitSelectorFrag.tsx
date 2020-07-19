@@ -13,7 +13,7 @@ import {
   List,
   ListItem,
   ListItemText,
-  Chip
+  Chip,
 } from "@material-ui/core";
 import { l10nSelector } from "../redux/l10n";
 import * as icons from "@material-ui/icons";
@@ -21,13 +21,17 @@ import Flag from "react-world-flags";
 import { prefSelector } from "../redux/prefs";
 import { ConnectionStatus } from "../redux/connState";
 
+export const exitPrefKey = "exit-V2";
+
 const ExitSelectorFrag = (props: {}) => {
-  const exitName = useSelector(prefSelector("exit", "us-sfo-01.exits.geph.io"));
+  const exitName = useSelector(
+    prefSelector(exitPrefKey, "us-hio-01.exits.geph.io")
+  );
   const l10n = useSelector(l10nSelector);
   const connstate = useSelector((state: GlobalState) => state.connState);
   const dispatch = useDispatch();
   const setExit = (ename: string) => {
-    dispatch({ type: "PREF", key: "exit", value: ename });
+    dispatch({ type: "PREF", key: exitPrefKey, value: ename });
   };
   const exitInfo = exitList[exitName];
   const [pickerOpened, setPickerOpened] = useState(false);
@@ -38,13 +42,13 @@ const ExitSelectorFrag = (props: {}) => {
           fontSize: "120%",
           textTransform: "initial",
           fontWeight: "normal",
-          letterSpacing: "-0.5px"
+          letterSpacing: "-0.5px",
         }}
         disabled={
           !connstate.fresh ||
           connstate.connected !== ConnectionStatus.Disconnected
         }
-        onClick={_ => setPickerOpened(!pickerOpened)}
+        onClick={(_) => setPickerOpened(!pickerOpened)}
       >
         <Flag
           code={exitInfo.country}
@@ -54,26 +58,26 @@ const ExitSelectorFrag = (props: {}) => {
             boxShadow: "0px 0px 3px #333333",
             verticalAlign: "middle",
             marginRight: "10px",
-            marginLeft: "10px"
+            marginLeft: "10px",
           }}
         />
         <b>{l10n.countries[exitInfo.country]}</b>/{l10n.cities[exitInfo.city]} »
       </Button>
       <Dialog
         open={pickerOpened}
-        onClose={_ => setPickerOpened(false)}
+        onClose={(_) => setPickerOpened(false)}
         maxWidth="sm"
         fullWidth={true}
       >
         <DialogTitle>{l10n.selectExit}</DialogTitle>
         <List>
-          {Object.keys(exitList).map(item => {
+          {Object.keys(exitList).map((item) => {
             const info = exitList[item];
             return (
               <ListItem
                 dense
                 button
-                onClick={_ => {
+                onClick={(_) => {
                   setExit(item);
                   setPickerOpened(false);
                 }}
@@ -86,7 +90,7 @@ const ExitSelectorFrag = (props: {}) => {
                     boxShadow: "0px 0px 1px #333333",
                     verticalAlign: "middle",
                     marginRight: "10px",
-                    marginLeft: "10px"
+                    marginLeft: "10px",
                   }}
                 />
                 <ListItemText

@@ -19,7 +19,7 @@ import {
 import { GlobalState } from "../redux";
 import { ConnectionStatus, Tier, SpecialConnStates } from "../redux/connState";
 import { IOSSwitch, AntSwitch } from "./Switches";
-import ExitSelectorFrag from "./ExitSelectorFrag";
+import ExitSelectorFrag, { exitPrefKey } from "./ExitSelectorFrag";
 import { startDaemon, getPlatform } from "../nativeGate";
 import { prefSelector } from "../redux/prefs";
 import { exitList } from "./exitList";
@@ -193,7 +193,9 @@ const ConnToggle = (props: {}) => {
   );
   const username = useSelector(prefSelector("username", "dorbie"));
   const password = useSelector(prefSelector("password", "fc9dfc3d"));
-  const exitName = useSelector(prefSelector("exit", "us-sfo-01.exits.geph.io"));
+  const exitName = useSelector(
+    prefSelector(exitPrefKey, "us-hio-01.exits.geph.io")
+  );
   const exitKey = exitList[exitName].key;
   const listenAllStr = useSelector(prefSelector("listenAll", "false"));
   const forceBridgesStr = useSelector(prefSelector("forceBridges", "false"));
