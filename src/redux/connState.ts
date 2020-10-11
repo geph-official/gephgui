@@ -1,17 +1,17 @@
 export enum Tier {
   Free,
-  Paid
+  Paid,
 }
 
 export enum ConnectionStatus {
   Disconnected,
   Connecting,
-  Connected
+  Connected,
 }
 
 export enum SpecialConnStates {
   Dead = "DEAD",
-  Connecting = "IND"
+  Connecting = "IND",
 }
 
 export interface ConnState {
@@ -55,7 +55,7 @@ const initState = {
   publicIP: "",
   tier: Tier.Free,
   expiry: new Date(),
-  bridgeData: null
+  bridgeData: null,
 };
 
 export const connReducer = (
@@ -65,7 +65,6 @@ export const connReducer = (
   if (!action.rawJson) {
     return state;
   }
-  console.log(action);
   if (action.rawJson === SpecialConnStates.Connecting) {
     return { ...state, fresh: false, connected: ConnectionStatus.Connecting };
   }
@@ -73,7 +72,7 @@ export const connReducer = (
     return { ...state, fresh: true, connected: ConnectionStatus.Disconnected };
   }
   const j = action.rawJson;
-  return {
+  const toret = {
     ...state,
     fresh: true,
     connected: j.Connected
@@ -87,6 +86,7 @@ export const connReducer = (
     publicIP: j.PublicIP,
     downBytes: j.DownBytes,
     oldDownBytes: state.downBytes,
-    bridgeData: j.Bridges
+    bridgeData: j.Bridges,
   };
+  return toret;
 };

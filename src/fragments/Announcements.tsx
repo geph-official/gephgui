@@ -54,8 +54,8 @@ export const getAnnouncementFeed = async () => {
         return item
           ? {
               text: sanitizeHtml(item.content).replace(
-                "<a",
-                "<a target='blank'"
+                /<a/g,
+                "<a target='blank' "
               ) as string,
               date: item.isoDate as string,
             }
@@ -96,55 +96,58 @@ const Announcements = (props) => {
   return (
     <>
       <List style={{ maxHeight: "calc(100vh - 64px)" }}>
-        {announcements.map((msg) => {
-          const finalMsg = filterMsg(msg.text);
-          if (finalMsg.length === 0) {
-            return <></>;
-          }
-          const options = {
-            weekday: "long",
-            year: "numeric",
-            month: "long",
-            day: "numeric",
-            timeStyle: "long",
-            dateStyle: "long",
-          };
+        {announcements
+          .filter((msg) => {
+            const finalMsg = filterMsg(msg.text);
+            return finalMsg.length > 0;
+          })
+          .map((msg) => {
+            const finalMsg = filterMsg(msg.text);
+            // if (finalMsg.length === 0) {
+            //   return <></>;
+            // }
+            const options = {
+              weekday: "long",
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+            };
 
-          return (
-            <ListItem key={msg.date}>
-              <Card
-                style={{
-                  width: "100%",
-                }}
-              >
-                <CardContent>
-                  <Typography
-                    color={isNew(msg.date) ? "secondary" : "textSecondary"}
-                    gutterBottom
-                  >
-                    <div
-                      style={{
-                        verticalAlign: "middle",
-                        display: "inline-block",
-                      }}
+            return (
+              <ListItem key={msg.date}>
+                <Card
+                  style={{
+                    width: "100%",
+                  }}
+                >
+                  <CardContent>
+                    <Typography
+                      color={isNew(msg.date) ? "secondary" : "textSecondary"}
+                      gutterBottom
                     >
-                      <EventIcon fontSize="small" />
-                    </div>
-                    <small>
-                      {new Date(msg.date).toLocaleDateString(lang, options)}
-                    </small>
-                  </Typography>
-                  <Typography
-                    dangerouslySetInnerHTML={{
-                      __html: finalMsg,
-                    }}
-                    style={{ fontSize: "90%" }}
-                  />
-                </CardContent>
-              </Card>
-            </ListItem>
-          );
-        })}
+                      <span
+                        style={{
+                          verticalAlign: "middle",
+                          display: "inline-block",
+                        }}
+                      >
+                        <EventIcon fontSize="small" />
+                      </span>
+                      <small>
+                        {new Date(msg.date).toLocaleDateString(lang, options)}
+                      </small>
+                    </Typography>
+                    <Typography
+                      dangerouslySetInnerHTML={{
+                        __html: finalMsg,
+                      }}
+                      style={{ fontSize: "90%" }}
+                    />
+                  </CardContent>
+                </Card>
+              </ListItem>
+            );
+          })}
       </List>
     </>
   );
