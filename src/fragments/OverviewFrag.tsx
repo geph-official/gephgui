@@ -24,7 +24,6 @@ import { startDaemon, getPlatform } from "../nativeGate";
 import { prefSelector } from "../redux/prefs";
 import { exitList } from "./exitList";
 import { stopDaemon } from "../nativeGate";
-import { ConnInfo } from "./ConnInfo";
 
 const useStyles = makeStyles({
   verticalGrid: {
@@ -54,8 +53,10 @@ const OverviewFrag: React.FC = (props) => {
           connState.fresh && connState.connected === ConnectionStatus.Connected
         }
         expiry={
-          connState.fresh && connState.tier === Tier.Paid
-            ? connState.expiry
+          connState.fresh &&
+          connState.syncState &&
+          connState.syncState.subscription
+            ? new Date(connState.syncState.subscription.expires_unix * 1000)
             : false
         }
       />
@@ -93,30 +94,6 @@ const OverviewFrag: React.FC = (props) => {
                 <Grid item style={{ height: "64px" }}>
                   <ExitSelectorFrag /> <br />
                   <NetActivityInfo />
-                </Grid>
-                <Grid
-                  item
-                  style={{ width: "100%", height: "calc(100% - 64px)" }}
-                >
-                  {connState.fresh &&
-                  connState.connected === ConnectionStatus.Connected ? (
-                    <ConnInfo
-                      PublicIP={connState.publicIP}
-                      Bridges={connState.bridgeData}
-                      l10n={l10n}
-                    />
-                  ) : (
-                    <img
-                      src={require("../assets/images/logo-naked.svg")}
-                      style={{
-                        height: "100px",
-                        width: "100%",
-                        objectFit: "contain",
-                        opacity: "0.2",
-                        paddingTop: "15px",
-                      }}
-                    />
-                  )}
                 </Grid>
               </Grid>
             </CardContent>
@@ -302,10 +279,11 @@ const NetActivityInfo = (props: {}) => {
       state.connState.connected === ConnectionStatus.Connected
   );
   let max;
-  if (connState.tier === Tier.Free) {
-    max = 800;
-  } else {
+  let isPaid = connState.syncState && connState.syncState.subscription;
+  if (isPaid) {
     max = 100000000;
+  } else {
+    max = 800;
   }
   const upSpeed =
     !isValid || connState.oldUpBytes < 1
@@ -328,8 +306,7 @@ const NetActivityInfo = (props: {}) => {
       <icons.ImportExport fontSize="small" style={{ marginBottom: "-4px" }} />
       &nbsp;
       <PingLabel ms={isValid && connState.ping} /> <br />
-      {connState.connected === ConnectionStatus.Connected &&
-      connState.tier === Tier.Free ? (
+      {!isPaid ? (
         <small>
           {l10n.freelimit} <b style={{ color: "red" }}>800</b>
           &nbsp;kbps

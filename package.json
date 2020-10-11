@@ -1,6 +1,6 @@
 {
   "name": "gephgui",
-  "version": "3.6.5",
+  "version": "3.99.0",
   "private": true,
   "homepage": ".",
   "main": "public/electron.js",
@@ -99,7 +99,7 @@
     "redux-devtools": "^3.5.0",
     "redux-localstorage": "^0.4.1",
     "regenerator-runtime": "^0.13.3",
-    "typescript": "3.6.3",
+    "typescript": "3.7",
     "web-animations-js": "^2.3.2",
     "whatwg-fetch": "^3.0.0"
   }

@@ -1,3 +1,5 @@
+import { ExitInfo } from "./redux/connState";
+
 export async function startDaemon(
   exitName: string,
   exitKey: string,
@@ -13,7 +15,10 @@ export async function stopDaemon();
 
 export function getPlatform(): string;
 
-export async function checkAccount(uname: string, pwd: string);
+export async function syncStatus(
+  uname: string,
+  pwd: string
+): [AccountInfo, ExitInfo[]];
 
 export function startBinderProxy(): number;
 

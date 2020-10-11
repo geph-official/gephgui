@@ -8,7 +8,7 @@ import {
   ListItemText,
   ListItemSecondaryAction,
   Button,
-  Divider
+  Divider,
 } from "@material-ui/core";
 import { useSelector, useDispatch } from "react-redux";
 import { l10nSelector, langSelector } from "../redux/l10n";
@@ -17,7 +17,7 @@ import {
   Lock,
   CreditCard,
   Favorite,
-  DateRange
+  DateRange,
 } from "@material-ui/icons";
 import { prefSelector } from "../redux/prefs";
 import { GlobalState } from "../redux";
@@ -25,7 +25,7 @@ import { ConnectionStatus, Tier, SpecialConnStates } from "../redux/connState";
 import Alert from "@material-ui/lab/Alert";
 import { getPlatform, stopDaemon } from "../nativeGate";
 
-const AccountFrag: React.FC = props => {
+const AccountFrag: React.FC = (props) => {
   const l10n = useSelector(l10nSelector);
   const lang = useSelector(langSelector);
   const username = useSelector(prefSelector("username", ""));
@@ -43,6 +43,8 @@ const AccountFrag: React.FC = props => {
       window.open(extendURL, "_blank");
     }
   };
+  const isFree =
+    connstate.syncState && connstate.syncState.subscription === null;
   return (
     <>
       <List
@@ -58,7 +60,7 @@ const AccountFrag: React.FC = props => {
             style={{
               overflow: "hidden",
               maxWidth: "calc(100vw - 200px)",
-              textOverflow: "ellipsis"
+              textOverflow: "ellipsis",
             }}
           >
             <b>{username}</b>
@@ -87,7 +89,7 @@ const AccountFrag: React.FC = props => {
           <ListItemText primary={showPwd ? password : "* * * * * * *"} />
           <ListItemSecondaryAction>
             <Button
-              onClick={e => {
+              onClick={(e) => {
                 setShowPwd(!showPwd);
               }}
             >
@@ -123,11 +125,11 @@ const AccountFrag: React.FC = props => {
                       "4b55ab8a1a4676dbc188d95ff6ee274ccb898fc5aa986746d41dde5b4412b5f7"
                   )
                     return "D" + "OR" + "THIS" + "BE";
-                  return connstate.tier === Tier.Free ? l10n.free : l10n.plus;
+                  return isFree ? l10n.free : l10n.plus;
                 })()}
               />
             </ListItem>
-            {connstate.tier === Tier.Free ? (
+            {isFree ? (
               <ListItem>
                 <ListItemIcon>
                   <Favorite color="secondary" />
@@ -150,12 +152,21 @@ const AccountFrag: React.FC = props => {
                   <DateRange color="primary" />
                 </ListItemIcon>
                 <ListItemText
-                  primary={connstate.expiry.toLocaleDateString(lang, {
+                  primary={new Date(
+                    (connstate.syncState?.subscription?.expires_unix || 0) *
+                      1000
+                  ).toLocaleDateString(lang, {
                     year: "numeric",
                     month: "short",
-                    day: "numeric"
+                    day: "numeric",
                   })}
-                  secondary={formatRemaining(l10n, connstate.expiry)}
+                  secondary={formatRemaining(
+                    l10n,
+                    new Date(
+                      (connstate.syncState?.subscription?.expires_unix || 0) *
+                        1000
+                    )
+                  )}
                 ></ListItemText>
                 <ListItemSecondaryAction>
                   <Button

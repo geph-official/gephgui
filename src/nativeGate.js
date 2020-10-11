@@ -124,6 +124,7 @@ export function daemonRunning() {
 }
 
 function getBinaryPath() {
+  return "";
   const { remote } = window.require("electron");
   const myPath = remote.app.getAppPath();
   if (os.platform() == "linux") {
@@ -140,24 +141,33 @@ function getBinaryPath() {
   throw "UNKNOWN OS";
 }
 
-export function checkAccount(uname, pwd) {
+export function syncStatus(uname, pwd) {
   if (!isElectron) {
     return new Promise((resolve, reject) => {
       window._CALLBACK = resolve;
       window.Android.jsCheckAccount(uname, pwd, "window._CALLBACK");
     });
   }
-  return new Promise((resolve, refject) => {
+  let jsonBuffer = "";
+  return new Promise((resolve, reject) => {
     console.log("checking account");
-    let pid = spawn(getBinaryPath() + "geph-client" + binExt(), [
-      "-username",
+    let pid = spawn(getBinaryPath() + "geph4-client" + binExt(), [
+      "sync",
+      "--username",
       uname,
-      "-password",
+      "--password",
       pwd,
-      "-loginCheck",
     ]);
+    pid.stdout.on("data", (data) => {
+      jsonBuffer = jsonBuffer + data.toString();
+    });
     pid.on("close", (code) => {
-      resolve(code);
+      const lala = JSON.parse(jsonBuffer);
+      if (lala.error) {
+        reject(lala.error);
+      } else {
+        resolve(JSON.parse(jsonBuffer));
+      }
     });
   });
 }
@@ -213,23 +223,20 @@ export async function startDaemon(
     throw "daemon started when it really shouldn't be";
   }
   daemonPID = spawn(
-    getBinaryPath() + "geph-client" + binExt(),
+    getBinaryPath() + "geph4-client" + binExt(),
     [
-      "-username",
+      "connect",
+      "--username",
       username,
-      "-password",
+      "--password",
       password,
-      "-exitName",
+      "--exit-server",
       exitName,
-      "-exitKey",
-      exitKey,
-      "-forceBridges=" + forceBridges,
-      "-bypassChinese=" + bypassChinese,
-      "-socksAddr",
+      "--socks5-listen",
       listenAll ? "0.0.0.0:9909" : "127.0.0.1:9909",
-      "-httpAddr",
+      "--http-listen",
       listenAll ? "0.0.0.0:9910" : "127.0.0.1:9910",
-    ],
+    ].concat(forceBridges ? ["--use-bridges"] : []),
     {
       stdio: "inherit",
     }
@@ -278,10 +285,6 @@ var proxySet = false;
 
 // kill the daemon
 export async function stopDaemon() {
-  try {
-    await axios.get("http://localhost:9809/kill");
-  } catch {}
-  // before anything else, send a kill request
   if (!isElectron) {
     window.Android.jsStopDaemon();
     return;
