@@ -201,6 +201,33 @@ const Register = (props: {
   const doRegister = async () => {
     setBusy(true);
     try {
+      if (!uname.match(validUnameRegex)) {
+        setErrString(l10n.unameillegal);
+      } else {
+        console.log("attempting to register account");
+        const retcode = await registerAccount(
+          uname,
+          pwd,
+          captchaID,
+          captchaSoln
+        );
+        switch (retcode) {
+          case codeOK:
+            setErrString("");
+            props.onSuccess(uname, pwd);
+            break;
+          case codeExists:
+            setErrString(l10n.errExists);
+            break;
+          case codeBadCaptcha:
+            setErrString(l10n.errBadCaptcha);
+            fetchCaptcha();
+            break;
+          case codeBadNet:
+            setErrString(l10n.errBadNet);
+            break;
+        }
+      }
     } finally {
       setBusy(false);
     }
@@ -319,9 +346,9 @@ const registerAccount = async (
           return codeOK;
         }
       } catch (err) {
-        if (/403/.test(err.toString())) {
+        if (/409/.test(err.toString())) {
           return codeExists;
-        } else if (/400/.test(err.toString())) {
+        } else if (/422/.test(err.toString())) {
           return codeBadCaptcha;
         } else {
           continue;

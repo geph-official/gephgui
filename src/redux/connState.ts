@@ -1,3 +1,5 @@
+import { ExitInfo } from "./exitState";
+
 export enum Tier {
   Free,
   Paid,
@@ -30,12 +32,6 @@ export interface RawStats {
   total_rx: number;
   open_latency: number;
   exit_info: ExitInfo | null;
-}
-
-export interface ExitInfo {
-  country_code: string;
-  city_code: string;
-  hostname: string;
 }
 
 export interface AccountInfo {

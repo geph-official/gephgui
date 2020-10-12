@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { GlobalState } from "../redux";
-import { exitList } from "./exitList";
 import {
   Button,
   Dialog,
@@ -20,20 +19,18 @@ import * as icons from "@material-ui/icons";
 import Flag from "react-world-flags";
 import { prefSelector } from "../redux/prefs";
 import { ConnectionStatus } from "../redux/connState";
+import { ExitInfo } from "../redux/exitState";
 
 export const exitPrefKey = "exit-V2";
 
 const ExitSelectorFrag = (props: {}) => {
-  const exitName = useSelector(
-    prefSelector(exitPrefKey, "us-hio-01.exits.geph.io")
-  );
   const l10n = useSelector(l10nSelector);
-  const connstate = useSelector((state: GlobalState) => state.connState);
+  const connState = useSelector((state: GlobalState) => state.connState);
+  const exitState = useSelector((state: GlobalState) => state.exitState);
   const dispatch = useDispatch();
-  const setExit = (ename: string) => {
-    dispatch({ type: "PREF", key: exitPrefKey, value: ename });
+  const setExit = (info: ExitInfo) => {
+    dispatch({ type: "EXIT_SELECT", selectedExit: info });
   };
-  const exitInfo = exitList[exitName];
   const [pickerOpened, setPickerOpened] = useState(false);
   return (
     <>
@@ -45,13 +42,13 @@ const ExitSelectorFrag = (props: {}) => {
           letterSpacing: "-0.5px",
         }}
         disabled={
-          !connstate.fresh ||
-          connstate.connected !== ConnectionStatus.Disconnected
+          !connState.fresh ||
+          connState.connected !== ConnectionStatus.Disconnected
         }
         onClick={(_) => setPickerOpened(!pickerOpened)}
       >
         <Flag
-          code={exitInfo.country}
+          code={exitState.selectedExit.country_code}
           style={{
             width: "36px",
             display: "inline-block",
@@ -61,7 +58,8 @@ const ExitSelectorFrag = (props: {}) => {
             marginLeft: "10px",
           }}
         />
-        <b>{l10n.countries[exitInfo.country]}</b>/{l10n.cities[exitInfo.city]} »
+        <b>{l10n.countries[exitState.selectedExit.country_code]}</b>/
+        {l10n.cities[exitState.selectedExit.city_code]} »
       </Button>
       <Dialog
         open={pickerOpened}
@@ -71,19 +69,19 @@ const ExitSelectorFrag = (props: {}) => {
       >
         <DialogTitle>{l10n.selectExit}</DialogTitle>
         <List>
-          {Object.keys(exitList).map((item) => {
-            const info = exitList[item];
+          {Object.keys(exitState.exits).map((item) => {
+            const info = exitState.exits[item];
             return (
               <ListItem
                 dense
                 button
                 onClick={(_) => {
-                  setExit(item);
+                  setExit(info);
                   setPickerOpened(false);
                 }}
               >
                 <Flag
-                  code={info.country}
+                  code={info.country_code}
                   style={{
                     width: "32px",
                     display: "inline-block",
@@ -94,10 +92,11 @@ const ExitSelectorFrag = (props: {}) => {
                   }}
                 />
                 <ListItemText
-                  secondary={l10n.countries[info.country]}
-                  primary={l10n.cities[info.city]}
+                  secondary={
+                    l10n.countries[info.country_code] || info.country_code
+                  }
+                  primary={l10n.cities[info.city_code] || info.city_code}
                 />
-                {info.plus && <Chip variant="outlined" label={l10n.plusonly} />}
               </ListItem>
             );
           })}

@@ -124,6 +124,7 @@ export function daemonRunning() {
 }
 
 function getBinaryPath() {
+  // return "";
   const { remote } = window.require("electron");
   const myPath = remote.app.getAppPath();
   if (os.platform() == "linux") {
@@ -198,23 +199,19 @@ export function stopBinderProxy(pid) {
 // spawn the geph-client daemon
 export async function startDaemon(
   exitName,
-  exitKey,
   username,
   password,
   listenAll,
   forceBridges,
-  autoProxy,
-  bypassChinese
+  autoProxy
 ) {
   if (!isElectron) {
     window.Android.jsStartDaemon(
       username,
       password,
       exitName,
-      exitKey,
       listenAll,
-      forceBridges,
-      bypassChinese
+      forceBridges
     );
     return;
   }

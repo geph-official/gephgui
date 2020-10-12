@@ -1,14 +1,13 @@
-import { AccountInfo, ExitInfo } from "./redux/connState";
+import { AccountInfo } from "./redux/connState";
+import { ExitInfo } from "./redux/exitState";
 
 export async function startDaemon(
   exitName: string,
-  exitKey: string,
   username: string,
   password: string,
   listenAll: boolean,
   forceBridges: boolean,
-  autoProxy: boolean,
-  bypassChinese: boolean
+  autoProxy: boolean
 );
 
 export async function stopDaemon();

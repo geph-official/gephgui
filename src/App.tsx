@@ -31,7 +31,10 @@ import SettingsFrag from "./fragments/SettingsFrag";
 import { startUpdateChecks, getVersion, syncStatus } from "./nativeGate";
 import Announcements, { getAnnouncementFeed } from "./fragments/Announcements";
 
-const store = createStore(rootReducer, persistState("prefState", {}));
+const store = createStore(
+  rootReducer,
+  persistState(["prefState", "exitState"], {})
+);
 
 //alert(JSON.stringify(localStorage));
 
@@ -92,8 +95,9 @@ const App: React.FC = (props) => {
       const [accInfo, exits] = await syncStatus(username, password);
       console.log(accInfo);
       dispatch({ type: "SYNC", account: accInfo });
+      dispatch({ type: "EXIT_LIST", list: exits });
     } catch (e) {
-      console.log(e);
+      console.log(e.toString());
     }
   };
 
@@ -128,7 +132,7 @@ const App: React.FC = (props) => {
 
   useInterval(() => {
     refreshSync();
-  }, 600000);
+  }, 1000);
 
   useEffect(() => {
     refreshSync();
@@ -159,11 +163,9 @@ const App: React.FC = (props) => {
           switch (activePage) {
             case 0:
               return <OverviewFrag />;
-            case 2:
-              return <AccountFrag />;
             case 1:
               return <Announcements />;
-            case 3:
+            case 2:
               return <SettingsFrag />;
           }
         })()}
@@ -187,10 +189,6 @@ const App: React.FC = (props) => {
               <icons.Notifications />
             </Badge>
           }
-        />
-        <BottomNavigationAction
-          label={l10n.account}
-          icon={<icons.AccountCircle />}
         />
         <BottomNavigationAction
           label={l10n.settings}

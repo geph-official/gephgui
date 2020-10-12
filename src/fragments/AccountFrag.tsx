@@ -49,7 +49,7 @@ const AccountFrag: React.FC = (props) => {
     <>
       <List
         subheader={
-          <ListSubheader component="div">{l10n.accinfo}</ListSubheader>
+          <ListSubheader component="div">{l10n.subscription}</ListSubheader>
         }
       >
         <ListItem>
@@ -82,110 +82,82 @@ const AccountFrag: React.FC = (props) => {
             </Button>
           </ListItemSecondaryAction>
         </ListItem>
-        <ListItem>
-          <ListItemIcon>
-            <Lock />
-          </ListItemIcon>
-          <ListItemText primary={showPwd ? password : "* * * * * * *"} />
-          <ListItemSecondaryAction>
-            <Button
-              onClick={(e) => {
-                setShowPwd(!showPwd);
-              }}
-            >
-              {showPwd ? l10n.hide : l10n.show}
-            </Button>
-          </ListItemSecondaryAction>
-        </ListItem>
-      </List>
-      <Divider />
-      <List
-        subheader={
-          <ListSubheader component="div">{l10n.subscription}</ListSubheader>
-        }
-      >
-        {!isRunning ? (
+        <>
           <ListItem>
-            <Alert severity="info">{l10n.subinfoblurb}</Alert>
+            <ListItemIcon>
+              <CreditCard />
+            </ListItemIcon>
+            <ListItemText
+              primary={(() => {
+                // easter egg
+                const uhash = sha256(username + "pepper");
+                if (
+                  uhash ===
+                    "b2aa2bfe1aed310ab52593a4c816a945cd26ae08f343b66da8a799c644026907" ||
+                  uhash ===
+                    "4b55ab8a1a4676dbc188d95ff6ee274ccb898fc5aa986746d41dde5b4412b5f7"
+                )
+                  return "D" + "OR" + "THIS" + "BE";
+                return isFree ? l10n.free : l10n.plus;
+              })()}
+            />
           </ListItem>
-        ) : (
-          <>
+          {isFree ? (
             <ListItem>
               <ListItemIcon>
-                <CreditCard />
+                <Favorite color="secondary" />
+              </ListItemIcon>
+              <ListItemText>{l10n.unlockUnlimitedSpeed}</ListItemText>
+              <ListItemSecondaryAction>
+                <Button
+                  color="primary"
+                  variant="outlined"
+                  onClick={openBilling}
+                  disableElevation
+                >
+                  {l10n.upgrade}
+                </Button>
+              </ListItemSecondaryAction>
+            </ListItem>
+          ) : (
+            <ListItem>
+              <ListItemIcon>
+                <DateRange color="primary" />
               </ListItemIcon>
               <ListItemText
-                primary={(() => {
-                  // easter egg
-                  const uhash = sha256(username + "pepper");
-                  if (
-                    uhash ===
-                      "b2aa2bfe1aed310ab52593a4c816a945cd26ae08f343b66da8a799c644026907" ||
-                    uhash ===
-                      "4b55ab8a1a4676dbc188d95ff6ee274ccb898fc5aa986746d41dde5b4412b5f7"
-                  )
-                    return "D" + "OR" + "THIS" + "BE";
-                  return isFree ? l10n.free : l10n.plus;
-                })()}
-              />
-            </ListItem>
-            {isFree ? (
-              <ListItem>
-                <ListItemIcon>
-                  <Favorite color="secondary" />
-                </ListItemIcon>
-                <ListItemText>{l10n.unlockUnlimitedSpeed}</ListItemText>
-                <ListItemSecondaryAction>
-                  <Button
-                    color="primary"
-                    variant="outlined"
-                    onClick={openBilling}
-                    disableElevation
-                  >
-                    {l10n.upgrade}
-                  </Button>
-                </ListItemSecondaryAction>
-              </ListItem>
-            ) : (
-              <ListItem>
-                <ListItemIcon>
-                  <DateRange color="primary" />
-                </ListItemIcon>
-                <ListItemText
-                  primary={new Date(
+                primary={new Date(
+                  ((connstate.syncState &&
+                    connstate.syncState.subscription &&
+                    connstate.syncState.subscription.expires_unix) ||
+                    0) * 1000
+                ).toLocaleDateString(lang, {
+                  year: "numeric",
+                  month: "short",
+                  day: "numeric",
+                })}
+                secondary={formatRemaining(
+                  l10n,
+                  new Date(
                     ((connstate.syncState &&
                       connstate.syncState.subscription &&
                       connstate.syncState.subscription.expires_unix) ||
                       0) * 1000
-                  ).toLocaleDateString(lang, {
-                    year: "numeric",
-                    month: "short",
-                    day: "numeric",
-                  })}
-                  secondary={formatRemaining(
-                    l10n,
-                    new Date(
-                      ((connstate.syncState &&
-                        connstate.syncState.subscription &&
-                        connstate.syncState.subscription.expires_unix) ||
-                        0) * 1000
-                    )
-                  )}
-                ></ListItemText>
-                <ListItemSecondaryAction>
-                  <Button
-                    color="primary"
-                    variant="outlined"
-                    onClick={openBilling}
-                    disableElevation
-                  >
-                    {l10n.extend}
-                  </Button>
-                </ListItemSecondaryAction>
-              </ListItem>
-            )}
-          </>
-        )}
+                  )
+                )}
+              ></ListItemText>
+              <ListItemSecondaryAction>
+                <Button
+                  color="primary"
+                  variant="outlined"
+                  onClick={openBilling}
+                  disableElevation
+                >
+                  {l10n.extend}
+                </Button>
+              </ListItemSecondaryAction>
+            </ListItem>
+          )}
+        </>
       </List>
     </>
   );

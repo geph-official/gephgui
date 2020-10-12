@@ -22,8 +22,9 @@ import { IOSSwitch, AntSwitch } from "./Switches";
 import ExitSelectorFrag, { exitPrefKey } from "./ExitSelectorFrag";
 import { startDaemon, getPlatform } from "../nativeGate";
 import { prefSelector } from "../redux/prefs";
-import { exitList } from "./exitList";
 import { stopDaemon } from "../nativeGate";
+import { purple, green } from "@material-ui/core/colors";
+import AccountFrag from "./AccountFrag";
 
 const useStyles = makeStyles({
   verticalGrid: {
@@ -48,36 +49,24 @@ const OverviewFrag: React.FC = (props) => {
   const classes = useStyles();
   return (
     <>
-      <PayBanner
-        visible={
-          connState.fresh && connState.connected === ConnectionStatus.Connected
-        }
-        expiry={
-          connState.fresh &&
-          connState.syncState &&
-          connState.syncState.subscription
-            ? new Date(connState.syncState.subscription.expires_unix * 1000)
-            : false
-        }
-      />
       <Grid
         container
         className={classes.verticalGrid}
         direction="column"
         justify="space-around"
         alignItems="center"
-        style={{ paddingTop: "48px" }}
+        style={{ height: "calc(100vh - 120px)" }}
       >
         <Grid item>
           <ConnStatusInfo />
         </Grid>
-        <Grid item>
-          <ConnToggle />
+        <Grid item style={{ width: "100%" }}>
+          <AccountFrag />
         </Grid>
         <Grid
           item
           style={{
-            height: "40vh",
+            height: "100px",
             width: "100%",
           }}
           className={classes.center}
@@ -91,13 +80,16 @@ const OverviewFrag: React.FC = (props) => {
                 justify="space-between"
                 style={{ height: "100%" }}
               >
-                <Grid item style={{ height: "64px" }}>
+                <Grid item>
                   <ExitSelectorFrag /> <br />
                   <NetActivityInfo />
                 </Grid>
               </Grid>
             </CardContent>
           </Card>
+          <Grid item>
+            <ConnToggle />
+          </Grid>
         </Grid>
       </Grid>
     </>
@@ -117,7 +109,9 @@ const PayBanner = (props) => {
   const l10n = useSelector(l10nSelector);
   const username = useSelector(prefSelector("username", ""));
   const password = useSelector(prefSelector("password", ""));
-  const extendURL = `https://geph.io/billing/login?next=%2Fbilling%2Fdashboard&uname=${username}&pwd=${password}`;
+  const extendURL = `https://geph.io/billing/login?next=%2Fbilling%2Fdashboard&uname=${encodeURIComponent(
+    username
+  )}&pwd=${encodeURIComponent(password)}`;
   return (
     <Grid
       container
@@ -161,59 +155,70 @@ const PayBanner = (props) => {
   );
 };
 
+const GreenButton = withStyles((theme) => ({
+  root: {
+    color: theme.palette.getContrastText(green[800]),
+    backgroundColor: green[700],
+    "&:hover": {
+      backgroundColor: green[900],
+    },
+  },
+}))(Button);
+
 const ConnToggle = (props: {}) => {
-  const stateUncertain = useSelector(
-    (state: GlobalState) => !state.connState.fresh
-  );
   const stateConnected = useSelector(
     (state: GlobalState) => state.connState.connected
   );
+  const exitState = useSelector((state: GlobalState) => state.exitState);
   const username = useSelector(prefSelector("username", "dorbie"));
   const password = useSelector(prefSelector("password", "fc9dfc3d"));
-  const exitName = useSelector(
-    prefSelector(exitPrefKey, "us-hio-01.exits.geph.io")
-  );
-  const exitKey = exitList[exitName].key;
   const listenAllStr = useSelector(prefSelector("listenAll", "false"));
   const forceBridgesStr = useSelector(prefSelector("forceBridges", "false"));
   const autoProxyStr = useSelector(prefSelector("autoProxy", "true"));
-  const bypassChineseStr = useSelector(prefSelector("bypassChinese", "false"));
   const dispatch = useDispatch();
   const [forceState, setForceState] = useState("ind");
-  return (
-    <IOSSwitch
-      checked={(() => {
-        if (forceState === "yes") {
-          return true;
-        }
-        if (forceState === "no") {
-          return false;
-        }
-        return stateConnected !== ConnectionStatus.Disconnected;
-      })()}
-      onClick={async (_) => {
-        if (stateConnected === ConnectionStatus.Disconnected) {
-          // we first set the state to unknown
-          dispatch({ type: "CONN", rawJson: SpecialConnStates.Connecting });
-          await startDaemon(
-            exitName,
-            exitKey,
-            username,
-            password,
-            listenAllStr === "true",
-            forceBridgesStr === "true",
-            autoProxyStr === "true",
-            bypassChineseStr === "true"
-          );
-          setForceState("yes");
-        } else {
-          setForceState("no");
-          await stopDaemon();
-          dispatch({ type: "CONN", rawJson: SpecialConnStates.Dead });
-        }
-      }}
-    />
-  );
+  const handler = async (_) => {
+    if (stateConnected === ConnectionStatus.Disconnected) {
+      // we first set the state to unknown
+      dispatch({ type: "CONN", rawJson: SpecialConnStates.Connecting });
+      await startDaemon(
+        exitState.selectedExit.hostname,
+        username,
+        password,
+        listenAllStr === "true",
+        forceBridgesStr === "true",
+        autoProxyStr === "true"
+      );
+      setForceState("yes");
+    } else {
+      setForceState("no");
+      await stopDaemon();
+      dispatch({ type: "CONN", rawJson: SpecialConnStates.Dead });
+    }
+  };
+  if (stateConnected === ConnectionStatus.Disconnected) {
+    return (
+      <GreenButton
+        variant="contained"
+        color="primary"
+        disableElevation
+        onClick={handler}
+      >
+        Connect to Geph
+      </GreenButton>
+    );
+  } else {
+    return (
+      <Button
+        variant="contained"
+        color="secondary"
+        disableElevation
+        onClick={handler}
+      >
+        Disconnect
+      </Button>
+    );
+  }
 };
 
 const ConnStatusInfo = (props: {}) => {
@@ -306,14 +311,6 @@ const NetActivityInfo = (props: {}) => {
       <icons.ImportExport fontSize="small" style={{ marginBottom: "-4px" }} />
       &nbsp;
       <PingLabel ms={isValid && connState.ping} /> <br />
-      {!isPaid ? (
-        <small>
-          {l10n.freelimit} <b style={{ color: "red" }}>800</b>
-          &nbsp;kbps
-        </small>
-      ) : (
-        ""
-      )}
     </span>
   );
 };
