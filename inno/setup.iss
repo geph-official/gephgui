@@ -3,7 +3,7 @@
 #define MyAppVersion GetEnv("VERSION")
 #define MyAppPublisher "Gephyra OÜ"
 #define MyAppURL "https://geph.io/"
-#define MyAppExeName "gephgui.exe"
+#define MyAppExeName "gephgui4.exe"
 
 [Setup]
 ; NOTE: The value of AppId uniquely identifies this application.

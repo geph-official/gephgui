@@ -18,6 +18,8 @@ chmod +x RUN-ME.sh
 tar -cvO * | pixz -p 8 > ../geph-linux64-$VERSION.tar.xz
 cd ../../
 
+exit 0;
+
 echo "Linux 32-bit!"
 #npm run electron:lin32
 cd dist/linux-ia32-unpacked

@@ -1,2 +1,2 @@
 #!/bin/sh
-./gephgui --no-sandbox &
+./gephgui4 --no-sandbox &

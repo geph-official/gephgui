@@ -124,7 +124,6 @@ export function daemonRunning() {
 }
 
 function getBinaryPath() {
-  return "";
   const { remote } = window.require("electron");
   const myPath = remote.app.getAppPath();
   if (os.platform() == "linux") {

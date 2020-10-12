@@ -128,9 +128,10 @@ const App: React.FC = (props) => {
 
   useInterval(() => {
     refreshSync();
-  }, 1000);
+  }, 600000);
 
   useEffect(() => {
+    refreshSync();
     refreshConnData();
     refreshAnnouncement();
     startUpdateChecks(l10n);
