@@ -56,7 +56,6 @@ export interface ConnAction {
 export interface SyncAction {
   type: "SYNC";
   account: AccountInfo;
-  exits: ExitInfo[];
 }
 
 const initState = {
@@ -106,5 +105,11 @@ export const connReducer = (
       oldDownBytes: state.downBytes,
     };
     return toret;
+  } else if (action.type === "SYNC") {
+    return {
+      ...state,
+      syncState: action.account,
+    };
   }
+  return state;
 };

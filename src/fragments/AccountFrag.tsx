@@ -153,8 +153,10 @@ const AccountFrag: React.FC = (props) => {
                 </ListItemIcon>
                 <ListItemText
                   primary={new Date(
-                    (connstate.syncState?.subscription?.expires_unix || 0) *
-                      1000
+                    ((connstate.syncState &&
+                      connstate.syncState.subscription &&
+                      connstate.syncState.subscription.expires_unix) ||
+                      0) * 1000
                   ).toLocaleDateString(lang, {
                     year: "numeric",
                     month: "short",
@@ -163,8 +165,10 @@ const AccountFrag: React.FC = (props) => {
                   secondary={formatRemaining(
                     l10n,
                     new Date(
-                      (connstate.syncState?.subscription?.expires_unix || 0) *
-                        1000
+                      ((connstate.syncState &&
+                        connstate.syncState.subscription &&
+                        connstate.syncState.subscription.expires_unix) ||
+                        0) * 1000
                     )
                   )}
                 ></ListItemText>

@@ -179,8 +179,8 @@ export function startBinderProxy() {
     return x;
   }
   return spawn(
-    getBinaryPath() + "geph-client" + binExt(),
-    ["-binderProxy", "127.0.0.1:23456"],
+    getBinaryPath() + "geph4-client" + binExt(),
+    ["binder-proxy", "--listen", "127.0.0.1:23456"],
     {
       stdio: "inherit",
     }

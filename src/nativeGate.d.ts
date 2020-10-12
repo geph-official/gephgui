@@ -1,4 +1,4 @@
-import { ExitInfo } from "./redux/connState";
+import { AccountInfo, ExitInfo } from "./redux/connState";
 
 export async function startDaemon(
   exitName: string,
@@ -18,7 +18,7 @@ export function getPlatform(): string;
 export async function syncStatus(
   uname: string,
   pwd: string
-): [AccountInfo, ExitInfo[]];
+): Promise<[AccountInfo, ExitInfo[]]>;
 
 export function startBinderProxy(): number;
 

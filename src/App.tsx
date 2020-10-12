@@ -28,7 +28,7 @@ import { prefSelector } from "./redux/prefs";
 import LoginFrag from "./fragments/LoginFrag";
 import AccountFrag from "./fragments/AccountFrag";
 import SettingsFrag from "./fragments/SettingsFrag";
-import { startUpdateChecks, getVersion } from "./nativeGate";
+import { startUpdateChecks, getVersion, syncStatus } from "./nativeGate";
 import Announcements, { getAnnouncementFeed } from "./fragments/Announcements";
 
 const store = createStore(rootReducer, persistState("prefState", {}));
@@ -59,6 +59,7 @@ const App: React.FC = (props) => {
   const l10n = useSelector(l10nSelector);
   const lang = useSelector(langSelector);
   const username = useSelector(prefSelector("username", ""));
+  const password = useSelector(prefSelector("password", ""));
   const dispatch = useDispatch();
   const [activePage, setActivePage] = useState(0);
   const statsURL = "http://localhost:9809";
@@ -80,6 +81,19 @@ const App: React.FC = (props) => {
       dispatch({ type: "CONN", rawJson: response.data });
     } catch {
       dispatch({ type: "CONN", rawJson: SpecialConnStates.Dead });
+    }
+  };
+
+  const refreshSync = async () => {
+    if (username === "") {
+      return;
+    }
+    try {
+      const [accInfo, exits] = await syncStatus(username, password);
+      console.log(accInfo);
+      dispatch({ type: "SYNC", account: accInfo });
+    } catch (e) {
+      console.log(e);
     }
   };
 
@@ -110,6 +124,10 @@ const App: React.FC = (props) => {
 
   useInterval(() => {
     refreshConnData();
+  }, 1000);
+
+  useInterval(() => {
+    refreshSync();
   }, 1000);
 
   useEffect(() => {
