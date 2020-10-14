@@ -49,7 +49,7 @@ const AccountFrag: React.FC = (props) => {
     <>
       <List
         subheader={
-          <ListSubheader component="div">{l10n.subscription}</ListSubheader>
+          <ListSubheader component="div">{l10n.accinfo}</ListSubheader>
         }
       >
         <ListItem>

@@ -144,7 +144,7 @@ function getBinaryPath() {
 export function syncStatus(uname, pwd) {
   if (!isElectron) {
     return new Promise((resolve, reject) => {
-      window._CALLBACK = resolve;
+      window._CALLBACK = (v) => resolve(JSON.parse(atob(v)));
       window.Android.jsCheckAccount(uname, pwd, "window._CALLBACK");
     });
   }
@@ -188,7 +188,7 @@ export function startBinderProxy() {
 }
 
 // stop the binder proxy by handle
-export function stopBinderProxy(pid) {
+export async function stopBinderProxy(pid) {
   if (!isElectron) {
     window.Android.jsStopProxBinder(pid);
     return;
@@ -282,7 +282,9 @@ var proxySet = false;
 // kill the daemon
 export async function stopDaemon() {
   if (!isElectron) {
-    window.Android.jsStopDaemon();
+    try {
+      await axios.get("http://127.0.0.1:9809/kill");
+    } catch {}
     return;
   }
   if (os.platform() === "win32") {

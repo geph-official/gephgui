@@ -13,21 +13,21 @@ echo "Linux 64-bit!"
 #npm run electron:lin64
 cd dist/linux-unpacked
 echo "#!/bin/sh" >> RUN-ME.sh
-echo "./gephgui --no-sandbox &" >> RUN-ME.sh
+echo "./gephgui4 --no-sandbox &" >> RUN-ME.sh
 chmod +x RUN-ME.sh
 tar -cvO * | pixz -p 8 > ../geph-linux64-$VERSION.tar.xz
 cd ../../
 
-exit 0;
+#exit 0;
 
-echo "Linux 32-bit!"
+#echo "Linux 32-bit!"
 #npm run electron:lin32
-cd dist/linux-ia32-unpacked
-echo "#!/bin/sh" >> RUN-ME.sh
-echo "./gephgui --no-sandbox &" >> RUN-ME.sh
-chmod +x RUN-ME.sh
-tar -cvO * | pixz -p 8 > ../geph-linux32-$VERSION.tar.xz
-cd ../../
+#cd dist/linux-ia32-unpacked
+#echo "#!/bin/sh" >> RUN-ME.sh
+#echo "./gephgui4 --no-sandbox &" >> RUN-ME.sh
+#chmod +x RUN-ME.sh
+#tar -cvO * | pixz -p 8 > ../geph-linux32-$VERSION.tar.xz
+#cd ../../
 
 echo "MacOS 64-bit!"
 #npm run electron:macos

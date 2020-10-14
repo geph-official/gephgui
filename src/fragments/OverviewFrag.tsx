@@ -57,11 +57,11 @@ const OverviewFrag: React.FC = (props) => {
         alignItems="center"
         style={{ height: "calc(100vh - 120px)" }}
       >
-        <Grid item>
-          <ConnStatusInfo />
-        </Grid>
         <Grid item style={{ width: "100%" }}>
           <AccountFrag />
+        </Grid>
+        <Grid item>
+          <ConnStatusInfo />
         </Grid>
         <Grid
           item
@@ -166,6 +166,7 @@ const GreenButton = withStyles((theme) => ({
 }))(Button);
 
 const ConnToggle = (props: {}) => {
+  const l10n = useSelector(l10nSelector);
   const stateConnected = useSelector(
     (state: GlobalState) => state.connState.connected
   );
@@ -204,7 +205,7 @@ const ConnToggle = (props: {}) => {
         disableElevation
         onClick={handler}
       >
-        Connect to Geph
+        {l10n.connect}
       </GreenButton>
     );
   } else {
@@ -215,7 +216,7 @@ const ConnToggle = (props: {}) => {
         disableElevation
         onClick={handler}
       >
-        Disconnect
+        {l10n.disconnect}
       </Button>
     );
   }
