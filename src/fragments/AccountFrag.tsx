@@ -83,7 +83,7 @@ const AccountFrag: React.FC = (props) => {
           </ListItemSecondaryAction>
         </ListItem>
         <>
-          <ListItem>
+          {/* <ListItem>
             <ListItemIcon>
               <CreditCard />
             </ListItemIcon>
@@ -101,7 +101,7 @@ const AccountFrag: React.FC = (props) => {
                 return isFree ? l10n.free : l10n.plus;
               })()}
             />
-          </ListItem>
+          </ListItem> */}
           {isFree ? (
             <ListItem>
               <ListItemIcon>

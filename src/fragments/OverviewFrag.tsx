@@ -53,11 +53,11 @@ const OverviewFrag: React.FC = (props) => {
         container
         className={classes.verticalGrid}
         direction="column"
-        justify="space-around"
+        justify="space-between"
         alignItems="center"
-        style={{ height: "calc(100vh - 120px)" }}
+        style={{ height: "calc(100vh - 80px)" }}
       >
-        <Grid item style={{ width: "100%" }}>
+        <Grid item style={{ width: "100%", marginTop: 0, paddingTop: 0 }}>
           <AccountFrag />
         </Grid>
         <Grid item>
@@ -66,30 +66,26 @@ const OverviewFrag: React.FC = (props) => {
         <Grid
           item
           style={{
-            height: "100px",
             width: "100%",
           }}
           className={classes.center}
         >
           <Card className={classes.card}>
-            <CardContent style={{ height: "100%" }}>
+            <CardContent style={{}}>
               <Grid
                 container
                 direction="column"
                 alignItems="center"
                 justify="space-between"
-                style={{ height: "100%" }}
               >
                 <Grid item>
                   <ExitSelectorFrag /> <br />
-                  <NetActivityInfo />
+                  <NetActivityInfo /> <br />
+                  <ConnToggle />
                 </Grid>
               </Grid>
             </CardContent>
           </Card>
-          <Grid item>
-            <ConnToggle />
-          </Grid>
         </Grid>
       </Grid>
     </>
