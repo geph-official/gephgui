@@ -8,5 +8,5 @@ curl -L "$PREFIX/geph4-client-windows-amd64.exe" > binaries/win-ia32/geph4-clien
 #chmod +x binaries/linux-ia32/geph-client
 curl -L "$PREFIX/geph4-client-linux-amd64" > binaries/linux-x64/geph4-client
 chmod +x binaries/linux-x64/geph4-client
-curl -L "$PREFIX/geph4-client-macos-amd64" > binaries/mac-x64/geph-client
-chmod +x binaries/mac-x64/geph-client
+curl -L "$PREFIX/geph4-client-macos-amd64" > binaries/mac-x64/geph4-client
+chmod +x binaries/mac-x64/geph4-client
