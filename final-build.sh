@@ -29,6 +29,6 @@ cd ../../
 #tar -cvO * | pixz -p 8 > ../geph-linux32-$VERSION.tar.xz
 #cd ../../
 
-#echo "MacOS 64-bit!"
+echo "MacOS 64-bit!"
 #npm run electron:macos
 #echo "*** FINISH ON A MAC BY RUNNING macos/makedmg **"

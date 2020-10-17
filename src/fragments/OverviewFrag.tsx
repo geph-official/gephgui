@@ -61,7 +61,8 @@ const OverviewFrag: React.FC = (props) => {
           <AccountFrag />
         </Grid>
         <Grid item>
-          <ConnStatusInfo />
+          <ConnStatusInfo /> <br />
+          <NetActivityInfo />
         </Grid>
         <Grid
           item
@@ -80,7 +81,6 @@ const OverviewFrag: React.FC = (props) => {
               >
                 <Grid item>
                   <ExitSelectorFrag /> <br />
-                  <NetActivityInfo /> <br />
                   <ConnToggle />
                 </Grid>
               </Grid>
