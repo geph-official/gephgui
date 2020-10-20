@@ -1,5 +1,5 @@
 #!/bin/sh
-export PREFIX="https://62-295245253-gh.circle-artifacts.com/0/%7E/repo/OUTPUT"
+export PREFIX="https://f001.backblazeb2.com/file/geph-dl/geph4-binaries"
 #https://54-295245253-gh.circle-artifacts.com/0/%7E/repo/OUTPUT/geph4-client-windows-amd64.exe
 #export VERSION="v0.22.3"
 
