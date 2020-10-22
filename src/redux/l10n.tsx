@@ -68,6 +68,7 @@ const enUSBindings = {
   plusonly: "Plus only",
   password: "Password",
   passwordConfirm: "Confirm password",
+  syncing: "Syncing network info...",
   plusblurb: (
     <>
       Unlimited speed for <b>&euro;5/month</b>
@@ -175,6 +176,7 @@ const zhCNBindings = {
   connectedblurb: "尽享自由的网络！",
   updateDownload: "下载",
   details: "细节",
+  syncing: "正在同步网络信息",
   updateInfo: "迷雾通新版本已发布！",
   updateLater: "之后提醒",
   choose: "选择",
@@ -309,6 +311,7 @@ const zhTWBindings = {
   hide: "隱藏",
   announcements: "通知",
   autoconn: "自動連接",
+  syncing: "正在同步網絡信息...",
   connect: "連接",
   disconnect: "斷開",
   debuglogs: "調試日誌",

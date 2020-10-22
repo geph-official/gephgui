@@ -16,6 +16,12 @@ import {
   createMuiTheme,
   ThemeProvider,
   Badge,
+  Dialog,
+  CircularProgress,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  LinearProgress,
 } from "@material-ui/core";
 import * as icons from "@material-ui/icons";
 import { rootReducer, GlobalState } from "./redux";
@@ -65,6 +71,7 @@ const App: React.FC = (props) => {
   const password = useSelector(prefSelector("password", ""));
   const dispatch = useDispatch();
   const [activePage, setActivePage] = useState(0);
+  const [busy, setBusy] = useState(false);
   const statsURL = "http://localhost:9809";
   const announcements = useSelector(prefSelector("announceCache", []));
   const lastReadAnnounce = useSelector(
@@ -91,13 +98,18 @@ const App: React.FC = (props) => {
     if (username === "") {
       return;
     }
-    try {
-      const [accInfo, exits] = await syncStatus(username, password);
-      console.log(accInfo);
-      dispatch({ type: "SYNC", account: accInfo });
-      dispatch({ type: "EXIT_LIST", list: exits });
-    } catch (e) {
-      console.log(e.toString());
+    setBusy(true);
+    while (true) {
+      try {
+        const [accInfo, exits] = await syncStatus(username, password);
+        console.log(accInfo);
+        dispatch({ type: "SYNC", account: accInfo });
+        dispatch({ type: "EXIT_LIST", list: exits });
+        setBusy(false);
+        return;
+      } catch (e) {
+        console.log(e.toString());
+      }
     }
   };
 
@@ -152,6 +164,14 @@ const App: React.FC = (props) => {
           {l10n.geph} {getVersion()}
         </title>
       </Helmet>
+      <Dialog open={busy}>
+        <DialogTitle>{l10n.syncing}</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            <LinearProgress />
+          </DialogContentText>
+        </DialogContent>
+      </Dialog>
       <div
         style={{
           height: "calc(100vh - 64px)",

@@ -104,9 +104,7 @@ const LoginFrag: React.FC = (props) => {
   };
   return (
     <>
-      <Dialog open={busy} fullWidth>
-        {dialogContent}
-      </Dialog>
+      <Dialog open={busy}>{dialogContent}</Dialog>
       <Grid
         container
         direction="column"
