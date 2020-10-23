@@ -63,6 +63,15 @@ const theme = createMuiTheme({
   },
 });
 
+const promiseWithTimeout = (timeoutMs: number, promise: () => Promise<any>) => {
+  return Promise.race([
+    promise(),
+    new Promise((resolve, reject) =>
+      setTimeout(() => reject("timeout"), timeoutMs)
+    ),
+  ]);
+};
+
 const App: React.FC = (props) => {
   const classes = useStyles();
   const l10n = useSelector(l10nSelector);
@@ -72,6 +81,7 @@ const App: React.FC = (props) => {
   const dispatch = useDispatch();
   const [activePage, setActivePage] = useState(0);
   const [busy, setBusy] = useState(false);
+  const [busyError, setBusyError] = useState("");
   const statsURL = "http://localhost:9809";
   const announcements = useSelector(prefSelector("announceCache", []));
   const lastReadAnnounce = useSelector(
@@ -98,16 +108,20 @@ const App: React.FC = (props) => {
     if (username === "") {
       return;
     }
+    setBusyError("");
     setBusy(true);
     while (true) {
       try {
-        const [accInfo, exits] = await syncStatus(username, password);
+        const [accInfo, exits] = await promiseWithTimeout(20000, () =>
+          syncStatus(username, password)
+        );
         console.log(accInfo);
         dispatch({ type: "SYNC", account: accInfo });
         dispatch({ type: "EXIT_LIST", list: exits });
         setBusy(false);
         return;
       } catch (e) {
+        setBusyError(e.toString());
         console.log(e.toString());
       }
     }
@@ -169,6 +183,7 @@ const App: React.FC = (props) => {
         <DialogContent>
           <DialogContentText>
             <LinearProgress />
+            <span style={{ color: "red" }}>{busyError}</span>
           </DialogContentText>
         </DialogContent>
       </Dialog>
