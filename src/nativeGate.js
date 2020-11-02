@@ -303,12 +303,11 @@ export async function stopDaemon() {
 if (isElectron) {
   window.onbeforeunload = function (e) {
     if (daemonPID != null) {
-      e.preventDefault(); 
+      e.preventDefault();
       e.returnValue = false;
       if (window) {
         const { remote } = window.require("electron");
-        const window = remote && remote.BrowserWindow.getFocusedWindow();
-        window && window.hide();
+        remote.BrowserWindow.getAllWindows()[0].hide();
       }
       return false;
     }
