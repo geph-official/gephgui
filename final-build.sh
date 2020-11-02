@@ -15,7 +15,7 @@ cd dist/linux-unpacked
 echo "#!/bin/sh" >> RUN-ME.sh
 echo "./gephgui4 --no-sandbox &" >> RUN-ME.sh
 chmod +x RUN-ME.sh
-tar -cvO * | pixz -p 8 > ../geph-linux64-$VERSION.tar.xz
+tar -cvO * | xz -T 12 > ../geph-linux64-$VERSION.tar.xz
 cd ../../
 
 #exit 0;
