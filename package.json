@@ -1,6 +1,6 @@
 {
   "name": "gephgui4",
-  "version": "3.99.9-ALPHA",
+  "version": "3.99.10-ALPHA",
   "private": true,
   "homepage": ".",
   "main": "public/electron.js",
