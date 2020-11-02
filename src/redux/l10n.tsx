@@ -81,7 +81,7 @@ const enUSBindings = {
   feedbackbutton: "Export debug pack",
   restartblurb: "Restart Geph to apply language",
   seePlans: "See plans",
-  selectExit: "Exit selection",
+  selectExit: "Change location",
   settings: "Settings",
   manage: "Manage",
   socks5: "SOCKS5 proxy",
@@ -251,7 +251,7 @@ const zhCNBindings = {
     </span>
   ),
 
-  selectExit: "选择出口端",
+  selectExit: "更改位置",
   locations: "位置",
   core: "高隐私",
   coreblurb: (
@@ -399,7 +399,7 @@ const zhTWBindings = {
     </span>
   ),
 
-  selectExit: "選擇出口端",
+  selectExit: "更改位置",
   locations: "位置",
   core: "高隱私",
   coreblurb: (

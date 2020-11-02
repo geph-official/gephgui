@@ -47,11 +47,7 @@ const AccountFrag: React.FC = (props) => {
     connstate.syncState && connstate.syncState.subscription === null;
   return (
     <>
-      <List
-        subheader={
-          <ListSubheader component="div">{l10n.accinfo}</ListSubheader>
-        }
-      >
+      <List>
         <ListItem>
           <ListItemIcon>
             <AccountCircle />

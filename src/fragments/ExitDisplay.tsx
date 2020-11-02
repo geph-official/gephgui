@@ -23,7 +23,33 @@ import { ExitInfo } from "../redux/exitState";
 
 export const exitPrefKey = "exit-V2";
 
-const ExitSelectorFrag = (props: {}) => {
+export const ExitDisplay = (props) => {
+  const l10n = useSelector(l10nSelector);
+  const exitState = useSelector((state: GlobalState) => state.exitState);
+  return (
+    <div style={{ padding: "20px", fontSize: "20px", textAlign: "center" }}>
+      <Flag
+        code={exitState.selectedExit.country_code}
+        style={{
+          width: "40px",
+          display: "inline-block",
+          borderWidth: "1px",
+          borderStyle: "solid",
+          verticalAlign: "middle",
+          marginRight: "10px",
+          marginLeft: "10px",
+        }}
+      />
+      <b>{l10n.countries[exitState.selectedExit.country_code]}</b>/
+      {l10n.cities[exitState.selectedExit.city_code]} <br />
+      <small style={{ opacity: 0.6, fontSize: "14px" }}>
+        {exitState.selectedExit.hostname}
+      </small>
+    </div>
+  );
+};
+
+export const ExitSelector = (props: {}) => {
   const l10n = useSelector(l10nSelector);
   const connState = useSelector((state: GlobalState) => state.connState);
   const exitState = useSelector((state: GlobalState) => state.exitState);
@@ -36,10 +62,13 @@ const ExitSelectorFrag = (props: {}) => {
     <>
       <Button
         style={{
-          fontSize: "120%",
+          fontSize: "110%",
           textTransform: "initial",
           fontWeight: "normal",
-          letterSpacing: "-0.5px",
+          borderStyle: "solid",
+          borderWidth: "1px",
+          margin: "10px",
+          width: "50vw",
         }}
         disabled={
           !connState.fresh ||
@@ -47,19 +76,7 @@ const ExitSelectorFrag = (props: {}) => {
         }
         onClick={(_) => setPickerOpened(!pickerOpened)}
       >
-        <Flag
-          code={exitState.selectedExit.country_code}
-          style={{
-            width: "36px",
-            display: "inline-block",
-            boxShadow: "0px 0px 3px #333333",
-            verticalAlign: "middle",
-            marginRight: "10px",
-            marginLeft: "10px",
-          }}
-        />
-        <b>{l10n.countries[exitState.selectedExit.country_code]}</b>/
-        {l10n.cities[exitState.selectedExit.city_code]} »
+        {l10n.selectExit}
       </Button>
       <Dialog
         open={pickerOpened}
@@ -105,5 +122,3 @@ const ExitSelectorFrag = (props: {}) => {
     </>
   );
 };
-
-export default ExitSelectorFrag;

@@ -4,15 +4,16 @@ http://ionicframework.com/docs/theming/ */
 /** Ionic CSS Variables **/
 
 :lang(zh-cn) {
-  font-family: "LFR", "Noto Sans CJK SC", "Microsoft YaHei", sans-serif;
+  font-family: "Iosevka Aile", "Noto Sans CJK SC", "Microsoft YaHei", sans-serif;
 }
 
 :lang(zh-tw) {
-  font-family: "LFR", "Noto Sans CJK TC", "Microsoft JhengHei", sans-serif;
+  font-family: "Iosevka Aile", "Noto Sans CJK TC", "Microsoft JhengHei",
+    sans-serif;
 }
 
 :root {
-  --ion-font-family: "LFR", sans-serif;
+  --ion-font-family: "Iosevka Aile", sans-serif;
 }
 :root {
   --ion-color-primary: #007bbb;

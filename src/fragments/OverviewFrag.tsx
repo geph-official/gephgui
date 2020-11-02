@@ -19,7 +19,7 @@ import {
 import { GlobalState } from "../redux";
 import { ConnectionStatus, Tier, SpecialConnStates } from "../redux/connState";
 import { IOSSwitch, AntSwitch } from "./Switches";
-import ExitSelectorFrag, { exitPrefKey } from "./ExitSelectorFrag";
+import { ExitDisplay, ExitSelector } from "./ExitDisplay";
 import { startDaemon, getPlatform } from "../nativeGate";
 import { prefSelector } from "../redux/prefs";
 import { stopDaemon } from "../nativeGate";
@@ -30,13 +30,6 @@ const useStyles = makeStyles({
   verticalGrid: {
     height: "calc(100vh - 64px)",
     padding: 0,
-  },
-  card: {
-    width: "100%",
-    backgroundColor: "white",
-    borderRadius: "24px 24px 0px 0px",
-    boxShadow: "0px -5px 5px #eeeeee",
-    height: "100%",
   },
   center: {
     textAlign: "center",
@@ -60,94 +53,25 @@ const OverviewFrag: React.FC = (props) => {
         <Grid item style={{ width: "100%", marginTop: 0, paddingTop: 0 }}>
           <AccountFrag />
         </Grid>
-        <Grid item>
-          <ConnStatusInfo /> <br />
-          <NetActivityInfo />
+        <Grid container direction="column" alignItems="center">
+          <ConnStatusInfo />
+          <ExitDisplay />
         </Grid>
         <Grid
           item
           style={{
             width: "100%",
+            marginBottom: "20px",
           }}
           className={classes.center}
         >
-          <Card className={classes.card}>
-            <CardContent style={{}}>
-              <Grid
-                container
-                direction="column"
-                alignItems="center"
-                justify="space-between"
-              >
-                <Grid item>
-                  <ExitSelectorFrag /> <br />
-                  <ConnToggle />
-                </Grid>
-              </Grid>
-            </CardContent>
-          </Card>
+          <Grid item>
+            <ExitSelector /> <br />
+            <ConnToggle />
+          </Grid>
         </Grid>
       </Grid>
     </>
-  );
-};
-
-const formatRemaining = (l10n: Record<string, any>, dateString: string) => {
-  const date = new Date(Date.parse(dateString));
-  const msPerDay = 24 * 60 * 60 * 1000;
-  const timeLeft = date.getTime() - new Date().getTime();
-  const daysLeft = timeLeft / msPerDay;
-  const nana = l10n.fmtDaysLeft as (x: string) => string;
-  return l10n.fmtDaysLeft(daysLeft.toFixed(0));
-};
-
-const PayBanner = (props) => {
-  const l10n = useSelector(l10nSelector);
-  const username = useSelector(prefSelector("username", ""));
-  const password = useSelector(prefSelector("password", ""));
-  const extendURL = `https://geph.io/billing/login?next=%2Fbilling%2Fdashboard&uname=${encodeURIComponent(
-    username
-  )}&pwd=${encodeURIComponent(password)}`;
-  return (
-    <Grid
-      container
-      justify="space-between"
-      alignItems="center"
-      style={{
-        backgroundColor: props.expiry ? "#eeeeee" : "#316745",
-        color: props.expiry ? "black" : "white",
-        display: "flex",
-        padding: "0px",
-        paddingLeft: "8px",
-        paddingRight: "8px",
-        margin: "0px",
-        top: "0px",
-        left: "0px",
-        width: "100%",
-        fontSize: "90%",
-        height: "48px",
-        visibility: props.visible ? "visible" : "hidden",
-        position: "absolute",
-      }}
-    >
-      <Grid item style={{ textAlign: "left" }}>
-        {props.expiry ? formatRemaining(l10n, props.expiry) : l10n.plusblurb}
-      </Grid>
-      <Grid item style={{ textAlign: "right" }}>
-        <Button
-          onClick={() => {
-            if (getPlatform() === "android") {
-              window.location.href = extendURL;
-            } else {
-              window.open(extendURL, "_blank");
-            }
-          }}
-          variant="contained"
-        >
-          {props.expiry ? l10n.manage : l10n.upgrade}
-        </Button>
-      </Grid>
-    </Grid>
   );
 };
 
@@ -200,6 +124,12 @@ const ConnToggle = (props: {}) => {
         color="primary"
         disableElevation
         onClick={handler}
+        style={{
+          fontSize: "110%",
+          textTransform: "initial",
+          fontWeight: "normal",
+          width: "50vw",
+        }}
       >
         {l10n.connect}
       </GreenButton>
@@ -211,6 +141,12 @@ const ConnToggle = (props: {}) => {
         color="secondary"
         disableElevation
         onClick={handler}
+        style={{
+          fontSize: "110%",
+          textTransform: "initial",
+          fontWeight: "normal",
+          width: "50vw",
+        }}
       >
         {l10n.disconnect}
       </Button>
@@ -228,7 +164,7 @@ const ConnStatusInfo = (props: {}) => {
   if (connState.connected === ConnectionStatus.Disconnected) {
     lhs = (
       <icons.HighlightOff
-        style={{ fontSize: "50px", marginRight: "-10px" }}
+        style={{ fontSize: "70px", marginRight: "-10px" }}
         color="disabled"
       />
     );
@@ -237,7 +173,7 @@ const ConnStatusInfo = (props: {}) => {
 
   // connecting state
   if (connState.connected === ConnectionStatus.Connecting) {
-    lhs = <CircularProgress />;
+    lhs = <CircularProgress size={55} />;
     rhs = <b>{l10n.connecting}...</b>;
   }
 
@@ -245,7 +181,7 @@ const ConnStatusInfo = (props: {}) => {
   if (connState.connected === ConnectionStatus.Connected) {
     lhs = (
       <icons.CheckCircle
-        style={{ fontSize: "50px", marginRight: "-10px" }}
+        style={{ fontSize: "70px", marginRight: "-10px" }}
         color="primary"
       />
     );
@@ -253,7 +189,7 @@ const ConnStatusInfo = (props: {}) => {
       <span>
         <b>{l10n.connected}</b>
         <br />
-        <small>{l10n.connectedblurb}</small>
+        <NetActivityInfo />
       </span>
     );
   }
@@ -263,12 +199,14 @@ const ConnStatusInfo = (props: {}) => {
       container
       justify="center"
       alignItems="center"
-      style={{ height: "40px" }}
+      style={{ height: "60px" }}
     >
       <Grid item style={{ marginRight: "20px" }}>
         {lhs}
       </Grid>
-      <Grid item>{rhs}</Grid>
+      <Grid item style={{ fontSize: "150%" }}>
+        {rhs}
+      </Grid>
     </Grid>
   );
 };
@@ -296,17 +234,9 @@ const NetActivityInfo = (props: {}) => {
       ? 0
       : connState.downBytes - connState.oldDownBytes;
   return (
-    <span style={{ fontSize: "90%" }}>
-      <icons.ArrowDownward fontSize="small" style={{ marginBottom: "-4px" }} />
-      &nbsp;
-      <SpeedLabel kbps={(8 * downSpeed) / 1000} max={max} />
+    <span style={{ fontSize: "80%" }}>
+      <SpeedLabel kbps={(8 * (downSpeed + upSpeed)) / 1000} max={max} />
       &emsp;
-      <icons.ArrowUpward fontSize="small" style={{ marginBottom: "-4px" }} />
-      &nbsp;
-      <SpeedLabel kbps={(8 * upSpeed) / 1000} max={max} />
-      &emsp;
-      <icons.ImportExport fontSize="small" style={{ marginBottom: "-4px" }} />
-      &nbsp;
       <PingLabel ms={isValid && connState.ping} /> <br />
     </span>
   );
@@ -324,10 +254,10 @@ const SpeedLabel = (props) => {
   let suffix;
   let divider;
   if (props.kbps > 1000) {
-    suffix = "Mbps";
+    suffix = "M";
     divider = 1000;
   } else {
-    suffix = "kbps";
+    suffix = "k";
     divider = 1;
   }
 
