@@ -144,7 +144,14 @@ function getBinaryPath() {
 export function syncStatus(uname, pwd) {
   if (!isElectron) {
     return new Promise((resolve, reject) => {
-      window._CALLBACK = (v) => resolve(JSON.parse(atob(v)));
+      window._CALLBACK = (v) => {
+        const lala = JSON.parse(atob(v));
+        if (lala.error) {
+          reject(lala.error);
+        } else {
+          resolve(lala);
+        }
+      };
       window.Android.jsCheckAccount(uname, pwd, "window._CALLBACK");
     });
   }
@@ -159,14 +166,14 @@ export function syncStatus(uname, pwd) {
       pwd,
     ]);
     pid.stdout.on("data", (data) => {
-      jsonBuffer = jsonBuffer + data.toString();
+      jsonBuffer += data.toString();
     });
     pid.on("close", (code) => {
       const lala = JSON.parse(jsonBuffer);
       if (lala.error) {
         reject(lala.error);
       } else {
-        resolve(JSON.parse(jsonBuffer));
+        resolve(lala);
       }
     });
   });
