@@ -10,3 +10,14 @@ curl -L "$PREFIX/geph4-client-linux-amd64" > binaries/linux-x64/geph4-client
 chmod +x binaries/linux-x64/geph4-client
 curl -L "$PREFIX/geph4-client-macos-amd64" > binaries/mac-x64/geph4-client
 chmod +x binaries/mac-x64/geph4-client
+
+echo "building socks2http from source"
+rm -rf socks2http
+git clone https://github.com/zenhack/socks2http
+cd socks2http
+GOOS=windows GOARCH=386 CGO_ENABLED=0 go build -v -ldflags "$LDFLAGS" -trimpath
+mv socks2http.exe ../binaries/win-ia32/socks2http.exe
+GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -v -ldflags "$LDFLAGS" -trimpath
+mv socks2http ../binaries/linux-x64/socks2http
+GOOS=darwin GOARCH=amd64 CGO_ENABLED=0 go build -v -trimpath -ldflags "$LDFLAGS"
+mv socks2http ../binaries/mac-x64/socks2http
