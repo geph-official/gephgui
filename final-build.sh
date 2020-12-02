@@ -1,4 +1,5 @@
 #!/bin/sh
+rm -rf socks2http
 
 ISCC="/home/miyuruasuka/.wine/drive_c/Program Files/Inno Setup 6/ISCC.exe"
 export VERSION=$(cat package.json | jq -r ".version")

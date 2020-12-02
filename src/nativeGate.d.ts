@@ -7,7 +7,9 @@ export async function startDaemon(
   password: string,
   listenAll: boolean,
   forceBridges: boolean,
-  autoProxy: boolean
+  autoProxy: boolean,
+  bypassChinese: boolean,
+  vpn: boolean,
 );
 
 export async function stopDaemon();
@@ -17,7 +19,7 @@ export function getPlatform(): string;
 export async function syncStatus(
   uname: string,
   pwd: string
-): Promise<[AccountInfo, ExitInfo[]]>;
+): Promise<[AccountInfo, ExitInfo[]]>; 
 
 export function startBinderProxy(): number;
 

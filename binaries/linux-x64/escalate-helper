@@ -1,0 +1,11 @@
+#!/bin/bash
+cd "$(dirname "$(readlink -f "$0")")"
+pwd
+if  test -f /opt/geph4-vpn-helper 
+    then 
+    echo "already works"
+else
+    echo "escalate permissions for geph4-vpn-helper"
+    export DIR="$(pwd)"
+    pkexec sh -c "cp '$DIR/geph4-vpn-helper' /opt/geph4-vpn-helper && chown root /opt/geph4-vpn-helper && chmod -w /opt/geph4-vpn-helper && chmod u+s /opt/geph4-vpn-helper"
+fi

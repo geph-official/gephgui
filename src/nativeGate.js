@@ -203,6 +203,19 @@ export async function stopBinderProxy(pid) {
   pid.kill();
 }
 
+// redirection proxy just runs off in the background
+try {
+  spawn(
+    getBinaryPath() + "socks2http" + binExt(),
+    ["-laddr", "127.0.0.1:9910", "-raddr", "127.0.0.1:9909"],
+    {
+      stdio: "inherit",
+    }
+  );
+} catch (e) {
+} finally {
+}
+
 // spawn the geph-client daemon
 export async function startDaemon(
   exitName,
@@ -210,7 +223,9 @@ export async function startDaemon(
   password,
   listenAll,
   forceBridges,
-  autoProxy
+  autoProxy,
+  bypassChinese,
+  vpn
 ) {
   if (!isElectron) {
     window.Android.jsStartDaemon(
@@ -218,8 +233,14 @@ export async function startDaemon(
       password,
       exitName,
       listenAll,
-      forceBridges
+      forceBridges,
+      bypassChinese
     );
+    return;
+  }
+
+  if (vpn) {
+    await startDaemonVpn(exitName, username, password, forceBridges);
     return;
   }
   if (daemonPID !== null) {
@@ -237,9 +258,9 @@ export async function startDaemon(
       exitName,
       "--socks5-listen",
       listenAll ? "0.0.0.0:9909" : "127.0.0.1:9909",
-      "--http-listen",
-      listenAll ? "0.0.0.0:9910" : "127.0.0.1:9910",
-    ].concat(forceBridges ? ["--use-bridges"] : []),
+    ]
+      .concat(forceBridges ? ["--use-bridges"] : [])
+      .concat(bypassChinese ? ["--exclude-prc"] : []),
     {
       stdio: "inherit",
     }
@@ -284,14 +305,56 @@ export async function startDaemon(
   }
 }
 
+// starts VPN mode
+async function startDaemonVpn(exitName, username, password, forceBridges) {
+  if (os.platform() !== "linux") {
+    alert("VPN mode only supported on Linux");
+    return;
+  }
+  spawnSync(getBinaryPath() + "escalate-helper");
+  daemonPID = spawn(
+    "/opt/geph4-vpn-helper",
+    [
+      getBinaryPath() + "geph4-client",
+      "connect",
+      "--username",
+      username,
+      "--password",
+      password,
+      "--exit-server",
+      exitName,
+      "--stdio-vpn",
+      "--dns-listen",
+      "127.0.0.1:15353",
+      "--credential-cache",
+      "/tmp/geph4-credentials.db",
+    ].concat(forceBridges ? ["--use-bridges"] : []),
+    { stdio: "inherit" }
+  );
+  daemonPID.on("close", (code) => {
+    if (daemonPID !== null) {
+      daemonPID = null;
+    }
+  });
+  vpnSet = true;
+}
+
+var vpnSet = false;
+
 var proxySet = false;
 
 // kill the daemon
 export async function stopDaemon() {
+  if (vpnSet) {
+    vpnSet = false;
+    spawn("/opt/geph4-vpn-helper", [], {
+      stdio: "inherit",
+    });
+  }
+  try {
+    await axios.get("http://127.0.0.1:9809/kill");
+  } catch {}
   if (!isElectron) {
-    try {
-      await axios.get("http://127.0.0.1:9809/kill");
-    } catch {}
     return;
   }
   if (os.platform() === "win32") {
@@ -302,7 +365,9 @@ export async function stopDaemon() {
   if (daemonPID != null) {
     let dp = daemonPID;
     daemonPID = null;
-    dp.kill("SIGKILL");
+    try {
+      dp.kill("SIGKILL");
+    } catch (e) {}
   }
 }
 
@@ -328,7 +393,7 @@ function arePermsCorrect() {
   return stats.uid == 0;
 }
 
-function forceElevatePerms() {
+function macElevatePerms() {
   return new Promise((resolve, reject) => {
     const spawn = window.require("child_process").spawn;
     let lol = spawn(getBinaryPath() + "cocoasudo", [
@@ -356,6 +421,6 @@ async function elevatePerms() {
     const spawnSync = window.require("child_process").spawnSync;
     spawnSync("/bin/chmod", ["ug-s", getBinaryPath() + "pac"]);
     console.log("Setuid cleared on pac, now we run cocoasudo!");
-    await forceElevatePerms();
+    await macElevatePerms();
   }
 }

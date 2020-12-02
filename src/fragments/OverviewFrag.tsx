@@ -96,6 +96,8 @@ const ConnToggle = (props: {}) => {
   const listenAllStr = useSelector(prefSelector("listenAll", "false"));
   const forceBridgesStr = useSelector(prefSelector("forceBridges", "false"));
   const autoProxyStr = useSelector(prefSelector("autoProxy", "true"));
+  const bypassChineseStr = useSelector(prefSelector("bypassChinese", "false"));
+  const vpnStr = useSelector(prefSelector("vpn", "false"));
   const dispatch = useDispatch();
   const [forceState, setForceState] = useState("ind");
   const handler = async (_) => {
@@ -108,7 +110,9 @@ const ConnToggle = (props: {}) => {
         password,
         listenAllStr === "true",
         forceBridgesStr === "true",
-        autoProxyStr === "true"
+        autoProxyStr === "true",
+        bypassChineseStr === "true",
+        vpnStr === "true"
       );
       setForceState("yes");
     } else {
@@ -234,11 +238,18 @@ const NetActivityInfo = (props: {}) => {
       ? 0
       : connState.downBytes - connState.oldDownBytes;
   return (
-    <span style={{ fontSize: "80%" }}>
+    <div
+      style={{
+        fontSize: "80%",
+        width: 0,
+        overflow: "visible",
+        whiteSpace: "nowrap",
+      }}
+    >
       <SpeedLabel kbps={(8 * (downSpeed + upSpeed)) / 1000} max={max} />
       &emsp;
       <PingLabel ms={isValid && connState.ping} /> <br />
-    </span>
+    </div>
   );
 };
 

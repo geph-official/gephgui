@@ -27,6 +27,7 @@ const BooleanSetting = (props: {
   defValue: boolean;
   primary: string;
   secondary?: string;
+  disabled?: boolean;
 }) => {
   const currValue = useSelector(
     prefSelector(props.propKey, props.defValue ? "true" : "false")
@@ -47,6 +48,7 @@ const BooleanSetting = (props: {
               value: currValue === "true" ? "false" : "true",
             });
           }}
+          disabled={props.disabled}
         />
       </ListItemSecondaryAction>
     </ListItem>
@@ -72,6 +74,7 @@ const SettingsFrag: React.FC = (props) => {
   const l10n = useSelector(l10nSelector);
   const lang = useSelector(langSelector);
   const listenAll = useSelector(prefSelector("listenAll", false));
+  const vpn = useSelector(prefSelector("vpn", false)) === "true";
   const stateConnected = useSelector(
     (state: GlobalState) => state.connState.connected
   );
@@ -108,6 +111,7 @@ const SettingsFrag: React.FC = (props) => {
           defValue={false}
           primary={l10n.excludecn}
           secondary={l10n.excludecnblurb}
+          disabled={vpn}
         />
         {getPlatform() === "android" ? (
           ""
@@ -117,6 +121,7 @@ const SettingsFrag: React.FC = (props) => {
             defValue={true}
             primary={l10n.autoproxy}
             secondary={l10n.autoproxyblurb}
+            disabled={vpn}
           />
         )}
       </List>
@@ -126,6 +131,18 @@ const SettingsFrag: React.FC = (props) => {
           <ListSubheader component="div">{l10n.network}</ListSubheader>
         }
       >
+        {getPlatform() == "android" ? (
+          ""
+        ) : (
+          <>
+            <BooleanSetting
+              propKey="vpn"
+              defValue={false}
+              primary={l10n.vpn}
+              secondary={l10n.vpnblurb}
+            />
+          </>
+        )}
         <BooleanSetting
           propKey="forceBridges"
           defValue={false}
@@ -137,6 +154,7 @@ const SettingsFrag: React.FC = (props) => {
           defValue={false}
           primary={l10n.listenall}
           secondary={l10n.listenallblurb}
+          disabled={vpn}
         />
         <ListItem>
           <ListItemText primary={l10n.socks5} />

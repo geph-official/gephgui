@@ -15,7 +15,7 @@ import {
   Card,
   CardContent,
 } from "@material-ui/core";
-import Parser from "rss-parser";
+import Parser from "rss-parser"; 
 import axios from "axios";
 import sanitizeHtml from "sanitize-html";
 import franc from "franc";
