@@ -315,7 +315,7 @@ async function startDaemonVpn(exitName, username, password, forceBridges) {
   daemonPID = spawn(
     "/opt/geph4-vpn-helper",
     [
-      getBinaryPath() + "geph4-client",
+      "/opt/geph4-client",
       "connect",
       "--username",
       username,
