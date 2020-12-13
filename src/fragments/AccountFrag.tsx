@@ -73,6 +73,7 @@ const AccountFrag: React.FC = (props) => {
                 dispatch({ type: "PREF", key: "username", value: "" });
                 dispatch({ type: "PREF", key: "password", value: "" });
               }}
+              style={{ width: 100 }}
             >
               {l10n.logout}
             </Button>
@@ -110,6 +111,7 @@ const AccountFrag: React.FC = (props) => {
                   variant="outlined"
                   onClick={openBilling}
                   disableElevation
+                  style={{ width: 100 }}
                 >
                   {l10n.upgrade}
                 </Button>
@@ -147,6 +149,7 @@ const AccountFrag: React.FC = (props) => {
                   variant="outlined"
                   onClick={openBilling}
                   disableElevation
+                  style={{ width: 100 }}
                 >
                   {l10n.extend}
                 </Button>

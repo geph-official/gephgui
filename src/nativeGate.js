@@ -107,6 +107,8 @@ export function startUpdateChecks(l10n) {
 
 var daemonPID = null;
 
+var s2hPID = null;
+
 export function getPlatform() {
   return platform;
 }
@@ -203,19 +205,6 @@ export async function stopBinderProxy(pid) {
   pid.kill();
 }
 
-// redirection proxy just runs off in the background
-try {
-  spawn(
-    getBinaryPath() + "socks2http" + binExt(),
-    ["-laddr", "127.0.0.1:9910", "-raddr", "127.0.0.1:9909"],
-    {
-      stdio: "inherit",
-    }
-  );
-} catch (e) {
-} finally {
-}
-
 // spawn the geph-client daemon
 export async function startDaemon(
   exitName,
@@ -246,6 +235,19 @@ export async function startDaemon(
   if (daemonPID !== null) {
     throw "daemon started when it really shouldn't be";
   }
+  s2hPID = spawn(
+    getBinaryPath() + "socks2http" + binExt(),
+    [
+      "-laddr",
+      listenAll ? "0.0.0.0:9910" : "127.0.0.1:9910",
+      "-raddr",
+      "127.0.0.1:9909",
+    ],
+    {
+      stdio: "inherit",
+      detached: false,
+    }
+  );
   daemonPID = spawn(
     getBinaryPath() + "geph4-client" + binExt(),
     [
@@ -263,6 +265,7 @@ export async function startDaemon(
       .concat(bypassChinese ? ["--exclude-prc"] : []),
     {
       stdio: "inherit",
+      detached: false,
     }
   );
   daemonPID.on("close", (code) => {
@@ -329,7 +332,7 @@ async function startDaemonVpn(exitName, username, password, forceBridges) {
       "--credential-cache",
       "/tmp/geph4-credentials.db",
     ].concat(forceBridges ? ["--use-bridges"] : []),
-    { stdio: "inherit" }
+    { stdio: "inherit", detached: false }
   );
   daemonPID.on("close", (code) => {
     if (daemonPID !== null) {
@@ -367,6 +370,9 @@ export async function stopDaemon() {
     daemonPID = null;
     try {
       dp.kill("SIGKILL");
+    } catch (e) {}
+    try {
+      s2hPID.kill("SIGKILL");
     } catch (e) {}
   }
 }

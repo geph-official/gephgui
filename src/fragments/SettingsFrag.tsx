@@ -106,23 +106,26 @@ const SettingsFrag: React.FC = (props) => {
             </Select>
           </ListItemSecondaryAction>
         </ListItem>
-        <BooleanSetting
-          propKey="bypassChinese"
-          defValue={false}
-          primary={l10n.excludecn}
-          secondary={l10n.excludecnblurb}
-          disabled={vpn}
-        />
+
         {getPlatform() === "android" ? (
           ""
         ) : (
-          <BooleanSetting
-            propKey="autoProxy"
-            defValue={true}
-            primary={l10n.autoproxy}
-            secondary={l10n.autoproxyblurb}
-            disabled={vpn}
-          />
+          <>
+            <BooleanSetting
+              propKey="bypassChinese"
+              defValue={false}
+              primary={l10n.excludecn}
+              secondary={l10n.excludecnblurb}
+              disabled={vpn}
+            />
+            <BooleanSetting
+              propKey="autoProxy"
+              defValue={true}
+              primary={l10n.autoproxy}
+              secondary={l10n.autoproxyblurb}
+              disabled={vpn}
+            />
+          </>
         )}
       </List>
       <Divider />
@@ -131,6 +134,12 @@ const SettingsFrag: React.FC = (props) => {
           <ListSubheader component="div">{l10n.network}</ListSubheader>
         }
       >
+        <BooleanSetting
+          propKey="forceBridges"
+          defValue={false}
+          primary={l10n.forcebridges}
+          secondary={l10n.tcpblurb}
+        />
         {getPlatform() == "android" ? (
           ""
         ) : (
@@ -141,33 +150,27 @@ const SettingsFrag: React.FC = (props) => {
               primary={l10n.vpn}
               secondary={l10n.vpnblurb}
             />
+            <BooleanSetting
+              propKey="listenAll"
+              defValue={false}
+              primary={l10n.listenall}
+              secondary={l10n.listenallblurb}
+              disabled={vpn}
+            />
+            <ListItem>
+              <ListItemText primary={l10n.socks5} />
+              <span style={{ color: "#666" }}>
+                {listenAll == "true" ? "0.0.0.0" : "127.0.0.1"}:9909
+              </span>
+            </ListItem>
+            <ListItem>
+              <ListItemText primary={l10n.http} />
+              <span style={{ color: "#666" }}>
+                {listenAll == "true" ? "0.0.0.0" : "127.0.0.1"}:9910
+              </span>
+            </ListItem>
           </>
         )}
-        <BooleanSetting
-          propKey="forceBridges"
-          defValue={false}
-          primary={l10n.forcebridges}
-          secondary={l10n.tcpblurb}
-        />
-        <BooleanSetting
-          propKey="listenAll"
-          defValue={false}
-          primary={l10n.listenall}
-          secondary={l10n.listenallblurb}
-          disabled={vpn}
-        />
-        <ListItem>
-          <ListItemText primary={l10n.socks5} />
-          <span style={{ color: "#666" }}>
-            {listenAll == "true" ? "0.0.0.0" : "127.0.0.1"}:9909
-          </span>
-        </ListItem>
-        <ListItem>
-          <ListItemText primary={l10n.http} />
-          <span style={{ color: "#666" }}>
-            {listenAll == "true" ? "0.0.0.0" : "127.0.0.1"}:9910
-          </span>
-        </ListItem>
       </List>
       <Divider />
       <List

@@ -240,14 +240,15 @@ const NetActivityInfo = (props: {}) => {
   return (
     <div
       style={{
-        fontSize: "80%",
+        fontSize: "70%",
         width: 0,
         overflow: "visible",
         whiteSpace: "nowrap",
+        opacity: 0.8,
       }}
     >
       <SpeedLabel kbps={(8 * (downSpeed + upSpeed)) / 1000} max={max} />
-      &emsp;
+      &ensp;
       <PingLabel ms={isValid && connState.ping} /> <br />
     </div>
   );
@@ -265,10 +266,10 @@ const SpeedLabel = (props) => {
   let suffix;
   let divider;
   if (props.kbps > 1000) {
-    suffix = "M";
+    suffix = "Mbps";
     divider = 1000;
   } else {
-    suffix = "k";
+    suffix = "kbps";
     divider = 1;
   }
 
