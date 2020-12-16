@@ -61,7 +61,7 @@ const LoginFrag: React.FC = (props) => {
     );
     setBusy(true);
     try {
-      await syncStatus(uname, pwd);
+      await syncStatus(uname, pwd, true);
       finishLogin();
       return;
     } catch (e) {

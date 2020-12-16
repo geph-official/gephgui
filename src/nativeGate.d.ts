@@ -18,7 +18,8 @@ export function getPlatform(): string;
 
 export async function syncStatus(
   uname: string,
-  pwd: string
+  pwd: string,
+  force: boolean,
 ): Promise<[AccountInfo, ExitInfo[]]>; 
 
 export function startBinderProxy(): number;

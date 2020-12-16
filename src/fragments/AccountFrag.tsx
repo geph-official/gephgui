@@ -9,7 +9,9 @@ import {
   ListItemSecondaryAction,
   Button,
   Divider,
+  IconButton,
 } from "@material-ui/core";
+import RefreshIcon from "@material-ui/icons/Refresh";
 import { useSelector, useDispatch } from "react-redux";
 import { l10nSelector, langSelector } from "../redux/l10n";
 import {
@@ -25,7 +27,7 @@ import { ConnectionStatus, Tier, SpecialConnStates } from "../redux/connState";
 import Alert from "@material-ui/lab/Alert";
 import { getPlatform, stopDaemon } from "../nativeGate";
 
-const AccountFrag: React.FC = (props) => {
+const AccountFrag = (props: { forceSync: () => void }) => {
   const l10n = useSelector(l10nSelector);
   const lang = useSelector(langSelector);
   const username = useSelector(prefSelector("username", ""));
@@ -62,6 +64,9 @@ const AccountFrag: React.FC = (props) => {
             <b>{username}</b>
           </ListItemText>
           <ListItemSecondaryAction>
+            <IconButton aria-label="refresh" onClick={(e) => props.forceSync()}>
+              <RefreshIcon />
+            </IconButton>
             <Button
               color="secondary"
               variant="outlined"
@@ -73,7 +78,7 @@ const AccountFrag: React.FC = (props) => {
                 dispatch({ type: "PREF", key: "username", value: "" });
                 dispatch({ type: "PREF", key: "password", value: "" });
               }}
-              style={{ width: 100 }}
+              style={{ minWidth: 100 }}
             >
               {l10n.logout}
             </Button>
@@ -111,7 +116,7 @@ const AccountFrag: React.FC = (props) => {
                   variant="outlined"
                   onClick={openBilling}
                   disableElevation
-                  style={{ width: 100 }}
+                  style={{ minWidth: 100 }}
                 >
                   {l10n.upgrade}
                 </Button>
@@ -149,7 +154,7 @@ const AccountFrag: React.FC = (props) => {
                   variant="outlined"
                   onClick={openBilling}
                   disableElevation
-                  style={{ width: 100 }}
+                  style={{ minWidth: 100 }}
                 >
                   {l10n.extend}
                 </Button>

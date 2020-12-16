@@ -36,7 +36,7 @@ const useStyles = makeStyles({
   },
 });
 
-const OverviewFrag: React.FC = (props) => {
+const OverviewFrag = (props: { forceSync: () => void }) => {
   const l10n = useSelector(l10nSelector);
   const connState = useSelector((state: GlobalState) => state.connState);
   const classes = useStyles();
@@ -51,7 +51,7 @@ const OverviewFrag: React.FC = (props) => {
         style={{ height: "calc(100vh - 80px)" }}
       >
         <Grid item style={{ width: "100%", marginTop: 0, paddingTop: 0 }}>
-          <AccountFrag />
+          <AccountFrag forceSync={props.forceSync} />
         </Grid>
         <Grid container direction="column" alignItems="center">
           <ConnStatusInfo />

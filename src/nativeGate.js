@@ -143,7 +143,7 @@ function getBinaryPath() {
   throw "UNKNOWN OS";
 }
 
-export function syncStatus(uname, pwd) {
+export function syncStatus(uname, pwd, force) {
   if (!isElectron) {
     return new Promise((resolve, reject) => {
       window._CALLBACK = (v) => {
@@ -154,19 +154,18 @@ export function syncStatus(uname, pwd) {
           resolve(lala);
         }
       };
-      window.Android.jsCheckAccount(uname, pwd, "window._CALLBACK");
+      window.Android.jsCheckAccount(uname, pwd, force, "window._CALLBACK");
     });
   }
   let jsonBuffer = "";
   return new Promise((resolve, reject) => {
     console.log("checking account");
-    let pid = spawn(getBinaryPath() + "geph4-client" + binExt(), [
-      "sync",
-      "--username",
-      uname,
-      "--password",
-      pwd,
-    ]);
+    let pid = spawn(
+      getBinaryPath() + "geph4-client" + binExt(),
+      ["sync", "--username", uname, "--password", pwd].concat(
+        force ? ["--force"] : []
+      )
+    );
     pid.stdout.on("data", (data) => {
       jsonBuffer += data.toString();
     });

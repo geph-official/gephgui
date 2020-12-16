@@ -22,6 +22,7 @@ import {
   DialogContent,
   DialogContentText,
   LinearProgress,
+  Button,
 } from "@material-ui/core";
 import * as icons from "@material-ui/icons";
 import { rootReducer, GlobalState } from "./redux";
@@ -34,7 +35,12 @@ import { prefSelector } from "./redux/prefs";
 import LoginFrag from "./fragments/LoginFrag";
 import AccountFrag from "./fragments/AccountFrag";
 import SettingsFrag from "./fragments/SettingsFrag";
-import { startUpdateChecks, getVersion, syncStatus } from "./nativeGate";
+import {
+  startUpdateChecks,
+  getVersion,
+  syncStatus,
+  stopDaemon,
+} from "./nativeGate";
 import Announcements, { getAnnouncementFeed } from "./fragments/Announcements";
 
 const store = createStore(
@@ -104,7 +110,7 @@ const App: React.FC = (props) => {
     }
   };
 
-  const refreshSync = async () => {
+  const refreshSync = async (force: boolean) => {
     if (username === "") {
       return;
     }
@@ -113,7 +119,7 @@ const App: React.FC = (props) => {
     while (true) {
       try {
         const [accInfo, exits] = await promiseWithTimeout(20000, () =>
-          syncStatus(username, password)
+          syncStatus(username, password, force)
         );
         console.log(accInfo);
         dispatch({ type: "SYNC", account: accInfo });
@@ -157,11 +163,11 @@ const App: React.FC = (props) => {
   }, 1000);
 
   useInterval(() => {
-    refreshSync();
+    refreshSync(false);
   }, 600000);
 
   useEffect(() => {
-    refreshSync();
+    refreshSync(false);
     refreshConnData();
     refreshAnnouncement();
     startUpdateChecks(l10n);
@@ -184,6 +190,28 @@ const App: React.FC = (props) => {
           <DialogContentText>
             <LinearProgress />
             <span style={{ color: "red" }}>{busyError}</span>
+            {busyError ? (
+              <>
+                <hr />
+                <Button
+                  color="secondary"
+                  variant="outlined"
+                  disableElevation
+                  onClick={() => {
+                    localStorage.clear();
+                    dispatch({ type: "CONN", rawJson: SpecialConnStates.Dead });
+                    stopDaemon();
+                    dispatch({ type: "PREF", key: "username", value: "" });
+                    dispatch({ type: "PREF", key: "password", value: "" });
+                  }}
+                  style={{ minWidth: 100 }}
+                >
+                  {l10n.logout}
+                </Button>
+              </>
+            ) : (
+              ""
+            )}
           </DialogContentText>
         </DialogContent>
       </Dialog>
@@ -197,7 +225,7 @@ const App: React.FC = (props) => {
         {(() => {
           switch (activePage) {
             case 0:
-              return <OverviewFrag />;
+              return <OverviewFrag forceSync={() => refreshSync(true)} />;
             case 1:
               return <Announcements />;
             case 2:
