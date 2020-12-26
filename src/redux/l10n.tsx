@@ -112,12 +112,12 @@ const enUSBindings = {
   free: "Free",
   tcp: "Use TCP mode",
   tcpblurb: "Use strong anti-censorship in all locations",
-  vpn: "Use global VPN (EXPERIMENTAL)",
-  vpnblurb: "Linux only. Disables some features!",
+  vpn: "Use global VPN",
+  vpnblurb: "Experimental. Not available on macOS.",
   excludeapps: "Exclude apps",
   excludeappsblurb: "Let apps bypass Geph",
   excludecn: "Exclude Chinese traffic",
-  excludecnblurb: "Let PRC traffic bypass Geph",
+  excludecnblurb: "Does not apply to VPN traffic",
 
   countries: {
     bg: "Bulgaria",
@@ -183,8 +183,8 @@ const zhCNBindings = {
   updateLater: "之后提醒",
   choose: "选择",
   errBadCred: "用戶名或密码错误，请重试",
-  vpn: "使用全局VPN（测试）",
-  vpnblurb: "仅限Linux！将关闭一些功能！",
+  vpn: "使用全局VPN",
+  vpnblurb: "实验性功能！暂不支持macOS",
   listenall: "监听所有网络接口",
   listenallblurb: "与同一网络上的其他计算机共享迷雾通",
   connecting: "连接中",
@@ -246,7 +246,7 @@ const zhCNBindings = {
   tcp: "使用TCP模式",
   tcpblurb: "在所有地区开启强力反封锁",
   excludecn: "中国流量分流",
-  excludecnblurb: "对中国大陆流量不进行代理",
+  excludecnblurb: "不适用于全局VPN流量",
 
   upgradeblurb: (
     <span>
@@ -323,8 +323,8 @@ const zhTWBindings = {
   autoconnblurb: "開啓迷霧通時自動連接",
   plusonly: "付費專用",
   autoproxy: "自動設置代理",
-  vpn: "使用全局VPN（測試）",
-  vpnblurb: "僅限Linux！將關閉一些功能！",
+  vpn: "使用全局VPN",
+  vpnblurb: "實驗性功能！暫不支持macOS",
   listenall: "監聽一切網絡接口",
   listenallblurb: "與同一網絡上的其他計算機共享迷霧通",
   autoproxyblurb: "主流浏覽器之外可能需要手動設定",
@@ -396,7 +396,7 @@ const zhTWBindings = {
   excludeapps: "應用例外",
   excludeappsblurb: "允許特定應用繞過迷霧通聯網",
   excludecn: "中國流量分流",
-  excludecnblurb: "對中國大陸流量不進行代理",
+  excludecnblurb: "不適用於全局VPN流量",
 
   upgradeblurb: (
     <span>

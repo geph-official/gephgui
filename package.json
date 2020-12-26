@@ -1,13 +1,12 @@
 {
   "name": "gephgui4",
-  "version": "3.99.21-ALPHA",
+  "version": "3.99.23-ALPHA",
   "private": true,
   "homepage": ".",
   "main": "public/electron.js",
   "dependencies": {
     "chinese-conv": "^1.0.1",
     "electron-is-dev": "^1.1.0",
-    "electron-sudo": "^4.0.12",
     "franc": "^5.0.0",
     "rss-parser": "^3.7.6",
     "sanitize-html": "^1.23.0",

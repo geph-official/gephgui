@@ -74,7 +74,7 @@ const SettingsFrag: React.FC = (props) => {
   const l10n = useSelector(l10nSelector);
   const lang = useSelector(langSelector);
   const listenAll = useSelector(prefSelector("listenAll", false));
-  const vpn = useSelector(prefSelector("vpn", false)) === "true";
+  // const vpn = useSelector(prefSelector("vpn", false)) === "true";
   const stateConnected = useSelector(
     (state: GlobalState) => state.connState.connected
   );
@@ -112,18 +112,22 @@ const SettingsFrag: React.FC = (props) => {
         ) : (
           <>
             <BooleanSetting
+              propKey="vpn"
+              defValue={false}
+              primary={l10n.vpn}
+              secondary={l10n.vpnblurb}
+            />
+            <BooleanSetting
               propKey="bypassChinese"
               defValue={false}
               primary={l10n.excludecn}
               secondary={l10n.excludecnblurb}
-              disabled={vpn}
             />
             <BooleanSetting
               propKey="autoProxy"
               defValue={true}
               primary={l10n.autoproxy}
               secondary={l10n.autoproxyblurb}
-              disabled={vpn}
             />
           </>
         )}
@@ -131,7 +135,7 @@ const SettingsFrag: React.FC = (props) => {
       <Divider />
       <List
         subheader={
-          <ListSubheader component="div">{l10n.network}</ListSubheader>
+          <ListSubheader component="div">{l10n.details}</ListSubheader>
         }
       >
         <BooleanSetting
@@ -145,17 +149,10 @@ const SettingsFrag: React.FC = (props) => {
         ) : (
           <>
             <BooleanSetting
-              propKey="vpn"
-              defValue={false}
-              primary={l10n.vpn}
-              secondary={l10n.vpnblurb}
-            />
-            <BooleanSetting
               propKey="listenAll"
               defValue={false}
               primary={l10n.listenall}
               secondary={l10n.listenallblurb}
-              disabled={vpn}
             />
             <ListItem>
               <ListItemText primary={l10n.socks5} />
@@ -171,13 +168,6 @@ const SettingsFrag: React.FC = (props) => {
             </ListItem>
           </>
         )}
-      </List>
-      <Divider />
-      <List
-        subheader={
-          <ListSubheader component="div">{l10n.details}</ListSubheader>
-        }
-      >
         <ListItem>
           <ListItemText
             primary={l10n.feedback}

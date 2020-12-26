@@ -105,7 +105,7 @@ export function startUpdateChecks(l10n) {
   }
 }
 
-var daemonPID = null;
+var DAEMON_RUNNING = false;
 
 var s2hPID = null;
 
@@ -122,7 +122,7 @@ function binExt() {
 }
 
 export function daemonRunning() {
-  return daemonPID != null;
+  return DAEMON_RUNNING;
 }
 
 function getBinaryPath() {
@@ -231,7 +231,7 @@ export async function startDaemon(
     await startDaemonVpn(exitName, username, password, forceBridges);
     return;
   }
-  if (daemonPID !== null) {
+  if (daemonRunning()) {
     throw "daemon started when it really shouldn't be";
   }
   s2hPID = spawn(
@@ -247,7 +247,7 @@ export async function startDaemon(
       detached: false,
     }
   );
-  daemonPID = spawn(
+  let daemonPID = spawn(
     getBinaryPath() + "geph4-client" + binExt(),
     [
       "connect",
@@ -267,16 +267,14 @@ export async function startDaemon(
       detached: false,
     }
   );
-  daemonPID.on("close", (code) => {
-    if (daemonPID !== null) {
-      daemonPID = null;
-    }
+  daemonPID.on("exit", () => {
+    s2hPID.kill();
   });
   if (autoProxy) {
     proxySet = true;
     // on macOS, elevate pac permissions
     if (os.platform() === "darwin") {
-      await elevatePerms();
+      await elevatePacHelper();
     }
     // Don't use the pac executable on Windoze!
     if (os.platform() === "win32") {
@@ -309,15 +307,20 @@ export async function startDaemon(
 
 // starts VPN mode
 async function startDaemonVpn(exitName, username, password, forceBridges) {
-  if (os.platform() !== "linux") {
-    alert("VPN mode only supported on Linux");
+  if (os.platform() !== "linux" && os.platform() !== "win32") {
+    alert("VPN mode only supported on Linux and Windows");
     return;
   }
-  spawnSync(getBinaryPath() + "escalate-helper");
-  daemonPID = spawn(
-    "/opt/geph4-vpn-helper",
+
+  let isUnix = os.platform() !== "win32";
+
+  if (isUnix) {
+    spawnSync(getBinaryPath() + "escalate-helper");
+  }
+  let pid = spawn(
+    isUnix ? "/opt/geph4-vpn-helper" : getBinaryPath() + "geph4-vpn-helper.exe",
     [
-      "/opt/geph4-client",
+      isUnix ? "/opt/geph4-client" : getBinaryPath() + "geph4-client.exe",
       "connect",
       "--username",
       username,
@@ -326,18 +329,24 @@ async function startDaemonVpn(exitName, username, password, forceBridges) {
       "--exit-server",
       exitName,
       "--stdio-vpn",
-      "--dns-listen",
-      "127.0.0.1:15353",
-      "--credential-cache",
-      "/tmp/geph4-credentials.db",
-    ].concat(forceBridges ? ["--use-bridges"] : []),
+    ]
+      .concat(forceBridges ? ["--use-bridges"] : [])
+      .concat(
+        isUnix
+          ? [
+              "--dns-listen",
+              "127.0.0.1:15353",
+              "--credential-cache",
+              "/tmp/geph4-credentials.db",
+            ]
+          : []
+      ),
     { stdio: "inherit", detached: false }
   );
-  daemonPID.on("close", (code) => {
-    if (daemonPID !== null) {
-      daemonPID = null;
-    }
+  pid.on("exit", (_) => {
+    DAEMON_RUNNING = false;
   });
+  DAEMON_RUNNING = true;
   vpnSet = true;
 }
 
@@ -364,22 +373,13 @@ export async function stopDaemon() {
   } else {
     spawn(getBinaryPath() + "pac" + binExt(), ["off"]);
   }
-  if (daemonPID != null) {
-    let dp = daemonPID;
-    daemonPID = null;
-    try {
-      dp.kill("SIGKILL");
-    } catch (e) {}
-    try {
-      s2hPID.kill("SIGKILL");
-    } catch (e) {}
-  }
+  DAEMON_RUNNING = false;
 }
 
 // kill the daemon when we exit
 if (isElectron) {
   window.onbeforeunload = function (e) {
-    if (daemonPID != null) {
+    if (daemonRunning()) {
       e.preventDefault();
       e.returnValue = false;
       if (window) {
@@ -416,7 +416,7 @@ function macElevatePerms() {
   });
 }
 
-async function elevatePerms() {
+async function elevatePacHelper() {
   const fs = window.require("fs");
   let stats = fs.statSync(getBinaryPath() + "pac");
   if (!arePermsCorrect()) {

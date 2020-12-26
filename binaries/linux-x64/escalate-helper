@@ -1,7 +1,7 @@
 #!/bin/bash
 cd "$(dirname "$(readlink -f "$0")")"
 pwd
-if  test -f /opt/geph4-client
+if  cmp -s /opt/geph4-client ./geph4-client
     then 
     echo "already works"
 else
