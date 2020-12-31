@@ -265,10 +265,18 @@ export async function startDaemon(
       .concat(forceBridges ? ["--use-bridges"] : [])
       .concat(bypassChinese ? ["--exclude-prc"] : []),
     {
-      stdio: "inherit",
       detached: false,
     }
   );
+
+  daemonPID.stdout.on("data", (data) => {
+    console.log(`geph4-client stdout: ${data}`);
+  });
+
+  daemonPID.stderr.on("data", (data) => {
+    console.error(`geph4-client stderr: ${data}`);
+  });
+
   daemonPID.on("exit", () => {
     s2hPID.kill();
   });
