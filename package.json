@@ -1,16 +1,18 @@
 {
   "name": "gephgui4",
-  "version": "3.99.23-ALPHA",
+  "version": "3.99.26-ALPHA",
   "private": true,
   "homepage": ".",
   "main": "public/electron.js",
   "dependencies": {
+    "base-64": "^1.0.0",
     "chinese-conv": "^1.0.1",
     "electron-is-dev": "^1.1.0",
     "franc": "^5.0.0",
     "rss-parser": "^3.7.6",
     "sanitize-html": "^1.23.0",
     "semver": "^7.2.2",
+    "utf8": "^3.0.0",
     "zh_cn_zh_tw": "^1.0.6"
   },
   "scripts": {
@@ -63,9 +65,9 @@
   "devDependencies": {
     "@ionic/react": "^4.11.3",
     "@ionic/react-router": "^4.11.3",
-    "@material-ui/core": "^4.9.2",
+    "@material-ui/core": "^4.11.2",
     "@material-ui/icons": "^4.9.1",
-    "@material-ui/lab": "^4.0.0-alpha.43",
+    "@material-ui/lab": "^4.0.0-alpha.57",
     "@types/axios": "^0.14.0",
     "@types/jest": "24.0.18",
     "@types/node": "12.7.5",
@@ -90,7 +92,7 @@
     "react-dom": "^16.11.0",
     "react-helmet": "^5.2.1",
     "react-odometerjs": "^2.1.1",
-    "react-redux": "^7.1.3",
+    "react-redux": "^7.2.2",
     "react-router": "^5.1.2",
     "react-router-dom": "^5.1.2",
     "react-scripts": "^3.4.1",

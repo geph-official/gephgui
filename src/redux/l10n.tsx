@@ -111,13 +111,15 @@ const enUSBindings = {
   paid: "Plus",
   free: "Free",
   tcp: "Use TCP mode",
-  tcpblurb: "Use strong anti-censorship in all locations",
+  tcpblurb: "Use strong anti-censorship regardless of location",
   vpn: "Use global VPN",
-  vpnblurb: "Experimental. Not available on macOS.",
+  vpnblurb: "Not available on macOS",
   excludeapps: "Exclude apps",
   excludeappsblurb: "Let apps bypass Geph",
   excludecn: "Exclude Chinese traffic",
   excludecnblurb: "Does not apply to VPN traffic",
+
+  selectExcludedApps: "Select excluded apps",
 
   countries: {
     bg: "Bulgaria",
@@ -247,6 +249,10 @@ const zhCNBindings = {
   tcpblurb: "在所有地区开启强力反封锁",
   excludecn: "中国流量分流",
   excludecnblurb: "不适用于全局VPN流量",
+  excludeapps: "应用例外",
+  excludeappsblurb: "允许特定应用绕过迷雾通联网",
+
+  selectExcludedApps: "选择例外应用",
 
   upgradeblurb: (
     <span>
@@ -397,6 +403,8 @@ const zhTWBindings = {
   excludeappsblurb: "允許特定應用繞過迷霧通聯網",
   excludecn: "中國流量分流",
   excludecnblurb: "不適用於全局VPN流量",
+
+  selectExcludedApps: "選擇例外應用",
 
   upgradeblurb: (
     <span>

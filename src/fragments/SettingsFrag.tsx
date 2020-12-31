@@ -13,6 +13,7 @@ import {
   Dialog,
   AppBar,
   DialogTitle,
+  ListItemIcon,
 } from "@material-ui/core";
 import { useSelector, useDispatch } from "react-redux";
 import { l10nSelector, langSelector } from "../redux/l10n";
@@ -21,6 +22,18 @@ import { version } from "../../package.json";
 import { getPlatform } from "../nativeGate";
 import { GlobalState } from "../redux";
 import { ConnectionStatus } from "../redux/connState";
+import LanguageIcon from "@material-ui/icons/Language";
+import {
+  Apps,
+  BugReport,
+  CallSplit,
+  SwapHoriz,
+  Update,
+  VpnLock,
+  Web,
+  WifiTethering,
+} from "@material-ui/icons";
+import ExcludeAppPicker from "./ExcludeAppPicker";
 
 const BooleanSetting = (props: {
   propKey: string;
@@ -28,6 +41,7 @@ const BooleanSetting = (props: {
   primary: string;
   secondary?: string;
   disabled?: boolean;
+  icon: any;
 }) => {
   const currValue = useSelector(
     prefSelector(props.propKey, props.defValue ? "true" : "false")
@@ -35,7 +49,12 @@ const BooleanSetting = (props: {
   const dispatch = useDispatch();
   return (
     <ListItem>
-      <ListItemText primary={props.primary} secondary={props.secondary} />
+      <ListItemIcon>{props.icon}</ListItemIcon>
+      <ListItemText
+        primary={props.primary}
+        secondary={props.secondary}
+        style={{ maxWidth: "60vw" }}
+      />
       <ListItemSecondaryAction>
         <Switch
           checked={currValue === "true"}
@@ -74,11 +93,13 @@ const SettingsFrag: React.FC = (props) => {
   const l10n = useSelector(l10nSelector);
   const lang = useSelector(langSelector);
   const listenAll = useSelector(prefSelector("listenAll", false));
-  // const vpn = useSelector(prefSelector("vpn", false)) === "true";
+  const excludeApps =
+    useSelector(prefSelector("excludeApps", false)) === "true";
   const stateConnected = useSelector(
     (state: GlobalState) => state.connState.connected
   );
   const dispatch = useDispatch();
+  const [pickerOpened, setPickerOpened] = useState(false);
   return (
     <>
       <List
@@ -87,6 +108,9 @@ const SettingsFrag: React.FC = (props) => {
         }
       >
         <ListItem>
+          <ListItemIcon>
+            <LanguageIcon />
+          </ListItemIcon>
           <ListItemText primary={l10n.language} />
           <ListItemSecondaryAction>
             <Select
@@ -107,8 +131,38 @@ const SettingsFrag: React.FC = (props) => {
           </ListItemSecondaryAction>
         </ListItem>
 
+        <Dialog
+          open={pickerOpened}
+          onClose={() => setPickerOpened(false)}
+          fullScreen
+        >
+          <ExcludeAppPicker handleClose={() => setPickerOpened(false)} />
+        </Dialog>
+
         {getPlatform() === "android" ? (
-          ""
+          <>
+            <BooleanSetting
+              propKey="excludeApps"
+              defValue={false}
+              primary={l10n.excludeapps}
+              secondary={l10n.excludeappsblurb}
+              icon={<CallSplit />}
+            />
+            {excludeApps ? (
+              <ListItem
+                button
+                style={{ paddingLeft: 32 }}
+                onClick={() => setPickerOpened(true)}
+              >
+                <ListItemIcon>
+                  <Apps />
+                </ListItemIcon>
+                <ListItemText primary={l10n.selectExcludedApps} />
+              </ListItem>
+            ) : (
+              ""
+            )}
+          </>
         ) : (
           <>
             <BooleanSetting
@@ -116,18 +170,21 @@ const SettingsFrag: React.FC = (props) => {
               defValue={false}
               primary={l10n.vpn}
               secondary={l10n.vpnblurb}
+              icon={<VpnLock />}
             />
             <BooleanSetting
               propKey="bypassChinese"
               defValue={false}
               primary={l10n.excludecn}
               secondary={l10n.excludecnblurb}
+              icon={<CallSplit />}
             />
             <BooleanSetting
               propKey="autoProxy"
               defValue={true}
               primary={l10n.autoproxy}
               secondary={l10n.autoproxyblurb}
+              icon={<Web />}
             />
           </>
         )}
@@ -143,6 +200,7 @@ const SettingsFrag: React.FC = (props) => {
           defValue={false}
           primary={l10n.forcebridges}
           secondary={l10n.tcpblurb}
+          icon={<SwapHoriz />}
         />
         {getPlatform() == "android" ? (
           ""
@@ -153,22 +211,29 @@ const SettingsFrag: React.FC = (props) => {
               defValue={false}
               primary={l10n.listenall}
               secondary={l10n.listenallblurb}
+              icon={<WifiTethering />}
             />
-            <ListItem>
-              <ListItemText primary={l10n.socks5} />
-              <span style={{ color: "#666" }}>
-                {listenAll == "true" ? "0.0.0.0" : "127.0.0.1"}:9909
-              </span>
-            </ListItem>
-            <ListItem>
-              <ListItemText primary={l10n.http} />
-              <span style={{ color: "#666" }}>
-                {listenAll == "true" ? "0.0.0.0" : "127.0.0.1"}:9910
-              </span>
-            </ListItem>
+            <List style={{ paddingLeft: 32 }}>
+              <ListItem>
+                <ListItemText primary={l10n.socks5} />
+                <span style={{ color: "#666" }}>
+                  {listenAll == "true" ? "0.0.0.0" : "127.0.0.1"}:9909
+                </span>
+              </ListItem>
+              <ListItem>
+                <ListItemText primary={l10n.http} />
+                <span style={{ color: "#666" }}>
+                  {listenAll == "true" ? "0.0.0.0" : "127.0.0.1"}:9910
+                </span>
+              </ListItem>
+            </List>
           </>
         )}
+        <Divider />
         <ListItem>
+          <ListItemIcon>
+            <BugReport />
+          </ListItemIcon>
           <ListItemText
             primary={l10n.feedback}
             secondary={l10n.feedbackblurb}
@@ -192,6 +257,9 @@ const SettingsFrag: React.FC = (props) => {
           </ListItemSecondaryAction>
         </ListItem>
         <ListItem>
+          <ListItemIcon>
+            <Update />
+          </ListItemIcon>
           <ListItemText primary={l10n.version} />
           <span style={{ color: "#666" }}>{version}</span>
         </ListItem>

@@ -213,7 +213,8 @@ export async function startDaemon(
   forceBridges,
   autoProxy,
   bypassChinese,
-  vpn
+  vpn,
+  excludeAppsJson
 ) {
   if (!isElectron) {
     window.Android.jsStartDaemon(
@@ -222,7 +223,8 @@ export async function startDaemon(
       exitName,
       listenAll,
       forceBridges,
-      bypassChinese
+      bypassChinese,
+      excludeAppsJson
     );
     return;
   }

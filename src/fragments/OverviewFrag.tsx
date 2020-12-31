@@ -98,6 +98,9 @@ const ConnToggle = (props: {}) => {
   const autoProxyStr = useSelector(prefSelector("autoProxy", "true"));
   const bypassChineseStr = useSelector(prefSelector("bypassChinese", "false"));
   const vpnStr = useSelector(prefSelector("vpn", "false"));
+  const excludeAppsJson = useSelector(prefSelector("excludedAppList", "[]"));
+  const excludeApps =
+    useSelector(prefSelector("excludeApps", false)) === "true";
   const dispatch = useDispatch();
   const [forceState, setForceState] = useState("ind");
   const handler = async (_) => {
@@ -112,7 +115,8 @@ const ConnToggle = (props: {}) => {
         forceBridgesStr === "true",
         autoProxyStr === "true",
         bypassChineseStr === "true",
-        vpnStr === "true"
+        vpnStr === "true",
+        excludeApps ? excludeAppsJson : "[]"
       );
       setForceState("yes");
     } else {
