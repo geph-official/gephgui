@@ -72,6 +72,7 @@ export const connReducer = (
   state: ConnState = initState,
   action: ConnAction | SyncAction
 ) => {
+  console.log(action);
   if (action.type === "CONN") {
     if (!action.rawJson) {
       return state;

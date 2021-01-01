@@ -34,9 +34,6 @@ const AccountFrag = (props: { forceSync: () => void }) => {
   const password = useSelector(prefSelector("password", ""));
   const dispatch = useDispatch();
   const connstate = useSelector((state: GlobalState) => state.connState);
-  const [showPwd, setShowPwd] = useState(false);
-  const isRunning =
-    connstate.fresh && connstate.connected === ConnectionStatus.Connected;
   const extendURL = `https://geph.io/billing/login?next=%2Fbilling%2Fdashboard&uname=${username}&pwd=${password}`;
   const openBilling = () => {
     if (getPlatform() === "android") {

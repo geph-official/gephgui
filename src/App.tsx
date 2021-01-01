@@ -88,7 +88,7 @@ const App: React.FC = (props) => {
   const [activePage, setActivePage] = useState(0);
   const [busy, setBusy] = useState(false);
   const [busyError, setBusyError] = useState("");
-  const statsURL = "http://localhost:9809";
+  const statsURL = "http://127.0.0.1:9809";
   const announcements = useSelector(prefSelector("announceCache", []));
   const lastReadAnnounce = useSelector(
     prefSelector("lastReadAnnounce", new Date("1900-01-01"))
@@ -98,7 +98,9 @@ const App: React.FC = (props) => {
   }).length;
 
   const refreshConnData = async () => {
+    console.log("refreshConnData");
     if (username === "") {
+      console.log("username empty, going off");
       return;
     }
     try {

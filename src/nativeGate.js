@@ -2,6 +2,7 @@
 // right now it only supports Electron
 
 import axios from "axios";
+import { exit } from "process";
 import semver from "semver";
 import { getl10n } from "./redux/l10n";
 
@@ -174,7 +175,20 @@ export function syncStatus(uname, pwd, force) {
       if (lala.error) {
         reject(lala.error);
       } else {
-        resolve(lala);
+        // sort free vs plus
+        let [accInfo, allExits, freeExits] = lala;
+        for (let exit of allExits) {
+          exit.plus_only = true;
+        }
+        for (let freeExit of freeExits) {
+          // crazy inefficient but it's fine
+          for (let exit of allExits) {
+            if (exit.hostname === freeExit.hostname) {
+              exit.plus_only = false;
+            }
+          }
+        }
+        resolve([accInfo, allExits]);
       }
     });
   });
