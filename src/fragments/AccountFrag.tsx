@@ -14,17 +14,10 @@ import {
 import RefreshIcon from "@material-ui/icons/Refresh";
 import { useSelector, useDispatch } from "react-redux";
 import { l10nSelector, langSelector } from "../redux/l10n";
-import {
-  AccountCircle,
-  Lock,
-  CreditCard,
-  Favorite,
-  DateRange,
-} from "@material-ui/icons";
+import { AccountCircle, Favorite, DateRange } from "@material-ui/icons";
 import { prefSelector } from "../redux/prefs";
 import { GlobalState } from "../redux";
-import { ConnectionStatus, Tier, SpecialConnStates } from "../redux/connState";
-import Alert from "@material-ui/lab/Alert";
+import { SpecialConnStates } from "../redux/connState";
 import { getPlatform, stopDaemon } from "../nativeGate";
 
 const AccountFrag = (props: { forceSync: () => void }) => {
@@ -34,7 +27,9 @@ const AccountFrag = (props: { forceSync: () => void }) => {
   const password = useSelector(prefSelector("password", ""));
   const dispatch = useDispatch();
   const connstate = useSelector((state: GlobalState) => state.connState);
-  const extendURL = `https://geph.io/billing/login?next=%2Fbilling%2Fdashboard&uname=${username}&pwd=${password}`;
+  const extendURL = `https://geph.io/billing/login?next=%2Fbilling%2Fdashboard&uname=${encodeURIComponent(
+    username
+  )}&pwd=${encodeURIComponent(password)}`;
   const openBilling = () => {
     if (getPlatform() === "android") {
       window.location.href = extendURL;

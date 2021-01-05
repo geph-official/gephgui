@@ -152,7 +152,7 @@ export function syncStatus(uname, pwd, force) {
         if (lala.error) {
           reject(lala.error);
         } else {
-          resolve(lala);
+          resolve(parseSync(lala));
         }
       };
       window.Android.jsCheckAccount(uname, pwd, force, "window._CALLBACK");
@@ -175,23 +175,27 @@ export function syncStatus(uname, pwd, force) {
       if (lala.error) {
         reject(lala.error);
       } else {
-        // sort free vs plus
-        let [accInfo, allExits, freeExits] = lala;
-        for (let exit of allExits) {
-          exit.plus_only = true;
-        }
-        for (let freeExit of freeExits) {
-          // crazy inefficient but it's fine
-          for (let exit of allExits) {
-            if (exit.hostname === freeExit.hostname) {
-              exit.plus_only = false;
-            }
-          }
-        }
-        resolve([accInfo, allExits]);
+        resolve(parseSync(lala));
       }
     });
   });
+}
+
+function parseSync(lala) {
+  // sort free vs plus
+  let [accInfo, allExits, freeExits] = lala;
+  for (let exit of allExits) {
+    exit.plus_only = true;
+  }
+  for (let freeExit of freeExits) {
+    // crazy inefficient but it's fine
+    for (let exit of allExits) {
+      if (exit.hostname === freeExit.hostname) {
+        exit.plus_only = false;
+      }
+    }
+  }
+  return [accInfo, allExits];
 }
 
 // spawn geph-client in binder proxy mode
