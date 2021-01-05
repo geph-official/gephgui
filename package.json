@@ -74,7 +74,7 @@
     "@types/react-redux": "^7.1.7",
     "@types/react-router": "^5.1.2",
     "@types/react-router-dom": "^4.3.1",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "axios-retry": "^3.1.2",
     "dagre-d3": "^0.6.4",
     "datejs": "^1.0.0-rc3",
