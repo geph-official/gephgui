@@ -222,6 +222,13 @@ export async function stopBinderProxy(pid) {
   pid.kill();
 }
 
+function isOSWin64() {
+  return (
+    process.arch === "x64" ||
+    process.env.hasOwnProperty("PROCESSOR_ARCHITEW6432")
+  );
+}
+
 // spawn the geph-client daemon
 export async function startDaemon(
   exitName,
@@ -268,7 +275,7 @@ export async function startDaemon(
     }
   );
   let daemonPID = spawn(
-    getBinaryPath() + "geph4-client" + binExt(),
+    getBinaryPath() + "geph4-client" + (isOSWin64() ? "64" : "") + binExt(),
     [
       "connect",
       "--username",

@@ -4,6 +4,7 @@ export PREFIX="https://f001.backblazeb2.com/file/geph-dl/geph4-binaries"
 #export VERSION="v0.22.3"
 
 curl -L "$PREFIX/geph4-client-windows-i386.exe" > binaries/win-ia32/geph4-client.exe
+curl -L "$PREFIX/geph4-client-windows-amd64.exe" > binaries/win-ia32/geph4-client64.exe
 #curl "$PREFIX/geph-client-linux-i386-$VERSION" > binaries/linux-ia32/geph-client
 #chmod +x binaries/linux-ia32/geph-client
 curl -L "$PREFIX/geph4-client-linux-amd64" > binaries/linux-x64/geph4-client
