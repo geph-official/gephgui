@@ -1,10 +1,11 @@
 {
   "name": "gephgui4",
-  "version": "4.0.8",
+  "version": "4.0.10",
   "private": true,
   "homepage": ".",
   "main": "public/electron.js",
   "dependencies": {
+    "arch": "^2.2.0",
     "base-64": "^1.0.0",
     "chinese-conv": "^1.0.1",
     "electron-is-dev": "^1.1.0",

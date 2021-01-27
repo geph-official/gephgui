@@ -108,8 +108,6 @@ export function startUpdateChecks(l10n) {
 
 var DAEMON_RUNNING = false;
 
-var s2hPID = null;
-
 export function getPlatform() {
   return platform;
 }
@@ -223,10 +221,8 @@ export async function stopBinderProxy(pid) {
 }
 
 function isOSWin64() {
-  return (
-    process.arch === "x64" ||
-    process.env.hasOwnProperty("PROCESSOR_ARCHITEW6432")
-  );
+  var arch = require("arch");
+  return arch() == "x64";
 }
 
 // spawn the geph-client daemon
@@ -261,19 +257,6 @@ export async function startDaemon(
   if (daemonRunning()) {
     throw "daemon started when it really shouldn't be";
   }
-  s2hPID = spawn(
-    getBinaryPath() + "socks2http" + binExt(),
-    [
-      "-laddr",
-      listenAll ? "0.0.0.0:9910" : "127.0.0.1:9910",
-      "-raddr",
-      "127.0.0.1:9909",
-    ],
-    {
-      stdio: "inherit",
-      detached: false,
-    }
-  );
   let daemonPID = spawn(
     getBinaryPath() + "geph4-client" + (isOSWin64() ? "64" : "") + binExt(),
     [
@@ -286,6 +269,8 @@ export async function startDaemon(
       exitName,
       "--socks5-listen",
       listenAll ? "0.0.0.0:9909" : "127.0.0.1:9909",
+      "--http-listen",
+      listenAll ? "0.0.0.0:9910" : "127.0.0.1:9910",
     ]
       .concat(forceBridges ? ["--use-bridges"] : [])
       .concat(bypassChinese ? ["--exclude-prc"] : []),
@@ -302,9 +287,12 @@ export async function startDaemon(
     console.error(`geph4-client stderr: ${data}`);
   });
 
-  daemonPID.on("exit", () => {
-    s2hPID.kill();
+  daemonPID.on("exit", (_) => {
+    DAEMON_RUNNING = false;
   });
+
+  DAEMON_RUNNING = true;
+
   if (autoProxy) {
     proxySet = true;
     // on macOS, elevate pac permissions
@@ -355,7 +343,9 @@ async function startDaemonVpn(exitName, username, password, forceBridges) {
   let pid = spawn(
     isUnix ? "/opt/geph4-vpn-helper" : getBinaryPath() + "geph4-vpn-helper.exe",
     [
-      isUnix ? "/opt/geph4-client" : getBinaryPath() + "geph4-client.exe",
+      isUnix
+        ? "/opt/geph4-client"
+        : getBinaryPath() + "geph4-client" + (isOSWin64() ? "64" : "") + ".exe",
       "connect",
       "--username",
       username,

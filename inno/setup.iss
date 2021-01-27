@@ -42,6 +42,7 @@ Type: filesandordirs; Name: "{app}\*"
 [Files]
 ;Source: "E:\geph-electron-win32-ia32\geph-electron.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\dist\win-ia32-unpacked\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "..\binaries\win-drivers\*"; DestDir: "{app}\resources\app\binaries\win-ia32\"; Flags: onlyifdoesntexist uninsneveruninstall recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]

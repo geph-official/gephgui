@@ -202,33 +202,29 @@ const SettingsFrag: React.FC = (props) => {
           secondary={l10n.tcpblurb}
           icon={<SwapHoriz />}
         />
-        {getPlatform() == "android" ? (
-          ""
-        ) : (
-          <>
-            <BooleanSetting
-              propKey="listenAll"
-              defValue={false}
-              primary={l10n.listenall}
-              secondary={l10n.listenallblurb}
-              icon={<WifiTethering />}
-            />
-            <List style={{ paddingLeft: 32 }}>
-              <ListItem>
-                <ListItemText primary={l10n.socks5} />
-                <span style={{ color: "#666" }}>
-                  {listenAll == "true" ? "0.0.0.0" : "127.0.0.1"}:9909
-                </span>
-              </ListItem>
-              <ListItem>
-                <ListItemText primary={l10n.http} />
-                <span style={{ color: "#666" }}>
-                  {listenAll == "true" ? "0.0.0.0" : "127.0.0.1"}:9910
-                </span>
-              </ListItem>
-            </List>
-          </>
-        )}
+        <>
+          <BooleanSetting
+            propKey="listenAll"
+            defValue={false}
+            primary={l10n.listenall}
+            secondary={l10n.listenallblurb}
+            icon={<WifiTethering />}
+          />
+          <List style={{ paddingLeft: 32 }}>
+            <ListItem>
+              <ListItemText primary={l10n.socks5} />
+              <span style={{ color: "#666" }}>
+                {listenAll == "true" ? "0.0.0.0" : "127.0.0.1"}:9909
+              </span>
+            </ListItem>
+            <ListItem>
+              <ListItemText primary={l10n.http} />
+              <span style={{ color: "#666" }}>
+                {listenAll == "true" ? "0.0.0.0" : "127.0.0.1"}:9910
+              </span>
+            </ListItem>
+          </List>
+        </>
         <Divider />
         <ListItem>
           <ListItemIcon>

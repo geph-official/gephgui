@@ -13,7 +13,7 @@ curl -L "$PREFIX/geph4-vpn-helper-linux-amd64" > binaries/linux-x64/geph4-vpn-he
 chmod +x binaries/linux-x64/geph4-vpn-helper
 curl -L "$PREFIX/geph4-client-macos-amd64" > binaries/mac-x64/geph4-client
 chmod +x binaries/mac-x64/geph4-client
-
+exit 0
 
 echo "building socks2http from source"
 rm -rf socks2http
