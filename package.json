@@ -79,7 +79,7 @@
     "dagre-d3": "^0.6.4",
     "datejs": "^1.0.0-rc3",
     "detect-nearest-browser-locale": "^19.0.0",
-    "electron": "^6.1.2",
+    "electron": "^9.4.0",
     "electron-builder": "^21.2.0",
     "electron-packager": "^14.1.0",
     "flag-icon-css": "^3.4.5",
