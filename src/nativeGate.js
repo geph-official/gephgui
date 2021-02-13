@@ -222,7 +222,7 @@ export async function stopBinderProxy(pid) {
 
 function isOSWin64() {
   var arch = require("arch");
-  return arch() == "x64";
+  return arch() == "x64" && os.platform() === "win32";
 }
 
 // spawn the geph-client daemon
@@ -251,7 +251,7 @@ export async function startDaemon(
   }
 
   if (vpn) {
-    await startDaemonVpn(exitName, username, password, forceBridges);
+    await startDaemonVpn(exitName, username, password, forceBridges, listenAll);
     return;
   }
   if (daemonRunning()) {
@@ -329,7 +329,13 @@ export async function startDaemon(
 }
 
 // starts VPN mode
-async function startDaemonVpn(exitName, username, password, forceBridges) {
+async function startDaemonVpn(
+  exitName,
+  username,
+  password,
+  forceBridges,
+  listenAll
+) {
   if (os.platform() !== "linux" && os.platform() !== "win32") {
     alert("VPN mode only supported on Linux and Windows");
     return;
@@ -341,31 +347,44 @@ async function startDaemonVpn(exitName, username, password, forceBridges) {
     spawnSync(getBinaryPath() + "escalate-helper");
   }
   let pid = spawn(
-    isUnix ? "/opt/geph4-vpn-helper" : getBinaryPath() + "geph4-vpn-helper.exe",
-    [
-      isUnix
-        ? "/opt/geph4-client"
-        : getBinaryPath() + "geph4-client" + (isOSWin64() ? "64" : "") + ".exe",
-      "connect",
-      "--username",
-      username,
-      "--password",
-      password,
-      "--exit-server",
-      exitName,
-      "--stdio-vpn",
-    ]
-      .concat(forceBridges ? ["--use-bridges"] : [])
-      .concat(
-        isUnix
-          ? [
-              "--dns-listen",
-              "127.0.0.1:15353",
-              "--credential-cache",
-              "/tmp/geph4-credentials.db",
-            ]
-          : []
-      ),
+    isUnix ? "/opt/geph4-vpn-helper" : getBinaryPath() + "elevate.exe",
+    isUnix
+      ? []
+      : [
+          getBinaryPath() + "Quiet.exe",
+          getBinaryPath() + "geph4-vpn-helper.exe",
+        ]
+          .concat([
+            isUnix
+              ? "/opt/geph4-client"
+              : getBinaryPath() +
+                "geph4-client" +
+                (isOSWin64() ? "64" : "") +
+                ".exe",
+            "connect",
+            "--username",
+            username,
+            "--password",
+            password,
+            "--exit-server",
+            exitName,
+            "--stdio-vpn",
+            "--socks5-listen",
+            listenAll ? "0.0.0.0:9909" : "127.0.0.1:9909",
+            "--http-listen",
+            listenAll ? "0.0.0.0:9910" : "127.0.0.1:9910",
+          ])
+          .concat(forceBridges ? ["--use-bridges"] : [])
+          .concat(
+            isUnix
+              ? [
+                  "--dns-listen",
+                  "127.0.0.1:15353",
+                  "--credential-cache",
+                  "/tmp/geph4-credentials.db",
+                ]
+              : []
+          ),
     { stdio: "inherit", detached: false }
   );
   pid.on("exit", (_) => {

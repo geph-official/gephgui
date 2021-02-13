@@ -11,8 +11,6 @@ import {
   MenuItem,
   Button,
   Dialog,
-  AppBar,
-  DialogTitle,
   ListItemIcon,
 } from "@material-ui/core";
 import { useSelector, useDispatch } from "react-redux";
