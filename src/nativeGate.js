@@ -284,7 +284,7 @@ export async function startDaemon(
   });
 
   daemonPID.stderr.on("data", (data) => {
-    console.error(`geph4-client stderr: ${data}`);
+    console.log(`geph4-client stderr: ${data}`);
   });
 
   daemonPID.on("exit", (_) => {
@@ -348,45 +348,54 @@ async function startDaemonVpn(
   }
   let pid = spawn(
     isUnix ? "/opt/geph4-vpn-helper" : getBinaryPath() + "elevate.exe",
-    isUnix
+    (isUnix
       ? []
       : [
           getBinaryPath() + "Quiet.exe",
           getBinaryPath() + "geph4-vpn-helper.exe",
         ]
-          .concat([
-            isUnix
-              ? "/opt/geph4-client"
-              : getBinaryPath() +
-                "geph4-client" +
-                (isOSWin64() ? "64" : "") +
-                ".exe",
-            "connect",
-            "--username",
-            username,
-            "--password",
-            password,
-            "--exit-server",
-            exitName,
-            "--stdio-vpn",
-            "--socks5-listen",
-            listenAll ? "0.0.0.0:9909" : "127.0.0.1:9909",
-            "--http-listen",
-            listenAll ? "0.0.0.0:9910" : "127.0.0.1:9910",
-          ])
-          .concat(forceBridges ? ["--use-bridges"] : [])
-          .concat(
-            isUnix
-              ? [
-                  "--dns-listen",
-                  "127.0.0.1:15353",
-                  "--credential-cache",
-                  "/tmp/geph4-credentials.db",
-                ]
-              : []
-          ),
-    { stdio: "inherit", detached: false }
+    )
+      .concat([
+        isUnix
+          ? "/opt/geph4-client"
+          : getBinaryPath() +
+            "geph4-client" +
+            (isOSWin64() ? "64" : "") +
+            ".exe",
+        "connect",
+        "--username",
+        username,
+        "--password",
+        password,
+        "--exit-server",
+        exitName,
+        "--stdio-vpn",
+        "--socks5-listen",
+        listenAll ? "0.0.0.0:9909" : "127.0.0.1:9909",
+        "--http-listen",
+        listenAll ? "0.0.0.0:9910" : "127.0.0.1:9910",
+      ])
+      .concat(forceBridges ? ["--use-bridges"] : [])
+      .concat(
+        isUnix
+          ? [
+              "--dns-listen",
+              "127.0.0.1:15353",
+              "--credential-cache",
+              "/tmp/geph4-credentials.db",
+            ]
+          : []
+      ),
+    { detached: false }
   );
+  pid.stdout.on("data", (data) => {
+    console.log(`geph4-vpn-helper stdout: ${data}`);
+  });
+
+  pid.stderr.on("data", (data) => {
+    console.log(`geph4-vpn-helper stderr: ${data}`);
+  });
+
   pid.on("exit", (_) => {
     DAEMON_RUNNING = false;
   });
