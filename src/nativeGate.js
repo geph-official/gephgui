@@ -90,11 +90,10 @@ export function startUpdateChecks(l10n) {
               meta.Latest +
               ")",
           };
-          dialog.showMessageBox(dialogOpts, (response) => {
-            if (response === 0) {
-              shell.openExternal(meta.Mirrors[0]);
-            }
-          });
+          let { response, _ } = await dialog.showMessageBox(dialogOpts);
+          if (response === 0) {
+            shell.openExternal(meta.Mirrors[0]);
+          }
         }
       } catch (e) {
         console.log(e);
