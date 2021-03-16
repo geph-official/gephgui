@@ -111,6 +111,10 @@ export function getPlatform() {
   return platform;
 }
 
+export function isWindows() {
+  return platform === "electron" && os.platform() === "win32";
+}
+
 function binExt() {
   if (os.platform() === "win32") {
     return ".exe";
@@ -231,6 +235,7 @@ export async function startDaemon(
   password,
   listenAll,
   forceBridges,
+  useTCP,
   autoProxy,
   bypassChinese,
   vpn,
@@ -243,6 +248,7 @@ export async function startDaemon(
       exitName,
       listenAll,
       forceBridges,
+      useTCP,
       bypassChinese,
       excludeAppsJson
     );
@@ -250,7 +256,14 @@ export async function startDaemon(
   }
 
   if (vpn) {
-    await startDaemonVpn(exitName, username, password, forceBridges, listenAll);
+    await startDaemonVpn(
+      exitName,
+      username,
+      password,
+      forceBridges,
+      useTCP,
+      listenAll
+    );
     return;
   }
   if (daemonRunning()) {
@@ -272,6 +285,7 @@ export async function startDaemon(
       listenAll ? "0.0.0.0:9910" : "127.0.0.1:9910",
     ]
       .concat(forceBridges ? ["--use-bridges"] : [])
+      .concat(useTCP ? ["--use-tcp"] : [])
       .concat(bypassChinese ? ["--exclude-prc"] : []),
     {
       detached: false,
@@ -333,6 +347,7 @@ async function startDaemonVpn(
   username,
   password,
   forceBridges,
+  useTCP,
   listenAll
 ) {
   if (os.platform() !== "linux" && os.platform() !== "win32") {
@@ -346,35 +361,26 @@ async function startDaemonVpn(
     spawnSync(getBinaryPath() + "escalate-helper");
   }
   let pid = spawn(
-    isUnix ? "/opt/geph4-vpn-helper" : getBinaryPath() + "elevate.exe",
-    (isUnix
-      ? []
-      : [
-          getBinaryPath() + "Quiet.exe",
-          getBinaryPath() + "geph4-vpn-helper.exe",
-        ]
-    )
-      .concat([
-        isUnix
-          ? "/opt/geph4-client"
-          : getBinaryPath() +
-            "geph4-client" +
-            (isOSWin64() ? "64" : "") +
-            ".exe",
-        "connect",
-        "--username",
-        username,
-        "--password",
-        password,
-        "--exit-server",
-        exitName,
-        "--stdio-vpn",
-        "--socks5-listen",
-        listenAll ? "0.0.0.0:9909" : "127.0.0.1:9909",
-        "--http-listen",
-        listenAll ? "0.0.0.0:9910" : "127.0.0.1:9910",
-      ])
+    isUnix ? "/opt/geph4-vpn-helper" : getBinaryPath() + "geph4-vpn-helper.exe",
+    [
+      isUnix
+        ? "/opt/geph4-client"
+        : getBinaryPath() + "geph4-client" + (isOSWin64() ? "64" : "") + ".exe",
+      "connect",
+      "--username",
+      username,
+      "--password",
+      password,
+      "--exit-server",
+      exitName,
+      "--stdio-vpn",
+      "--socks5-listen",
+      listenAll ? "0.0.0.0:9909" : "127.0.0.1:9909",
+      "--http-listen",
+      listenAll ? "0.0.0.0:9910" : "127.0.0.1:9910",
+    ]
       .concat(forceBridges ? ["--use-bridges"] : [])
+      .concat(useTCP ? ["--use-tcp"] : [])
       .concat(
         isUnix
           ? [
@@ -403,6 +409,16 @@ async function startDaemonVpn(
 }
 
 var vpnSet = false;
+
+export var isAdmin = false;
+
+if (isElectron) {
+  const { remote } = window.require("electron");
+  const isElevated = remote.require("is-elevated");
+  (async () => {
+    isAdmin = await isElevated();
+  })();
+}
 
 var proxySet = false;
 

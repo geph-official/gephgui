@@ -98,6 +98,7 @@ const ConnToggle = (props: {}) => {
   const autoProxyStr = useSelector(prefSelector("autoProxy", "true"));
   const bypassChineseStr = useSelector(prefSelector("bypassChinese", "false"));
   const vpnStr = useSelector(prefSelector("vpn", "false"));
+  const tcpStr = useSelector(prefSelector("useTCP", "false"));
   const excludeAppsJson = useSelector(prefSelector("excludedAppList", "[]"));
   const excludeApps =
     useSelector(prefSelector("excludeApps", false)) === "true";
@@ -113,6 +114,7 @@ const ConnToggle = (props: {}) => {
         password,
         listenAllStr === "true",
         forceBridgesStr === "true",
+        tcpStr === "true",
         autoProxyStr === "true",
         bypassChineseStr === "true",
         vpnStr === "true",
@@ -231,7 +233,7 @@ const NetActivityInfo = (props: {}) => {
   if (isPaid) {
     max = 100000000;
   } else {
-    max = 800;
+    max = 1600;
   }
   const upSpeed =
     !isValid || connState.oldUpBytes < 1
@@ -241,10 +243,11 @@ const NetActivityInfo = (props: {}) => {
     !isValid || connState.oldDownBytes < 1
       ? 0
       : connState.downBytes - connState.oldDownBytes;
+  const loss = isValid && connState.loss;
   return (
     <div
       style={{
-        fontSize: "70%",
+        fontSize: "60%",
         width: 0,
         overflow: "visible",
         whiteSpace: "nowrap",
@@ -253,7 +256,10 @@ const NetActivityInfo = (props: {}) => {
     >
       <SpeedLabel kbps={(8 * (downSpeed + upSpeed)) / 1000} max={max} />
       &ensp;
-      <PingLabel ms={isValid && connState.ping} /> <br />
+      <PingLabel ms={isValid && connState.ping} />
+      &ensp;
+      <LossLabel loss={loss} />
+      <br />
     </div>
   );
 };
@@ -263,17 +269,17 @@ const SpeedLabel = (props) => {
 
   function roundToTwo(num) {
     if (num < 1) {
-      return 0;
+      return "0.00";
     }
     return num.toPrecision(3);
   }
   let suffix;
   let divider;
   if (props.kbps > 1000) {
-    suffix = "Mbps";
+    suffix = "M";
     divider = 1000;
   } else {
-    suffix = "kbps";
+    suffix = "k";
     divider = 1;
   }
 
@@ -285,7 +291,8 @@ const SpeedLabel = (props) => {
 
   return (
     <span style={bwStyle}>
-      <b style={beestyle}>{roundToTwo(props.kbps / divider)}</b> {suffix}
+      <b style={beestyle}>{roundToTwo(props.kbps / divider)}</b>
+      {suffix}
     </span>
   );
 };
@@ -294,7 +301,7 @@ const PingLabel = (props) => {
   let style = {};
   if (props.ms) {
     if (props.ms < 100) {
-      style = { color: "blue" };
+      style = { color: "darkgreen" };
     } else if (props.ms < 150) {
       style = { color: "green" };
     } else if (props.ms < 200) {
@@ -305,7 +312,26 @@ const PingLabel = (props) => {
   }
   return (
     <>
-      <b style={style}>{props.ms && props.ms > 0.01 ? props.ms : "-"}</b> ms
+      <b style={style}>{props.ms && props.ms > 0.01 ? props.ms : "-"}</b>ms
+    </>
+  );
+};
+
+const LossLabel = (props) => {
+  let style = {};
+  if (props.loss < 1) {
+    style = { color: "darkgreen" };
+  } else if (props.loss < 5) {
+    style = { color: "green" };
+  } else if (props.loss < 15) {
+    style = { color: "darkorange" };
+  } else {
+    style = { color: "red" };
+  }
+
+  return (
+    <>
+      <b style={style}>{props.loss.toFixed(1)}</b>%
     </>
   );
 };

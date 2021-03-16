@@ -12,12 +12,15 @@ import {
   Button,
   Dialog,
   ListItemIcon,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
 } from "@material-ui/core";
 import { useSelector, useDispatch } from "react-redux";
 import { l10nSelector, langSelector } from "../redux/l10n";
 import { prefSelector } from "../redux/prefs";
 import { version } from "../../package.json";
-import { getPlatform } from "../nativeGate";
+import { getPlatform, isAdmin, isWindows } from "../nativeGate";
 import { GlobalState } from "../redux";
 import { ConnectionStatus } from "../redux/connState";
 import LanguageIcon from "@material-ui/icons/Language";
@@ -26,12 +29,15 @@ import {
   BugReport,
   CallSplit,
   SwapHoriz,
+  TripOrigin,
   Update,
   VpnLock,
   Web,
   WifiTethering,
 } from "@material-ui/icons";
 import ExcludeAppPicker from "./ExcludeAppPicker";
+
+import adminImage from "../assets/windows-admin.jpg";
 
 const BooleanSetting = (props: {
   propKey: string;
@@ -91,6 +97,7 @@ const SettingsFrag: React.FC = (props) => {
   const l10n = useSelector(l10nSelector);
   const lang = useSelector(langSelector);
   const listenAll = useSelector(prefSelector("listenAll", false));
+  const useVpn = useSelector(prefSelector("vpn", false));
   const excludeApps =
     useSelector(prefSelector("excludeApps", false)) === "true";
   const stateConnected = useSelector(
@@ -98,8 +105,42 @@ const SettingsFrag: React.FC = (props) => {
   );
   const dispatch = useDispatch();
   const [pickerOpened, setPickerOpened] = useState(false);
+  const cannotVpnClose = () => {
+    dispatch({
+      type: "PREF",
+      key: "vpn",
+      value: "false",
+    });
+  };
+
+  // const [isAdmin, setIsAdmin] = useState(false);
+  // (async () => {
+  //   setIsAdmin(await isElevated());
+  //   alert(await isElevated());
+  //   //=> false
+  // })();
+
   return (
     <>
+      <Dialog
+        open={useVpn === "true" && isWindows() && !isAdmin}
+        onClose={cannotVpnClose}
+      >
+        <DialogContent>
+          <DialogContentText
+            id="alert-dialog-description"
+            style={{ color: "black" }}
+          >
+            {l10n.cannotVpnBlurb}
+          </DialogContentText>
+          <DialogContentText>
+            <img src={adminImage} style={{ width: "100%" }} />
+          </DialogContentText>
+          <Button onClick={cannotVpnClose} color="primary">
+            OK
+          </Button>
+        </DialogContent>
+      </Dialog>
       <List
         subheader={
           <ListSubheader component="div">{l10n.general}</ListSubheader>
@@ -197,8 +238,14 @@ const SettingsFrag: React.FC = (props) => {
           propKey="forceBridges"
           defValue={false}
           primary={l10n.forcebridges}
-          secondary={l10n.tcpblurb}
+          secondary={l10n.bridgeblurb}
           icon={<SwapHoriz />}
+        />
+        <BooleanSetting
+          propKey="useTCP"
+          defValue={false}
+          primary={l10n.tcp}
+          icon={<TripOrigin />}
         />
         <>
           <BooleanSetting

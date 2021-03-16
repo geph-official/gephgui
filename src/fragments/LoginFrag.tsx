@@ -71,9 +71,11 @@ const LoginFrag: React.FC = (props) => {
           <DialogTitle>{l10n.loggingin}</DialogTitle>
           <DialogContent>
             <DialogContentText>
-              {e === "no user found" || e === "wrong password"
-                ? l10n.errBadCred
-                : l10n.errBadNet}
+              {e === "no user found" || e === "wrong password" ? (
+                l10n.errBadCred
+              ) : (
+                <span style={{ color: "red" }}>{e}</span>
+              )}
             </DialogContentText>
           </DialogContent>
           <DialogActions>

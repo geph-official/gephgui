@@ -7,6 +7,7 @@ export async function startDaemon(
   password: string,
   listenAll: boolean,
   forceBridges: boolean,
+  useTcp: boolean,
   autoProxy: boolean,
   bypassChinese: boolean,
   vpn: boolean,
@@ -15,7 +16,8 @@ export async function startDaemon(
 
 export async function stopDaemon();
 
-export function getPlatform(): string;
+export function getPlatform(): string; 
+export function isWindows(): boolean;
 
 export async function syncStatus(
   uname: string,
@@ -30,3 +32,5 @@ export function stopBinderProxy(pid: number);
 export function startUpdateChecks(l10n: any);
 
 export function getVersion(): string;
+
+export var isAdmin: boolean;

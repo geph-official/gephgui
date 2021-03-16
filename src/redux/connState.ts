@@ -25,6 +25,7 @@ export interface ConnState {
   oldDownBytes: number;
   ping: number;
   syncState: AccountInfo | null;
+  loss: number;
 }
 
 export interface RawStats {
@@ -32,6 +33,7 @@ export interface RawStats {
   total_rx: number;
   open_latency: number;
   exit_info: ExitInfo | null;
+  loss: number;
 }
 
 export interface AccountInfo {
@@ -66,6 +68,7 @@ const initState = {
   tier: Tier.Free,
   expiry: new Date(),
   syncState: null,
+  loss: 0.0,
 };
 
 export const connReducer = (
@@ -100,6 +103,7 @@ export const connReducer = (
       oldUpBytes: state.upBytes,
       downBytes: j.total_rx,
       oldDownBytes: state.downBytes,
+      loss: j.loss,
     };
     return toret;
   } else if (action.type === "SYNC") {

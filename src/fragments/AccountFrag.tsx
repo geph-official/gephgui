@@ -77,25 +77,6 @@ const AccountFrag = (props: { forceSync: () => void }) => {
           </ListItemSecondaryAction>
         </ListItem>
         <>
-          {/* <ListItem>
-            <ListItemIcon>
-              <CreditCard />
-            </ListItemIcon>
-            <ListItemText
-              primary={(() => {
-                // easter egg
-                const uhash = sha256(username + "pepper");
-                if (
-                  uhash ===
-                    "b2aa2bfe1aed310ab52593a4c816a945cd26ae08f343b66da8a799c644026907" ||
-                  uhash ===
-                    "4b55ab8a1a4676dbc188d95ff6ee274ccb898fc5aa986746d41dde5b4412b5f7"
-                )
-                  return "D" + "OR" + "THIS" + "BE";
-                return isFree ? l10n.free : l10n.plus;
-              })()}
-            />
-          </ListItem> */}
           {isFree ? (
             <ListItem>
               <ListItemIcon>

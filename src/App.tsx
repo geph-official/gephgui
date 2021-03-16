@@ -34,6 +34,7 @@ import { SpecialConnStates } from "./redux/connState";
 import { prefSelector } from "./redux/prefs";
 import LoginFrag from "./fragments/LoginFrag";
 import AccountFrag from "./fragments/AccountFrag";
+import Status from "./fragments/Status";
 import SettingsFrag from "./fragments/SettingsFrag";
 import {
   startUpdateChecks,
@@ -228,6 +229,8 @@ const App: React.FC = (props) => {
           switch (activePage) {
             case 0:
               return <OverviewFrag forceSync={() => refreshSync(true)} />;
+            // case 1:
+            // return <Status />;
             case 1:
               return <Announcements />;
             case 2:
@@ -243,10 +246,11 @@ const App: React.FC = (props) => {
         }}
         showLabels
       >
-        <BottomNavigationAction
-          label={l10n.overview}
+        <BottomNavigationAction label={l10n.overview} icon={<icons.Home />} />
+        {/* <BottomNavigationAction
+          label={l10n.status}
           icon={<icons.Dashboard />}
-        />
+        /> */}
         <BottomNavigationAction
           label={l10n.announcements}
           icon={

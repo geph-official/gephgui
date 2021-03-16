@@ -30,7 +30,7 @@ const enUSBindings = {
   connect: "Connect",
   disconnect: "Disconnect",
   connected: "Connected",
-  details: "Details",
+  details: "Advanced",
   connectedblurb: "Enjoy an open Internet!",
   connecting: "Connecting",
   feedback: "Debug pack",
@@ -96,6 +96,7 @@ const enUSBindings = {
   upgradeToPlus: "Upgrade to Plus",
   version: "Version",
   upgrade: "Buy Plus!",
+  cannotVpnBlurb: "VPN mode on Windows requires starting Geph as administrator",
   forcebridges: "Always use bridges",
   export: "Export",
   upstream: "Upstream",
@@ -111,13 +112,15 @@ const enUSBindings = {
   paid: "Plus",
   free: "Free",
   tcp: "Use TCP mode",
-  tcpblurb: "Use strong anti-censorship regardless of location",
+  bridgeblurb: "Use strong anti-censorship regardless of location",
   vpn: "Use global VPN",
   vpnblurb: "Not available on macOS",
   excludeapps: "Exclude apps",
   excludeappsblurb: "Let apps bypass Geph",
   excludecn: "Exclude Chinese traffic",
   excludecnblurb: "Does not apply to VPN traffic",
+
+  status: "Status",
 
   selectExcludedApps: "Select excluded apps",
 
@@ -187,7 +190,7 @@ const zhCNBindings = {
   connected: "连接成功",
   connectedblurb: "尽享自由的网络！",
   updateDownload: "下载",
-  details: "细节",
+  details: "高级",
   syncing: "正在同步网络信息",
   updateInfo: "迷雾通新版本已发布！",
   updateLater: "之后提醒",
@@ -211,6 +214,9 @@ const zhCNBindings = {
   manage: "管理",
   feedbackbutton: "导出调试包",
   errExists: "用戶已经存在！",
+
+  status: "状态",
+
   subinfoblurb: "管理帐号需要连接迷雾通",
   exitserver: "出口端位置",
   expiry: "到期时间",
@@ -254,7 +260,8 @@ const zhCNBindings = {
   upstream: "上行",
   username: "用户名",
   tcp: "使用TCP模式",
-  tcpblurb: "在所有地区开启强力反封锁",
+  bridgeblurb: "在所有地区开启强力反封锁",
+  cannotVpnBlurb: "Windows上的VPN模式需要使用管理员权限打开迷雾通",
   excludecn: "中国流量分流",
   excludecnblurb: "不适用于全局VPN流量",
   excludeapps: "应用例外",
@@ -341,7 +348,7 @@ const zhTWBindings = {
   connect: "連接",
   disconnect: "斷開",
   debuglogs: "調試日誌",
-  details: "細節",
+  details: "高級",
   autoconnblurb: "開啓迷霧通時自動連接",
   plusonly: "付費專用",
   autoproxy: "自動設置代理",
@@ -350,6 +357,7 @@ const zhTWBindings = {
   listenall: "監聽一切網絡接口",
   listenallblurb: "與同一網絡上的其他計算機共享迷霧通",
   autoproxyblurb: "主流浏覽器之外可能需要手動設定",
+  status: "狀態",
   errBadCred: "用戶名或密碼錯誤，請重試",
   cancel: "取消",
   export: "導出",
@@ -414,13 +422,15 @@ const zhTWBindings = {
   upstream: "上行",
   username: "用戶名",
   tcp: "使用TCP模式",
-  tcpblurb: "在所有地區開啟強力反封鎖",
+  bridgeblurb: "在所有地區開啟強力反封鎖",
   excludeapps: "應用例外",
   excludeappsblurb: "允許特定應用繞過迷霧通聯網",
   excludecn: "中國流量分流",
   excludecnblurb: "不適用於全局VPN流量",
 
   selectExcludedApps: "選擇例外應用",
+
+  cannotVpnBlurb: "Windows上的VPN模式需要使用管理員權限打開迷霧通",
 
   upgradeblurb: (
     <span>
