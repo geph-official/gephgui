@@ -387,7 +387,7 @@ async function startDaemonVpn(
               "--dns-listen",
               "127.0.0.1:15353",
               "--credential-cache",
-              "/tmp/geph4-credentials.db",
+              "/tmp/geph4-credentials",
             ]
           : []
       ),
