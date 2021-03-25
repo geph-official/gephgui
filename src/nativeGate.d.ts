@@ -34,3 +34,5 @@ export function startUpdateChecks(l10n: any);
 export function getVersion(): string;
 
 export var isAdmin: boolean;
+
+export function exportLogs();

@@ -35,6 +35,23 @@ export function getVersion() {
 
 var globl10n;
 
+// export the logs.
+export function exportLogs() {
+  const lala = new Date().toISOString();
+  let fname = "debugpack-" + lala + ".tar";
+  if (platform === "electron") {
+    const { ipcRenderer } = window.require("electron");
+    // download file into that path
+    ipcRenderer.send("download", {
+      url: "http://127.0.0.1:9809/debugpack",
+      properties: { filename: fname, saveAs: true },
+    });
+  } else {
+    window.Android.jsExportLogs(fname);
+    alert("Saved to Downloads");
+  }
+}
+
 export function startUpdateChecks(l10n) {
   globl10n = l10n;
   if (platform === "electron") {

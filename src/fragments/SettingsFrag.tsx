@@ -20,7 +20,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { l10nSelector, langSelector } from "../redux/l10n";
 import { prefSelector } from "../redux/prefs";
 import { version } from "../../package.json";
-import { getPlatform, isAdmin, isWindows } from "../nativeGate";
+import { exportLogs, getPlatform, isAdmin, isWindows } from "../nativeGate";
 import { GlobalState } from "../redux";
 import { ConnectionStatus } from "../redux/connState";
 import LanguageIcon from "@material-ui/icons/Language";
@@ -284,12 +284,7 @@ const SettingsFrag: React.FC = (props) => {
             <Button
               color="primary"
               onClick={() => {
-                const url = "http://localhost:9809/debugpack";
-                if (getPlatform() === "android") {
-                  window.location.href = url;
-                } else {
-                  window.open(url, "_blank");
-                }
+                exportLogs();
               }}
               disabled={stateConnected === ConnectionStatus.Disconnected}
             >
