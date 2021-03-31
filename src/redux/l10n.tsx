@@ -49,7 +49,7 @@ const enUSBindings = {
   exitserver: "Exit location:",
   expiry: "Expiration date",
   extend: "Extend",
-  freelimit: "Free account limit:",
+  freelimit: "Free account limit",
   general: "General",
   http: "HTTP proxy",
   debuglogs: "Debug logs",
@@ -158,6 +158,10 @@ const enUSBindings = {
     tyo: "Tokyo",
     hkgnt: "New Territories",
   } as Record<string, string>,
+
+  usage: "Usage",
+  latency: "Latency",
+  packetLossEstimation: "Packet loss estimation",
 };
 
 const zhCNBindings = {
@@ -222,7 +226,7 @@ const zhCNBindings = {
   expiry: "到期时间",
   plusonly: "付费专用",
   extend: "延长",
-  freelimit: "免费用户限速：",
+  freelimit: "免费用户限速",
   general: "通用",
   forcebridges: "强制使用桥接",
   http: "HTTP代理端口",
@@ -322,6 +326,10 @@ const zhCNBindings = {
     was: "华沙",
     hel: "赫尔辛基",
   } as Record<string, string>,
+
+  usage: "使用量",
+  latency: "延迟",
+  packetLossEstimation: "丢包率（估算）",
 };
 
 const zhTWBindings = {
@@ -387,7 +395,7 @@ const zhTWBindings = {
   expiry: "到期時間",
   extend: "延長",
   forcebridges: "強制使用橋接",
-  freelimit: "免費用戶限速：",
+  freelimit: "免費用戶限速",
   general: "通用",
   http: "HTTP代理端口",
   langname: "繁體中文",
@@ -485,6 +493,10 @@ const zhTWBindings = {
     was: "華沙",
     hel: "赫爾辛基",
   } as Record<string, string>,
+
+  usage: "使用量",
+  latency: "延遲",
+  packetLossEstimation: "丟包率（估算）",
 };
 export const getl10n = (lang: string) => {
   switch (lang) {

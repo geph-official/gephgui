@@ -29,12 +29,14 @@ interface AppMetadata {
 const getAppList = (): Promise<AppMetadata[]> => {
   return new Promise((resolve, reject) => {
     (window as any)._ALIST_CALLBACK = (v) => {
+      console.log("CALLBACK");
       let lala = JSON.parse(utf8.decode(atob(v)));
       lala.sort((a, b) => {
         let textA = a.friendlyName;
         let textB = b.friendlyName;
         return textA < textB ? -1 : textA > textB ? 1 : 0;
       });
+      console.log("CALLBACK DONE");
       resolve(lala);
     };
     (window as any).Android.jsGetAppList();
@@ -93,6 +95,7 @@ const ExcludeAppPicker = (props: { handleClose: any }) => {
   useEffect(() => {
     (async () => {
       setAppList(await getAppList());
+      console.log("APP LIST LOADED");
     })();
   }, []);
 

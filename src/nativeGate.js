@@ -37,7 +37,7 @@ var globl10n;
 
 // export the logs.
 export function exportLogs() {
-  const lala = new Date().toISOString();
+  const lala = new Date().toISOString().replaceAll(":", "-");
   let fname = "debugpack-" + lala + ".tar";
   if (platform === "electron") {
     const { ipcRenderer } = window.require("electron");

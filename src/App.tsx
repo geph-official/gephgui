@@ -229,11 +229,11 @@ const App: React.FC = (props) => {
           switch (activePage) {
             case 0:
               return <OverviewFrag forceSync={() => refreshSync(true)} />;
-            // case 1:
-            // return <Status />;
             case 1:
-              return <Announcements />;
+              return <Status />;
             case 2:
+              return <Announcements />;
+            case 3:
               return <SettingsFrag />;
           }
         })()}
@@ -247,10 +247,10 @@ const App: React.FC = (props) => {
         showLabels
       >
         <BottomNavigationAction label={l10n.overview} icon={<icons.Home />} />
-        {/* <BottomNavigationAction
+        <BottomNavigationAction
           label={l10n.status}
           icon={<icons.Dashboard />}
-        /> */}
+        />
         <BottomNavigationAction
           label={l10n.announcements}
           icon={
