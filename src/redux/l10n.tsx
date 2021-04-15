@@ -199,7 +199,7 @@ const zhCNBindings = {
   updateInfo: "迷雾通新版本已发布！",
   updateLater: "之后提醒",
   choose: "选择",
-  errBadCred: "用戶名或密码错误，请重试",
+  errBadCred: "用户名或密码错误，请重试",
   vpn: "使用全局VPN",
   vpnblurb: "实验性功能！暂不支持macOS",
   listenall: "监听所有网络接口",
@@ -217,7 +217,7 @@ const zhCNBindings = {
   geph: "迷雾通",
   manage: "管理",
   feedbackbutton: "导出调试包",
-  errExists: "用戶已经存在！",
+  errExists: "用户已经存在！",
 
   status: "状态",
 
@@ -232,7 +232,7 @@ const zhCNBindings = {
   http: "HTTP代理端口",
   langname: "简体中文",
   language: "语言",
-  loginblurb: "用已有账户登陆",
+  loginblurb: "用已有账户登录",
   logout: "登出",
   export: "导出",
   netactivity: "网络使用",
@@ -248,7 +248,7 @@ const zhCNBindings = {
       流畅看高清！<b>解除限速&euro;5/月</b>
     </>
   ),
-  pwdmismatch: "密码和之前输入的不一样",
+  pwdmismatch: "密码和之前输入的不匹配",
   network: "网络",
   registerblurb: "创建新账户",
   restartblurb: "关闭、重启迷雾通后将使用选择的语言",
