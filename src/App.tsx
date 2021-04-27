@@ -197,10 +197,13 @@ const App: React.FC = (props) => {
               <>
                 <hr />
                 <Button
-                  color="secondary"
+                  //color="secondary"
                   variant="outlined"
                   disableElevation
                   onClick={() => {
+                    setBusy(false);
+                    return;
+
                     localStorage.clear();
                     dispatch({ type: "CONN", rawJson: SpecialConnStates.Dead });
                     stopDaemon();
@@ -209,7 +212,7 @@ const App: React.FC = (props) => {
                   }}
                   style={{ minWidth: 100 }}
                 >
-                  {l10n.logout}
+                  {'OK'}
                 </Button>
               </>
             ) : (
