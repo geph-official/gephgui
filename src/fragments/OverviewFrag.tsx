@@ -274,7 +274,7 @@ const DualSpeedLabel = (props) => {
   return (
     <div>
       Up <SpeedLabel kbps={up_kbps} />
-      &ensp;/
+      /
       Down <SpeedLabel kbps={down_kbps} />
     </div>
   );
