@@ -31,7 +31,7 @@ export interface ConnState {
 export interface RawStats {
   total_tx: number;
   total_rx: number;
-  open_latency: number;
+  latency: number;
   exit_info: ExitInfo | null;
   loss: number;
 }
@@ -98,12 +98,12 @@ export const connReducer = (
         j.exit_info !== null
           ? ConnectionStatus.Connected
           : ConnectionStatus.Connecting,
-      ping: Math.round(j.open_latency),
+      ping: Math.round(j.latency*1000.0),
       upBytes: j.total_tx,
       oldUpBytes: state.upBytes,
       downBytes: j.total_rx,
       oldDownBytes: state.downBytes,
-      loss: j.loss,
+      loss: j.loss * 100.0,
     };
     return toret;
   } else if (action.type === "SYNC") {

@@ -286,7 +286,6 @@ const SettingsFrag: React.FC = (props) => {
               onClick={() => {
                 exportLogs();
               }}
-              disabled={stateConnected === ConnectionStatus.Disconnected}
             >
               {l10n.export}
             </Button>

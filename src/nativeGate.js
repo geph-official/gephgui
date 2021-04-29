@@ -33,22 +33,25 @@ export function getVersion() {
   return "0.0.0";
 }
 
+export function electronTempDirectory() {
+  const { app } = window.require("electron").remote;
+  return app.getPath("temp");
+}
+
 var globl10n;
 
 // export the logs.
 export function exportLogs() {
   const lala = new Date().toISOString().replaceAll(":", "-");
-  let fname = "debugpack-" + lala + ".tar";
+  let fname = "debuglogs-" + lala + ".txt";
   if (platform === "electron") {
     const { ipcRenderer } = window.require("electron");
     // download file into that path
-    ipcRenderer.send("download", {
-      url: "http://127.0.0.1:9809/debugpack",
-      properties: { filename: fname, saveAs: true },
+    ipcRenderer.send("exportLogs", {
+      filename: localStorage.getItem("logFile"),
     });
   } else {
     window.Android.jsExportLogs(fname);
-    alert("Saved to Downloads");
   }
 }
 
@@ -286,6 +289,10 @@ export async function startDaemon(
   if (daemonRunning()) {
     throw "daemon started when it really shouldn't be";
   }
+  const lala = new Date().toISOString().replaceAll(":", "-");
+  let logFile = electronTempDirectory() + `/geph4-logs-${lala}.txt`;
+  localStorage.setItem("logFile", logFile);
+
   let daemonPID = spawn(
     getBinaryPath() + "geph4-client" + (isOSWin64() ? "64" : "") + binExt(),
     [
@@ -300,6 +307,8 @@ export async function startDaemon(
       listenAll ? "0.0.0.0:9909" : "127.0.0.1:9909",
       "--http-listen",
       listenAll ? "0.0.0.0:9910" : "127.0.0.1:9910",
+      "--log-file",
+      logFile,
     ]
       .concat(forceBridges ? ["--use-bridges"] : [])
       .concat(useTCP ? ["--use-tcp"] : [])
@@ -371,6 +380,9 @@ async function startDaemonVpn(
     alert("VPN mode only supported on Linux and Windows");
     return;
   }
+  const lala = new Date().toISOString().replaceAll(":", "-");
+  let logFile = electronTempDirectory() + `/geph4-logs-${lala}.txt`;
+  localStorage.setItem("logFile", logFile);
 
   let isUnix = os.platform() !== "win32";
 
@@ -395,6 +407,8 @@ async function startDaemonVpn(
       listenAll ? "0.0.0.0:9909" : "127.0.0.1:9909",
       "--http-listen",
       listenAll ? "0.0.0.0:9910" : "127.0.0.1:9910",
+      "--log-file",
+      logFile,
     ]
       .concat(forceBridges ? ["--use-bridges"] : [])
       .concat(useTCP ? ["--use-tcp"] : [])
