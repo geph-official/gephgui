@@ -9,7 +9,7 @@
     "electron-is-dev": "^1.1.0",
     "franc": "^5.0.0",
     "rss-parser": "^3.7.6",
-    "sanitize-html": "^1.23.0",
+    "sanitize-html": "^2.3.2",
     "semver": "^7.2.2",
     "zh_cn_zh_tw": "^1.0.6"
   },
