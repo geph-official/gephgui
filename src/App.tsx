@@ -109,7 +109,7 @@ const App: React.FC = (props) => {
       console.log(response);
       dispatch({ type: "CONN", rawJson: response.data });
     } catch {
-      dispatch({ type: "CONN", rawJson: SpecialConnStates.Dead });
+      // dispatch({ type: "CONN", rawJson: SpecialConnStates.Dead });
     }
   };
 
