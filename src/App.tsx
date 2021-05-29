@@ -30,7 +30,7 @@ import { createStore } from "redux";
 import { Provider, useSelector, useDispatch } from "react-redux";
 import OverviewFrag from "./fragments/OverviewFrag";
 import { useInterval } from "./utils";
-import { SpecialConnStates } from "./redux/connState";
+import { ConnectionStatus, SpecialConnStates } from "./redux/connState";
 import { prefSelector } from "./redux/prefs";
 import LoginFrag from "./fragments/LoginFrag";
 import AccountFrag from "./fragments/AccountFrag";
@@ -85,6 +85,7 @@ const App: React.FC = (props) => {
   const lang = useSelector(langSelector);
   const username = useSelector(prefSelector("username", ""));
   const password = useSelector(prefSelector("password", ""));
+  const connState = useSelector((state: GlobalState) => state.connState);
   const dispatch = useDispatch();
   const [activePage, setActivePage] = useState(0);
   const [busy, setBusy] = useState(false);
@@ -109,7 +110,8 @@ const App: React.FC = (props) => {
       console.log(response);
       dispatch({ type: "CONN", rawJson: response.data });
     } catch {
-      // dispatch({ type: "CONN", rawJson: SpecialConnStates.Dead });
+      if (!connState.fresh)
+        dispatch({ type: "CONN", rawJson: SpecialConnStates.Dead });
     }
   };
 

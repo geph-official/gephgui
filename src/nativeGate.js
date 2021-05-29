@@ -84,6 +84,7 @@ export function startUpdateChecks(l10n) {
     async function checkForUpdates() {
       const updateURLs = [
         "https://gitlab.com/bunsim/geph-autoupdate/raw/master/stable.json",
+        "https://f001.backblazeb2.com/file/geph4-dl/stable.json",
       ];
       if (/TEST/.test(currentVersion)) {
         return;
@@ -93,7 +94,9 @@ export function startUpdateChecks(l10n) {
       }
 
       try {
-        let response = await axios.get(updateURLs[0]);
+        let response = await axios.get(
+          updateURLs[Math.floor(Math.random() * updateURLs.length)]
+        );
         let data = response.data;
         let meta = data[getOsName()];
         if (semver.gt(meta.Latest, currentVersion) && !dialogShowed) {
@@ -418,11 +421,11 @@ async function startDaemonVpn(
               "--dns-listen",
               "127.0.0.1:15353",
               "--credential-cache",
-              "/tmp/geph4-credentials",
+              "/tmp/geph4-ngcreds",
             ]
           : []
       ),
-    { detached: false }
+    { detached: false, stdio: "ignore" }
   );
   pid.stdout.on("data", (data) => {
     console.log(`geph4-vpn-helper stdout: ${data}`);

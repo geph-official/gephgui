@@ -81,7 +81,7 @@ export const connReducer = (
       return state;
     }
     if (action.rawJson === SpecialConnStates.Connecting) {
-      return { ...state, fresh: false, connected: ConnectionStatus.Connecting };
+      return { ...state, fresh: true, connected: ConnectionStatus.Connecting };
     }
     if (action.rawJson === SpecialConnStates.Dead) {
       return {
