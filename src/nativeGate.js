@@ -425,8 +425,9 @@ async function startDaemonVpn(
             ]
           : []
       ),
-    { detached: false, stdio: "ignore" }
+    { detached: false }
   );
+  console.log(pid);
   pid.stdout.on("data", (data) => {
     console.log(`geph4-vpn-helper stdout: ${data}`);
   });

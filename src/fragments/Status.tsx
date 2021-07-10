@@ -17,6 +17,9 @@ const Status = (props: {}) => {
     new Date(new Date().getTime() - SECONDS * 1000)
   );
 
+  // HACK: forces the whole thing to reload periodically to workaround metricsgraphics memory leak
+  const [hackKey, setHackKey] = useState(0);
+
   const refreshStats = async () => {
     try {
       const deltaResponse = await axios.get("http://127.0.0.1:9809/deltastats");
@@ -46,9 +49,8 @@ const Status = (props: {}) => {
   }, SECONDS * 7.0);
 
   useInterval(() => {
-    window.onbeforeunload = null;
-    window.location.reload();
-  }, 600 * 1000);
+    setHackKey(hackKey + 1);
+  }, 6 * 1000);
 
   useEffect(() => {
     (window as any).$ = $;
@@ -64,7 +66,7 @@ const Status = (props: {}) => {
 
   const l10n = useSelector(l10nSelector);
   return (
-    <>
+    <div key={hackKey}>
       <h3 style={titleStyle}>{l10n.usage}</h3>
       <MetricsGraphics
         data={deltaStats}
@@ -131,7 +133,7 @@ const Status = (props: {}) => {
         interpolate={curveStep}
         chart_type={deltaStats.length > 0 ? "line" : "missing-data"}
       />
-    </>
+    </div>
   );
 };
 export default Status;
