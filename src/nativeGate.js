@@ -191,6 +191,7 @@ export function syncStatus(uname, pwd, force) {
         force ? ["--force"] : []
       )
     );
+
     pid.stdout.on("data", (data) => {
       jsonBuffer += data.toString();
     });
@@ -202,6 +203,10 @@ export function syncStatus(uname, pwd, force) {
         resolve(parseSync(lala));
       }
     });
+
+    setTimeout(() => {
+      pid.kill();
+    }, 20000);
   });
 }
 

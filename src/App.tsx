@@ -116,26 +116,23 @@ const App: React.FC = (props) => {
   };
 
   const refreshSync = async (force: boolean) => {
-    if (username === "") {
-      return;
-    }
+    if (username === "") return;
     setBusyError("");
     setBusy(true);
-    while (true) {
-      try {
-        const [accInfo, exits] = await promiseWithTimeout(20000, () =>
-          syncStatus(username, password, force)
-        );
-        console.log(accInfo);
-        dispatch({ type: "SYNC", account: accInfo });
-        dispatch({ type: "EXIT_LIST", list: exits });
-        setBusy(false);
-        return;
-      } catch (e) {
-        setBusyError(e.toString());
-        console.log(e.toString());
-      }
+
+    try {
+      const [accInfo, exits] = await promiseWithTimeout(20000, () =>
+        syncStatus(username, password, force)
+      );
+      console.log(accInfo);
+      dispatch({ type: "SYNC", account: accInfo });
+      dispatch({ type: "EXIT_LIST", list: exits });
+      setBusy(false);
+    } catch (e) {
+      setBusyError(e.toString());
+      console.log(e.toString());
     }
+
   };
 
   // load announcements
@@ -199,10 +196,13 @@ const App: React.FC = (props) => {
               <>
                 <hr />
                 <Button
-                  color="secondary"
+                  //color="secondary"
                   variant="outlined"
                   disableElevation
                   onClick={() => {
+                    setBusy(false);
+                    return;
+
                     localStorage.clear();
                     dispatch({ type: "CONN", rawJson: SpecialConnStates.Dead });
                     stopDaemon();
@@ -211,7 +211,7 @@ const App: React.FC = (props) => {
                   }}
                   style={{ minWidth: 100 }}
                 >
-                  {l10n.logout}
+                  {'OK'}
                 </Button>
               </>
             ) : (
