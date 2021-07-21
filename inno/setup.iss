@@ -3,7 +3,7 @@
 #define MyAppVersion GetEnv("VERSION")
 #define MyAppPublisher "Gephyra OÜ"
 #define MyAppURL "https://geph.io/"
-#define MyAppExeName "gephgui.exe"
+#define MyAppExeName "gephgui4.exe"
 
 [Setup]
 ; NOTE: The value of AppId uniquely identifies this application.
@@ -42,6 +42,7 @@ Type: filesandordirs; Name: "{app}\*"
 [Files]
 ;Source: "E:\geph-electron-win32-ia32\geph-electron.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\dist\win-ia32-unpacked\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "..\binaries\win-drivers\*"; DestDir: "{app}\resources\app\binaries\win-ia32\"; Flags: onlyifdoesntexist uninsneveruninstall recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
@@ -51,3 +52,10 @@ Name: "{commondesktop}\{cm:MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks
 
 [Run]
 Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{cm:MyAppName}}"; Flags: nowait postinstall skipifsilent
+
+[Registry]
+Root: "HKLM"; Subkey: "SOFTWARE\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Layers"; ValueType: none; Flags: deletevalue; ValueName: "{app}\gephgui4.exe"; Check: not IsWin64 
+
+Root: "HKLM64"; Subkey: "SOFTWARE\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Layers"; ValueType: String; ValueName: "{app}\gephgui4.exe";  Check: IsWin64
+
+ 

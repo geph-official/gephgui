@@ -9,22 +9,21 @@ import {
   DialogTitle,
   DialogContent,
   DialogContentText,
-  DialogActions
+  DialogActions,
 } from "@material-ui/core";
 import { useSelector, useDispatch } from "react-redux";
 import { l10nSelector } from "../redux/l10n";
-import { checkAccount, stopBinderProxy, startBinderProxy } from "../nativeGate";
+import { syncStatus, stopBinderProxy, startBinderProxy } from "../nativeGate";
 import axios from "axios";
 import axiosRetry, { exponentialDelay } from "axios-retry";
 import Alert from "@material-ui/lab/Alert";
 
-const codeBadCred = 11;
-const codeBadNet = 10;
 const codeOK = 0;
+const codeBadNet = 10;
 const codeExists = 12;
 const codeBadCaptcha = 13;
 
-const LoginFrag: React.FC = props => {
+const LoginFrag: React.FC = (props) => {
   const [uname, setUname] = useState("");
   const [pwd, setPwd] = useState("");
   const [busy, setBusy] = useState(false);
@@ -61,24 +60,30 @@ const LoginFrag: React.FC = props => {
       </>
     );
     setBusy(true);
-    const code = await checkAccount(uname, pwd);
-    if (code === codeOK) {
+    try {
+      await syncStatus(uname, pwd, true);
       finishLogin();
       return;
+    } catch (e) {
+      console.log(e);
+      setDialogContent(
+        <>
+          <DialogTitle>{l10n.loggingin}</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              {e === "no user found" || e === "wrong password" ? (
+                l10n.errBadCred
+              ) : (
+                <span style={{ color: "red" }}>{e}</span>
+              )}
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={(_) => setBusy(false)}>OK</Button>
+          </DialogActions>
+        </>
+      );
     }
-    setDialogContent(
-      <>
-        <DialogTitle>{l10n.loggingin}</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            {code === codeBadCred ? l10n.errBadCred : l10n.errBadNet}
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={_ => setBusy(false)}>OK</Button>
-        </DialogActions>
-      </>
-    );
   };
 
   // show register
@@ -101,9 +106,7 @@ const LoginFrag: React.FC = props => {
   };
   return (
     <>
-      <Dialog open={busy} fullWidth>
-        {dialogContent}
-      </Dialog>
+      <Dialog open={busy}>{dialogContent}</Dialog>
       <Grid
         container
         direction="column"
@@ -116,13 +119,13 @@ const LoginFrag: React.FC = props => {
             style={{
               maxHeight: "20vh",
               maxWidth: "50vw",
-              paddingBottom: "30px"
+              paddingBottom: "30px",
             }}
             src={require("../assets/images/logo-naked.svg")}
           />{" "}
           <br />
           <form
-            onSubmit={async e => {
+            onSubmit={async (e) => {
               e.preventDefault();
               doLogin();
             }}
@@ -133,7 +136,7 @@ const LoginFrag: React.FC = props => {
               fullWidth
               variant="outlined"
               style={{ paddingBottom: "16px" }}
-              onChange={evt => setUname(evt.target.value)}
+              onChange={(evt) => setUname(evt.target.value)}
               value={uname}
               autoCapitalize="off"
             />
@@ -144,7 +147,7 @@ const LoginFrag: React.FC = props => {
               type="password"
               variant="outlined"
               style={{ paddingBottom: "16px" }}
-              onChange={evt => setPwd(evt.target.value)}
+              onChange={(evt) => setPwd(evt.target.value)}
               value={pwd}
               helperText={pwd + " "}
             />
@@ -161,7 +164,7 @@ const LoginFrag: React.FC = props => {
             <Button
               variant="contained"
               style={{ marginBottom: "8px", textTransform: "none" }}
-              onClick={_ => doRegister()}
+              onClick={(_) => doRegister()}
             >
               {l10n.registerblurb}
             </Button>
@@ -245,7 +248,7 @@ const Register = (props: {
           variant="outlined"
           size="small"
           style={{ marginBottom: "8px", marginTop: "8px" }}
-          onChange={evt => setUname(evt.target.value)}
+          onChange={(evt) => setUname(evt.target.value)}
           value={uname}
         />
         <TextField
@@ -256,7 +259,7 @@ const Register = (props: {
           variant="outlined"
           size="small"
           style={{ marginBottom: "8px", marginTop: "8px" }}
-          onChange={evt => setPwd(evt.target.value)}
+          onChange={(evt) => setPwd(evt.target.value)}
           value={pwd}
           helperText={pwd + " "}
         />
@@ -268,7 +271,7 @@ const Register = (props: {
               src={captchaData}
               height="60"
               width="240"
-              onClick={_ => {
+              onClick={(_) => {
                 setCaptchaData("");
                 fetchCaptcha();
               }}
@@ -283,15 +286,15 @@ const Register = (props: {
           variant="outlined"
           size="small"
           style={{ marginBottom: "8px", marginTop: "8px" }}
-          onChange={evt => setCaptchaSoln(evt.target.value)}
+          onChange={(evt) => setCaptchaSoln(evt.target.value)}
           value={captchaSoln}
         />
       </DialogContent>
       <DialogActions>
-        <Button onClick={_ => props.onCancel()} disabled={busy}>
+        <Button onClick={(_) => props.onCancel()} disabled={busy}>
           {l10n.cancel}
         </Button>
-        <Button color="primary" onClick={_ => doRegister()} disabled={busy}>
+        <Button color="primary" onClick={(_) => doRegister()} disabled={busy}>
           {l10n.registerblurb}
         </Button>
       </DialogActions>
@@ -302,14 +305,14 @@ const Register = (props: {
 const proxClient = axios.create({ baseURL: "http://127.0.0.1:23456" });
 axiosRetry(proxClient, {
   retries: 1000,
-  retryDelay: exponentialDelay
+  retryDelay: exponentialDelay,
 });
 
 const getCaptcha = async () => {
   const pid = startBinderProxy();
   try {
     const response = await proxClient.get("/captcha", {
-      responseType: "arraybuffer"
+      responseType: "arraybuffer",
     });
     const b64img =
       "data:image/png;base64," +
@@ -335,7 +338,7 @@ const registerAccount = async (
           Username: username,
           Password: password,
           CaptchaID: captchaID,
-          CaptchaSoln: captchaSoln
+          CaptchaSoln: captchaSoln,
         });
         if (resp.status !== 200) {
           return codeBadNet;
@@ -343,9 +346,9 @@ const registerAccount = async (
           return codeOK;
         }
       } catch (err) {
-        if (/403/.test(err.toString())) {
+        if (/409/.test(err.toString())) {
           return codeExists;
-        } else if (/400/.test(err.toString())) {
+        } else if (/422/.test(err.toString())) {
           return codeBadCaptcha;
         } else {
           continue;

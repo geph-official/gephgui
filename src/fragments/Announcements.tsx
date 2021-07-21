@@ -43,25 +43,26 @@ const filterByLanguage = (francCode: string, toFilter: string) => {
 
 export const getAnnouncementFeed = async () => {
   const parser = new Parser();
-  const feedContents = await parser.parseString(
+  const feedContents: any = await parser.parseString(
     (await axios.get("https://channel2rss.bitmachine.org/rss/gephannounce"))
       .data
   );
-  console.log(feedContents);
+  const feedContentsFiltered = feedContents.items
+    .map((item) => {
+      return item
+        ? {
+            text: sanitizeHtml(item.content).replace(
+              /<a/g,
+              "<a target='_blank' "
+            ) as string,
+            date: item.isoDate as string,
+          }
+        : { text: "", date: "" };
+    })
+    .filter((msg) => new Date(msg.date) > new Date("2020-04-10"));
+  console.log(JSON.stringify(feedContentsFiltered));
   if (feedContents.items) {
-    return feedContents.items
-      .map((item) => {
-        return item
-          ? {
-              text: sanitizeHtml(item.content).replace(
-                /<a/g,
-                "<a target='blank' "
-              ) as string,
-              date: item.isoDate as string,
-            }
-          : { text: "", date: "" };
-      })
-      .filter((msg) => new Date(msg.date) > new Date("2020-04-10"));
+    return feedContentsFiltered;
   }
   return [];
 };

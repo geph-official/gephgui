@@ -1,8 +1,10 @@
-const { app, BrowserWindow, Tray } = require("electron");
+const { app, BrowserWindow, Tray, ipcMain } = require("electron");
 app.commandLine.appendSwitch("disable-http-cache");
 const path = require("path");
 const url = require("url");
 const isDev = require("electron-is-dev");
+const { dialog } = require("electron");
+const fs = require("fs");
 process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = true;
 
 // Keep a global reference of the window object, if you don't, the window will
@@ -17,10 +19,11 @@ function createWindow() {
 
   win = new BrowserWindow({
     width: 400,
-    height: 670,
+    height: 710,
     webPreferences: {
       nodeIntegration: true,
       webSecurity: false,
+      enableRemoteModule: true,
     },
     show: false,
   });
@@ -125,3 +128,25 @@ app.on("activate", () => {
 try {
   app.dock.hide();
 } catch {}
+
+const isElevated = require("is-elevated");
+
+exports.isElevated = isElevated;
+
+exports.testTest = 123;
+
+// (async () => {
+//   alert(await isElevated());
+//   //=> false
+// })();
+
+// DL handler
+ipcMain.on("exportLogs", (event, info) => {
+  const path = require("path");
+  const fname = dialog.showSaveDialogSync({
+    defaultPath: path.basename(info.filename),
+  });
+  if (fname) {
+    fs.copyFileSync(info.filename, fname);
+  }
+});

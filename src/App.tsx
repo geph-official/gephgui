@@ -16,6 +16,13 @@ import {
   createMuiTheme,
   ThemeProvider,
   Badge,
+  Dialog,
+  CircularProgress,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  LinearProgress,
+  Button,
 } from "@material-ui/core";
 import * as icons from "@material-ui/icons";
 import { rootReducer, GlobalState } from "./redux";
@@ -23,15 +30,24 @@ import { createStore } from "redux";
 import { Provider, useSelector, useDispatch } from "react-redux";
 import OverviewFrag from "./fragments/OverviewFrag";
 import { useInterval } from "./utils";
-import { SpecialConnStates } from "./redux/connState";
+import { ConnectionStatus, SpecialConnStates } from "./redux/connState";
 import { prefSelector } from "./redux/prefs";
 import LoginFrag from "./fragments/LoginFrag";
 import AccountFrag from "./fragments/AccountFrag";
+import Status from "./fragments/Status";
 import SettingsFrag from "./fragments/SettingsFrag";
-import { startUpdateChecks, getVersion } from "./nativeGate";
+import {
+  startUpdateChecks,
+  getVersion,
+  syncStatus,
+  stopDaemon,
+} from "./nativeGate";
 import Announcements, { getAnnouncementFeed } from "./fragments/Announcements";
 
-const store = createStore(rootReducer, persistState("prefState", {}));
+const store = createStore(
+  rootReducer,
+  persistState(["prefState", "exitState"], {})
+);
 
 //alert(JSON.stringify(localStorage));
 
@@ -54,14 +70,27 @@ const theme = createMuiTheme({
   },
 });
 
+const promiseWithTimeout = (timeoutMs: number, promise: () => Promise<any>) => {
+  return Promise.race([
+    promise(),
+    new Promise((resolve, reject) =>
+      setTimeout(() => reject("timeout"), timeoutMs)
+    ),
+  ]);
+};
+
 const App: React.FC = (props) => {
   const classes = useStyles();
   const l10n = useSelector(l10nSelector);
   const lang = useSelector(langSelector);
   const username = useSelector(prefSelector("username", ""));
+  const password = useSelector(prefSelector("password", ""));
+  const connState = useSelector((state: GlobalState) => state.connState);
   const dispatch = useDispatch();
   const [activePage, setActivePage] = useState(0);
-  const statsURL = "http://localhost:9809";
+  const [busy, setBusy] = useState(false);
+  const [busyError, setBusyError] = useState("");
+  const statsURL = "http://127.0.0.1:9809";
   const announcements = useSelector(prefSelector("announceCache", []));
   const lastReadAnnounce = useSelector(
     prefSelector("lastReadAnnounce", new Date("1900-01-01"))
@@ -71,7 +100,9 @@ const App: React.FC = (props) => {
   }).length;
 
   const refreshConnData = async () => {
+    console.log("refreshConnData");
     if (username === "") {
+      console.log("username empty, going off");
       return;
     }
     try {
@@ -79,7 +110,31 @@ const App: React.FC = (props) => {
       console.log(response);
       dispatch({ type: "CONN", rawJson: response.data });
     } catch {
-      dispatch({ type: "CONN", rawJson: SpecialConnStates.Dead });
+      if (!connState.fresh)
+        dispatch({ type: "CONN", rawJson: SpecialConnStates.Dead });
+    }
+  };
+
+  const refreshSync = async (force: boolean) => {
+    if (username === "") {
+      return;
+    }
+    setBusyError("");
+    setBusy(true);
+    while (true) {
+      try {
+        const [accInfo, exits] = await promiseWithTimeout(20000, () =>
+          syncStatus(username, password, force)
+        );
+        console.log(accInfo);
+        dispatch({ type: "SYNC", account: accInfo });
+        dispatch({ type: "EXIT_LIST", list: exits });
+        setBusy(false);
+        return;
+      } catch (e) {
+        setBusyError(e.toString());
+        console.log(e.toString());
+      }
     }
   };
 
@@ -112,11 +167,16 @@ const App: React.FC = (props) => {
     refreshConnData();
   }, 1000);
 
+  useInterval(() => {
+    refreshSync(false);
+  }, 600000);
+
   useEffect(() => {
+    refreshSync(false);
     refreshConnData();
     refreshAnnouncement();
     startUpdateChecks(l10n);
-  }, []);
+  }, [username]);
 
   if (username === "") {
     return <LoginFrag />;
@@ -129,6 +189,37 @@ const App: React.FC = (props) => {
           {l10n.geph} {getVersion()}
         </title>
       </Helmet>
+      <Dialog open={busy}>
+        <DialogTitle>{l10n.syncing}</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            <LinearProgress />
+            <span style={{ color: "red" }}>{busyError}</span>
+            {busyError ? (
+              <>
+                <hr />
+                <Button
+                  color="secondary"
+                  variant="outlined"
+                  disableElevation
+                  onClick={() => {
+                    localStorage.clear();
+                    dispatch({ type: "CONN", rawJson: SpecialConnStates.Dead });
+                    stopDaemon();
+                    dispatch({ type: "PREF", key: "username", value: "" });
+                    dispatch({ type: "PREF", key: "password", value: "" });
+                  }}
+                  style={{ minWidth: 100 }}
+                >
+                  {l10n.logout}
+                </Button>
+              </>
+            ) : (
+              ""
+            )}
+          </DialogContentText>
+        </DialogContent>
+      </Dialog>
       <div
         style={{
           height: "calc(100vh - 64px)",
@@ -139,10 +230,10 @@ const App: React.FC = (props) => {
         {(() => {
           switch (activePage) {
             case 0:
-              return <OverviewFrag />;
-            case 2:
-              return <AccountFrag />;
+              return <OverviewFrag forceSync={() => refreshSync(true)} />;
             case 1:
+              return <Status />;
+            case 2:
               return <Announcements />;
             case 3:
               return <SettingsFrag />;
@@ -157,8 +248,9 @@ const App: React.FC = (props) => {
         }}
         showLabels
       >
+        <BottomNavigationAction label={l10n.overview} icon={<icons.Home />} />
         <BottomNavigationAction
-          label={l10n.overview}
+          label={l10n.status}
           icon={<icons.Dashboard />}
         />
         <BottomNavigationAction
@@ -168,10 +260,6 @@ const App: React.FC = (props) => {
               <icons.Notifications />
             </Badge>
           }
-        />
-        <BottomNavigationAction
-          label={l10n.account}
-          icon={<icons.AccountCircle />}
         />
         <BottomNavigationAction
           label={l10n.settings}

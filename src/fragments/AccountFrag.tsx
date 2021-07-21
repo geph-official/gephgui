@@ -8,34 +8,28 @@ import {
   ListItemText,
   ListItemSecondaryAction,
   Button,
-  Divider
+  Divider,
+  IconButton,
 } from "@material-ui/core";
+import RefreshIcon from "@material-ui/icons/Refresh";
 import { useSelector, useDispatch } from "react-redux";
 import { l10nSelector, langSelector } from "../redux/l10n";
-import {
-  AccountCircle,
-  Lock,
-  CreditCard,
-  Favorite,
-  DateRange
-} from "@material-ui/icons";
+import { AccountCircle, Favorite, DateRange } from "@material-ui/icons";
 import { prefSelector } from "../redux/prefs";
 import { GlobalState } from "../redux";
-import { ConnectionStatus, Tier, SpecialConnStates } from "../redux/connState";
-import Alert from "@material-ui/lab/Alert";
+import { SpecialConnStates } from "../redux/connState";
 import { getPlatform, stopDaemon } from "../nativeGate";
 
-const AccountFrag: React.FC = props => {
+const AccountFrag = (props: { forceSync: () => void }) => {
   const l10n = useSelector(l10nSelector);
   const lang = useSelector(langSelector);
   const username = useSelector(prefSelector("username", ""));
   const password = useSelector(prefSelector("password", ""));
   const dispatch = useDispatch();
   const connstate = useSelector((state: GlobalState) => state.connState);
-  const [showPwd, setShowPwd] = useState(false);
-  const isRunning =
-    connstate.fresh && connstate.connected === ConnectionStatus.Connected;
-  const extendURL = `https://geph.io/billing/login?next=%2Fbilling%2Fdashboard&uname=${username}&pwd=${password}`;
+  const extendURL = `https://geph.io/billing/login?next=%2Fbilling%2Fdashboard&uname=${encodeURIComponent(
+    username
+  )}&pwd=${encodeURIComponent(password)}`;
   const openBilling = () => {
     if (getPlatform() === "android") {
       window.location.href = extendURL;
@@ -43,13 +37,11 @@ const AccountFrag: React.FC = props => {
       window.open(extendURL, "_blank");
     }
   };
+  const isFree =
+    connstate.syncState && connstate.syncState.subscription === null;
   return (
     <>
-      <List
-        subheader={
-          <ListSubheader component="div">{l10n.accinfo}</ListSubheader>
-        }
-      >
+      <List>
         <ListItem>
           <ListItemIcon>
             <AccountCircle />
@@ -58,12 +50,15 @@ const AccountFrag: React.FC = props => {
             style={{
               overflow: "hidden",
               maxWidth: "calc(100vw - 200px)",
-              textOverflow: "ellipsis"
+              textOverflow: "ellipsis",
             }}
           >
             <b>{username}</b>
           </ListItemText>
           <ListItemSecondaryAction>
+            <IconButton aria-label="refresh" onClick={(e) => props.forceSync()}>
+              <RefreshIcon />
+            </IconButton>
             <Button
               color="secondary"
               variant="outlined"
@@ -75,102 +70,71 @@ const AccountFrag: React.FC = props => {
                 dispatch({ type: "PREF", key: "username", value: "" });
                 dispatch({ type: "PREF", key: "password", value: "" });
               }}
+              style={{ minWidth: 100 }}
             >
               {l10n.logout}
             </Button>
           </ListItemSecondaryAction>
         </ListItem>
-        <ListItem>
-          <ListItemIcon>
-            <Lock />
-          </ListItemIcon>
-          <ListItemText primary={showPwd ? password : "* * * * * * *"} />
-          <ListItemSecondaryAction>
-            <Button
-              onClick={e => {
-                setShowPwd(!showPwd);
-              }}
-            >
-              {showPwd ? l10n.hide : l10n.show}
-            </Button>
-          </ListItemSecondaryAction>
-        </ListItem>
-      </List>
-      <Divider />
-      <List
-        subheader={
-          <ListSubheader component="div">{l10n.subscription}</ListSubheader>
-        }
-      >
-        {!isRunning ? (
-          <ListItem>
-            <Alert severity="info">{l10n.subinfoblurb}</Alert>
-          </ListItem>
-        ) : (
-          <>
+        <>
+          {isFree ? (
             <ListItem>
               <ListItemIcon>
-                <CreditCard />
+                <Favorite color="secondary" />
+              </ListItemIcon>
+              <ListItemText>{l10n.unlockUnlimitedSpeed}</ListItemText>
+              <ListItemSecondaryAction>
+                <Button
+                  color="primary"
+                  variant="outlined"
+                  onClick={openBilling}
+                  disableElevation
+                  style={{ minWidth: 100 }}
+                >
+                  {l10n.upgrade}
+                </Button>
+              </ListItemSecondaryAction>
+            </ListItem>
+          ) : (
+            <ListItem>
+              <ListItemIcon>
+                <DateRange color="primary" />
               </ListItemIcon>
               <ListItemText
-                primary={(() => {
-                  // easter egg
-                  const uhash = sha256(username + "pepper");
-                  if (
-                    uhash ===
-                      "b2aa2bfe1aed310ab52593a4c816a945cd26ae08f343b66da8a799c644026907" ||
-                    uhash ===
-                      "4b55ab8a1a4676dbc188d95ff6ee274ccb898fc5aa986746d41dde5b4412b5f7"
+                primary={new Date(
+                  ((connstate.syncState &&
+                    connstate.syncState.subscription &&
+                    connstate.syncState.subscription.expires_unix) ||
+                    0) * 1000
+                ).toLocaleDateString(lang, {
+                  year: "numeric",
+                  month: "short",
+                  day: "numeric",
+                })}
+                secondary={formatRemaining(
+                  l10n,
+                  new Date(
+                    ((connstate.syncState &&
+                      connstate.syncState.subscription &&
+                      connstate.syncState.subscription.expires_unix) ||
+                      0) * 1000
                   )
-                    return "D" + "OR" + "THIS" + "BE";
-                  return connstate.tier === Tier.Free ? l10n.free : l10n.plus;
-                })()}
-              />
+                )}
+              ></ListItemText>
+              <ListItemSecondaryAction>
+                <Button
+                  color="primary"
+                  variant="outlined"
+                  onClick={openBilling}
+                  disableElevation
+                  style={{ minWidth: 100 }}
+                >
+                  {l10n.extend}
+                </Button>
+              </ListItemSecondaryAction>
             </ListItem>
-            {connstate.tier === Tier.Free ? (
-              <ListItem>
-                <ListItemIcon>
-                  <Favorite color="secondary" />
-                </ListItemIcon>
-                <ListItemText>{l10n.unlockUnlimitedSpeed}</ListItemText>
-                <ListItemSecondaryAction>
-                  <Button
-                    color="primary"
-                    variant="outlined"
-                    onClick={openBilling}
-                    disableElevation
-                  >
-                    {l10n.upgrade}
-                  </Button>
-                </ListItemSecondaryAction>
-              </ListItem>
-            ) : (
-              <ListItem>
-                <ListItemIcon>
-                  <DateRange color="primary" />
-                </ListItemIcon>
-                <ListItemText
-                  primary={connstate.expiry.toLocaleDateString(lang, {
-                    year: "numeric",
-                    month: "short",
-                    day: "numeric"
-                  })}
-                  secondary={formatRemaining(l10n, connstate.expiry)}
-                ></ListItemText>
-                <ListItemSecondaryAction>
-                  <Button
-                    color="primary"
-                    variant="outlined"
-                    onClick={openBilling}
-                    disableElevation
-                  >
-                    {l10n.extend}
-                  </Button>
-                </ListItemSecondaryAction>
-              </ListItem>
-            )}
-          </>
-        )}
+          )}
+        </>
       </List>
     </>
   );

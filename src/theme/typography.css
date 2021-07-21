@@ -1,44 +1,44 @@
 @font-face {
-  font-family: "LFR";
-  src: url("../assets/lfr/LibreFranklin-Regular.ttf") format("truetype");
+  font-family: "hkgrotesk";
+  src: url("../assets/hkgrotesk/HKGrotesk-Regular.otf") format("opentype");
   font-weight: normal;
   font-style: normal;
 }
 @font-face {
-  font-family: "LFR";
-  src: url("../assets/lfr/LibreFranklin-RegularItalic.ttf") format("truetype");
+  font-family: "hkgrotesk";
+  src: url("../assets/hkgrotesk/HKGrotesk-Italic.otf") format("opentype");
   font-weight: normal;
   font-style: italic;
 }
 @font-face {
-  font-family: "LFR";
-  src: url("../assets/lfr/LibreFranklin-Medium.ttf") format("truetype");
+  font-family: "hkgrotesk";
+  src: url("../assets/hkgrotesk/HKGrotesk-Medium.otf") format("opentype");
   font-weight: 500;
   font-style: normal;
 }
 @font-face {
-  font-family: "LFR";
-  src: url("../assets/lfr/LibreFranklin-Bold.ttf") format("truetype");
+  font-family: "hkgrotesk";
+  src: url("../assets/hkgrotesk/HKGrotesk-Bold.otf") format("opentype");
   font-weight: bold;
   font-style: normal;
 }
 @font-face {
-  font-family: "LFR";
-  src: url("../assets/lfr/LibreFranklin-BoldItalic.ttf") format("truetype");
+  font-family: "hkgrotesk";
+  src: url("../assets/hkgrotesk/HKGrotesk-BoldItalic.otf") format("opentype");
   font-weight: bold;
   font-style: italic;
 }
 
 :lang(zh-cn) {
-  font-family: "LFR", "Noto Sans CJK SC", "Microsoft YaHei", sans-serif !important;
+  font-family: "hkgrotesk", "Noto Sans CJK SC", "Microsoft YaHei", sans-serif !important;
 }
 
 :lang(zh-tw) {
-  font-family: "LFR", "Noto Sans CJK TC", "Microsoft JhengHei", sans-serif !important;
+  font-family: "hkgrotesk", "Noto Sans CJK TC", "Microsoft JhengHei", sans-serif !important;
 }
 
 * {
-  font-family: "LFR", sans-serif !important;
+  font-family: "hkgrotesk", sans-serif !important;
 }
 
 .mspace {
