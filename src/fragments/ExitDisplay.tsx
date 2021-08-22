@@ -52,14 +52,14 @@ export const ExitDisplay = (props) => {
 export const ExitSelector = (props: {}) => {
   const l10n = useSelector(l10nSelector);
   const connState = useSelector((state: GlobalState) => state.connState);
+  const acctState = useSelector((state: GlobalState) => state.acctState);
   const exitState = useSelector((state: GlobalState) => state.exitState);
   const dispatch = useDispatch();
   const setExit = (info: ExitInfo) => {
     dispatch({ type: "EXIT_SELECT", selectedExit: info });
   };
   const [pickerOpened, setPickerOpened] = useState(false);
-  const isFree: boolean =
-    connState.syncState !== null && connState.syncState.subscription === null;
+  const isFree: boolean = acctState !== null && acctState.subscription === null;
   return (
     <>
       <Button

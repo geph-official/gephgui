@@ -26,7 +26,7 @@ const AccountFrag = (props: { forceSync: () => void }) => {
   const username = useSelector(prefSelector("username", ""));
   const password = useSelector(prefSelector("password", ""));
   const dispatch = useDispatch();
-  const connstate = useSelector((state: GlobalState) => state.connState);
+  const acctState = useSelector((state: GlobalState) => state.acctState);
   const extendURL = `https://geph.io/billing/login?next=%2Fbilling%2Fdashboard&uname=${encodeURIComponent(
     username
   )}&pwd=${encodeURIComponent(password)}`;
@@ -37,8 +37,7 @@ const AccountFrag = (props: { forceSync: () => void }) => {
       window.open(extendURL, "_blank");
     }
   };
-  const isFree =
-    connstate.syncState && connstate.syncState.subscription === null;
+  const isFree = acctState && acctState.subscription === null;
   return (
     <>
       <List>
@@ -102,9 +101,9 @@ const AccountFrag = (props: { forceSync: () => void }) => {
               </ListItemIcon>
               <ListItemText
                 primary={new Date(
-                  ((connstate.syncState &&
-                    connstate.syncState.subscription &&
-                    connstate.syncState.subscription.expires_unix) ||
+                  ((acctState &&
+                    acctState.subscription &&
+                    acctState.subscription.expires_unix) ||
                     0) * 1000
                 ).toLocaleDateString(lang, {
                   year: "numeric",
@@ -114,9 +113,9 @@ const AccountFrag = (props: { forceSync: () => void }) => {
                 secondary={formatRemaining(
                   l10n,
                   new Date(
-                    ((connstate.syncState &&
-                      connstate.syncState.subscription &&
-                      connstate.syncState.subscription.expires_unix) ||
+                    ((acctState &&
+                      acctState.subscription &&
+                      acctState.subscription.expires_unix) ||
                       0) * 1000
                   )
                 )}

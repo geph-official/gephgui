@@ -46,7 +46,7 @@ import Announcements, { getAnnouncementFeed } from "./fragments/Announcements";
 
 const store = createStore(
   rootReducer,
-  persistState(["prefState", "exitState"], {})
+  persistState(["prefState", "exitState", "acctState"], {})
 );
 
 //alert(JSON.stringify(localStorage));
@@ -120,20 +120,35 @@ const App: React.FC = (props) => {
       return;
     }
     setBusyError("");
-    setBusy(true);
+    let flag = false;
     while (true) {
       try {
-        const [accInfo, exits] = await promiseWithTimeout(20000, () =>
-          syncStatus(username, password, force)
-        );
+        flag = true;
+        const boo = (async () => {
+          for (;;) {
+            await new Promise((resolve) => setTimeout(resolve, 2000));
+            if (flag) {
+              setBusy(true);
+            }
+          }
+        })();
+        const [accInfo, exits] = await Promise.race([
+          promiseWithTimeout(20000, () =>
+            syncStatus(username, password, force)
+          ),
+          boo,
+        ]);
+        flag = false;
         console.log(accInfo);
-        dispatch({ type: "SYNC", account: accInfo });
+        dispatch({ type: "ACCT", account: accInfo });
         dispatch({ type: "EXIT_LIST", list: exits });
         setBusy(false);
         return;
       } catch (e) {
         setBusyError(e.toString());
         console.log(e.toString());
+      } finally {
+        flag = false;
       }
     }
   };
@@ -231,11 +246,11 @@ const App: React.FC = (props) => {
           switch (activePage) {
             case 0:
               return <OverviewFrag forceSync={() => refreshSync(true)} />;
+            // case 1:
+            //   return <Status />;
             case 1:
-              return <Status />;
-            case 2:
               return <Announcements />;
-            case 3:
+            case 2:
               return <SettingsFrag />;
           }
         })()}
@@ -249,10 +264,10 @@ const App: React.FC = (props) => {
         showLabels
       >
         <BottomNavigationAction label={l10n.overview} icon={<icons.Home />} />
-        <BottomNavigationAction
+        {/* <BottomNavigationAction
           label={l10n.status}
           icon={<icons.Dashboard />}
-        />
+        /> */}
         <BottomNavigationAction
           label={l10n.announcements}
           icon={

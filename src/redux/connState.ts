@@ -24,7 +24,6 @@ export interface ConnState {
   downBytes: number;
   oldDownBytes: number;
   ping: number;
-  syncState: AccountInfo | null;
   loss: number;
 }
 
@@ -36,24 +35,9 @@ export interface RawStats {
   loss: number;
 }
 
-export interface AccountInfo {
-  userid: number;
-  username: string;
-  subscription: Subscription | null;
-}
-
-export interface Subscription {
-  expires_unix: number;
-}
-
 export interface ConnAction {
   type: "CONN";
   rawJson: RawStats | SpecialConnStates;
-}
-
-export interface SyncAction {
-  type: "SYNC";
-  account: AccountInfo;
 }
 
 const initState = {
@@ -73,44 +57,36 @@ const initState = {
 
 export const connReducer = (
   state: ConnState = initState,
-  action: ConnAction | SyncAction
+  action: ConnAction
 ) => {
   console.log(action);
-  if (action.type === "CONN") {
-    if (!action.rawJson) {
-      return state;
-    }
-    if (action.rawJson === SpecialConnStates.Connecting) {
-      return { ...state, fresh: true, connected: ConnectionStatus.Connecting };
-    }
-    if (action.rawJson === SpecialConnStates.Dead) {
-      return {
-        ...state,
-        fresh: true,
-        connected: ConnectionStatus.Disconnected,
-      };
-    }
-    const j = action.rawJson;
-    const toret = {
-      ...state,
-      fresh: true,
-      connected:
-        j.latency !== null
-          ? ConnectionStatus.Connected
-          : ConnectionStatus.Connecting,
-      ping: Math.round(j.latency*1000.0),
-      upBytes: j.total_tx,
-      oldUpBytes: state.upBytes,
-      downBytes: j.total_rx,
-      oldDownBytes: state.downBytes,
-      loss: j.loss * 100.0,
-    };
-    return toret;
-  } else if (action.type === "SYNC") {
+  if (!action.rawJson) {
+    return state;
+  }
+  if (action.rawJson === SpecialConnStates.Connecting) {
+    return { ...state, fresh: true, connected: ConnectionStatus.Connecting };
+  }
+  if (action.rawJson === SpecialConnStates.Dead) {
     return {
       ...state,
-      syncState: action.account,
+      fresh: true,
+      connected: ConnectionStatus.Disconnected,
     };
   }
-  return state;
+  const j = action.rawJson;
+  const toret = {
+    ...state,
+    fresh: true,
+    connected:
+      j.latency !== null
+        ? ConnectionStatus.Connected
+        : ConnectionStatus.Connecting,
+    ping: Math.round(j.latency * 1000.0),
+    upBytes: j.total_tx,
+    oldUpBytes: state.upBytes,
+    downBytes: j.total_rx,
+    oldDownBytes: state.downBytes,
+    loss: j.loss * 100.0,
+  };
+  return toret;
 };

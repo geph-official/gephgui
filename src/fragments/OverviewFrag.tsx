@@ -224,12 +224,13 @@ const ConnStatusInfo = (props: {}) => {
 const NetActivityInfo = (props: {}) => {
   const l10n = useSelector(l10nSelector);
   const connState = useSelector((state: GlobalState) => state.connState);
+  const acctState = useSelector((state: GlobalState) => state.acctState);
   const isValid = useSelector(
     (state: GlobalState) =>
       state.connState.connected === ConnectionStatus.Connected
   );
   let max;
-  let isPaid = connState.syncState && connState.syncState.subscription;
+  let isPaid = acctState && acctState.subscription;
   if (isPaid) {
     max = 100000000;
   } else {
