@@ -236,6 +236,7 @@ const NetActivityInfo = (props: {}) => {
   } else {
     max = 1600;
   }
+
   const upSpeed =
     !isValid || connState.oldUpBytes < 1
       ? 0
@@ -245,6 +246,7 @@ const NetActivityInfo = (props: {}) => {
       ? 0
       : connState.downBytes - connState.oldDownBytes;
   const loss = isValid && connState.loss;
+
   return (
     <div
       style={{
@@ -255,12 +257,25 @@ const NetActivityInfo = (props: {}) => {
         opacity: 0.8,
       }}
     >
-      <SpeedLabel kbps={(8 * (downSpeed + upSpeed)) / 1000} max={max} />
+      <DualSpeedLabel up={upSpeed} down={downSpeed} />
       &ensp;
       <PingLabel ms={isValid && connState.ping} />
       &ensp;
       <LossLabel loss={loss} />
       <br />
+    </div>
+  );
+};
+
+const DualSpeedLabel = (props) => {
+  const up_kbps: number = (props.up * 8) / 1000;
+  const down_kbps: number = (props.down * 8) / 1000;
+
+  return (
+    <div>
+      Up <SpeedLabel kbps={up_kbps} />
+      &nbsp;/
+      Down <SpeedLabel kbps={down_kbps} />
     </div>
   );
 };
@@ -285,7 +300,7 @@ const SpeedLabel = (props) => {
   }
 
   // compute the color
-  let intensity = Math.min(1, Math.pow(props.kbps / props.max, 5));
+  let intensity = Math.min(1, Math.pow(props.kbps / Infinity, 5));
   let beestyle = {
     color: "rgba(" + intensity * 255 + ", 50, 50, 255)",
   };

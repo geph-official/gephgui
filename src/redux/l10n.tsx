@@ -498,12 +498,177 @@ const zhTWBindings = {
   latency: "延遲",
   packetLossEstimation: "丟包率（估算）",
 };
+
+const FABindings = {
+  fmtDaysLeft: (days: string) => (
+    <>
+    روز <b>{days}</b> پلاس منقضی می شود در 
+    </>
+  ),
+  fmtDaysLeftShort: (days: string) => (
+    <>
+     روز مانده <b>{days}</b>
+    </>
+  ),
+  you: "شما",
+  announcements: "اخبار",
+  accinfo: "اطلاعات ورود",
+  account: "حساب",
+  advanced: "پیشرفته",
+  amount: "مقدار",
+  listenall: "Listen on all interfaces",
+  listenallblurb: "اشتراک گذاری گف با دیگر کامپیوتر ها در همان شبکه",
+  autoconn: "اتصال خودکار",
+  autoconnblurb: "متصل شدن زمانی که گف شروع به کار می کند",
+  autoproxy: "کانفیگ کردن خودکار پروکسی",
+  autoproxyblurb: "ممکن است خارج از مرورگرهای اصلی کار نکند",
+  cancel: "لغو",
+  captcha: "کاپچا",
+  connect: "اتصال",
+  disconnect: "قطع اتصال",
+  connected: "متصل شد",
+  details: "پیشرفته",
+  connectedblurb: "از اینترنت آزاد لذت ببرید!",
+  connecting: "درحال اتصال",
+  feedback: "Debug pack",
+  feedbackblurb: "Use the debug pack to report problems with Geph.",
+  loggingin: "درحال وارد شدن...",
+  geph: "Geph",
+  core: "Highsec",
+  clipboard: "آمار در کلیپ بورد کپی شد",
+  date: "تاریخ",
+  disconnected: "قطع شده",
+  downstream: "Downstream",
+  err403: "شما اجازه خروج ندارید ممکن است نیاز به ارتقاء باشد.",
+  errBadCaptcha: "اشتباه کاپچارو زدی",
+  errBadCred: "نام کاربری یا رمز عبور اشتباه است لطفاً دوباره امتحان کنید",
+  errExists: "کاربر قبلاً وجود دارد",
+  exitserver: " :مکان خروج",
+  expiry: "تاریخ انقضا",
+  extend: "توسعه",
+  freelimit: "محدودیت حساب رایگان",
+  general: "عمومی",
+  http: "HTTP پروکسی",
+  debuglogs: "گزارش اشکال زدایی",
+  langname: "فارسی",
+  language: "زبان",
+  locations: "مکان ها",
+  errBadNet: "شبکه ناموفق بود",
+  loginblurb: "وارد شدن با حساب تازه خارج شده",
+  logout: "خروج",
+  logs: "آمار",
+  netactivity: "فعالیت شبکه",
+  network: "شبکه",
+  nomoretx: "دیگر معامله انجام نمی شود",
+  choose: "انتاخب",
+  overview: "خانه",
+  plusonly: "فقط پلاس",
+  password: "رمز عبور",
+  passwordConfirm: "تایید رمزعبور",
+  syncing: "همگام سازی اطلاعات شبکه ...",
+  plusblurb: (
+    <>
+   <b>&euro;5/month</b>سرعت نامحدود برای
+    </>
+  ),
+  pwdmismatch: "رمزهای ورود مطابقت ندارند",
+  registerblurb: "ساخت حساب جدید",
+  show: "نمایش",
+  hide: "پنهان کردن",
+  feedbackbutton: "Export debug pack",
+  restartblurb: "راه اندازی دوباره گف برای اعمال زبان ",
+  seePlans: "دیدن پلن ها",
+  selectExit: "تغییر مکان",
+  settings: "تنظیما",
+  manage: "مدیریت",
+  socks5: "SOCKS5 پروکسی",
+  subscription: "اشتراک",
+  txlog: "Past transactions",
+  subinfoblurb: "اتصال به گف برای مدیریت اشتراک",
+  unameillegal: "نام کاربری باید بین  پنج تا صد کاراکتر باشد",
+  unlockUnlimitedSpeed: "دریافت سرعت نامحدود",
+  updateDownload: "دانلود",
+  updateInfo: "نسخه جدید موجوده!",
+  updateLater: "بعدا به من یادآوری کن",
+  upgradeToPlus: "ارتقا به پلاس",
+  version: "نسخه",
+  upgrade: "خرید پلاس !",
+  cannotVpnBlurb: "VPN mode in Windows requires Geph to be set up as an administrator",
+  forcebridges: "استفاده همیشگی از پل ها",
+  export: "صادر کردن",
+  upstream: "Upstream",
+  macpacblurb:
+    ".برای اولین بار که تنظیمات پروکسی شروع به کار می کند ، نیاز به گذرواژه شما دارد Geph ",
+  username: "نام کاربری",
+  coreblurb: (
+    <span>
+      <b>Highsec</b> exits are located in the safest jurisdictions
+    </span>
+  ),
+  plus: "پلاس",
+  paid: "پلاس",
+  free: "رایگان",
+  tcp: "TCP استفاده از حالت",
+  bridgeblurb: "استفاده از ضد سانسور قدرتمند با صرف نظر از مکان ",
+  vpn: " جهانی Vpn استفاده از",
+  vpnblurb: "در مکنیتاش موجود نمی باشد",
+  excludeapps: "برنامه های مستثنی",
+  excludeappsblurb: "را دور بزنندGeph اجازه دهید برنامه ها",
+  excludecn: "Exclude Chinese traffic",
+  excludecnblurb: "Does not apply to VPN traffic",
+
+  status: "وضعیت",
+
+  selectExcludedApps: "انتخاب برنامه های مستثنی",
+
+  countries: {
+    bg: "بلغارستان",
+    ch: "سوییس",
+    ca: "کانادا",
+    jp: "ژاپن",
+    sg: "سنگاپور",
+    pl: "لهستان",
+    us: "آمریکا",
+    de: "آلمان",
+    hk: "هنگ کنگ",
+    fi: "فنلاند",
+    tw: "تایوان",
+    nl: "هلند",
+  } as Record<string, string>,
+
+  cities: {
+    dal: "دالاس",
+    ewr: "نیوارک",
+    zrh: "زوریخ",
+    gva: "ژنو",
+    mtl: "مونترال",
+    sfo: "سان فرانسیسکو",
+    pdx: "پرتلند",
+    sgp: "سنگاپور",
+    sof: "صوفیه",
+    waw: "ورشو",
+    tpe: "تایپه",
+    rmq: "تایچونگ",
+    ams: "آمستردام",
+    fra: "فرانکفورت",
+    hel: "هلینسکی",
+    tyo: "توکیو",
+    hkgnt: "محدوده های جدید",
+  } as Record<string, string>,
+
+  usage: "استفاده",
+  latency: "Latency",
+  packetLossEstimation: "Packet loss estimation",
+};
+
 export const getl10n = (lang: string) => {
   switch (lang) {
     case "zh-TW":
       return zhTWBindings;
     case "zh-CN":
       return zhCNBindings;
+    case "FA":
+      return FABindings;
     default:
       return enUSBindings;
   }
@@ -516,4 +681,4 @@ export const langSelector = (state: GlobalState) =>
   state.prefState.lang ? state.prefState.lang : defaultLang();
 
 export const defaultLang = () =>
-  detectNearestBrowserLocale(["en-US", "zh-TW", "zh-CN"]) as string;
+  detectNearestBrowserLocale(["en-US", "zh-TW", "zh-CN", "FA"]) as string;

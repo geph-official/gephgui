@@ -191,6 +191,7 @@ export function syncStatus(uname, pwd, force) {
         force ? ["--force"] : []
       )
     );
+
     pid.stdout.on("data", (data) => {
       jsonBuffer += data.toString();
     });

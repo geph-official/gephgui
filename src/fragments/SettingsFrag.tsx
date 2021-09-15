@@ -166,6 +166,7 @@ const SettingsFrag: React.FC = (props) => {
               <MenuItem value="en-US">English</MenuItem>
               <MenuItem value="zh-TW">繁體中文</MenuItem>
               <MenuItem value="zh-CN">简体中文</MenuItem>
+	      <MenuItem value="FA">زبان فارسی</MenuItem>
             </Select>
           </ListItemSecondaryAction>
         </ListItem>
