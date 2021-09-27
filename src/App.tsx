@@ -106,9 +106,12 @@ const App: React.FC = (props) => {
       return;
     }
     try {
-      const response = await axios.get(statsURL);
+      const response = await axios.get(statsURL, { responseType: "json" });
       console.log(response);
-      dispatch({ type: "CONN", rawJson: response.data });
+      dispatch({
+        type: "CONN",
+        rawJson: response.data ? response.data : SpecialConnStates.Connecting,
+      });
     } catch {
       if (!connState.fresh)
         dispatch({ type: "CONN", rawJson: SpecialConnStates.Dead });
