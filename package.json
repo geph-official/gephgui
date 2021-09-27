@@ -14,7 +14,7 @@
     "is-elevated": "^3.0.0",
     "jquery": "^3.6.0",
     "rss-parser": "^3.7.6",
-    "sanitize-html": "^1.23.0",
+    "sanitize-html": "^2.3.2",
     "semver": "^7.2.2",
     "utf8": "^3.0.0",
     "zh_cn_zh_tw": "^1.0.6"
