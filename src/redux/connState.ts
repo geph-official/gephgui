@@ -81,7 +81,7 @@ export const connReducer = (
       j.latency !== null
         ? ConnectionStatus.Connected
         : ConnectionStatus.Connecting,
-    ping: Math.round(j.latency * 1000.0),
+    ping: Math.round(j.latency),
     upBytes: j.total_tx,
     oldUpBytes: state.upBytes,
     downBytes: j.total_rx,
