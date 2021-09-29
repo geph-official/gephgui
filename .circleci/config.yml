@@ -9,7 +9,7 @@ orbs:
 jobs:
   build_linux:
     docker:
-      - image: cimg/node:16.10.0
+      - image: cimg/node:14.17.6
     steps:
       - checkout
       - run: npm ci
