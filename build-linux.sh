@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 export VERSION=$(cat package.json | jq -r ".version")
 echo "Linux 64-bit!"
 npm run electron:lin64
