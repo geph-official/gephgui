@@ -7,4 +7,3 @@ echo "Windows 32-bit!"
 npm run electron:windows
 wine ISCC.exe inno/setup.iss
 mv inno/Output/geph-windows-setup.exe dist/geph-windows-$VERSION-setup.exe
-wget mv inno/Output/geph-windows-setup.exe dist/geph-windows-$VERSION-setup.exe
