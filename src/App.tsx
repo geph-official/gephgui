@@ -33,8 +33,6 @@ import { useInterval } from "./utils";
 import { ConnectionStatus, SpecialConnStates } from "./redux/connState";
 import { prefSelector } from "./redux/prefs";
 import LoginFrag from "./fragments/LoginFrag";
-import AccountFrag from "./fragments/AccountFrag";
-import Status from "./fragments/Status";
 import SettingsFrag from "./fragments/SettingsFrag";
 import {
   startUpdateChecks,
