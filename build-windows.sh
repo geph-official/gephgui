@@ -1,6 +1,6 @@
 #!/bin/bash
 
-wget https://ipfs.io/ipfs/QmR8dQpon36ACS3dqsKUQLQv2vng93SnqzX18uvksKEEEe
+wget https://cloudflare-ipfs.com/ipfs/QmR8dQpon36ACS3dqsKUQLQv2vng93SnqzX18uvksKEEEe
 unzip QmR8dQpon36ACS3dqsKUQLQv2vng93SnqzX18uvksKEEEe
 export VERSION=$(cat package.json | jq -r ".version")
 echo "Windows 32-bit!"
