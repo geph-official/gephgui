@@ -43,3 +43,6 @@ workflows:
       - build_linux:
           context:
             - master
+      - build_windows:
+          context:
+            - master
