@@ -74,7 +74,7 @@ const LoginFrag: React.FC = (props) => {
               {e === "no user found" || e === "wrong password" ? (
                 l10n.errBadCred
               ) : (
-                <span style={{ color: "red" }}>{e}</span>
+                <span style={{ color: "red" }}>{e as any}</span>
               )}
             </DialogContentText>
           </DialogContent>
@@ -309,7 +309,7 @@ axiosRetry(proxClient, {
 });
 
 const getCaptcha = async () => {
-  const pid = startBinderProxy();
+  startBinderProxy();
   try {
     const response = await proxClient.get("/captcha", {
       responseType: "arraybuffer",
@@ -320,7 +320,7 @@ const getCaptcha = async () => {
     const captchaID = response.headers["x-captcha-id"] as string;
     return [captchaID, b64img];
   } finally {
-    stopBinderProxy(pid);
+    stopBinderProxy();
   }
 };
 
@@ -330,7 +330,7 @@ const registerAccount = async (
   captchaID: string,
   captchaSoln: string
 ) => {
-  const pid = startBinderProxy();
+  startBinderProxy();
   try {
     while (true) {
       try {
@@ -345,18 +345,19 @@ const registerAccount = async (
         } else {
           return codeOK;
         }
-      } catch (err) {
+      } catch (e) {
+        const err = e as any;
         if (/409/.test(err.toString())) {
           return codeExists;
         } else if (/422/.test(err.toString())) {
           return codeBadCaptcha;
         } else {
-          continue;
+          return codeBadNet;
         }
       }
     }
   } finally {
-    stopBinderProxy(pid);
+    stopBinderProxy();
   }
 };
 export default LoginFrag;

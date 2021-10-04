@@ -11,23 +11,23 @@ export async function startDaemon(
   autoProxy: boolean,
   bypassChinese: boolean,
   vpn: boolean,
-  excludeAppsJson: string,
+  excludeAppsJson: string
 );
 
 export async function stopDaemon();
 
-export function getPlatform(): string; 
+export function getPlatform(): string;
 export function isWindows(): boolean;
 
 export async function syncStatus(
   uname: string,
   pwd: string,
-  force: boolean,
-): Promise<[AccountInfo, ExitInfo[]]>; 
+  force: boolean
+): Promise<[AccountInfo, ExitInfo[]]>;
 
-export function startBinderProxy(): number;
+export async function startBinderProxy();
 
-export function stopBinderProxy(pid: number);
+export async function stopBinderProxy();
 
 export function startUpdateChecks(l10n: any);
 

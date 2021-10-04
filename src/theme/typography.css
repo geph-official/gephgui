@@ -1,44 +1,45 @@
 @font-face {
-  font-family: "opensans";
-  src: url("../assets/opensans/OpenSans-Regular.ttf") format("truetype");
+  font-family: "inter";
+  src: url("../assets/inter/Inter-Regular.otf") format("opentype");
   font-weight: normal;
   font-style: normal;
 }
 @font-face {
-  font-family: "opensans";
-  src: url("../assets/opensans/OpenSans-Italic.ttf") format("truetype");
+  font-family: "inter";
+  src: url("../assets/inter/Inter-Italic.otf") format("opentype");
   font-weight: normal;
   font-style: italic;
 }
 @font-face {
-  font-family: "opensans";
-  src: url("../assets/opensans/OpenSans-Medium.ttf") format("truetype");
+  font-family: "inter";
+  src: url("../assets/inter/Inter-Medium.otf") format("opentype");
   font-weight: 500;
   font-style: normal;
 }
 @font-face {
-  font-family: "opensans";
-  src: url("../assets/opensans/OpenSans-Bold.ttf") format("truetype");
+  font-family: "inter";
+  src: url("../assets/inter/Inter-Bold.otf") format("opentype");
   font-weight: bold;
   font-style: normal;
 }
 @font-face {
-  font-family: "opensans";
-  src: url("../assets/opensans/OpenSans-BoldItalic.ttf") format("truetype");
+  font-family: "inter";
+  src: url("../assets/inter/Inter-BoldItalic.otf") format("opentype");
   font-weight: bold;
   font-style: italic;
 }
 
 :lang(zh-cn) {
-  font-family: "opensans", "Noto Sans CJK SC", "Microsoft YaHei", sans-serif !important;
+  font-family: "inter", "Noto Sans CJK SC", "Microsoft YaHei", sans-serif !important;
 }
 
 :lang(zh-tw) {
-  font-family: "opensans", "Noto Sans CJK TC", "Microsoft JhengHei", sans-serif !important;
+  font-family: "inter", "Noto Sans CJK TC", "Microsoft JhengHei", sans-serif !important;
 }
 
 * {
-  font-family: "opensans", sans-serif !important;
+  font-family: "inter", sans-serif !important;
+  letter-spacing: -0.01em;
 }
 
 .mspace {

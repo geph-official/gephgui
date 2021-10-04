@@ -146,8 +146,9 @@ const App: React.FC = (props) => {
         setBusy(false);
         return;
       } catch (e) {
-        setBusyError(e.toString());
-        console.log(e.toString());
+        const err = e as any;
+        setBusyError(err.toString());
+        console.log(err.toString());
       } finally {
         flag = false;
       }

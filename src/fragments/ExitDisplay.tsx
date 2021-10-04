@@ -27,22 +27,24 @@ export const ExitDisplay = (props) => {
   const l10n = useSelector(l10nSelector);
   const exitState = useSelector((state: GlobalState) => state.exitState);
   return (
-    <div style={{ padding: "20px", fontSize: "20px", textAlign: "center" }}>
+    <div
+      style={{ padding: "1.25rem", fontSize: "1.25rem", textAlign: "center" }}
+    >
       <Flag
         code={exitState.selectedExit.country_code}
         style={{
-          width: "40px",
+          width: "2.5rem",
           display: "inline-block",
           borderWidth: "1px",
           borderStyle: "solid",
           verticalAlign: "middle",
-          marginRight: "10px",
-          marginLeft: "10px",
+          marginRight: "0.625rem",
+          marginLeft: "0.625rem",
         }}
       />
       <b>{l10n.countries[exitState.selectedExit.country_code]}</b>/
       {l10n.cities[exitState.selectedExit.city_code]} <br />
-      <small style={{ opacity: 0.6, fontSize: "14px" }}>
+      <small style={{ opacity: 0.6, fontSize: "0.875rem" }}>
         {exitState.selectedExit.hostname}
       </small>
     </div>
@@ -69,7 +71,7 @@ export const ExitSelector = (props: {}) => {
           fontWeight: "normal",
           borderStyle: "solid",
           borderWidth: "1px",
-          margin: "10px",
+          margin: "0.625rem",
           width: "50vw",
         }}
         disabled={
@@ -103,12 +105,12 @@ export const ExitSelector = (props: {}) => {
                 <Flag
                   code={info.country_code}
                   style={{
-                    width: "32px",
+                    width: "2rem",
                     display: "inline-block",
                     boxShadow: "0px 0px 1px #333333",
                     verticalAlign: "middle",
-                    marginRight: "10px",
-                    marginLeft: "10px",
+                    marginRight: "0.625rem",
+                    marginLeft: "0.625rem",
                   }}
                 />
                 <ListItemText

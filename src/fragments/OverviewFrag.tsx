@@ -61,7 +61,7 @@ const OverviewFrag = (props: { forceSync: () => void }) => {
           item
           style={{
             width: "100%",
-            marginBottom: "20px",
+            marginBottom: "1.25rem",
           }}
           className={classes.center}
         >
@@ -174,7 +174,7 @@ const ConnStatusInfo = (props: {}) => {
   if (connState.connected === ConnectionStatus.Disconnected) {
     lhs = (
       <icons.HighlightOff
-        style={{ fontSize: "70px", marginRight: "-10px" }}
+        style={{ fontSize: "5rem", marginRight: "0.4rem" }}
         color="disabled"
       />
     );
@@ -191,7 +191,7 @@ const ConnStatusInfo = (props: {}) => {
   if (connState.connected === ConnectionStatus.Connected) {
     lhs = (
       <icons.CheckCircle
-        style={{ fontSize: "70px", marginRight: "-10px" }}
+        style={{ fontSize: "5rem", marginRight: "0.4rem" }}
         color="primary"
       />
     );
@@ -209,9 +209,9 @@ const ConnStatusInfo = (props: {}) => {
       container
       justify="center"
       alignItems="center"
-      style={{ height: "60px" }}
+      style={{ height: "3.75rem" }}
     >
-      <Grid item style={{ marginRight: "20px" }}>
+      <Grid item style={{ marginRight: "1.25rem" }}>
         {lhs}
       </Grid>
       <Grid item style={{ fontSize: "150%" }}>
