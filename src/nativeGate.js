@@ -106,6 +106,8 @@ export async function startDaemon(
     vpn: vpn,
     exclude_prc: bypassChinese,
     autoproxy: autoProxy,
+    listen_all: listenAll,
+    exclude_apps: excludeAppsJson,
   });
 }
 
