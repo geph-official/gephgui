@@ -47,7 +47,7 @@ export async function syncStatus(uname, pwd, force) {
       if ("error" in result) {
         throw result.error;
       }
-      return result;
+      return parseSync(result);
     }
     await sleep(100);
   }
@@ -80,7 +80,7 @@ export async function startBinderProxy() {
 }
 
 // stop the binder proxy by handle
-export async function stopBinderProxy(pid) {
+export async function stopBinderProxy() {
   await window["rpc"].call("stop_binder_proxy");
 }
 
