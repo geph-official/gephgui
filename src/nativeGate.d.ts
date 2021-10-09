@@ -11,7 +11,7 @@ export async function startDaemon(
   autoProxy: boolean,
   bypassChinese: boolean,
   vpn: boolean,
-  excludeAppsJson: string
+  excludeApps: string[]
 );
 
 export async function stopDaemon();

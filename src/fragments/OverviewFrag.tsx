@@ -118,7 +118,7 @@ const ConnToggle = (props: {}) => {
         autoProxyStr === "true",
         bypassChineseStr === "true",
         vpnStr === "true",
-        excludeApps ? excludeAppsJson : "[]"
+        excludeApps ? JSON.parse(excludeAppsJson) : []
       );
       setForceState("yes");
     } else {

@@ -8,6 +8,12 @@ import { getl10n } from "./redux/l10n";
 
 export const platform = "rpc" in window ? "desktop" : "android";
 
+if (!("rpc" in window)) {
+  window["rpc"] = {};
+  window["rpc"]["call"] = async (verb, ...args) =>
+    JSON.parse(window.Android.executeRpc(verb, JSON.stringify(args)));
+}
+
 function convertRemToPixels(rem) {
   return rem * parseFloat(getComputedStyle(document.documentElement).fontSize);
 }
@@ -95,7 +101,7 @@ export async function startDaemon(
   autoProxy,
   bypassChinese,
   vpn,
-  excludeAppsJson
+  excludeApps
 ) {
   await window["rpc"].call("start_daemon", {
     username: username,
@@ -107,7 +113,7 @@ export async function startDaemon(
     exclude_prc: bypassChinese,
     autoproxy: autoProxy,
     listen_all: listenAll,
-    exclude_apps: excludeAppsJson,
+    exclude_apps: excludeApps,
   });
 }
 

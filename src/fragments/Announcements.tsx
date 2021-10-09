@@ -43,10 +43,21 @@ const filterByLanguage = (francCode: string, toFilter: string) => {
 
 export const getAnnouncementFeed = async () => {
   const parser = new Parser();
-  const feedContents: any = await parser.parseString(
-    (await axios.get("https://channel2rss.bitmachine.org/rss/gephannounce"))
-      .data
-  );
+  const feedContents: any = await (async () => {
+    try {
+      return parser.parseString(
+        (await axios.get("https://channel2rss.bitmachine.org/rss/gephannounce"))
+          .data
+      );
+    } catch {
+      parser.parseString(
+        window["rpc"].call(
+          "get_url",
+          "https://channel2rss.bitmachine.org/rss/gephannounce"
+        )
+      );
+    }
+  })();
   const feedContentsFiltered = feedContents.items
     .map((item) => {
       return item
