@@ -50,8 +50,8 @@ export const getAnnouncementFeed = async () => {
           .data
       );
     } catch {
-      parser.parseString(
-        window["rpc"].call(
+      return parser.parseString(
+        await window["rpc"].call(
           "get_url",
           "https://channel2rss.bitmachine.org/rss/gephannounce"
         )
