@@ -123,7 +123,13 @@ const ConnToggle = (props: {}) => {
       setForceState("yes");
     } else {
       setForceState("no");
-      await stopDaemon();
+      console.log("stopDaemon start");
+      try {
+        await stopDaemon();
+      } catch {
+        console.log("stopDaemon errored out!!");
+      }
+      console.log("stopDaemon stop");
       dispatch({ type: "CONN", rawJson: SpecialConnStates.Dead });
     }
   };

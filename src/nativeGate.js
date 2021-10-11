@@ -122,12 +122,8 @@ export var isAdmin = false;
 // kill the daemon
 export async function stopDaemon() {
   try {
-    try {
-      await axios.get("http://127.0.0.1:9809/kill");
-    } finally {
-      await window["rpc"].call("stop_daemon");
-    }
-  } catch (e) {
-    console.log("STOP ERROR: " + e.toString());
+    await axios.get("http://127.0.0.1:9809/kill");
+  } finally {
+    await window["rpc"].call("stop_daemon");
   }
 }
