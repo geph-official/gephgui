@@ -7,7 +7,7 @@ export interface ExitInfo {
   hostname: string;
   country_code: string;
   city_code: string;
-  plus_only: boolean,
+  plus_only: boolean;
 }
 
 export interface ExitSelectAction {
@@ -32,7 +32,6 @@ export const exitReducer = (
   },
   action: ExitSelectAction | ExitListAction
 ) => {
-  console.log(action);
   if (action.type === "EXIT_SELECT") {
     return {
       ...state,
