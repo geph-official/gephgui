@@ -98,14 +98,12 @@ const App: React.FC = (props) => {
   }).length;
 
   const refreshConnData = async () => {
-    console.log("refreshConnData");
     if (username === "") {
       console.log("username empty, going off");
       return;
     }
     try {
       const response = await axios.get(statsURL, { responseType: "json" });
-      console.log(response);
       dispatch({
         type: "CONN",
         rawJson: response.data ? response.data : SpecialConnStates.Connecting,
@@ -140,7 +138,7 @@ const App: React.FC = (props) => {
           boo,
         ]);
         flag = false;
-        console.log(accInfo);
+        console.log("account info gotten: " + JSON.stringify(accInfo));
         dispatch({ type: "ACCT", account: accInfo });
         dispatch({ type: "EXIT_LIST", list: exits });
         setBusy(false);
