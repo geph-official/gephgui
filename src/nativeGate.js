@@ -26,7 +26,11 @@ export function getVersion() {
   return "0.0.0";
 }
 
-export function exportLogs() {}
+export function exportLogs() {
+  const lala = new Date().toISOString().replaceAll(":", "-");
+  let fname = "debuglogs-" + lala + ".txt";
+  window["rpc"].call("export_logs", fname);
+}
 
 export function startUpdateChecks(l10n) {}
 
@@ -50,6 +54,7 @@ export async function syncStatus(uname, pwd, force) {
   for (;;) {
     const result = await window["rpc"].call("check_sync_status", sync_id);
     if (result) {
+      console.log("gotten: " + JSON.stringify(result));
       if ("error" in result) {
         throw result.error;
       }
