@@ -1,3 +1,0 @@
-#!/bin/bash
-mv ../dist/mac/gephgui4.app/ ../dist/mac/Geph.app/
-./create-dmg --volname Geph --app-drop-link 400 0 OUTPUT.dmg ../dist/mac/

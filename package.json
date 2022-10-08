@@ -1,112 +1,31 @@
 {
-  "name": "gephgui4",
-  "version": "4.4.20",
+  "name": "gephgui-html",
   "private": true,
-  "homepage": ".",
-  "main": "public/electron.js",
-  "dependencies": {
-    "arch": "^2.2.0",
-    "base-64": "^1.0.0",
-    "chinese-conv": "^1.0.1",
-    "electron-dl": "^3.2.1",
-    "electron-is-dev": "^1.1.0",
-    "franc": "^5.0.0",
-    "is-elevated": "^3.0.0",
-    "jquery": "^3.6.0",
-    "rss-parser": "^3.7.6",
-    "sanitize-html": "^1.23.0",
-    "semver": "^7.2.2",
-    "utf8": "^3.0.0",
-    "zh_cn_zh_tw": "^1.0.6"
-  },
+  "version": "0.0.0",
+  "type": "module",
   "scripts": {
-    "electron:start": "electron . --no-sandbox",
-    "electron:allplat": "react-scripts build && electron-builder -w --ia32 --dir && electron-builder -l --x64 --dir && electron-builder -l --ia32 --dir && electron-builder --mac --x64 --dir",
-    "electron:windows": "react-scripts build && electron-builder -w --ia32 --dir",
-    "electron:lin64": "react-scripts build && electron-builder -l --x64 --dir ",
-    "electron:macos": "react-scripts build && electron-builder --mac --x64 --dir",
-    "electron:lin32": "react-scripts build && electron-builder -l --ia32 --dir",
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "electron-pack": "build --em.main=build/electron.js"
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "check": "svelte-check --tsconfig ./tsconfig.json"
   },
-  "build": {
-    "asar": false,
-    "appId": "io.geph.geph-electron",
-    "files": [
-      "build/**/*",
-      "node_modules/**/*",
-      "binaries/${os}-${arch}",
-      "icons/*"
-    ],
-    "directories": {
-      "buildResources": "assets"
-    },
-    "linux": {
-      "target": [
-        "AppImage"
-      ],
-      "icon": "icons/512x512.png"
-    },
-    "mac": {
-      "category": "public.app-category.utilities",
-      "icon": "icons/mac.icns",
-      "target": "dir"
-    },
-    "win": {
-      "icon": "icons/windows.ico"
-    }
-  },
-  "eslintConfig": {
-    "extends": "react-app"
-  },
-  "browserslist": [
-    ">0.02%"
-  ],
-  "description": "An Ionic project",
   "devDependencies": {
-    "@ionic/react": "^4.11.3",
-    "@ionic/react-router": "^4.11.3",
-    "@material-ui/core": "^4.11.2",
-    "@material-ui/icons": "^4.9.1",
-    "@material-ui/lab": "^4.0.0-alpha.57",
-    "@types/axios": "^0.14.0",
-    "@types/jest": "24.0.18",
-    "@types/node": "12.7.5",
-    "@types/react": "^16.9.11",
-    "@types/react-dom": "^16.9.3",
-    "@types/react-redux": "^7.1.7",
-    "@types/react-router": "^5.1.2",
-    "@types/react-router-dom": "^4.3.1",
-    "axios": "^0.19.2",
-    "axios-retry": "^3.1.2",
-    "dagre-d3": "^0.6.4",
-    "datejs": "^1.0.0-rc3",
-    "detect-nearest-browser-locale": "^19.0.0",
-    "electron": "^10.1.5",
-    "electron-builder": "^21.2.0",
-    "electron-packager": "^14.1.0",
-    "flag-icon-css": "^3.4.5",
-    "ionicons": "^4.6.3",
-    "js-sha256": "^0.9.0",
-    "react": "^16.11.0",
-    "react-app-polyfill": "^1.0.5",
-    "react-dom": "^16.11.0",
-    "react-helmet": "^5.2.1",
-    "react-odometerjs": "^2.1.1",
-    "react-redux": "^7.2.2",
-    "react-router": "^5.1.2",
-    "react-router-dom": "^5.1.2",
-    "react-scripts": "^3.4.1",
-    "react-world-flags": "^1.3.0",
-    "redux": "^4.0.5",
-    "redux-devtools": "^3.5.0",
-    "redux-localstorage": "^0.4.1",
-    "regenerator-runtime": "^0.13.3",
-    "typescript": "3.7",
-    "web-animations-js": "^2.3.2",
-    "whatwg-fetch": "^3.0.0"
+    "@rollup/plugin-dsv": "^2.0.3",
+    "@smui/button": "^6.1.4",
+    "@smui/tab": "^6.1.4",
+    "@smui/tab-bar": "^6.1.4",
+    "@sveltejs/vite-plugin-svelte": "^1.0.2",
+    "@tsconfig/svelte": "^3.0.0",
+    "rollup": "^2.79.1",
+    "svelte": "^3.50.1",
+    "svelte-check": "^2.8.1",
+    "svelte-preprocess": "^4.10.7",
+    "tslib": "^2.4.0",
+    "typescript": "^4.6.4",
+    "vite": "^3.1.0"
+  },
+  "dependencies": {
+    "svelte-material-icons": "^2.0.4",
+    "svelte-material-ui": "^6.2.0"
   }
 }
