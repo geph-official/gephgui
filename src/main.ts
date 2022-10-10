@@ -20,6 +20,7 @@ window.addEventListener("load", (_) => {
         if (styleSheet.rules[ri].selectorText.match(":focus")) {
           styleSheet.deleteRule(ri);
         }
+
         if (styleSheet.rules[ri].selectorText.match(":hover")) {
           styleSheet.deleteRule(ri);
         }

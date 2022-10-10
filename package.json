@@ -24,6 +24,7 @@
     "@smui/switch": "^6.1.4",
     "@smui/tab": "^6.1.4",
     "@smui/tab-bar": "^6.1.4",
+    "@smui/textfield": "^6.1.4",
     "@sveltejs/vite-plugin-svelte": "^1.0.2",
     "@tsconfig/svelte": "^3.0.0",
     "rollup": "^2.79.1",

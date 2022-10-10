@@ -15,15 +15,12 @@
   import Button from "@smui/button/src/Button.svelte";
   import { native_gate } from "./native-gate";
   import Settings from "./Settings.svelte";
+  import Login from "./Login.svelte";
 </script>
 
 <main>
   {#if !$pref_userpwd}
-    <Button
-      on:click={async () => {
-        $pref_userpwd = { username: "bunsim", password: "fc9dfc3d" };
-      }}><Label>Test login</Label></Button
-    >
+    <Login />
   {:else}
     <div class="big-container">
       {#if active_tab == "Home"}

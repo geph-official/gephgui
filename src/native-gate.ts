@@ -23,6 +23,16 @@ export interface NativeGate {
   is_connected(): Promise<boolean>;
 
   /**
+   * Calls the daemon RPC endpoint
+   */
+  daemon_rpc(method: string, args: any[]): Promise<any>;
+
+  /**
+   * Calls the binder RPC endpoint
+   */
+  binder_rpc(method: string, args: any[]): Promise<any>;
+
+  /**
    * Obtains the current user information
    */
   sync_user_info(username: string, password: string): Promise<SubscriptionInfo>;
@@ -135,12 +145,23 @@ function mock_native_gate(): NativeGate {
     is_running: async () => {
       return running;
     },
-    sync_user_info: async () => {
+    sync_user_info: async (username, password) => {
       await random_sleep();
+      if (username !== "bunsim") {
+        throw "incorrect username";
+      }
       return {
         level: "free",
         expires: new Date(),
       };
+    },
+
+    daemon_rpc: async (method, args) => {
+      throw "idk";
+    },
+
+    binder_rpc: async (method, args) => {
+      throw "idk";
     },
 
     sync_exits: async () => {

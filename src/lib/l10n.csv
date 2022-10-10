@@ -27,6 +27,11 @@ allowed,Allowed,允许,允許
 plus-only-blurb,Only Plus users are allowed on this server; select another one.,仅Plus用户允许访问此服务器; 请选择其他服务器.,僅Plus用戶允許訪問此伺服器; 請選擇其他伺服器.
 use-automatic,Automatically select server,自动选择服务器,自動選擇伺服器
 
+username,Username,,
+password,Password,,
+log-in-blurb,Log in with existing account,,
+register-blurb,Create a new account,,
+
 pdx,Portland,波特兰,波特蘭
 sgp,Singapore,新加坡,新加坡
 tyo,Tokyo,东京,東京
