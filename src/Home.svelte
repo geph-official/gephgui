@@ -9,7 +9,7 @@
     pref_selected_exit,
     pref_userpwd,
   } from "./lib/prefs";
-  import { onInterval } from "./lib/utils";
+  import { onInterval, horizSlide } from "./lib/utils";
   import { native_gate, type SubscriptionInfo } from "./native-gate";
 
   // Connections status things. We use a persistent store because on iOS and Android the webview can stop at any time.

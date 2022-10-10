@@ -1,11 +1,15 @@
 import { writable, type Writable } from "svelte/store";
 import l10n_csv from "./l10n.csv";
+import { persistentWritable } from "./prefs";
 
 // Languages
 export type Natlang = "en" | "zh-CN" | "zh-TW";
 
 // The current language.
-export const curr_lang: Writable<Natlang> = writable("en");
+export const curr_lang: Writable<Natlang> = persistentWritable(
+  "language",
+  "en"
+);
 
 interface CsvRow {
   label: string;

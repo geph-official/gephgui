@@ -19,7 +19,7 @@
 
 <div class="wrapper">
   {#if connection == "disconnected"}
-    <div class="connect-status disconnected" transition:slide>
+    <div class="connect-status disconnected" transition:slide|local>
       <div class="connect-icon">
         <EarthOff width="1.4rem" height="1.4rem" />
       </div>
@@ -27,7 +27,7 @@
     </div>
   {/if}
   {#if connection == "connecting"}
-    <div class="connect-status connecting" transition:slide>
+    <div class="connect-status connecting" transition:slide|local>
       <div class="connect-icon">
         <CircularProgress
           style="height: 1.4rem; width: 1.4rem;"
@@ -38,7 +38,7 @@
     </div>
   {/if}
   {#if connection == "connected"}
-    <div class="connect-status connected" transition:slide>
+    <div class="connect-status connected" transition:slide|local>
       <div class="connect-icon"><Earth width="1.4rem" height="1.4rem" /></div>
       {l10n($curr_lang, connection)}
     </div>

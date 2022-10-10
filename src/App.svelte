@@ -1,4 +1,4 @@
-<script lang="ts">
+<script lang="js">
   import svelteLogo from "./assets/svelte.svg";
   import Counter from "./lib/Counter.svelte";
   import Tab, { Icon, Label } from "@smui/tab";
@@ -14,6 +14,7 @@
   import { pref_userpwd } from "./lib/prefs";
   import Button from "@smui/button/src/Button.svelte";
   import { native_gate } from "./native-gate";
+  import Settings from "./Settings.svelte";
 </script>
 
 <main>
@@ -27,6 +28,9 @@
     <div class="big-container">
       {#if active_tab == "Home"}
         <Home />
+      {/if}
+      {#if active_tab == "Settings"}
+        <Settings />
       {/if}
     </div>
     <TabBar {tabs} let:tab bind:active={active_tab}>

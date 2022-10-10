@@ -25,7 +25,7 @@ city,City,城市,城市
 server-id,ID,服务器 ID,伺服器 ID
 allowed,Allowed,允许,允許
 plus-only-blurb,Only Plus users are allowed on this server; select another one.,仅Plus用户允许访问此服务器; 请选择其他服务器.,僅Plus用戶允許訪問此伺服器; 請選擇其他伺服器.
-use-automatic,Automatically select server,,
+use-automatic,Automatically select server,自动选择服务器,自動選擇伺服器
 
 pdx,Portland,波特兰,波特蘭
 sgp,Singapore,新加坡,新加坡
@@ -41,3 +41,20 @@ ams,Amsterdam,阿姆斯特丹,阿姆斯特丹
 hkg,Hong Kong,香港,香港
 rmq,Taichung,台中,台中
 tpe,Taipei,台北,台北
+
+general,General,常规,常規
+language,Language,语言,語言
+exclude-apps,Exclude apps,排除应用,排除應用
+routing-mode,Routing mode,路由模式,路由模式
+force-bridges,Bridges,强制桥接,強制橋接
+network,Network,网络,網路
+other,Other,其他,其他
+debug-pack,Debug pack,调试包,調試包
+show-advanced,Show advanced settings,显示高级设置,顯示高級設置
+auto-proxy,Auto-configure proxy,自动配置代理,自動配置代理
+auto-proxy-blurb,Makes most browsers use Geph,配置大多数浏览器使用迷雾通,配置大多数瀏覽器使用迷霧通
+global-vpn,Network-level VPN,全局VPN,全局VPN
+global-vpn-blurb,Force all traffic to use Geph,强制所有流量使用迷雾通,強制所有流量使用迷霧通
+exclude-apps,Exclude apps,,
+exclude-apps-blurb,Let apps bypass Geph,,
+select-excluded-apps,Select excluded apps,,

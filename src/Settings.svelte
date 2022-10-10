@@ -1,0 +1,170 @@
+<script lang="ts">
+  import Earth from "svelte-material-icons/Earth.svelte";
+  import Apps from "svelte-material-icons/Apps.svelte";
+  import Translate from "svelte-material-icons/Translate.svelte";
+  import Creation from "svelte-material-icons/Creation.svelte";
+  import DirectionsFork from "svelte-material-icons/DirectionsFork.svelte";
+  import ServerNetwork from "svelte-material-icons/ServerNetwork.svelte";
+  import Bridge from "svelte-material-icons/Translate.svelte";
+  import Vpn from "svelte-material-icons/Vpn.svelte";
+  import Switch from "@smui/switch";
+  import { curr_lang, l10n } from "./lib/l10n";
+  import { fade } from "svelte/transition";
+  import Select, { Option } from "@smui/select";
+  import {
+    pref_global_vpn,
+    pref_proxy_autoconf,
+    pref_routing_mode,
+    pref_use_app_whitelist,
+  } from "./lib/prefs";
+  import { native_gate } from "./native-gate";
+  import GButton from "./lib/GButton.svelte";
+  import AppPicker from "./settings/AppPicker.svelte";
+
+  let app_picker_open = false;
+</script>
+
+<div class="wrap">
+  {#key $curr_lang}
+    <div class="subtitle">{l10n($curr_lang, "general")}</div>
+    <div class="setting">
+      <div class="icon">
+        <Translate height="1.5rem" width="1.5rem" />
+      </div>
+      <div class="description">{l10n($curr_lang, "language")}</div>
+      <div class="switch">
+        <Select variant="outlined" style="width: 9rem" bind:value={$curr_lang}>
+          <Option value="en">English</Option>
+          <Option value="zh-TW">繁體中文</Option>
+          <Option value="zh-CN">简体中文</Option>
+        </Select>
+      </div>
+    </div>
+
+    <div class="divider" />
+
+    <div class="subtitle">{l10n($curr_lang, "network")}</div>
+
+    {#if native_gate().supports_vpn_conf}
+      <div class="setting">
+        <div class="icon">
+          <Vpn height="1.5rem" width="1.5rem" />
+        </div>
+        <div class="description">
+          {l10n($curr_lang, "global-vpn")}<br />
+          <small>{l10n($curr_lang, "global-vpn-blurb")}</small>
+        </div>
+        <div class="switch">
+          <Switch bind:checked={$pref_global_vpn} />
+        </div>
+      </div>
+    {/if}
+
+    {#if native_gate().supports_app_whitelist && !$pref_global_vpn}
+      <div class="setting" transition:fade|local>
+        <div class="icon">
+          <DirectionsFork height="1.5rem" width="1.5rem" />
+        </div>
+        <div class="description">
+          {l10n($curr_lang, "exclude-apps")}<br />
+          <small>{l10n($curr_lang, "exclude-apps-blurb")}</small>
+        </div>
+        <div class="switch">
+          <Switch bind:checked={$pref_use_app_whitelist} />
+        </div>
+      </div>
+
+      {#if $pref_use_app_whitelist}
+        <AppPicker bind:open={app_picker_open} />
+        <div class="setting" transition:fade|local>
+          <div class="icon" style="padding-left: 1rem" />
+          <div class="switch">
+            <GButton inverted onClick={() => (app_picker_open = true)}
+              >{l10n($curr_lang, "select-excluded-apps")}</GButton
+            >
+          </div>
+        </div>
+      {/if}
+    {/if}
+
+    {#if native_gate().supports_proxy_conf && !$pref_global_vpn}
+      <div class="setting" transition:fade|local>
+        <div class="icon">
+          <Creation height="1.5rem" width="1.5rem" />
+        </div>
+        <div class="description">
+          {l10n($curr_lang, "auto-proxy")}<br />
+          <small>{l10n($curr_lang, "auto-proxy-blurb")}</small>
+        </div>
+        <div class="switch">
+          <Switch bind:checked={$pref_proxy_autoconf} />
+        </div>
+      </div>
+    {/if}
+    <div class="setting">
+      <div class="icon">
+        <ServerNetwork height="1.5rem" width="1.5rem" />
+      </div>
+      <div class="description">{l10n($curr_lang, "routing-mode")}</div>
+      <div class="switch">
+        <Select
+          variant="outlined"
+          style="width: 9rem"
+          bind:value={$pref_routing_mode}
+        >
+          <Option value="auto">{l10n($curr_lang, "automatic")}</Option>
+          <Option value="bridges">{l10n($curr_lang, "force-bridges")}</Option>
+        </Select>
+      </div>
+    </div>
+  {/key}
+</div>
+
+<style>
+  /* HACK */
+  :global(.mdc-select--outlined .mdc-select__anchor) {
+    height: 2.2rem;
+  }
+
+  .wrap {
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+  }
+
+  small {
+    opacity: 0.7;
+  }
+
+  .subtitle {
+    font-size: 0.8rem;
+    font-weight: 500;
+    opacity: 0.6;
+    margin-bottom: 0.5rem;
+  }
+
+  .divider {
+    border-top: 1px solid #ccc;
+    margin-top: 0.3rem;
+    margin-bottom: 1rem;
+  }
+
+  .setting {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 4rem;
+  }
+
+  .description {
+    flex-grow: 1;
+    padding-left: 1rem;
+  }
+
+  .icon {
+    display: flex;
+    opacity: 0.7;
+  }
+</style>

@@ -36,77 +36,75 @@
   <Snackbar bind:this={blockSnackbar}>
     <Label>{l10n($curr_lang, "plus-only-blurb")}</Label>
   </Snackbar>
-  {#if exit_selection_open}
-    <Dialog bind:open={exit_selection_open} fullscreen>
-      <Header>
-        <Title id="fullscreen-title">{l10n($curr_lang, "exit-selection")}</Title
-        >
-      </Header>
-      <DataTable style="width: 100%">
-        <Head>
-          <Row>
-            <Cell>{l10n($curr_lang, "country")}</Cell>
-            <Cell>{l10n($curr_lang, "city")}</Cell>
-            <Cell>{l10n($curr_lang, "server-id")}</Cell>
-            <Cell>{l10n($curr_lang, "allowed")}</Cell>
-          </Row>
-        </Head>
-        {#await sync_exits()}
-          <Body />
-        {:then exit_list}
-          <Body>
-            {#each exit_list as exit}
-              <Row
-                on:click={() => {
-                  if (block_plus && !exit.allowed_levels.includes("free")) {
-                    blockSnackbar.open();
-                  } else {
-                    onSelectExit(exit);
-                    exit_selection_open = false;
-                  }
-                }}
+  <Dialog bind:open={exit_selection_open} fullscreen>
+    <Header>
+      <Title id="fullscreen-title">{l10n($curr_lang, "exit-selection")}</Title>
+    </Header>
+    <DataTable style="width: 100%">
+      <Head>
+        <Row>
+          <Cell>{l10n($curr_lang, "country")}</Cell>
+          <Cell>{l10n($curr_lang, "city")}</Cell>
+          <Cell>{l10n($curr_lang, "server-id")}</Cell>
+          <Cell>{l10n($curr_lang, "allowed")}</Cell>
+        </Row>
+      </Head>
+      {#await sync_exits()}
+        <Body />
+      {:then exit_list}
+        <Body>
+          {#each exit_list as exit}
+            <Row
+              on:click={() => {
+                if (block_plus && !exit.allowed_levels.includes("free")) {
+                  blockSnackbar.open();
+                } else {
+                  onSelectExit(exit);
+                  exit_selection_open = false;
+                }
+              }}
+            >
+              <Cell
+                >{flag(exit.country_code)}
+                {exit.country_code.toUpperCase()}</Cell
               >
-                <Cell
-                  >{flag(exit.country_code)}
-                  {exit.country_code.toUpperCase()}</Cell
-                >
-                <Cell>{l10n($curr_lang, exit.city_code)}</Cell>
-                <Cell>{exit.signing_key.substring(0, 10)}</Cell>
-                <Cell
-                  >{#if exit.allowed_levels.includes("free")}{l10n(
-                      $curr_lang,
-                      "free-server"
-                    )}{:else}{l10n($curr_lang, "plus-server")}{/if}</Cell
-                >
-              </Row>
-            {/each}
-          </Body>
-        {/await}
+              <Cell>{l10n($curr_lang, exit.city_code)}</Cell>
+              <Cell>{exit.signing_key.substring(0, 10)}</Cell>
+              <Cell
+                >{#if exit.allowed_levels.includes("free")}{l10n(
+                    $curr_lang,
+                    "free-server"
+                  )}{:else}{l10n($curr_lang, "plus-server")}{/if}</Cell
+              >
+            </Row>
+          {/each}
+        </Body>
+      {/await}
 
-        <LinearProgress
-          indeterminate
-          aria-label="Data is being loaded..."
-          slot="progress"
-          closed={!loading}
-        />
-      </DataTable>
+      <LinearProgress
+        indeterminate
+        aria-label="Data is being loaded..."
+        slot="progress"
+        closed={!loading}
+      />
+    </DataTable>
 
-      <Actions>
-        <Button
-          on:click={() => {
-            onSelectExit(null);
-          }}
-          color="secondary"
-          variant="unelevated"
-        >
-          <Label>{l10n($curr_lang, "use-automatic")}</Label>
-        </Button>
-      </Actions>
-    </Dialog>
-  {/if}
+    <Actions>
+      <Button
+        on:click={() => {
+          onSelectExit(null);
+        }}
+        color="secondary"
+        variant="unelevated"
+      >
+        <Label>{l10n($curr_lang, "use-automatic")}</Label>
+      </Button>
+    </Actions>
+  </Dialog>
 
   <GButton
     large
+    disabled={running}
     stretch
     inverted
     color="black"

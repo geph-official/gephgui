@@ -33,6 +33,16 @@ export interface NativeGate {
   sync_exits(): Promise<ExitDescriptor[]>;
 
   /**
+   * Gets the list of apps
+   */
+  sync_app_list(): Promise<AppDescriptor[]>;
+
+  /**
+   * Obtains the icon of an app
+   */
+  get_app_icon_url(id: string): Promise<string>;
+
+  /**
    * Whether this platform supports app whitelists
    */
   supports_app_whitelist: boolean;
@@ -41,6 +51,11 @@ export interface NativeGate {
    * Whether this platform supports proxy configuration
    */
   supports_proxy_conf: boolean;
+
+  /**
+   * Whether this platform supports VPN configuration
+   */
+  supports_vpn_conf: boolean;
 
   /**
    * Obtains native info, for debugging. The return type may be extended, and should not guide application logic.
@@ -57,6 +72,15 @@ export interface ExitDescriptor {
   country_code: string;
   city_code: string;
   allowed_levels: Level[];
+}
+
+/**
+ * App descriptor
+ */
+
+export interface AppDescriptor {
+  id: string;
+  friendly_name: string;
 }
 
 /**
@@ -140,8 +164,28 @@ function mock_native_gate(): NativeGate {
       ];
     },
 
+    sync_app_list: async () => {
+      await random_sleep();
+      return [
+        {
+          id: "com.tencent.mm",
+          friendly_name: "WeChat",
+        },
+        {
+          id: "com.tencent.mmm",
+          friendly_name: "MeChat",
+        },
+      ];
+    },
+
+    get_app_icon_url: async (id) => {
+      await random_sleep();
+      return "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAAM1BMVEWA2HEdwgUkwwBCxS5RxT1YyE5szGJ/0HiQ1YmZ2JSh2p2v363B5b7R68/b79js9+z///9HPSCbAAAAAXRSTlMAQObYZgAAAOxJREFUOMuFk1cWhCAMRWmhCYT9r3akSRv0fciRXEIKIYQQxuhfMUaSDtbK3AB91YeD5KIC4gp4y+n1QLmBu9iE+g8gMQ5ybAVgst/ECoS4SM+AypuVwuQNZyAHaMoSCi4nIEdw8ewChUmL3YEuvJQAfgTQSJfD8PoBxiRQ9pIFqIAd7X6koQC832GuKZxQC6X6kVSlDNVv7YVuNU67Mv/JnK5v3VTlFuuXmmMDaib6CLAYFAUF7gRIW96Ajlvjlze7dB42YH5blm5Ay+exbwAFP0SYgH0uwDrntFAeDkAfmjJ7X6P3PbwvSDL/AIYAHEpiL5B+AAAAAElFTkSuQmCC";
+    },
+
     supports_app_whitelist: true,
     supports_proxy_conf: true,
+    supports_vpn_conf: true,
     native_info: {
       platform_type: "linux",
       platform_details: "MockLinux Trololol",

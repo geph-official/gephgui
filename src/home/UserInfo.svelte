@@ -36,9 +36,7 @@
       <div class="urow">
         <Heart width="1.5rem" height="1.5rem" color="#b71c1c" />
         <div class="stretch">{l10n($curr_lang, "get-unlimited-speed")}</div>
-        <Button variant="outlined" class="blue-button">
-          <Label>{l10n($curr_lang, "buy-plus")}</Label>
-        </Button>
+        <GButton inverted>{l10n($curr_lang, "buy-plus")}</GButton>
       </div>
     {:else if user_info.level == "plus" && user_info.expires}
       <div class="urow">
@@ -61,7 +59,7 @@
           >
         </div>
         <GButton>
-          <Label>{l10n($curr_lang, "extend")}</Label>
+          {l10n($curr_lang, "extend")}
         </GButton>
       </div>
     {/if}

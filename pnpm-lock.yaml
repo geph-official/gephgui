@@ -3,13 +3,16 @@ lockfileVersion: 5.4
 specifiers:
   '@rollup/plugin-dsv': ^2.0.3
   '@smui/button': ^6.1.4
+  '@smui/checkbox': ^6.1.4
   '@smui/circular-progress': ^6.1.4
   '@smui/data-table': ^6.2.0
   '@smui/dialog': ^6.1.4
   '@smui/icon-button': ^6.1.4
   '@smui/linear-progress': ^6.1.4
   '@smui/ripple': ^6.1.4
+  '@smui/select': ^6.2.0
   '@smui/snackbar': ^6.1.4
+  '@smui/switch': ^6.1.4
   '@smui/tab': ^6.1.4
   '@smui/tab-bar': ^6.1.4
   '@sveltejs/vite-plugin-svelte': ^1.0.2
@@ -35,13 +38,16 @@ dependencies:
 devDependencies:
   '@rollup/plugin-dsv': 2.0.3_rollup@2.79.1
   '@smui/button': 6.1.4_qy6w2iv5hnh55blsjuu7uihyzm
+  '@smui/checkbox': 6.1.4_qy6w2iv5hnh55blsjuu7uihyzm
   '@smui/circular-progress': 6.1.4_qy6w2iv5hnh55blsjuu7uihyzm
   '@smui/data-table': 6.2.0_qy6w2iv5hnh55blsjuu7uihyzm
   '@smui/dialog': 6.1.4_qy6w2iv5hnh55blsjuu7uihyzm
   '@smui/icon-button': 6.1.4_qy6w2iv5hnh55blsjuu7uihyzm
   '@smui/linear-progress': 6.1.4_qy6w2iv5hnh55blsjuu7uihyzm
   '@smui/ripple': 6.1.4_qy6w2iv5hnh55blsjuu7uihyzm
+  '@smui/select': 6.2.0_qy6w2iv5hnh55blsjuu7uihyzm
   '@smui/snackbar': 6.1.4_qy6w2iv5hnh55blsjuu7uihyzm
+  '@smui/switch': 6.1.4_qy6w2iv5hnh55blsjuu7uihyzm
   '@smui/tab': 6.1.4_qy6w2iv5hnh55blsjuu7uihyzm
   '@smui/tab-bar': 6.1.4_qy6w2iv5hnh55blsjuu7uihyzm
   '@sveltejs/vite-plugin-svelte': 1.0.9_svelte@3.50.1+vite@3.1.6
@@ -540,7 +546,6 @@ packages:
       '@material/theme': 13.0.0
       '@material/tokens': 13.0.0
       tslib: 2.4.0
-    dev: false
 
   /@material/tab-bar/13.0.0:
     resolution: {integrity: sha512-GLODDvwKiN867weT+WiSR/4Oum2hw0Ipl1vcJxtZeE6C3PmGWBE316j8a5DLYvf9bjIPLYLNLUzLU3QnJB6T5w==}
@@ -1135,7 +1140,6 @@ packages:
     transitivePeerDependencies:
       - svelte
       - typescript
-    dev: false
 
   /@smui/tab-bar/6.1.4_qy6w2iv5hnh55blsjuu7uihyzm:
     resolution: {integrity: sha512-bY2hzuYrdzvqWY34cYzez1YK5l4aF5gUFnaiu6l83wmhX5fzl5AqqKCbWgxoAVqNC4ErKAvthFzSaeiDdzOaNQ==}

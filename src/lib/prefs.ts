@@ -29,3 +29,39 @@ export const pref_userpwd: Writable<{
  */
 export const pref_selected_exit: Writable<ExitDescriptor | null> =
   persistentWritable("selected_exit", null);
+
+/**
+ * Selected routing mode
+ */
+export const pref_routing_mode: Writable<"auto" | "bridges"> =
+  persistentWritable("routing_mode", "auto");
+
+/**
+ * Selected routing mode
+ */
+export const pref_global_vpn: Writable<boolean> = persistentWritable(
+  "global_vpn",
+  false
+);
+
+/**
+ * Whether or not to autoconf proxies.
+ */
+export const pref_proxy_autoconf: Writable<boolean> = persistentWritable(
+  "proxy_autoconf",
+  true
+);
+
+/**
+ * The app whitelist.
+ */
+export const pref_use_app_whitelist: Writable<boolean> = persistentWritable(
+  "use_app_whitelist",
+  false
+);
+
+/**
+ * The app whitelist.
+ */
+export const pref_app_whitelist: Writable<{ [key: string]: boolean }> =
+  persistentWritable("app_whitelist", {});
