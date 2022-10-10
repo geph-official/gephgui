@@ -1,8 +1,43 @@
 label,en,zh-CN,zh-TW
 geph,Geph,迷雾通,迷霧通
-logout,Log out,,
-extend,Extend,,
-loading,Loading,,
-get-unlimited-speed,Get unlimited speed,,
-buy-plus,Buy Plus!,,
-remaining-days,Remaining days,,
+logout,Log out,退出,退出
+extend,Extend,延长,延長
+loading,Loading,载入中,載入中
+get-unlimited-speed,Get unlimited speed,获取无限速度,獲取無限速度
+buy-plus,Buy Plus!,购买Plus!,購買Plus!
+remaining-days,Remaining days,剩余天数,剩餘天數
+disconnected,Disconnected,已断开,已斷開
+connecting,Connecting,连接中,連接中
+connected,Connected,已连接,已連接
+free-server,All users,所有用户,所有用戶
+plus-server,Plus only,仅限Plus,僅限Plus
+p2p-yes,P2P allowed,允许P2P,允許P2P
+p2p-no,P2P banned,禁止P2P,禁止P2P
+automatic,Automatic,自动,自動
+automatic-blurb,Uses best available server,使用最佳可用服务器,使用最佳可用伺服器
+change-location,Change location,更改位置,更改位置
+connect,Connect,连接,連接
+disconnect,Disconnect,断开,斷開
+exit-selection,Select exit server,选择出口服务器,選擇出口伺服器
+close,Close,关闭,關閉
+country,Country,国家,國家
+city,City,城市,城市
+server-id,ID,服务器 ID,伺服器 ID
+allowed,Allowed,允许,允許
+plus-only-blurb,Only Plus users are allowed on this server; select another one.,仅Plus用户允许访问此服务器; 请选择其他服务器.,僅Plus用戶允許訪問此伺服器; 請選擇其他伺服器.
+use-automatic,Automatically select server,,
+
+pdx,Portland,波特兰,波特蘭
+sgp,Singapore,新加坡,新加坡
+tyo,Tokyo,东京,東京
+zrh,Zurich,苏黎世,蘇黎世
+sfo,San Francisco,旧金山,舊金山
+dal,Dallas,达拉斯,達拉斯
+lax,Los Angeles,洛杉矶,洛杉磯
+nyc,New York,纽约,紐約
+ord,Chicago,芝加哥,芝加哥
+fra,Frankfurt,法兰克福,法蘭克福
+ams,Amsterdam,阿姆斯特丹,阿姆斯特丹
+hkg,Hong Kong,香港,香港
+rmq,Taichung,台中,台中
+tpe,Taipei,台北,台北

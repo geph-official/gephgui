@@ -12,6 +12,13 @@
   "devDependencies": {
     "@rollup/plugin-dsv": "^2.0.3",
     "@smui/button": "^6.1.4",
+    "@smui/circular-progress": "^6.1.4",
+    "@smui/data-table": "^6.2.0",
+    "@smui/dialog": "^6.1.4",
+    "@smui/icon-button": "^6.1.4",
+    "@smui/linear-progress": "^6.1.4",
+    "@smui/ripple": "^6.1.4",
+    "@smui/snackbar": "^6.1.4",
     "@smui/tab": "^6.1.4",
     "@smui/tab-bar": "^6.1.4",
     "@sveltejs/vite-plugin-svelte": "^1.0.2",
@@ -25,6 +32,8 @@
     "vite": "^3.1.0"
   },
   "dependencies": {
+    "country-code-emoji": "^2.3.0",
+    "openmoji": "^14.0.0",
     "svelte-material-icons": "^2.0.4",
     "svelte-material-ui": "^6.2.0"
   }

@@ -5,13 +5,14 @@
   import Heart from "svelte-material-icons/Heart.svelte";
   import Button, { Label } from "@smui/button";
   import { curr_lang, l10n, l10n_date } from "../lib/l10n";
-  import { native_gate, type UserInfo } from "../native-gate";
+  import { native_gate, type SubscriptionInfo } from "../native-gate";
   import { onInterval } from "../lib/utils";
   import { pref_userpwd } from "../lib/prefs";
+  import GButton from "../lib/GButton.svelte";
   export let username: string;
   export let password: string;
 
-  let user_info: UserInfo | null = null;
+  let user_info: SubscriptionInfo | null = null;
 
   onInterval(async () => {
     try {
@@ -26,13 +27,9 @@
   <div class="urow">
     <AccountCircle width="1.5rem" height="1.5rem" color="#666" />
     <div class="stretch"><b>{username}</b></div>
-    <Button
-      variant="outlined"
-      class="red-button"
-      on:click={() => ($pref_userpwd = null)}
-    >
-      <Label>{l10n($curr_lang, "logout")}</Label>
-    </Button>
+    <GButton color={"warning"} inverted onClick={() => ($pref_userpwd = null)}>
+      {l10n($curr_lang, "logout")}
+    </GButton>
   </div>
   {#if user_info}
     {#if user_info.level == "free"}
@@ -43,7 +40,7 @@
           <Label>{l10n($curr_lang, "buy-plus")}</Label>
         </Button>
       </div>
-    {:else if user_info.level == "plus"}
+    {:else if user_info.level == "plus" && user_info.expires}
       <div class="urow">
         <CalendarRange
           width="1.5rem"
@@ -63,9 +60,9 @@
             ></small
           >
         </div>
-        <Button variant="outlined" class="blue-button">
+        <GButton>
           <Label>{l10n($curr_lang, "extend")}</Label>
-        </Button>
+        </GButton>
       </div>
     {/if}
   {:else}
@@ -80,6 +77,7 @@
   .userinfo {
     display: flex;
     flex-direction: column;
+    width: 100%;
   }
 
   .urow {
