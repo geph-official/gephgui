@@ -18,7 +18,7 @@
   let captcha_id: string = "";
   const load_captcha = async () => {
     const captcha = await native_gate().binder_rpc("get_captcha", []);
-    captcha_id = captcha.id;
+    captcha_id = captcha.captcha_id;
     captcha_data = captcha.png_data;
   };
 
