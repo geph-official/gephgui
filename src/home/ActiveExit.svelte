@@ -10,7 +10,7 @@
 
   import { slide } from "svelte/transition";
 
-  let p2p_allowed =
+  $: p2p_allowed =
     exit_descriptor &&
     exit_descriptor.country_code != "us" &&
     exit_descriptor.country_code != "jp" &&
