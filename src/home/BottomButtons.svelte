@@ -10,6 +10,7 @@
   import LinearProgress from "@smui/linear-progress";
   import type { SnackbarComponentDev } from "@smui/snackbar";
   import Snackbar from "@smui/snackbar";
+  import { pref_userpwd } from "src/lib/prefs";
 
   export let running: boolean;
   export let block_plus: boolean;
@@ -24,9 +25,16 @@
   let loading = true;
   const sync_exits = async () => {
     loading = true;
-    const r = await native_gate().sync_exits();
-    loading = false;
-    return r;
+    if ($pref_userpwd) {
+      const r = await native_gate().sync_exits(
+        $pref_userpwd.username,
+        $pref_userpwd.password
+      );
+      loading = false;
+      return r;
+    } else {
+      throw "nothing";
+    }
   };
 
   let blockSnackbar: SnackbarComponentDev;

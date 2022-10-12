@@ -40,7 +40,7 @@ export interface NativeGate {
   /**
    * Obtains the list of all exits
    */
-  sync_exits(): Promise<ExitDescriptor[]>;
+  sync_exits(username: string, password: string): Promise<ExitDescriptor[]>;
 
   /**
    * Gets the list of apps
@@ -174,7 +174,7 @@ function mock_native_gate(): NativeGate {
       }
     },
 
-    sync_exits: async () => {
+    sync_exits: async (username, password) => {
       return [
         {
           hostname: "us-hio-03.exits.geph.io",
