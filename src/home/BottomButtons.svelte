@@ -10,7 +10,7 @@
   import LinearProgress from "@smui/linear-progress";
   import type { SnackbarComponentDev } from "@smui/snackbar";
   import Snackbar from "@smui/snackbar";
-  import { pref_userpwd } from "src/lib/prefs";
+  import { pref_userpwd } from "../lib/prefs";
 
   export let running: boolean;
   export let block_plus: boolean;
