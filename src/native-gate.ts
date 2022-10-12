@@ -225,7 +225,8 @@ function mock_native_gate(): NativeGate {
   };
 }
 
-window["NATIVE_GATE"] = mock_native_gate();
+if (!window.hasOwnProperty("NATIVE_GATE"))
+  window["NATIVE_GATE"] = mock_native_gate();
 
 async function random_sleep() {
   await new Promise((r) => setTimeout(r, Math.random() * 5000));
