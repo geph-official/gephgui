@@ -53,7 +53,8 @@
         bind:value={password}
       />
       <div class="divider" />
-      {#if captcha_data}<img
+      {#if captcha_data}
+        <img
           class="captcha"
           src={"data:image/png;base64," + captcha_data}
         />{:else}

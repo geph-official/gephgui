@@ -21,14 +21,16 @@
 </script>
 
 <div class="wrap">
-  <Register
-    bind:open={register_open}
-    onRegisterSuccess={(u, p) => {
-      console.log(u, p);
-      username = u;
-      password = p;
-    }}
-  />
+  {#if register_open}
+    <Register
+      bind:open={register_open}
+      onRegisterSuccess={(u, p) => {
+        console.log(u, p);
+        username = u;
+        password = p;
+      }}
+    />
+  {/if}
   <Snackbar bind:this={errorSnack}>
     <Label>{snack_msg}</Label>
   </Snackbar>
