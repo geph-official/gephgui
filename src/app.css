@@ -3,6 +3,10 @@ body {
   margin: 0;
   font-family: "Inter";
 }
+
+* {
+  font-family: "Inter";
+}
 /* Theme colors. */
 :root {
   --mdc-theme-primary: #007bbb;

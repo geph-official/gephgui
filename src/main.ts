@@ -24,9 +24,13 @@ window.addEventListener("load", (_) => {
         if (styleSheet.rules[ri].selectorText.match(":hover")) {
           styleSheet.deleteRule(ri);
         }
+
+        styleSheet.insertRule(":focus-visible { outline: none } ");
       }
     }
-  } catch (ex) {}
+  } catch (ex) {
+    console.error(ex);
+  }
 });
 
 export default app;

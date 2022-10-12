@@ -7,6 +7,7 @@
   import { curr_lang, l10n } from "./lib/l10n";
   import { pref_userpwd } from "./lib/prefs";
   import { native_gate } from "./native-gate";
+  import Register from "./login/Register.svelte";
 
   let username = "";
   let password = "";
@@ -15,9 +16,19 @@
   let snack_msg = "";
 
   let loading = false;
+
+  let register_open = false;
 </script>
 
 <div class="wrap">
+  <Register
+    bind:open={register_open}
+    onRegisterSuccess={(u, p) => {
+      console.log(u, p);
+      username = u;
+      password = p;
+    }}
+  />
   <Snackbar bind:this={errorSnack}>
     <Label>{snack_msg}</Label>
   </Snackbar>
@@ -55,7 +66,7 @@
       }}>{l10n($curr_lang, "log-in-blurb")}</GButton
     >
     <br />
-    <GButton inverted disabled={loading}
+    <GButton inverted disabled={loading} onClick={() => (register_open = true)}
       >{l10n($curr_lang, "register-blurb")}</GButton
     >
   </div>
@@ -82,10 +93,5 @@
     flex-direction: column;
     align-items: center;
     margin-top: 2rem;
-  }
-
-  /* HACK */
-  :global(:focus-visible) {
-    outline: none;
   }
 </style>
