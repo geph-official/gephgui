@@ -17,6 +17,7 @@
   onInterval(async () => {
     try {
       user_info = await native_gate().sync_user_info(username, password);
+      console.log("user info", user_info);
     } catch (e) {
       alert("error syncing info: " + user_info);
     }
