@@ -63,6 +63,9 @@
         <Body>
           {#each exit_list as exit}
             <Row
+              style={block_plus && !exit.allowed_levels.includes("free")
+                ? "background-color: #ccc"
+                : ""}
               on:click={() => {
                 if (block_plus && !exit.allowed_levels.includes("free")) {
                   blockSnackbar.open();

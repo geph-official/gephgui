@@ -1,19 +1,14 @@
 <script lang="ts">
-  import Snackbar, { Actions, Label } from "@smui/snackbar";
-  import type { SnackbarComponentDev } from "@smui/snackbar";
-
   import Textfield from "@smui/textfield";
   import GButton from "./lib/GButton.svelte";
   import { curr_lang, l10n } from "./lib/l10n";
   import { pref_userpwd } from "./lib/prefs";
   import { native_gate } from "./native-gate";
   import Register from "./login/Register.svelte";
+  import { displayError } from "./lib/utils";
 
   let username = "";
   let password = "";
-
-  let errorSnack: SnackbarComponentDev;
-  let snack_msg = "";
 
   let loading = false;
 
@@ -31,9 +26,6 @@
       }}
     />
   {/if}
-  <Snackbar bind:this={errorSnack}>
-    <Label>{snack_msg}</Label>
-  </Snackbar>
   <img class="big-logo" />
   <div class="form">
     <Textfield
@@ -60,8 +52,7 @@
             password: password,
           };
         } catch (err) {
-          snack_msg = err.toString();
-          errorSnack.open();
+          displayError(err.toString());
         } finally {
           loading = false;
         }

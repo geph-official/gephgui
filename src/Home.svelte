@@ -15,7 +15,7 @@
     pref_selected_exit,
     pref_userpwd,
   } from "./lib/prefs";
-  import { onInterval, horizSlide } from "./lib/utils";
+  import { onInterval } from "./lib/utils";
   import { native_gate, type SubscriptionInfo } from "./native-gate";
 
   // Connections status things. We use a persistent store because on iOS and Android the webview can stop at any time.
@@ -34,9 +34,9 @@
         );
       }
     } catch (e) {
-      alert("error syncing info: " + user_info);
+      reportError("error syncing info: " + user_info);
     }
-  }, 1000);
+  }, 10000);
 
   // the main monitor loop
   onInterval(async () => {
@@ -73,25 +73,33 @@
     <BottomButtons
       running={$connection_status !== "disconnected"}
       onConnect={async () => {
-        if ($pref_userpwd && $pref_selected_exit) {
-          await native_gate().start_daemon({
-            username: $pref_userpwd.username,
-            password: $pref_userpwd.password,
-            exit_hostname: $pref_selected_exit.hostname,
-            app_whitelist: Object.keys($pref_app_whitelist),
-            prc_whitelist: $pref_use_prc_whitelist,
-            proxy_autoconf: $pref_proxy_autoconf,
-            vpn_mode: $pref_global_vpn,
-            listen_all: false,
-            force_bridges: $pref_routing_mode === "bridges",
-          });
-          $connection_status = "connecting";
-        } else {
-          throw "no userpwd";
+        try {
+          if ($pref_userpwd && $pref_selected_exit) {
+            await native_gate().start_daemon({
+              username: $pref_userpwd.username,
+              password: $pref_userpwd.password,
+              exit_hostname: $pref_selected_exit.hostname,
+              app_whitelist: Object.keys($pref_app_whitelist),
+              prc_whitelist: $pref_use_prc_whitelist,
+              proxy_autoconf: $pref_proxy_autoconf,
+              vpn_mode: $pref_global_vpn,
+              listen_all: false,
+              force_bridges: $pref_routing_mode === "bridges",
+            });
+            $connection_status = "connecting";
+          } else {
+            throw "no userpwd";
+          }
+        } catch (err) {
+          reportError(err.toString());
         }
       }}
       onDisconnect={async () => {
-        await native_gate().stop_daemon();
+        try {
+          await native_gate().stop_daemon();
+        } catch (err) {
+          reportError(err.toString());
+        }
       }}
       onSelectExit={(exit) => {
         $pref_selected_exit = exit;

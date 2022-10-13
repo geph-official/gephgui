@@ -1,6 +1,4 @@
 <script lang="js">
-  import svelteLogo from "./assets/svelte.svg";
-  import Counter from "./lib/Counter.svelte";
   import Tab, { Icon, Label } from "@smui/tab";
   import TabBar from "@smui/tab-bar";
   let active_tab = "Home";
@@ -12,13 +10,29 @@
   import { curr_lang, l10n } from "./lib/l10n";
   import Home from "./Home.svelte";
   import { pref_userpwd } from "./lib/prefs";
-  import Button from "@smui/button/src/Button.svelte";
-  import { native_gate } from "./native-gate";
+  import Button from "@smui/button";
   import Settings from "./Settings.svelte";
   import Login from "./Login.svelte";
+  import { setErrorContext } from "./lib/utils";
+  import Dialog from "@smui/dialog";
+  import { Content, Header, Title, Actions } from "@smui/dialog";
+
+  let error_string = "";
+  setErrorContext((err) => {
+    error_string = err;
+  });
 </script>
 
 <main>
+  <Dialog open={error_string !== ""}>
+    <Header><Title>{l10n($curr_lang, "error")}</Title></Header>
+    <Content>{error_string}</Content>
+    <Actions>
+      <Button>
+        <Label>OK</Label>
+      </Button>
+    </Actions>
+  </Dialog>
   {#if !$pref_userpwd}
     <Login />
   {:else}

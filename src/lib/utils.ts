@@ -1,4 +1,4 @@
-import { onDestroy } from "svelte";
+import { getContext, onDestroy, setContext } from "svelte";
 import { cubicOut } from "svelte/easing";
 
 export function onInterval(callback: () => any, milliseconds: number) {
@@ -59,4 +59,19 @@ export function horizSlide(
         t * border_width_end_value
       }px;`,
   };
+}
+
+/**
+ * Sets the error handling context.
+ */
+let error_callback = (err: string) => {};
+export function setErrorContext(callback: (err: string) => void) {
+  error_callback = callback;
+}
+
+/**
+ * Report an error.
+ */
+export function displayError(err: string) {
+  error_callback(err);
 }
