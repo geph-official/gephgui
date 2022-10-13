@@ -1,4 +1,4 @@
-<script lang="js">
+<script lang="ts">
   import Tab, { Icon, Label } from "@smui/tab";
   import TabBar from "@smui/tab-bar";
   let active_tab = "Home";
@@ -10,12 +10,12 @@
   import { curr_lang, l10n } from "./lib/l10n";
   import Home from "./Home.svelte";
   import { pref_userpwd } from "./lib/prefs";
-  import Button from "@smui/button";
   import Settings from "./Settings.svelte";
   import Login from "./Login.svelte";
   import { setErrorContext } from "./lib/utils";
   import Dialog from "@smui/dialog";
   import { Content, Header, Title, Actions } from "@smui/dialog";
+  import GButton from "./lib/GButton.svelte";
 
   let error_string = "";
   setErrorContext((err) => {
@@ -28,9 +28,7 @@
     <Header><Title>{l10n($curr_lang, "error")}</Title></Header>
     <Content>{error_string}</Content>
     <Actions>
-      <Button>
-        <Label>OK</Label>
-      </Button>
+      <GButton onClick={() => (error_string = "")}>OK</GButton>
     </Actions>
   </Dialog>
   {#if !$pref_userpwd}
