@@ -5,23 +5,12 @@
   import Heart from "svelte-material-icons/Heart.svelte";
   import Button, { Label } from "@smui/button";
   import { curr_lang, l10n, l10n_date } from "../lib/l10n";
-  import { native_gate, type SubscriptionInfo } from "../native-gate";
+  import type { SubscriptionInfo } from "../native-gate";
   import { onInterval } from "../lib/utils";
   import { pref_userpwd } from "../lib/prefs";
   import GButton from "../lib/GButton.svelte";
   export let username: string;
-  export let password: string;
-
-  let user_info: SubscriptionInfo | null = null;
-
-  onInterval(async () => {
-    try {
-      user_info = await native_gate().sync_user_info(username, password);
-      console.log("user info", user_info);
-    } catch (e) {
-      alert("error syncing info: " + user_info);
-    }
-  }, 1000);
+  export let user_info: SubscriptionInfo | null = null;
 </script>
 
 <div class="userinfo">

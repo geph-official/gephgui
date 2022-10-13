@@ -54,10 +54,7 @@
 
 <div class="home">
   {#if $pref_userpwd}
-    <UserInfo
-      username={$pref_userpwd.username}
-      password={$pref_userpwd.password}
-    />
+    <UserInfo username={$pref_userpwd.username} {user_info} />
   {:else}
     <h1>NO USERPWD</h1>
   {/if}
