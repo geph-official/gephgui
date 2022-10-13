@@ -101,9 +101,16 @@ export interface DaemonArgs {
   username: string;
   password: string;
 
+  // connection stuff
+  exit_hostname: string;
+  force_bridges: boolean;
+
   // platform-specific arguments
   app_whitelist: string[];
-  china_whitelist: boolean;
+  prc_whitelist: boolean;
+  vpn_mode: boolean;
+  listen_all: boolean;
+  proxy_autoconf: boolean;
 }
 
 /**

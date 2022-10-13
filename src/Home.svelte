@@ -66,12 +66,17 @@
   <BottomButtons
     running={$connection_status !== "disconnected"}
     onConnect={async () => {
-      if ($pref_userpwd) {
+      if ($pref_userpwd && $pref_selected_exit) {
         await native_gate().start_daemon({
           username: $pref_userpwd.username,
           password: $pref_userpwd.password,
+          exit_hostname: $pref_selected_exit.hostname,
           app_whitelist: [],
-          china_whitelist: false,
+          prc_whitelist: false,
+          proxy_autoconf: false,
+          vpn_mode: false,
+          listen_all: false,
+          force_bridges: false,
         });
         $connection_status = "connecting";
       } else {
