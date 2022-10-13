@@ -24,7 +24,7 @@
 </script>
 
 <main>
-  <Dialog open={error_string !== ""}>
+  <Dialog open={error_string !== ""} scrimClickAction="" escapeKeyAction="">
     <Header><Title>{l10n($curr_lang, "error")}</Title></Header>
     <Content>{error_string}</Content>
     <Actions>
