@@ -58,6 +58,11 @@ export interface NativeGate {
   supports_app_whitelist: boolean;
 
   /**
+   * Whether this platform supports the PRC whitelist
+   */
+  supports_prc_whitelist: boolean;
+
+  /**
    * Whether this platform supports proxy configuration
    */
   supports_proxy_conf: boolean;
@@ -224,6 +229,7 @@ function mock_native_gate(): NativeGate {
     supports_app_whitelist: true,
     supports_proxy_conf: true,
     supports_vpn_conf: true,
+    supports_prc_whitelist: true,
     native_info: {
       platform_type: "linux",
       platform_details: "MockLinux Trololol",

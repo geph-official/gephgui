@@ -3,9 +3,15 @@
 
   import ActiveExit from "./home/ActiveExit.svelte";
   import BottomButtons from "./home/BottomButtons.svelte";
+
   import UserInfo from "./home/UserInfo.svelte";
   import {
     persistentWritable,
+    pref_app_whitelist,
+    pref_use_prc_whitelist,
+    pref_global_vpn,
+    pref_proxy_autoconf,
+    pref_routing_mode,
     pref_selected_exit,
     pref_userpwd,
   } from "./lib/prefs";
@@ -63,34 +69,36 @@
 
   <div>graphs go here</div>
 
-  <BottomButtons
-    running={$connection_status !== "disconnected"}
-    onConnect={async () => {
-      if ($pref_userpwd && $pref_selected_exit) {
-        await native_gate().start_daemon({
-          username: $pref_userpwd.username,
-          password: $pref_userpwd.password,
-          exit_hostname: $pref_selected_exit.hostname,
-          app_whitelist: [],
-          prc_whitelist: false,
-          proxy_autoconf: false,
-          vpn_mode: false,
-          listen_all: false,
-          force_bridges: false,
-        });
-        $connection_status = "connecting";
-      } else {
-        throw "no userpwd";
-      }
-    }}
-    onDisconnect={async () => {
-      await native_gate().stop_daemon();
-    }}
-    onSelectExit={(exit) => {
-      $pref_selected_exit = exit;
-    }}
-    block_plus={user_info ? user_info.level === "free" : true}
-  />
+  {#key $pref_userpwd}
+    <BottomButtons
+      running={$connection_status !== "disconnected"}
+      onConnect={async () => {
+        if ($pref_userpwd && $pref_selected_exit) {
+          await native_gate().start_daemon({
+            username: $pref_userpwd.username,
+            password: $pref_userpwd.password,
+            exit_hostname: $pref_selected_exit.hostname,
+            app_whitelist: Object.keys($pref_app_whitelist),
+            prc_whitelist: $pref_use_prc_whitelist,
+            proxy_autoconf: $pref_proxy_autoconf,
+            vpn_mode: $pref_global_vpn,
+            listen_all: false,
+            force_bridges: $pref_routing_mode === "bridges",
+          });
+          $connection_status = "connecting";
+        } else {
+          throw "no userpwd";
+        }
+      }}
+      onDisconnect={async () => {
+        await native_gate().stop_daemon();
+      }}
+      onSelectExit={(exit) => {
+        $pref_selected_exit = exit;
+      }}
+      block_plus={user_info ? user_info.level === "free" : true}
+    />
+  {/key}
 </div>
 
 <style>

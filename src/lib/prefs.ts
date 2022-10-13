@@ -53,10 +53,18 @@ export const pref_proxy_autoconf: Writable<boolean> = persistentWritable(
 );
 
 /**
- * The app whitelist.
+ * Whether or not to use the app whitelist.
  */
 export const pref_use_app_whitelist: Writable<boolean> = persistentWritable(
   "use_app_whitelist",
+  false
+);
+
+/**
+ * Whether or not to use the PRC whitelist.
+ */
+export const pref_use_prc_whitelist: Writable<boolean> = persistentWritable(
+  "use_prc_whitelist",
   false
 );
 

@@ -16,6 +16,7 @@
     pref_proxy_autoconf,
     pref_routing_mode,
     pref_use_app_whitelist,
+    pref_use_prc_whitelist,
   } from "./lib/prefs";
   import { native_gate } from "./native-gate";
   import GButton from "./lib/GButton.svelte";
@@ -56,6 +57,21 @@
         </div>
         <div class="switch">
           <Switch bind:checked={$pref_global_vpn} />
+        </div>
+      </div>
+    {/if}
+
+    {#if native_gate().supports_prc_whitelist && !$pref_global_vpn}
+      <div class="setting" transition:fade|local>
+        <div class="icon">
+          <DirectionsFork height="1.5rem" width="1.5rem" />
+        </div>
+        <div class="description">
+          {l10n($curr_lang, "exclude-prc")}<br />
+          <small>{l10n($curr_lang, "exclude-prc-blurb")}</small>
+        </div>
+        <div class="switch">
+          <Switch bind:checked={$pref_use_prc_whitelist} />
         </div>
       </div>
     {/if}

@@ -71,6 +71,9 @@ auto-proxy,Auto-configure proxy,自动配置代理,自動配置代理
 auto-proxy-blurb,Makes most browsers use Geph,配置大多数浏览器使用迷雾通,配置大多数瀏覽器使用迷霧通
 global-vpn,Network-level VPN,全局VPN,全局VPN
 global-vpn-blurb,Force all traffic to use Geph,强制所有流量使用迷雾通,強制所有流量使用迷霧通
+exclude-apps-blurb,Let apps bypass Geph,,
 exclude-apps,Exclude apps,,
 exclude-apps-blurb,Let apps bypass Geph,,
 select-excluded-apps,Select excluded apps,,
+exclude-prc,Exclude PRC traffic,,
+exclude-prc-blurb,Let Chinese traffic bypass Geph,,
