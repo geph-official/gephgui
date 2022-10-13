@@ -1,11 +1,11 @@
 body {
   padding: 0;
   margin: 0;
-  font-family: "Inter";
+  font-family: system-ui;
 }
 
 * {
-  font-family: "Inter";
+  font-family: system-ui;
 }
 /* Theme colors. */
 :root {
