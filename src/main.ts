@@ -1,4 +1,5 @@
 import "svelte-material-ui/bare.css";
+import "./inter-font/inter.css";
 import "./app.css";
 import App from "./App.svelte";
 
