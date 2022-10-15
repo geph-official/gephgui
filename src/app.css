@@ -1,15 +1,15 @@
 body {
   padding: 0;
   margin: 0;
-  font-family: "Inter var", "Inter", system-ui;
+  font-family: "Inter", system-ui;
 }
 
 * {
-  font-family: "Inter var", "Inter", system-ui;
+  font-family: "Inter", system-ui;
 }
 /* Theme colors. */
 :root {
-  --mdc-typography-font-family: "Inter var", "Inter", system-ui;
+  --mdc-typography-font-family: "Inter", system-ui;
   --mdc-theme-primary: #007bbb;
   --mdc-theme-secondary: #676778;
   --mdc-theme-background: #fff;
