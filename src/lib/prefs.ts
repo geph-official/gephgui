@@ -7,7 +7,15 @@ export function persistentWritable<T>(
 ): Writable<T> {
   let initString = localStorage.getItem(storage_name);
   let initValue: any = null;
-  initValue = (initString && JSON.parse(initString)) || default_value;
+  try {
+    if (initString === null) {
+      initValue = default_value;
+    } else {
+      initValue = JSON.parse(initString);
+    }
+  } catch {
+    initValue = default_value;
+  }
   let w = writable(initValue);
   w.subscribe((value: T) => {
     // console.log("storing", value);
