@@ -16,6 +16,8 @@
   import Dialog from "@smui/dialog";
   import { Content, Header, Title, Actions } from "@smui/dialog";
   import GButton from "./lib/GButton.svelte";
+  import { onMount } from "svelte";
+  import { native_gate } from "./native-gate";
 
   let error_string = "";
   setErrorContext((err) => {

@@ -56,14 +56,16 @@
         {l10n($curr_lang, "automatic")}
       {/if}
     </div>
-    <div class="hostname" use:emojify>
-      {#if exit_descriptor}
-        {flag(exit_descriptor.country_code)}
-        {exit_descriptor.signing_key.substring(0, 24)}
-      {:else}
-        🤔
-        {l10n($curr_lang, "automatic-blurb")}{/if}
-    </div>
+    {#key exit_descriptor}
+      <div class="hostname" use:emojify>
+        {#if exit_descriptor}
+          {flag(exit_descriptor.country_code)}
+          {exit_descriptor.signing_key.substring(0, 24)}
+        {:else}
+          🤔
+          {l10n($curr_lang, "automatic-blurb")}{/if}
+      </div>
+    {/key}
     <div class="badges">
       {#if exit_descriptor}
         {#if exit_descriptor.allowed_levels.includes("free")}

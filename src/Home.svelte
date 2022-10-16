@@ -44,6 +44,22 @@
   onInterval(async () => {
     const is_running = await native_gate().is_running();
     const is_connected = is_running && (await native_gate().is_connected());
+    if ($pref_selected_exit === null && $pref_userpwd) {
+      const exits = await native_gate().sync_exits(
+        $pref_userpwd.username,
+        $pref_userpwd.password
+      );
+      if (exits.length > 0) {
+        while (true) {
+          let ridx = Math.floor(Math.random() * exits.length);
+          let exit = exits[ridx];
+          if (exit.allowed_levels.includes("free")) {
+            $pref_selected_exit = exit;
+            break;
+          }
+        }
+      }
+    }
     if (is_connected) {
       $connection_status = "connected";
     } else if (is_running) {

@@ -103,7 +103,7 @@
       />
     </DataTable>
 
-    <Actions>
+    <!-- <Actions>
       <Button
         on:click={() => {
           onSelectExit(null);
@@ -113,7 +113,7 @@
       >
         <Label>{l10n($curr_lang, "use-automatic")}</Label>
       </Button>
-    </Actions>
+    </Actions> -->
   </Dialog>
 
   <GButton
