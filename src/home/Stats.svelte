@@ -39,7 +39,7 @@
       <ArrowUp />
       {send_speed.toFixed(2)} Mbps
     </div>
-    <div class="widget"><SwapVertical />234 ms</div>
+    <div class="widget"><SwapVertical />{ping.toFixed(0)} ms</div>
   </div>
   {#key recv_data}
     <Graph

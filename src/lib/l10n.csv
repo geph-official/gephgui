@@ -27,17 +27,16 @@ server-id,ID,服务器 ID,伺服器 ID
 allowed,Allowed,允许,允許
 plus-only-blurb,Only Plus users are allowed on this server; select another one.,仅Plus用户允许访问此服务器; 请选择其他服务器.,僅Plus用戶允許訪問此伺服器; 請選擇其他伺服器.
 use-automatic,Automatically select server,自动选择服务器,自動選擇伺服器
-cancel,Cancel,,
 
-download,Download,,
-upload,Upload,,
-
-username,Username,,
-password,Password,,
-log-in-blurb,Log in with existing account,,
-register-blurb,Create a new account,,
-register,Register,,
-captcha,Captcha,,
+cancel,Cancel,取消,取消
+download,Download,下载,下載
+upload,Upload,上传,上傳
+username,Username,用户名,用戶名
+password,Password,密码,密碼
+log-in-blurb,Log in with existing account,使用已有帐号登录,使用已有帳號登錄
+register-blurb,Create a new account,创建新帐号,創建新帳號
+register,Register,注册,註冊
+captcha,Captcha,验证码,驗證碼
 
 pdx,Portland,波特兰,波特蘭
 sgp,Singapore,新加坡,新加坡
@@ -75,9 +74,12 @@ auto-proxy,Auto-configure proxy,自动配置代理,自動配置代理
 auto-proxy-blurb,Makes most browsers use Geph,配置大多数浏览器使用迷雾通,配置大多数瀏覽器使用迷霧通
 global-vpn,Network-level VPN,全局VPN,全局VPN
 global-vpn-blurb,Force all traffic to use Geph,强制所有流量使用迷雾通,強制所有流量使用迷霧通
-exclude-apps-blurb,Let apps bypass Geph,,
-exclude-apps,Exclude apps,,
-exclude-apps-blurb,Let apps bypass Geph,,
-select-excluded-apps,Select excluded apps,,
-exclude-prc,Exclude PRC traffic,,
-exclude-prc-blurb,Let Chinese traffic bypass Geph,,
+exclude-apps,Exclude apps,排除应用程序,排除應用程式
+exclude-apps-blurb,Let apps bypass Geph,允许应用程序绕过迷雾通,允許應用程式繞過迷霧通
+select-excluded-apps,Select excluded apps,选择要排除的应用程序,選擇要排除的應用程式
+exclude-prc,Exclude PRC traffic,排除中国大陆流量,排除中國大陸流量
+exclude-prc-blurb,Let Chinese traffic bypass Geph,允许中国大陆流量绕过迷雾通,允許中國大陸流量繞過迷霧通
+debug,Debug,调试,除錯
+debug-pack,Export debug pack,导出调试包,導出除錯包
+debug-pack-blurb,Save debugging info for developers,保存调试信息以供开发人员使用,保存除錯資訊以供開發人員使用
+export,Export,导出,導出

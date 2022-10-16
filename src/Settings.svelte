@@ -8,6 +8,7 @@
   import Bridge from "svelte-material-icons/Translate.svelte";
   import Vpn from "svelte-material-icons/Vpn.svelte";
   import Switch from "@smui/switch";
+  import Bug from "svelte-material-icons/Bug.svelte";
   import { curr_lang, l10n } from "./lib/l10n";
   import { fade } from "svelte/transition";
   import Select, { Option } from "@smui/select";
@@ -131,6 +132,24 @@
           <Option value="auto">{l10n($curr_lang, "automatic")}</Option>
           <Option value="bridges">{l10n($curr_lang, "force-bridges")}</Option>
         </Select>
+      </div>
+    </div>
+
+    <div class="divider" />
+
+    <div class="subtitle">{l10n($curr_lang, "debug")}</div>
+    <div class="setting">
+      <div class="icon">
+        <Bug height="1.5rem" width="1.5rem" />
+      </div>
+      <div class="description">
+        {l10n($curr_lang, "debug-pack")}<br />
+        <small>{l10n($curr_lang, "debug-pack-blurb")}</small>
+      </div>
+      <div class="switch">
+        <GButton onClick={() => native_gate().export_debug_pack()}
+          >{l10n($curr_lang, "export")}</GButton
+        >
       </div>
     </div>
   {/key}
