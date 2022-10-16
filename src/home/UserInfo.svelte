@@ -43,7 +43,7 @@
               >{Math.max(
                 0,
                 (user_info.expires.getTime() - new Date().getTime()) /
-                  (24 * 60 * 60 * 60 * 1000)
+                  (24 * 60 * 60 * 1000)
               ).toFixed(0)}</b
             ></small
           >
