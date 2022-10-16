@@ -3,6 +3,8 @@
 
   import ActiveExit from "./home/ActiveExit.svelte";
   import BottomButtons from "./home/BottomButtons.svelte";
+  import Graph from "./home/Graph.svelte";
+  import Stats from "./home/Stats.svelte";
 
   import UserInfo from "./home/UserInfo.svelte";
   import {
@@ -64,7 +66,7 @@
     exit_descriptor={$pref_selected_exit}
   />
 
-  <div>graphs go here</div>
+  <Stats />
 
   {#key $pref_userpwd}
     <BottomButtons

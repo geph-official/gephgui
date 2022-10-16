@@ -28,6 +28,7 @@ specifiers:
   svelte-preprocess: ^4.10.7
   tslib: ^2.4.0
   typescript: ^4.6.4
+  uplot: ^1.6.22
   vite: ^3.1.0
 
 dependencies:
@@ -35,6 +36,7 @@ dependencies:
   openmoji: 14.0.0
   svelte-material-icons: 2.0.4_svelte@3.50.1
   svelte-material-ui: 6.2.0_qy6w2iv5hnh55blsjuu7uihyzm
+  uplot: 1.6.22
 
 devDependencies:
   '@rollup/plugin-dsv': 2.0.3_rollup@2.79.1
@@ -2162,6 +2164,10 @@ packages:
     resolution: {integrity: sha512-QCh+85mCy+h0IGff8r5XWzOVSbBO+KfeYrMQh7NJ58QujwcE22u+NUSmUxqF+un70P9GXKxa2HCNiTTMJknyjQ==}
     engines: {node: '>=4.2.0'}
     hasBin: true
+
+  /uplot/1.6.22:
+    resolution: {integrity: sha512-2jtSb/YHUgtmIUn0+QJjf7ggcJicb5PKe7ijBiRDTPsG/f8F/MFayZ+g6/0kATNkDyF/qQsHJDmCp6cxncg1EQ==}
+    dev: false
 
   /vite/3.1.6:
     resolution: {integrity: sha512-qMXIwnehvvcK5XfJiXQUiTxoYAEMKhM+jqCY6ZSTKFBKu1hJnAKEzP3AOcnTerI0cMZYAaJ4wpW1wiXLMDt4mA==}

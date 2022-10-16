@@ -29,6 +29,9 @@ plus-only-blurb,Only Plus users are allowed on this server; select another one.,
 use-automatic,Automatically select server,自动选择服务器,自動選擇伺服器
 cancel,Cancel,,
 
+download,Download,,
+upload,Upload,,
+
 username,Username,,
 password,Password,,
 log-in-blurb,Log in with existing account,,

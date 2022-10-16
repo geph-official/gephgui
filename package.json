@@ -39,6 +39,7 @@
     "country-code-emoji": "^2.3.0",
     "openmoji": "^14.0.0",
     "svelte-material-icons": "^2.0.4",
-    "svelte-material-ui": "^6.2.0"
+    "svelte-material-ui": "^6.2.0",
+    "uplot": "^1.6.22"
   }
 }
