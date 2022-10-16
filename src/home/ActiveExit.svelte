@@ -4,10 +4,10 @@
   import type { ExitDescriptor } from "src/native-gate";
   import flag from "country-code-emoji";
   import { curr_lang, l10n } from "../lib/l10n";
+  import { emojify } from "../lib/utils";
   import CircularProgress from "@smui/circular-progress";
   export let connection: "connected" | "disconnected" | "connecting";
   export let exit_descriptor: ExitDescriptor | null;
-
   import { slide } from "svelte/transition";
 
   $: p2p_allowed =
@@ -56,7 +56,7 @@
         {l10n($curr_lang, "automatic")}
       {/if}
     </div>
-    <div class="hostname">
+    <div class="hostname" use:emojify>
       {#if exit_descriptor}
         {flag(exit_descriptor.country_code)}
         {exit_descriptor.signing_key.substring(0, 24)}
@@ -128,7 +128,7 @@
   }
 
   .hostname {
-    font-family: "Iosevka";
+    font-family: "Iosevka", monospace;
   }
 
   .badge {

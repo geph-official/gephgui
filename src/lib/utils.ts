@@ -1,5 +1,6 @@
 import { getContext, onDestroy, setContext } from "svelte";
 import { cubicOut } from "svelte/easing";
+import twemoji from "twemoji";
 
 export function onInterval(callback: () => any, milliseconds: number) {
   callback();
@@ -74,4 +75,17 @@ export function setErrorContext(callback: (err: string) => void) {
  */
 export function displayError(err: string) {
   error_callback(err);
+}
+
+/**
+ * Display emojis properly
+ */
+export function emojify(node: HTMLElement) {
+  // setup work goes here...
+  twemoji.parse(node);
+  return {
+    destroy() {
+      // ...cleanup goes here
+    },
+  };
 }

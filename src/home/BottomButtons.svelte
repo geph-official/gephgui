@@ -11,6 +11,7 @@
   import type { SnackbarComponentDev } from "@smui/snackbar";
   import Snackbar from "@smui/snackbar";
   import { pref_userpwd } from "../lib/prefs";
+  import { emojify } from "../lib/utils";
 
   export let running: boolean;
   export let block_plus: boolean;
@@ -76,8 +77,10 @@
               }}
             >
               <Cell
-                >{flag(exit.country_code)}
-                {exit.country_code.toUpperCase()}</Cell
+                ><span use:emojify
+                  >{flag(exit.country_code)}
+                  {exit.country_code.toUpperCase()}</span
+                ></Cell
               >
               <Cell>{l10n($curr_lang, exit.city_code)}</Cell>
               <Cell>{exit.signing_key.substring(0, 10)}</Cell>

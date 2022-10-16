@@ -48,3 +48,8 @@ body {
   --mdc-layout-grid-gutter-phone: 16px;
   --mdc-layout-grid-column-width-phone: 72px;
 }
+
+.emoji {
+  height: 1.2em;
+  vertical-align: text-bottom;
+}
