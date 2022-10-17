@@ -174,17 +174,11 @@ function mock_native_gate(): NativeGate {
     },
 
     daemon_rpc: async (method, args) => {
-      if (method === "timeseries_stats") {
-        return [
-          [1665865337, 47519.0],
-          [1665865338, 29976.0],
-          [1665865339, 31632.0],
-          [1665865340, 24431.0],
-          [1665865341, 32305.0],
-          [1665865342, 27749.0],
-        ];
+      let pts = Array(400).fill(0);
+      for (let i = 0; i < 400; i++) {
+        pts[i] = [1665865337 + i, Math.random() * 50000];
       }
-      throw "idk";
+      return pts;
     },
 
     binder_rpc: async (method, args) => {

@@ -23,10 +23,11 @@
     ).map((a) => [a[0], (a[1] / 1_000_000) * 8]);
     const p = (await native_gate().daemon_rpc("basic_stats", ["SendSpeed"]))
       .last_ping;
+
     recv_data = r;
     send_data = s;
     ping = p;
-  }, 1000);
+  }, 100);
 </script>
 
 <div class="outer">
@@ -41,7 +42,7 @@
     </div>
     <div class="widget"><SwapVertical />{ping.toFixed(0)} ms</div>
   </div>
-  {#key recv_data}
+  {#key Math.min(recv_data.length, 2000)}
     <Graph
       unit="Mbps"
       height="20vh"

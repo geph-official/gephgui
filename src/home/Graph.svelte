@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { onMount } from "svelte";
+  import { onDestroy, onMount } from "svelte";
   import uPlot from "uplot";
 
   export let series: {
@@ -14,7 +14,7 @@
   let container: HTMLElement;
   export let unit: string;
 
-  let columnData: [number[], ...number[][]] = [
+  $: columnData = [
     series[0].data.map((p) => p[0]),
     ...series.map((s) => s.data.map((p) => p[1])),
   ];
@@ -23,6 +23,22 @@
     series[0].data.length > 0
       ? series[0].data[series[0].data.length - 1][0]
       : new Date().getMilliseconds() / 1000.0;
+  let plotter: any = null;
+
+  $: {
+    if (plotter) {
+      plotter.setData(columnData);
+      plotter.setScale("x", {
+        auto: false,
+        min: lastTime - 400,
+        max: lastTime,
+      });
+    }
+  }
+  onDestroy(() => {
+    console.log("destroy plotter", plotter);
+    plotter && plotter.destroy();
+  });
   onMount(() => {
     function getSize() {
       let { width, height } = container.getBoundingClientRect();
@@ -93,11 +109,7 @@
       },
     };
     console.log("about to render in", container);
-    let u = new uPlot(opts, columnData, container);
-
-    window.addEventListener("resize", (e) => {
-      u.setSize(getSize());
-    });
+    plotter = new uPlot(opts, columnData, container);
   });
 </script>
 
