@@ -27,7 +27,7 @@
     recv_data = r;
     send_data = s;
     ping = p;
-  }, 100);
+  }, 2000);
 </script>
 
 <div class="outer">
@@ -42,7 +42,7 @@
     </div>
     <div class="widget"><SwapVertical />{ping.toFixed(0)} ms</div>
   </div>
-  {#key Math.min(recv_data.length, 2000)}
+  {#key Math.min(recv_data.length, 10)}
     <Graph
       unit="Mbps"
       height="20vh"
