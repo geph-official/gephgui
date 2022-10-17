@@ -19,7 +19,7 @@
     ...series.map((s) => s.data.map((p) => p[1])),
   ];
 
-  let lastTime =
+  $: lastTime =
     series[0].data.length > 0
       ? series[0].data[series[0].data.length - 1][0]
       : new Date().getMilliseconds() / 1000.0;
