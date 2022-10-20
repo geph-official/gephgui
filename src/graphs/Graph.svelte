@@ -9,7 +9,10 @@
     fill: string;
   }[];
 
+  export let card = false;
+
   export let height = "10rem";
+  export let title: string;
 
   let container: HTMLElement;
   export let unit: string;
@@ -30,7 +33,7 @@
       plotter.setData(columnData);
       plotter.setScale("x", {
         auto: false,
-        min: lastTime - 400,
+        min: lastTime - 60,
         max: lastTime,
       });
     }
@@ -54,7 +57,7 @@
     console.log("size", size);
 
     let padd: [top: number, right: number, bottom: number, left: number] = [
-      0, 0, 0, 0,
+      5, 5, 10, 5,
     ];
 
     let opts = {
@@ -73,6 +76,8 @@
       legend: {
         show: false,
       },
+
+      title,
 
       axes: [
         {},
@@ -113,12 +118,21 @@
   });
 </script>
 
-<div class="zzzzzz" style="height: {height}" bind:this={container} />
+<div class="zzzzzz" class:card style="height: {height}" bind:this={container} />
 
 <style>
+  .card {
+    border: 1px solid #ccc;
+    margin-bottom: 3rem;
+
+    border-radius: 1rem;
+
+    padding-top: 0.5rem;
+  }
+
   .zzzzzz {
     width: 100%;
-    border: 1px solid gray;
+    /* border: 1px solid gray; */
   }
 
   :global(.uplot) {

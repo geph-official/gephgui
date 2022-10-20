@@ -2,9 +2,9 @@
   import { native_gate } from "../native-gate";
 
   import { onInterval } from "../lib/utils";
-  import Graph from "./Graph.svelte";
-  import ArrowDown from "svelte-material-icons/ArrowDown.svelte";
-  import ArrowUp from "svelte-material-icons/ArrowUp.svelte";
+
+  import ProgressDownload from "svelte-material-icons/ProgressDownload.svelte";
+  import ProgressUpload from "svelte-material-icons/ProgressUpload.svelte";
   import SwapVertical from "svelte-material-icons/SwapVertical.svelte";
   import { curr_lang, l10n } from "../lib/l10n";
   let recv_data: [number, number][] = [];
@@ -13,62 +13,95 @@
     send_data.length > 0 ? send_data[send_data.length - 1][1] : 0.0;
   $: recv_speed =
     recv_data.length > 0 ? recv_data[recv_data.length - 1][1] : 0.0;
+
+  $: has_data = recv_data.length > 0;
   let ping = 0.0;
   onInterval(async () => {
-    const r = (
-      await native_gate().daemon_rpc("timeseries_stats", ["RecvSpeed"])
-    ).map((a) => [a[0], (a[1] / 1_000_000) * 8]);
-    const s = (
-      await native_gate().daemon_rpc("timeseries_stats", ["SendSpeed"])
-    ).map((a) => [a[0], (a[1] / 1_000_000) * 8]);
-    const p = (await native_gate().daemon_rpc("basic_stats", ["SendSpeed"]))
-      .last_ping;
-
-    recv_data = r;
-    send_data = s;
-    ping = p;
+    try {
+      const r = (
+        await native_gate().daemon_rpc("timeseries_stats", ["RecvSpeed"])
+      ).map((a) => [a[0], (a[1] / 1_000_000) * 8]);
+      const s = (
+        await native_gate().daemon_rpc("timeseries_stats", ["SendSpeed"])
+      ).map((a) => [a[0], (a[1] / 1_000_000) * 8]);
+      const p = (await native_gate().daemon_rpc("basic_stats", ["SendSpeed"]))
+        .last_ping;
+      if (p) {
+        recv_data = r;
+        send_data = s;
+        ping = p;
+      }
+    } catch {
+      recv_data = [];
+      send_data = [];
+      ping = 0.0;
+    }
   }, 2000);
 </script>
 
 <div class="outer">
-  <div class="widgets">
-    <div class="widget" style="color: navy">
-      <ArrowDown />
-      {recv_speed.toFixed(2)} Mbps
+  <div class="brow">
+    <div class="bleft">
+      <ProgressDownload size="1.3rem" />
+      <div class="bcaption">{l10n($curr_lang, "download")}</div>
     </div>
-    <div class="widget" style="color: maroon">
-      <ArrowUp />
-      {send_speed.toFixed(2)} Mbps
+    <div class="bright" style="color:navy">
+      {has_data ? recv_speed.toFixed(2) : "-"} Mbps
     </div>
-    <div class="widget"><SwapVertical />{ping.toFixed(0)} ms</div>
   </div>
-  {#key Math.min(recv_data.length, 10)}
-    <Graph
-      unit="Mbps"
-      height="20vh"
-      series={[
-        {
-          data: recv_data,
-          stroke: "navy",
-          fill: "white",
-          label: l10n($curr_lang, "download"),
-        },
-        {
-          data: send_data,
-          stroke: "maroon",
-          fill: "white",
-          label: l10n($curr_lang, "upload"),
-        },
-      ]}
-    />
-  {/key}
+  <div class="brow">
+    <div class="bleft">
+      <ProgressUpload size="1.3rem" />
+      <div class="bcaption">{l10n($curr_lang, "upload")}</div>
+    </div>
+    <div class="bright" style="color:maroon">
+      {has_data ? send_speed.toFixed(2) : "-"} Mbps
+    </div>
+  </div>
+  <div class="brow">
+    <div class="bleft">
+      <SwapVertical size="1.3rem" />
+      <div class="bcaption">{l10n($curr_lang, "latency")}</div>
+    </div>
+    <div class="bright">{has_data ? ping.toFixed(0) : "-"} ms</div>
+  </div>
 </div>
 
 <style>
+  .brow {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding-bottom: 0.3rem;
+    padding-top: 0.3rem;
+  }
+
+  .bcaption {
+    margin-left: 0.3rem;
+  }
+
+  .bleft {
+    font-weight: 600;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+
   .outer {
     width: 100%;
     display: flex;
     flex-direction: column;
+    /* background-color: gray; */
+    padding: 1rem;
+    padding-top: 0.6rem;
+    padding-bottom: 0.6rem;
+    border-radius: 1rem;
+    border: 1px #ccc solid;
+    box-sizing: border-box;
+    font-size: 0.9rem;
   }
 
   .widgets {

@@ -3,7 +3,7 @@
 
   import ActiveExit from "./home/ActiveExit.svelte";
   import BottomButtons from "./home/BottomButtons.svelte";
-  import Graph from "./home/Graph.svelte";
+
   import Stats from "./home/Stats.svelte";
 
   import UserInfo from "./home/UserInfo.svelte";
@@ -132,5 +132,6 @@
     justify-content: space-between;
     height: 100%;
     padding: 1rem;
+    box-sizing: border-box;
   }
 </style>

@@ -31,6 +31,8 @@ use-automatic,Automatically select server,自动选择服务器,自動選擇伺�
 cancel,Cancel,取消,取消
 download,Download,下载,下載
 upload,Upload,上传,上傳
+latency,Latency,延迟,延遲
+packet-loss,Packet loss,丟包,丟包
 username,Username,用户名,用戶名
 password,Password,密码,密碼
 log-in-blurb,Log in with existing account,使用已有帐号登录,使用已有帳號登錄
