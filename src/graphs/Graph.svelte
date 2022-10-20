@@ -22,10 +22,7 @@
     ...series.map((s) => s.data.map((p) => p[1])),
   ];
 
-  $: lastTime =
-    series[0].data.length > 0
-      ? series[0].data[series[0].data.length - 1][0]
-      : new Date().getMilliseconds() / 1000.0;
+  $: lastTime = new Date().getMilliseconds() / 1000.0;
   let plotter: any = null;
 
   $: {
@@ -33,7 +30,7 @@
       plotter.setData(columnData);
       plotter.setScale("x", {
         auto: false,
-        min: lastTime - 60,
+        min: lastTime - 200,
         max: lastTime,
       });
     }

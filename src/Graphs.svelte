@@ -55,7 +55,7 @@
       title={l10n($curr_lang, "upload")}
       series={[
         {
-          data: recv_data,
+          data: send_data,
           stroke: "maroon",
           fill: "rgba(128, 0, 0, 0.05)",
           label: l10n($curr_lang, "download"),
@@ -70,7 +70,7 @@
       title={l10n($curr_lang, "latency")}
       series={[
         {
-          data: recv_data,
+          data: ping_data,
           stroke: "darkgreen",
           fill: "rgba(0, 128, 0, 0.05)",
           label: l10n($curr_lang, "download"),
@@ -85,7 +85,7 @@
       title={l10n($curr_lang, "packet-loss")}
       series={[
         {
-          data: recv_data,
+          data: loss_data,
           stroke: "indigo",
           fill: "rgba(0, 0, 128, 0.05)",
           label: l10n($curr_lang, "packet-loss"),
