@@ -22,7 +22,7 @@
     ...series.map((s) => s.data.map((p) => p[1])),
   ];
 
-  $: lastTime = new Date().getMilliseconds() / 1000.0;
+  $: lastTime = new Date().valueOf() / 1000.0;
   let plotter: any = null;
 
   $: {
