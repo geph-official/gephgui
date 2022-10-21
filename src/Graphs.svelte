@@ -15,6 +15,7 @@
       recv_data = (
         await native_gate().daemon_rpc("timeseries_stats", ["RecvSpeed"])
       ).map((a) => [a[0], (a[1] / 1_000_000) * 8]);
+      console.log(recv_data);
       send_data = (
         await native_gate().daemon_rpc("timeseries_stats", ["SendSpeed"])
       ).map((a) => [a[0], (a[1] / 1_000_000) * 8]);
@@ -24,7 +25,8 @@
       loss_data = (
         await native_gate().daemon_rpc("timeseries_stats", ["Loss"])
       ).map((a) => [a[0], a[1] * 100.0]);
-    } catch {
+    } catch (err) {
+      console.error("ERROR", err);
       recv_data = [];
       send_data = [];
     }
