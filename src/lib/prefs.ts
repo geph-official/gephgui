@@ -61,6 +61,14 @@ export const pref_proxy_autoconf: Writable<boolean> = persistentWritable(
 );
 
 /**
+ * Whether or not to listen to all interfaces.
+ */
+export const pref_listen_all: Writable<boolean> = persistentWritable(
+  "listen_all",
+  false
+);
+
+/**
  * Whether or not to use the app whitelist.
  */
 export const pref_use_app_whitelist: Writable<boolean> = persistentWritable(

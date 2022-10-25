@@ -12,6 +12,7 @@
   import Snackbar from "@smui/snackbar";
   import { pref_userpwd } from "../lib/prefs";
   import { emojify } from "../lib/utils";
+  import shuffle from "knuth-shuffle-seeded";
 
   export let running: boolean;
   export let block_plus: boolean;
@@ -31,6 +32,17 @@
         $pref_userpwd.username,
         $pref_userpwd.password
       );
+      // shuffle and then deduplicate
+      shuffle(r);
+      let seen = {};
+      let new_exits: ExitDescriptor[] = [];
+      r.forEach((exit) => {
+        if (!seen[exit.country_code + "." + exit.city_code]) {
+          seen[exit.country_code + "." + exit.city_code] = true;
+          new_exits.push(exit);
+        }
+      });
+      new_exits.sort((a, b) => a.hostname.localeCompare(b.hostname));
       loading = false;
       return r;
     } else {
@@ -54,7 +66,7 @@
         <Row>
           <Cell>{l10n($curr_lang, "country")}</Cell>
           <Cell>{l10n($curr_lang, "city")}</Cell>
-          <Cell>{l10n($curr_lang, "server-id")}</Cell>
+          <!-- <Cell>{l10n($curr_lang, "server-id")}</Cell> -->
           <Cell>{l10n($curr_lang, "allowed")}</Cell>
         </Row>
       </Head>
@@ -83,7 +95,7 @@
                 ></Cell
               >
               <Cell>{l10n($curr_lang, exit.city_code)}</Cell>
-              <Cell>{exit.signing_key.substring(0, 10)}</Cell>
+              <!-- <Cell>{exit.signing_key.substring(0, 10)}</Cell> -->
               <Cell
                 >{#if exit.allowed_levels.includes("free")}{l10n(
                     $curr_lang,

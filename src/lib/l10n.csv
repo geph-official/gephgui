@@ -14,7 +14,7 @@ free-server,All users,所有用户,所有用戶
 plus-server,Plus only,仅限Plus,僅限Plus
 p2p-yes,P2P allowed,允许P2P,允許P2P
 p2p-no,P2P banned,禁止P2P,禁止P2P
-automatic,Automatic,自动,自動
+automatic,Auto,自动,自動
 automatic-blurb,Uses best available server,使用最佳可用服务器,使用最佳可用伺服器
 change-location,Change location,更改位置,更改位置
 connect,Connect,连接,連接
@@ -75,6 +75,8 @@ show-advanced,Show advanced settings,显示高级设置,顯示高級設置
 auto-proxy,Auto-configure proxy,自动配置代理,自動配置代理
 auto-proxy-blurb,Makes most browsers use Geph,配置大多数浏览器使用迷雾通,配置大多数瀏覽器使用迷霧通
 global-vpn,Network-level VPN,全局VPN,全局VPN
+listen-all,Listen on all interfaces,监听所有地址,監聽所有地址
+listen-all-blurb,Allows other computers to use Geph,允许其他计算机使用迷雾通,允許其他計算機使用迷霧通
 global-vpn-blurb,Force all traffic to use Geph,强制所有流量使用迷雾通,強制所有流量使用迷霧通
 exclude-apps,Exclude apps,排除应用程序,排除應用程式
 exclude-apps-blurb,Let apps bypass Geph,允许应用程序绕过迷雾通,允許應用程式繞過迷霧通

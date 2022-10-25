@@ -19,6 +19,8 @@ specifiers:
   '@sveltejs/vite-plugin-svelte': ^1.0.2
   '@tsconfig/svelte': ^3.0.0
   country-code-emoji: ^2.3.0
+  knuth-shuffle: ^1.0.8
+  knuth-shuffle-seeded: ^1.0.6
   openmoji: ^14.0.0
   rollup: ^2.79.1
   svelte: ^3.50.1
@@ -26,7 +28,6 @@ specifiers:
   svelte-material-icons: ^2.0.4
   svelte-material-ui: ^6.2.0
   svelte-preprocess: ^4.10.7
-  svelte-twemoji: ^1.0.4
   tslib: ^2.4.0
   twemoji: ^14.0.2
   typescript: ^4.6.4
@@ -35,10 +36,11 @@ specifiers:
 
 dependencies:
   country-code-emoji: 2.3.0
+  knuth-shuffle: 1.0.8
+  knuth-shuffle-seeded: 1.0.6
   openmoji: 14.0.0
   svelte-material-icons: 2.0.4_svelte@3.50.1
   svelte-material-ui: 6.2.0_qy6w2iv5hnh55blsjuu7uihyzm
-  svelte-twemoji: 1.0.4
   twemoji: 14.0.2
   uplot: 1.6.22
 
@@ -1768,6 +1770,16 @@ packages:
     engines: {node: '>=6'}
     dev: true
 
+  /knuth-shuffle-seeded/1.0.6:
+    resolution: {integrity: sha512-9pFH0SplrfyKyojCLxZfMcvkhf5hH0d+UwR9nTVJ/DDQJGuzcXjTwB7TP7sDfehSudlGGaOLblmEWqv04ERVWg==}
+    dependencies:
+      seed-random: 2.2.0
+    dev: false
+
+  /knuth-shuffle/1.0.8:
+    resolution: {integrity: sha512-IdC4Hpp+mx53zTt6VAGsAtbGM0g4BV9fP8tTcviCosSwocHcRDw9uG5Rnv6wLWckF4r72qeXFoK9NkvV1gUJCQ==}
+    dev: false
+
   /lower-case/2.0.2:
     resolution: {integrity: sha512-7fm3l3NAF9WfN6W3JOmf5drwpVqX78JtoGJ3A6W0a6ZnldM41w2fV5D490psKFTpMds8TJse/eHLFFsNHHjHgg==}
     dependencies:
@@ -1980,6 +1992,10 @@ packages:
       rimraf: 2.7.1
     dev: true
 
+  /seed-random/2.2.0:
+    resolution: {integrity: sha512-34EQV6AAHQGhoc0tn/96a9Fsi6v2xdqe/dMUwljGRaFOzR3EgRmECvD0O8vi8X+/uQ50LGHfkNu/Eue5TPKZkQ==}
+    dev: false
+
   /sorcery/0.10.0:
     resolution: {integrity: sha512-R5ocFmKZQFfSTstfOtHjJuAwbpGyf9qjQa1egyhvXSbM7emjrtLXtGdZsDJDABC85YBfVvrOiGWKSYXPKdvP1g==}
     hasBin: true
@@ -2156,12 +2172,6 @@ packages:
       typescript: 4.8.4
     dev: true
 
-  /svelte-twemoji/1.0.4:
-    resolution: {integrity: sha512-OQOfrSMjY7rjmmLpBFiUnL2hEPQoY+kVQQGl7EnnhzrYcHup57jZ6WB7OpRlUQwP57N2ScEhpEnfYlzWSy+Stg==}
-    dependencies:
-      twemoji: 13.1.1
-    dev: false
-
   /svelte/3.50.1:
     resolution: {integrity: sha512-bS4odcsdj5D5jEg6riZuMg5NKelzPtmsCbD9RG+8umU03TeNkdWnP6pqbCm0s8UQNBkqk29w/Bdubn3C+HWSwA==}
     engines: {node: '>= 8'}
@@ -2192,21 +2202,8 @@ packages:
   /tslib/2.4.0:
     resolution: {integrity: sha512-d6xOpEDfsi2CZVlPQzGeux8XMwLT9hssAsaPYExaQMuYskwb+x1x7J371tWlbBdWHroy99KnVB6qIkUbs5X3UQ==}
 
-  /twemoji-parser/13.1.0:
-    resolution: {integrity: sha512-AQOzLJpYlpWMy8n+0ATyKKZzWlZBJN+G0C+5lhX7Ftc2PeEVdUU/7ns2Pn2vVje26AIZ/OHwFoUbdv6YYD/wGg==}
-    dev: false
-
   /twemoji-parser/14.0.0:
     resolution: {integrity: sha512-9DUOTGLOWs0pFWnh1p6NF+C3CkQ96PWmEFwhOVmT3WbecRC+68AIqpsnJXygfkFcp4aXbOp8Dwbhh/HQgvoRxA==}
-    dev: false
-
-  /twemoji/13.1.1:
-    resolution: {integrity: sha512-IIIoq+n1lk1M1+evBKZD3DO0ud02fDQ4ssbgAv8rp3YBWUeNmskjlisFUPPDacQ50XS3bhrd4Kq9Q2gqhxb0dg==}
-    dependencies:
-      fs-extra: 8.1.0
-      jsonfile: 5.0.0
-      twemoji-parser: 13.1.0
-      universalify: 0.1.2
     dev: false
 
   /twemoji/14.0.2:

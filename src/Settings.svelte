@@ -5,6 +5,7 @@
   import Creation from "svelte-material-icons/Creation.svelte";
   import DirectionsFork from "svelte-material-icons/DirectionsFork.svelte";
   import ServerNetwork from "svelte-material-icons/ServerNetwork.svelte";
+  import Lan from "svelte-material-icons/Lan.svelte";
   import Bridge from "svelte-material-icons/Translate.svelte";
   import Vpn from "svelte-material-icons/Vpn.svelte";
   import Switch from "@smui/switch";
@@ -14,6 +15,7 @@
   import Select, { Option } from "@smui/select";
   import {
     pref_global_vpn,
+    pref_listen_all,
     pref_proxy_autoconf,
     pref_routing_mode,
     pref_use_app_whitelist,
@@ -115,6 +117,19 @@
         </div>
         <div class="switch">
           <Switch bind:checked={$pref_proxy_autoconf} />
+        </div>
+      </div>
+
+      <div class="setting" transition:fade|local>
+        <div class="icon">
+          <Lan height="1.5rem" width="1.5rem" />
+        </div>
+        <div class="description">
+          {l10n($curr_lang, "listen-all")}<br />
+          <small>{l10n($curr_lang, "listen-all-blurb")}</small>
+        </div>
+        <div class="switch">
+          <Switch bind:checked={$pref_listen_all} />
         </div>
       </div>
     {/if}

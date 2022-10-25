@@ -37,10 +37,11 @@
   },
   "dependencies": {
     "country-code-emoji": "^2.3.0",
+    "knuth-shuffle": "^1.0.8",
+    "knuth-shuffle-seeded": "^1.0.6",
     "openmoji": "^14.0.0",
     "svelte-material-icons": "^2.0.4",
     "svelte-material-ui": "^6.2.0",
-
     "twemoji": "^14.0.2",
     "uplot": "^1.6.22"
   }
