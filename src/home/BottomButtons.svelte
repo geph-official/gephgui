@@ -44,7 +44,7 @@
       });
       new_exits.sort((a, b) => a.hostname.localeCompare(b.hostname));
       loading = false;
-      return r;
+      return new_exits;
     } else {
       throw "nothing";
     }
