@@ -16,6 +16,7 @@
     pref_routing_mode,
     pref_selected_exit,
     pref_userpwd,
+    pref_listen_all,
   } from "./lib/prefs";
   import { displayError, onInterval } from "./lib/utils";
   import { native_gate, type SubscriptionInfo } from "./native-gate";
@@ -98,7 +99,7 @@
               prc_whitelist: $pref_use_prc_whitelist,
               proxy_autoconf: $pref_proxy_autoconf,
               vpn_mode: $pref_global_vpn,
-              listen_all: false,
+              listen_all: $pref_listen_all,
               force_bridges: $pref_routing_mode === "bridges",
             });
             $connection_status = "connecting";
