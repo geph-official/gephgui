@@ -97,10 +97,10 @@
               password: $pref_userpwd.password,
               exit_hostname: $pref_selected_exit.hostname,
               app_whitelist: $pref_use_app_whitelist
-                ? []
-                : Object.keys($pref_app_whitelist).filter(
+                ? Object.keys($pref_app_whitelist).filter(
                     (s) => $pref_app_whitelist[s]
-                  ),
+                  )
+                : [],
               prc_whitelist: $pref_use_prc_whitelist,
               proxy_autoconf: $pref_proxy_autoconf,
               vpn_mode: $pref_global_vpn,
