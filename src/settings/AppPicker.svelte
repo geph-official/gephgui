@@ -41,7 +41,16 @@
                 <small>{app.id}</small>
               </div>
               <div class="switch">
-                <Checkbox bind:checked={$pref_app_whitelist[app.id]} />
+                <Checkbox
+                  checked={Object.keys($pref_app_whitelist).includes(app.id) &&
+                    $pref_app_whitelist[app.id]}
+                  on:change={(e) => {
+                    const current =
+                      Object.keys($pref_app_whitelist).includes(app.id) &&
+                      $pref_app_whitelist[app.id];
+                    $pref_app_whitelist[app.id] = !current;
+                  }}
+                />
               </div>
             </div>
           {/each}
