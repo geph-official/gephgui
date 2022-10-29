@@ -17,6 +17,7 @@
     pref_selected_exit,
     pref_userpwd,
     pref_listen_all,
+    pref_use_app_whitelist,
   } from "./lib/prefs";
   import { displayError, onInterval } from "./lib/utils";
   import { native_gate, type SubscriptionInfo } from "./native-gate";
@@ -95,7 +96,11 @@
               username: $pref_userpwd.username,
               password: $pref_userpwd.password,
               exit_hostname: $pref_selected_exit.hostname,
-              app_whitelist: Object.keys($pref_app_whitelist),
+              app_whitelist: $pref_use_app_whitelist
+                ? []
+                : Object.keys($pref_app_whitelist).filter(
+                    (s) => $pref_app_whitelist[s]
+                  ),
               prc_whitelist: $pref_use_prc_whitelist,
               proxy_autoconf: $pref_proxy_autoconf,
               vpn_mode: $pref_global_vpn,
