@@ -32,6 +32,9 @@ cancel,Cancel,取消,取消
 download,Download,下载,下載
 upload,Upload,上传,上傳
 latency,Latency,延迟,延遲
+protocol,Protocol,协议,協議
+via,Via,经由,經由
+
 packet-loss,Packet loss,丟包,丟包
 username,Username,用户名,用戶名
 password,Password,密码,密碼

@@ -174,11 +174,20 @@ function mock_native_gate(): NativeGate {
     },
 
     daemon_rpc: async (method, args) => {
-      let pts = Array(400).fill(0);
-      for (let i = 0; i < 400; i++) {
-        pts[i] = [1665865337 + i, Math.random() * 50000];
+      if (method === "basic_stats") {
+        return {
+          last_ping: 100.0,
+          last_loss: 0.1,
+          protocol: "sosistab-tls",
+          address: "0.0.0.0:12345",
+        };
+      } else {
+        let pts = Array(400).fill(0);
+        for (let i = 0; i < 400; i++) {
+          pts[i] = [1665865337 + i, Math.random() * 50000];
+        }
+        return pts;
       }
-      return pts;
     },
 
     binder_rpc: async (method, args) => {

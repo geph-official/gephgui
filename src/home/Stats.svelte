@@ -6,6 +6,9 @@
   import ProgressDownload from "svelte-material-icons/ProgressDownload.svelte";
   import ProgressUpload from "svelte-material-icons/ProgressUpload.svelte";
   import SwapVertical from "svelte-material-icons/SwapVertical.svelte";
+
+  import IpNetworkOutline from "svelte-material-icons/IpNetworkOutline.svelte";
+  import Protocol from "svelte-material-icons/Protocol.svelte";
   import { curr_lang, l10n } from "../lib/l10n";
   let recv_data: [number, number][] = [];
   let send_data: [number, number][] = [];
@@ -16,6 +19,10 @@
 
   $: has_data = recv_data.length > 0;
   let ping = 0.0;
+
+  let address = "";
+  let protocol = "";
+
   onInterval(async () => {
     try {
       const r = (
@@ -24,17 +31,20 @@
       const s = (
         await native_gate().daemon_rpc("timeseries_stats", ["SendSpeed"])
       ).map((a) => [a[0], (a[1] / 1_000_000) * 8]);
-      const p = (await native_gate().daemon_rpc("basic_stats", ["SendSpeed"]))
-        .last_ping;
-      if (p) {
+      const basic = await native_gate().daemon_rpc("basic_stats", []);
+      if (basic) {
         recv_data = r;
         send_data = s;
-        ping = p;
+        ping = basic.last_ping;
+        address = basic.address;
+        protocol = basic.protocol;
       }
     } catch {
       recv_data = [];
       send_data = [];
       ping = 0.0;
+      address = "";
+      protocol = "";
     }
   }, 2000);
 </script>
@@ -65,17 +75,37 @@
     </div>
     <div class="bright">{has_data ? ping.toFixed(0) : "-"} ms</div>
   </div>
+  <div class="brow" />
+  <div class="brow">
+    <div class="bleft">
+      <IpNetworkOutline size="1.3rem" />
+      <div class="bcaption ">{l10n($curr_lang, "via")}</div>
+    </div>
+    <div class="bright mono">{has_data ? address : "-"}</div>
+  </div>
+
+  <div class="brow">
+    <div class="bleft">
+      <Protocol size="1.3rem" />
+      <div class="bcaption ">{l10n($curr_lang, "protocol")}</div>
+    </div>
+    <div class="bright mono">{has_data ? protocol : "-"}</div>
+  </div>
 </div>
 
 <style>
+  .mono {
+    opacity: 0.7;
+    font-weight: 500;
+  }
   .brow {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    padding-bottom: 0.3rem;
-    padding-top: 0.3rem;
+    padding-bottom: 0.4rem;
+    padding-top: 0.4rem;
   }
 
   .bcaption {
@@ -88,6 +118,8 @@
     display: flex;
     flex-direction: row;
     align-items: center;
+
+    opacity: 0.7;
   }
 
   .outer {
