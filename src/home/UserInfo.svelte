@@ -3,21 +3,24 @@
   import CalendarRange from "svelte-material-icons/CalendarRange.svelte";
   import TimerSandComplete from "svelte-material-icons/TimerSandComplete.svelte";
   import Heart from "svelte-material-icons/Heart.svelte";
-  import Button, { Label } from "@smui/button";
   import { curr_lang, l10n, l10n_date } from "../lib/l10n";
-  import type { SubscriptionInfo } from "../native-gate";
-  import { onInterval } from "../lib/utils";
+  import { native_gate, type SubscriptionInfo } from "../native-gate";
   import { pref_userpwd } from "../lib/prefs";
   import GButton from "../lib/GButton.svelte";
   export let username: string;
   export let user_info: SubscriptionInfo | null = null;
+
+  const on_logout = async () => {
+    await native_gate().stop_daemon();
+    $pref_userpwd = null;
+  };
 </script>
 
 <div class="userinfo">
   <div class="urow">
     <AccountCircle width="1.5rem" height="1.5rem" color="#666" />
     <div class="stretch"><b>{username}</b></div>
-    <GButton color={"warning"} inverted onClick={() => ($pref_userpwd = null)}>
+    <GButton color={"warning"} inverted onClick={on_logout}>
       {l10n($curr_lang, "logout")}
     </GButton>
   </div>

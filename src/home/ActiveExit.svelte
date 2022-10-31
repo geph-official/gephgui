@@ -59,7 +59,9 @@
     {#key exit_descriptor}
       <div class="hostname" use:emojify>
         {#if exit_descriptor}
-          {flag(exit_descriptor.country_code)}
+          <span class="flag-container"
+            >{flag(exit_descriptor.country_code)}</span
+          >
           {exit_descriptor.signing_key.substring(0, 24)}
         {:else}
           🤔
@@ -88,6 +90,12 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+  }
+
+  .flag-container {
+    /* background-color: black; */
+    width: 1.2rem;
+    display: inline-block;
   }
   .country-code {
     opacity: 0.6;

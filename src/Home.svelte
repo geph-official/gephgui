@@ -27,12 +27,15 @@
     "connected" | "connecting" | "disconnected"
   > = persistentWritable("connection_status", "disconnected");
 
-  let user_info: SubscriptionInfo | null = null;
+  const user_info: Writable<SubscriptionInfo | null> = persistentWritable(
+    "user_info",
+    null
+  );
 
   onInterval(async () => {
     try {
       if ($pref_userpwd) {
-        user_info = await native_gate().sync_user_info(
+        $user_info = await native_gate().sync_user_info(
           $pref_userpwd.username,
           $pref_userpwd.password
         );
@@ -74,7 +77,7 @@
 
 <div class="home">
   {#if $pref_userpwd}
-    <UserInfo username={$pref_userpwd.username} {user_info} />
+    <UserInfo username={$pref_userpwd.username} user_info={$user_info} />
   {:else}
     <h1>NO USERPWD</h1>
   {/if}
@@ -125,7 +128,7 @@
       onSelectExit={(exit) => {
         $pref_selected_exit = exit;
       }}
-      block_plus={user_info ? user_info.level === "free" : true}
+      block_plus={$user_info ? $user_info.level === "free" : true}
     />
   {/key}
 </div>
