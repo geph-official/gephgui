@@ -25,6 +25,8 @@
   import GButton from "./lib/GButton.svelte";
   import AppPicker from "./settings/AppPicker.svelte";
 
+  import { emojify } from "./lib/utils";
+
   let app_picker_open = false;
 </script>
 
@@ -167,10 +169,85 @@
         >
       </div>
     </div>
+
+    <div class="divider" />
+    <div class="subtitle">{l10n($curr_lang, "about")}</div>
+
+    <div class="social-buttons">
+      <a
+        class="social-button"
+        href="https://t.me/s/gephannounce"
+        target="_blank"
+        rel="noopener"
+      >
+        <img src="telegram.svg" alt="tg-logo" />
+        {l10n($curr_lang, "news")}
+      </a>
+      <a
+        class="social-button"
+        href="https://community.geph.io"
+        target="_blank"
+        rel="noopener"
+      >
+        <img src="forum.png" alt="forum-logo" />
+        {l10n($curr_lang, "forum")}
+      </a>
+      <a
+        class="social-button"
+        href="https://github.com/geph-official"
+        target="_blank"
+        rel="noopener"
+      >
+        <img src="github.svg" alt="tg-logo" />
+        {l10n($curr_lang, "github")}
+      </a>
+    </div>
+
+    <div class="madeby" use:emojify>
+      made with ❤️ by <br />
+      <a
+        href="https://github.com/nullchinchilla"
+        target="_blank"
+        rel="noopener"
+      >
+        @nullchinchilla
+      </a> / Gephyra OÜ
+    </div>
   {/key}
 </div>
 
 <style>
+  .social-buttons {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding-bottom: 1rem;
+  }
+
+  .social-button img {
+    height: 1.5rem;
+    width: 1.5rem;
+    margin-right: 0.5rem;
+  }
+
+  .social-button {
+    width: 33.333%;
+    height: 2.5rem;
+    margin: 0.3rem;
+    padding: 0.4rem;
+    border: 1px solid gray;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    box-sizing: border-box;
+    border-radius: 0.3rem;
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #111;
+  }
+
   /* HACK */
   :global(.mdc-select--outlined .mdc-select__anchor) {
     height: 2.2rem;
@@ -216,5 +293,16 @@
   .icon {
     display: flex;
     opacity: 0.7;
+  }
+
+  .madeby {
+    text-align: center;
+    font-size: 0.8rem;
+  }
+
+  .madeby a {
+    font-weight: 500;
+    color: black;
+    text-decoration: none;
   }
 </style>

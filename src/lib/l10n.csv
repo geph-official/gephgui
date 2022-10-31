@@ -12,8 +12,8 @@ connecting,Connecting,连接中,連接中
 connected,Connected,已连接,已連接
 free-server,All users,所有用户,所有用戶
 plus-server,Plus only,仅限Plus,僅限Plus
-p2p-yes,P2P allowed,允许P2P,允許P2P
-p2p-no,P2P banned,禁止P2P,禁止P2P
+p2p-yes,P2P allowed,允许BT,允許P2P
+p2p-no,P2P banned,禁止BT,禁止P2P
 automatic,Auto,自动,自動
 automatic-blurb,Uses best available server,使用最佳可用服务器,使用最佳可用伺服器
 change-location,Change location,更改位置,更改位置
@@ -87,3 +87,8 @@ debug,Debug,调试,除錯
 debug-pack,Export debug pack,导出调试包,導出除錯包
 debug-pack-blurb,Save debugging info for developers,保存调试信息以供开发人员使用,保存除錯資訊以供開發人員使用
 export,Export,导出,導出
+
+about,About,关于,關於
+news,News,通知频道,通知頻道
+forum,Forum,用户论坛,用戶論壇
+github,GitHub,GitHub,GitHub

@@ -2,7 +2,7 @@
   import Tab, { Icon, Label } from "@smui/tab";
   import TabBar from "@smui/tab-bar";
   let active_tab = "Home";
-  let tabs = ["Home", "Graphs", "News", "Settings"];
+  let tabs = ["Home", "Graphs", "Settings"];
   import ViewDashBoard from "svelte-material-icons/ViewDashboard.svelte";
   import Bell from "svelte-material-icons/Bell.svelte";
   import ChartMultiline from "svelte-material-icons/ChartMultiline.svelte";
@@ -55,8 +55,6 @@
         <Icon>
           {#if tab == "Home"}
             <ViewDashBoard />
-          {:else if tab == "News"}
-            <Bell />
           {:else if tab == "Graphs"}
             <ChartMultiline />
           {:else if tab == "Settings"}
