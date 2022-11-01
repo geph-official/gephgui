@@ -11,7 +11,9 @@
   export let user_info: SubscriptionInfo | null = null;
 
   const on_logout = async () => {
-    await native_gate().stop_daemon();
+    try {
+      await native_gate().stop_daemon();
+    } catch {}
     localStorage.clear();
     $pref_userpwd = null;
     window.location.reload();
