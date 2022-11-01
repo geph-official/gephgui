@@ -27,16 +27,16 @@ export const l10n = (lang: Natlang, label: string) => {
   return v || "!" + label + "!";
 };
 
-export const l10n_date = (lang: Natlang, date: Date) => {
-  console.log("l10n_date", lang, date);
+export const l10n_date = (lang: Natlang, d: Date) => {
+  console.log("l10n_date", lang, d);
   if (lang == "en") {
-    return date.toLocaleDateString("en-US", {
+    return d.toLocaleDateString("en-US", {
       year: "numeric",
       month: "short",
       day: "numeric",
     });
   } else {
-    return date.toLocaleDateString(lang, {
+    return d.toLocaleDateString(lang, {
       year: "numeric",
       month: "short",
       day: "numeric",
