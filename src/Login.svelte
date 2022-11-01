@@ -26,7 +26,7 @@
       }}
     />
   {/if}
-  <img class="big-logo" />
+  <img class="big-logo" src="gephlogo.png" />
   <div class="form">
     <Textfield
       variant="outlined"
@@ -78,7 +78,6 @@
   .big-logo {
     width: 50vw;
     height: 50vw;
-    background-color: gray;
   }
 
   .form {

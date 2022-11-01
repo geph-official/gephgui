@@ -12,8 +12,14 @@
 
   const on_logout = async () => {
     await native_gate().stop_daemon();
+    localStorage.clear();
     $pref_userpwd = null;
+    window.location.reload();
   };
+
+  $: extend_url = `https://geph.io/billing/login?next=%2Fbilling%2Fdashboard&uname=${encodeURIComponent(
+    username
+  )}&pwd=${encodeURIComponent($pref_userpwd ? $pref_userpwd.password : "")}`;
 </script>
 
 <div class="userinfo">
@@ -29,7 +35,9 @@
       <div class="urow">
         <Heart width="1.5rem" height="1.5rem" color="#b71c1c" />
         <div class="stretch">{l10n($curr_lang, "get-unlimited-speed")}</div>
-        <GButton inverted>{l10n($curr_lang, "buy-plus")}</GButton>
+        <GButton inverted onClick={() => window.open(extend_url)}
+          >{l10n($curr_lang, "buy-plus")}</GButton
+        >
       </div>
     {:else if user_info.level == "plus" && user_info.expires}
       <div class="urow">
@@ -51,7 +59,7 @@
             ></small
           >
         </div>
-        <GButton>
+        <GButton onClick={() => window.open(extend_url)}>
           {l10n($curr_lang, "extend")}
         </GButton>
       </div>

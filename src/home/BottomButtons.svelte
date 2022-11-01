@@ -178,7 +178,7 @@
 <style>
   .wrap {
     width: 50vw;
-    margin-bottom: 7vh;
+    margin: 2rem;
   }
 
   .spacer {
