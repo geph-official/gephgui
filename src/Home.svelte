@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { Writable } from "svelte/store";
+  import { writable, type Writable } from "svelte/store";
 
   import ActiveExit from "./home/ActiveExit.svelte";
   import BottomButtons from "./home/BottomButtons.svelte";
@@ -27,10 +27,7 @@
     "connected" | "connecting" | "disconnected"
   > = persistentWritable("connection_status", "disconnected");
 
-  const user_info: Writable<SubscriptionInfo | null> = persistentWritable(
-    "user_info",
-    null
-  );
+  const user_info: Writable<SubscriptionInfo | null> = writable(null);
 
   onInterval(async () => {
     try {
