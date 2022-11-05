@@ -32,7 +32,8 @@
       variant="outlined"
       label={l10n($curr_lang, "username")}
       bind:value={username}
-      autocorrect="off" autocapitalize="none"
+      input$autocorrect="off"
+      input$autocapitalize="none"
     />
     <br />
     <Textfield
