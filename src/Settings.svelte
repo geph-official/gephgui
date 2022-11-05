@@ -51,11 +51,11 @@
     if ($pref_userpwd) {
       const copy = $pref_userpwd;
       try {
-        await native_gate().purge_caches(copy.username, copy.password);
         await native_gate().binder_rpc("delete_user", [
           copy.username,
           copy.password,
         ]);
+        await native_gate().purge_caches(copy.username, copy.password);
       } catch (e) {
         displayError(e.toString());
       }
