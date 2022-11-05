@@ -33,6 +33,11 @@ export interface NativeGate {
   binder_rpc(method: string, args: any[]): Promise<any>;
 
   /**
+   * Purges all caches
+   */
+  purge_caches(username: string, password: string): Promise<void>;
+
+  /**
    * Obtains the current user information
    */
   sync_user_info(username: string, password: string): Promise<SubscriptionInfo>;
@@ -171,6 +176,10 @@ function mock_native_gate(): NativeGate {
         level: "plus",
         expires: new Date(),
       };
+    },
+
+    purge_caches: async (username, password) => {
+      await random_sleep();
     },
 
     daemon_rpc: async (method, args) => {

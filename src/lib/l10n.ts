@@ -28,7 +28,6 @@ export const l10n = (lang: Natlang, label: string) => {
 };
 
 export const l10n_date = (lang: Natlang, d: Date) => {
-  console.log("l10n_date", lang, d);
   if (lang == "en") {
     return d.toLocaleDateString("en-US", {
       year: "numeric",

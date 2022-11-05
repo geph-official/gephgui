@@ -5,6 +5,8 @@
   import Creation from "svelte-material-icons/Creation.svelte";
   import DirectionsFork from "svelte-material-icons/DirectionsFork.svelte";
   import ServerNetwork from "svelte-material-icons/ServerNetwork.svelte";
+  import AccountCircle from "svelte-material-icons/AccountCircle.svelte";
+  import DeleteForever from "svelte-material-icons/DeleteForever.svelte";
   import Lan from "svelte-material-icons/Lan.svelte";
   import Bridge from "svelte-material-icons/Translate.svelte";
   import Vpn from "svelte-material-icons/Vpn.svelte";
@@ -18,6 +20,7 @@
     pref_listen_all,
     pref_proxy_autoconf,
     pref_routing_mode,
+    pref_userpwd,
     pref_use_app_whitelist,
     pref_use_prc_whitelist,
   } from "./lib/prefs";
@@ -26,8 +29,35 @@
   import AppPicker from "./settings/AppPicker.svelte";
 
   import { emojify } from "./lib/utils";
+  import Dialog from "@smui/dialog/src/Dialog.svelte";
+  import { Actions, Content, Title } from "@smui/dialog";
+  import Button from "@smui/button/src/Button.svelte";
 
   let app_picker_open = false;
+
+  const on_logout = async () => {
+    try {
+      await native_gate().stop_daemon();
+    } catch {}
+    $pref_userpwd = null;
+    localStorage.clear();
+    window.location.reload();
+  };
+  let account_delete_shown = false;
+  const start_delete_account = () => {
+    account_delete_shown = true;
+  };
+  const finish_delete_account = () => {
+    if ($pref_userpwd) {
+      const copy = $pref_userpwd;
+      $pref_userpwd = null;
+      // run off into the background
+      native_gate().daemon_rpc("delete_account", [
+        copy.username,
+        copy.password,
+      ]);
+    }
+  };
 </script>
 
 <div class="wrap">
@@ -46,6 +76,49 @@
         </Select>
       </div>
     </div>
+
+    <div class="divider" />
+    <div class="subtitle">{l10n($curr_lang, "account")}</div>
+
+    <div class="setting">
+      <div class="icon">
+        <AccountCircle height="1.5rem" width="1.5rem" />
+      </div>
+      <div class="description">
+        <b>{$pref_userpwd ? $pref_userpwd.username : ""}</b>
+      </div>
+      <div class="switch">
+        <GButton color="warning" inverted onClick={on_logout}
+          >{l10n($curr_lang, "logout")}</GButton
+        >
+      </div>
+    </div>
+
+    <div class="setting">
+      <div class="icon">
+        <DeleteForever height="1.5rem" width="1.5rem" />
+      </div>
+      <div class="description">
+        {l10n($curr_lang, "delete-account")}<br />
+        <small>{l10n($curr_lang, "delete-account-blurb")}</small>
+      </div>
+      <div class="switch">
+        <GButton color="warning" onClick={start_delete_account}
+          >{l10n($curr_lang, "delete")}</GButton
+        >
+      </div>
+    </div>
+
+    <Dialog bind:open={account_delete_shown}>
+      <Title>{l10n($curr_lang, "delete-account")}</Title>
+      <Content>{l10n($curr_lang, "delete-account-are-you-sure")}</Content>
+      <Actions>
+        <Button>{l10n($curr_lang, "cancel")}</Button>
+        <Button on:click={finish_delete_account}
+          >{l10n($curr_lang, "delete")}</Button
+        >
+      </Actions>
+    </Dialog>
 
     <div class="divider" />
 

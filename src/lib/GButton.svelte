@@ -37,7 +37,10 @@
     padding-right: 0.7em;
     font-weight: 500;
     font-family: inherit;
-
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
     border: none;
   }
 

@@ -3,40 +3,47 @@
   import CalendarRange from "svelte-material-icons/CalendarRange.svelte";
   import TimerSandComplete from "svelte-material-icons/TimerSandComplete.svelte";
   import Heart from "svelte-material-icons/Heart.svelte";
+  import Refresh from "svelte-material-icons/Refresh.svelte";
   import { curr_lang, l10n, l10n_date } from "../lib/l10n";
   import { native_gate, type SubscriptionInfo } from "../native-gate";
   import { pref_userpwd } from "../lib/prefs";
   import GButton from "../lib/GButton.svelte";
+  import Button from "@smui/button";
   export let username: string;
   export let user_info: SubscriptionInfo | null = null;
 
-  const on_logout = async () => {
-    try {
-      await native_gate().stop_daemon();
-    } catch {}
-    localStorage.clear();
-    $pref_userpwd = null;
-    window.location.reload();
-  };
+  let loading = false;
 
   $: extend_url = `https://geph.io/billing/login?next=%2Fbilling%2Fdashboard&uname=${encodeURIComponent(
     username
   )}&pwd=${encodeURIComponent($pref_userpwd ? $pref_userpwd.password : "")}`;
+
+  const on_force_refresh = async () => {
+    loading = true;
+    try {
+      if ($pref_userpwd) {
+        console.log("start purge");
+        await native_gate().purge_caches(
+          $pref_userpwd.username,
+          $pref_userpwd.password
+        );
+        console.log("end purge purge");
+      }
+    } finally {
+      loading = false;
+    }
+  };
 </script>
 
 <div class="userinfo">
-  <div class="urow">
-    <AccountCircle width="1.5rem" height="1.5rem" color="#666" />
-    <div class="stretch"><b>{username}</b></div>
-    <GButton color={"warning"} inverted onClick={on_logout}>
-      {l10n($curr_lang, "logout")}
-    </GButton>
-  </div>
-  {#if user_info}
+  {#if user_info && !loading}
     {#if user_info.level == "free"}
       <div class="urow">
         <Heart width="1.5rem" height="1.5rem" color="#b71c1c" />
         <div class="stretch">{l10n($curr_lang, "get-unlimited-speed")}</div>
+        <Button on:click={on_force_refresh}>
+          <Refresh width="1.3rem" height="1.3rem" />
+        </Button>
         <GButton inverted onClick={() => window.open(extend_url)}
           >{l10n($curr_lang, "buy-plus")}</GButton
         >
@@ -61,6 +68,9 @@
             ></small
           >
         </div>
+        <Button on:click={on_force_refresh}>
+          <Refresh width="1.3rem" height="1.3rem" />
+        </Button>
         <GButton onClick={() => window.open(extend_url)}>
           {l10n($curr_lang, "extend")}
         </GButton>

@@ -1,6 +1,7 @@
 label,en,zh-CN,zh-TW
 geph,Geph,迷雾通,迷霧通
 error,Error,错误,錯誤
+refresh-user,Refresh info,刷新用户信息,刷新用戶訊息
 logout,Log out,退出,退出
 extend,Extend,延长,延長
 loading,Loading,载入中,載入中
@@ -90,6 +91,12 @@ debug,Debug,调试,除錯
 debug-pack,Export debug pack,导出调试包,導出除錯包
 debug-pack-blurb,Save debugging info for developers,保存调试信息以供开发人员使用,保存除錯資訊以供開發人員使用
 export,Export,导出,導出
+
+account,Account,账户,賬戶
+delete-account,Delete account,刪除账户,刪除賬戶
+delete-account-blurb,Permanently delete account,永久删除账户,永久刪除賬戶
+delete-account-are-you-sure,Are you sure? This will delete your account forever.,确定吗？这将永久删除您的账户。,確定嗎？這將永久刪除您的賬戶。
+delete,Delete,删除,刪除
 
 about,About,关于,關於
 news,News,通知频道,通知頻道
