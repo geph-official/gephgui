@@ -11,6 +11,10 @@ body {
 * {
   font-family: "Inter", system-ui;
 }
+
+pre {
+  font-family: "Roboto Mono", Consolas, monospace;
+}
 /* Theme colors. */
 :root {
   --mdc-typography-font-family: "Inter", system-ui;

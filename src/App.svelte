@@ -34,7 +34,7 @@
 <main lang={$curr_lang}>
   <Dialog open={error_string !== ""} scrimClickAction="" escapeKeyAction="">
     <Header><Title>{l10n($curr_lang, "error")}</Title></Header>
-    <pre>{error_string}</pre>
+    <Content><pre>{error_string}</pre></Content>
     <Actions>
       <GButton onClick={() => (error_string = "")}>OK</GButton>
     </Actions>
