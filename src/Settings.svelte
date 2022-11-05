@@ -55,7 +55,7 @@
           copy.username,
           copy.password,
         ]);
-        await native_gate().purge_caches(copy.username, copy.password);
+        native_gate().purge_caches(copy.username, copy.password);
       } catch (e) {
         displayError(e.toString());
       }
