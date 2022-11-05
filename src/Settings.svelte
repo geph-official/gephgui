@@ -28,7 +28,7 @@
   import GButton from "./lib/GButton.svelte";
   import AppPicker from "./settings/AppPicker.svelte";
 
-  import { emojify } from "./lib/utils";
+  import { displayError, emojify } from "./lib/utils";
   import Dialog from "@smui/dialog/src/Dialog.svelte";
   import { Actions, Content, Title } from "@smui/dialog";
   import Button from "@smui/button/src/Button.svelte";
@@ -47,15 +47,22 @@
   const start_delete_account = () => {
     account_delete_shown = true;
   };
-  const finish_delete_account = () => {
+  const finish_delete_account = async () => {
     if ($pref_userpwd) {
       const copy = $pref_userpwd;
+      try {
+        await native_gate().daemon_rpc("purge_caches", [
+          copy.username,
+          copy.password,
+        ]);
+        await native_gate().daemon_rpc("delete_user", [
+          copy.username,
+          copy.password,
+        ]);
+      } catch (e) {
+        displayError(e.toString());
+      }
       $pref_userpwd = null;
-      // run off into the background
-      native_gate().daemon_rpc("delete_account", [
-        copy.username,
-        copy.password,
-      ]);
     }
   };
 </script>
