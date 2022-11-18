@@ -17,7 +17,8 @@
   let captcha_data: string | null = null;
   let captcha_id: string = "";
   const load_captcha = async () => {
-    const captcha = await native_gate().binder_rpc("get_captcha", []);
+    let gate = await native_gate();
+    const captcha = await gate.binder_rpc("get_captcha", []);
     captcha_id = captcha.captcha_id;
     captcha_data = captcha.png_data;
   };
@@ -85,7 +86,8 @@
     <GButton
       onClick={async () => {
         try {
-          await native_gate().binder_rpc("register_user", [
+          let gate = await native_gate();
+          await gate.binder_rpc("register_user", [
             username,
             password,
             captcha_id,

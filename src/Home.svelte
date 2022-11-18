@@ -30,9 +30,10 @@
   const user_info: Writable<SubscriptionInfo | null> = writable(null);
 
   onInterval(async () => {
+    let gate = await native_gate();
     try {
       if ($pref_userpwd) {
-        $user_info = await native_gate().sync_user_info(
+        $user_info = await gate.sync_user_info(
           $pref_userpwd.username,
           $pref_userpwd.password
         );
@@ -44,10 +45,11 @@
 
   // the main monitor loop
   onInterval(async () => {
-    const is_running = await native_gate().is_running();
-    const is_connected = is_running && (await native_gate().is_connected());
+    let gate = await native_gate();
+    const is_running = await gate.is_running();
+    const is_connected = is_running && (await gate.is_connected());
     if ($pref_selected_exit === null && $pref_userpwd) {
-      const exits = await native_gate().sync_exits(
+      const exits = await gate.sync_exits(
         $pref_userpwd.username,
         $pref_userpwd.password
       );
@@ -90,9 +92,10 @@
     <BottomButtons
       running={$connection_status !== "disconnected"}
       onConnect={async () => {
+        let gate = await native_gate();
         try {
           if ($pref_userpwd && $pref_selected_exit) {
-            await native_gate().start_daemon({
+            await gate.start_daemon({
               username: $pref_userpwd.username,
               password: $pref_userpwd.password,
               exit_hostname: $pref_selected_exit.hostname,
@@ -116,8 +119,9 @@
         }
       }}
       onDisconnect={async () => {
+        let gate = await native_gate();
         try {
-          await native_gate().stop_daemon();
+          await gate.stop_daemon();
         } catch (err) {
           reportError(err.toString());
         }

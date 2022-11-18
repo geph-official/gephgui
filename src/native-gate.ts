@@ -269,13 +269,17 @@ function mock_native_gate(): NativeGate {
   };
 }
 
-if (!window.hasOwnProperty("NATIVE_GATE"))
-  window["NATIVE_GATE"] = mock_native_gate();
-
 async function random_sleep() {
   await new Promise((r) => setTimeout(r, Math.random() * 5000));
 }
 
-export function native_gate(): NativeGate {
-  return window["NATIVE_GATE"] as NativeGate;
+export async function native_gate(): Promise<NativeGate> {
+  if (import.meta.env.MODE === "development") {
+    return mock_native_gate();
+  } else {
+    while (!window.hasOwnProperty("NATIVE_GATE")) {
+      await new Promise((r) => setTimeout(r, 100));
+    }
+    return window["NATIVE_GATE"] as NativeGate;
+  }
 }

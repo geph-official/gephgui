@@ -23,10 +23,9 @@
     try {
       if ($pref_userpwd) {
         console.log("start purge");
-        await native_gate().purge_caches(
-          $pref_userpwd.username,
-          $pref_userpwd.password
-        );
+        await (
+          await native_gate()
+        ).purge_caches($pref_userpwd.username, $pref_userpwd.password);
         console.log("end purge purge");
       }
     } finally {

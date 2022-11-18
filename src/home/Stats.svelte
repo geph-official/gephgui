@@ -24,14 +24,15 @@
   let protocol = "";
 
   onInterval(async () => {
+    const gate = await native_gate();
     try {
-      const r = (
-        await native_gate().daemon_rpc("timeseries_stats", ["RecvSpeed"])
-      ).map((a) => [a[0], (a[1] / 1_000_000) * 8]);
-      const s = (
-        await native_gate().daemon_rpc("timeseries_stats", ["SendSpeed"])
-      ).map((a) => [a[0], (a[1] / 1_000_000) * 8]);
-      const basic = await native_gate().daemon_rpc("basic_stats", []);
+      const r = (await gate.daemon_rpc("timeseries_stats", ["RecvSpeed"])).map(
+        (a) => [a[0], (a[1] / 1_000_000) * 8]
+      );
+      const s = (await gate.daemon_rpc("timeseries_stats", ["SendSpeed"])).map(
+        (a) => [a[0], (a[1] / 1_000_000) * 8]
+      );
+      const basic = await gate.daemon_rpc("basic_stats", []);
       if (basic) {
         recv_data = r;
         send_data = s;

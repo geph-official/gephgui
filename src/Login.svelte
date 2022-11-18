@@ -48,7 +48,7 @@
       onClick={async () => {
         loading = true;
         try {
-          await native_gate().sync_user_info(username, password);
+          await (await native_gate()).sync_user_info(username, password);
           $pref_userpwd = {
             username: username,
             password: password,

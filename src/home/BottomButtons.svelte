@@ -28,7 +28,8 @@
   const sync_exits = async () => {
     loading = true;
     if ($pref_userpwd) {
-      const r = await native_gate().sync_exits(
+      let gate = await native_gate();
+      const r = await gate.sync_exits(
         $pref_userpwd.username,
         $pref_userpwd.password
       );
