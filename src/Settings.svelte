@@ -36,8 +36,9 @@
   let app_picker_open = false;
 
   const on_logout = async () => {
+    let gate = await native_gate();
     try {
-      await native_gate().stop_daemon();
+      await gate.stop_daemon();
     } catch {}
     $pref_userpwd = null;
     localStorage.clear();
@@ -48,14 +49,12 @@
     account_delete_shown = true;
   };
   const finish_delete_account = async () => {
+    let gate = await native_gate();
     if ($pref_userpwd) {
       const copy = $pref_userpwd;
       try {
-        await native_gate().binder_rpc("delete_user", [
-          copy.username,
-          copy.password,
-        ]);
-        native_gate().purge_caches(copy.username, copy.password);
+        await gate.binder_rpc("delete_user", [copy.username, copy.password]);
+        gate.purge_caches(copy.username, copy.password);
       } catch (e) {
         displayError(e.toString());
       }
@@ -127,91 +126,93 @@
     <div class="divider" />
 
     <div class="subtitle">{l10n($curr_lang, "network")}</div>
-
-    {#if native_gate().supports_vpn_conf}
-      <div class="setting">
-        <div class="icon">
-          <Vpn height="1.5rem" width="1.5rem" />
-        </div>
-        <div class="description">
-          {l10n($curr_lang, "global-vpn")}<br />
-          <small>{l10n($curr_lang, "global-vpn-blurb")}</small>
-        </div>
-        <div class="switch">
-          <Switch bind:checked={$pref_global_vpn} />
-        </div>
-      </div>
-    {/if}
-
-    {#if native_gate().supports_prc_whitelist && !$pref_global_vpn}
-      <div class="setting" transition:fade|local>
-        <div class="icon">
-          <DirectionsFork height="1.5rem" width="1.5rem" />
-        </div>
-        <div class="description">
-          {l10n($curr_lang, "exclude-prc")}<br />
-          <small>{l10n($curr_lang, "exclude-prc-blurb")}</small>
-        </div>
-        <div class="switch">
-          <Switch bind:checked={$pref_use_prc_whitelist} />
-        </div>
-      </div>
-    {/if}
-
-    {#if native_gate().supports_app_whitelist && !$pref_global_vpn}
-      <div class="setting" transition:fade|local>
-        <div class="icon">
-          <DirectionsFork height="1.5rem" width="1.5rem" />
-        </div>
-        <div class="description">
-          {l10n($curr_lang, "exclude-apps")}<br />
-          <small>{l10n($curr_lang, "exclude-apps-blurb")}</small>
-        </div>
-        <div class="switch">
-          <Switch bind:checked={$pref_use_app_whitelist} />
-        </div>
-      </div>
-
-      {#if $pref_use_app_whitelist}
-        <AppPicker bind:open={app_picker_open} />
-        <div class="setting" transition:fade|local>
-          <div class="icon" style="padding-left: 1rem" />
+    {#await native_gate() then gate}
+      {#if gate.supports_vpn_conf}
+        <div class="setting">
+          <div class="icon">
+            <Vpn height="1.5rem" width="1.5rem" />
+          </div>
+          <div class="description">
+            {l10n($curr_lang, "global-vpn")}<br />
+            <small>{l10n($curr_lang, "global-vpn-blurb")}</small>
+          </div>
           <div class="switch">
-            <GButton inverted onClick={() => (app_picker_open = true)}
-              >{l10n($curr_lang, "select-excluded-apps")}</GButton
-            >
+            <Switch bind:checked={$pref_global_vpn} />
           </div>
         </div>
       {/if}
-    {/if}
 
-    {#if native_gate().supports_proxy_conf && !$pref_global_vpn}
-      <div class="setting" transition:fade|local>
-        <div class="icon">
-          <Creation height="1.5rem" width="1.5rem" />
+      {#if gate.supports_prc_whitelist && !$pref_global_vpn}
+        <div class="setting" transition:fade|local>
+          <div class="icon">
+            <DirectionsFork height="1.5rem" width="1.5rem" />
+          </div>
+          <div class="description">
+            {l10n($curr_lang, "exclude-prc")}<br />
+            <small>{l10n($curr_lang, "exclude-prc-blurb")}</small>
+          </div>
+          <div class="switch">
+            <Switch bind:checked={$pref_use_prc_whitelist} />
+          </div>
         </div>
-        <div class="description">
-          {l10n($curr_lang, "auto-proxy")}<br />
-          <small>{l10n($curr_lang, "auto-proxy-blurb")}</small>
-        </div>
-        <div class="switch">
-          <Switch bind:checked={$pref_proxy_autoconf} />
-        </div>
-      </div>
+      {/if}
 
-      <div class="setting" transition:fade|local>
-        <div class="icon">
-          <Lan height="1.5rem" width="1.5rem" />
+      {#if gate.supports_app_whitelist && !$pref_global_vpn}
+        <div class="setting" transition:fade|local>
+          <div class="icon">
+            <DirectionsFork height="1.5rem" width="1.5rem" />
+          </div>
+          <div class="description">
+            {l10n($curr_lang, "exclude-apps")}<br />
+            <small>{l10n($curr_lang, "exclude-apps-blurb")}</small>
+          </div>
+          <div class="switch">
+            <Switch bind:checked={$pref_use_app_whitelist} />
+          </div>
         </div>
-        <div class="description">
-          {l10n($curr_lang, "listen-all")}<br />
-          <small>{l10n($curr_lang, "listen-all-blurb")}</small>
+
+        {#if $pref_use_app_whitelist}
+          <AppPicker bind:open={app_picker_open} />
+          <div class="setting" transition:fade|local>
+            <div class="icon" style="padding-left: 1rem" />
+            <div class="switch">
+              <GButton inverted onClick={() => (app_picker_open = true)}
+                >{l10n($curr_lang, "select-excluded-apps")}</GButton
+              >
+            </div>
+          </div>
+        {/if}
+      {/if}
+
+      {#if gate.supports_proxy_conf && !$pref_global_vpn}
+        <div class="setting" transition:fade|local>
+          <div class="icon">
+            <Creation height="1.5rem" width="1.5rem" />
+          </div>
+          <div class="description">
+            {l10n($curr_lang, "auto-proxy")}<br />
+            <small>{l10n($curr_lang, "auto-proxy-blurb")}</small>
+          </div>
+          <div class="switch">
+            <Switch bind:checked={$pref_proxy_autoconf} />
+          </div>
         </div>
-        <div class="switch">
-          <Switch bind:checked={$pref_listen_all} />
+
+        <div class="setting" transition:fade|local>
+          <div class="icon">
+            <Lan height="1.5rem" width="1.5rem" />
+          </div>
+          <div class="description">
+            {l10n($curr_lang, "listen-all")}<br />
+            <small>{l10n($curr_lang, "listen-all-blurb")}</small>
+          </div>
+          <div class="switch">
+            <Switch bind:checked={$pref_listen_all} />
+          </div>
         </div>
-      </div>
-    {/if}
+      {/if}
+    {/await}
+
     <div class="setting">
       <div class="icon">
         <ServerNetwork height="1.5rem" width="1.5rem" />
@@ -241,7 +242,7 @@
         <small>{l10n($curr_lang, "debug-pack-blurb")}</small>
       </div>
       <div class="switch">
-        <GButton onClick={() => native_gate().export_debug_pack()}
+        <GButton onClick={async () => (await native_gate()).export_debug_pack()}
           >{l10n($curr_lang, "export")}</GButton
         >
       </div>
