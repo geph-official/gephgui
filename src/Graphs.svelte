@@ -11,19 +11,20 @@
 
   $: has_data = recv_data.length > 0;
   onInterval(async () => {
+    const gate = await native_gate();
     try {
       recv_data = (
-        await native_gate().daemon_rpc("timeseries_stats", ["RecvSpeed"])
+        await gate.daemon_rpc("timeseries_stats", ["RecvSpeed"])
       ).map((a) => [a[0], (a[1] / 1_000_000) * 8]);
       console.log(recv_data);
       send_data = (
-        await native_gate().daemon_rpc("timeseries_stats", ["SendSpeed"])
+        await gate.daemon_rpc("timeseries_stats", ["SendSpeed"])
       ).map((a) => [a[0], (a[1] / 1_000_000) * 8]);
       ping_data = (
-        await native_gate().daemon_rpc("timeseries_stats", ["Ping"])
+        await gate.daemon_rpc("timeseries_stats", ["Ping"])
       ).map((a) => [a[0], a[1]]);
       loss_data = (
-        await native_gate().daemon_rpc("timeseries_stats", ["Loss"])
+        await gate.daemon_rpc("timeseries_stats", ["Loss"])
       ).map((a) => [a[0], a[1] * 100.0]);
     } catch (err) {
       console.error("ERROR", err);
