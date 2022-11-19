@@ -83,9 +83,14 @@ export interface NativeGate {
   supports_vpn_conf: boolean;
 
   /**
+   * Whether this platform supports autoupdates
+   */
+  supports_autoupdate: boolean;
+
+  /**
    * Obtains native info, for debugging. The return type may be extended, and should not guide application logic.
    */
-  native_info: NativeInfo;
+  get_native_info(): Promise<NativeInfo>;
 }
 
 /**
@@ -134,7 +139,7 @@ export interface DaemonArgs {
 export interface NativeInfo {
   platform_type: "windows" | "macos" | "linux" | "android" | "ios";
   platform_details: string;
-  daemon_version: string;
+  version: string;
 }
 
 /**
@@ -261,10 +266,13 @@ function mock_native_gate(): NativeGate {
     supports_proxy_conf: true,
     supports_vpn_conf: true,
     supports_prc_whitelist: true,
-    native_info: {
-      platform_type: "linux",
-      platform_details: "MockLinux Trololol",
-      daemon_version: "0.0.0-mock",
+    supports_autoupdate: false,
+    async get_native_info() {
+      return {
+        platform_type: "linux",
+        platform_details: "MockLinux Trololol",
+        version: "0.0.0-mock",
+      };
     },
   };
 }

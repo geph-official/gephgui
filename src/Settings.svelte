@@ -16,6 +16,7 @@
   import { fade } from "svelte/transition";
   import Select, { Option } from "@smui/select";
   import {
+    pref_eastereggs,
     pref_global_vpn,
     pref_listen_all,
     pref_proxy_autoconf,
@@ -61,6 +62,21 @@
       $pref_userpwd = null;
     }
   };
+
+  const version_info = async () => {
+    const gate = await native_gate();
+    return gate.get_native_info();
+  };
+
+  let eggcount = 0;
+
+  const onEasterEgg = () => {
+    eggcount += 1;
+    if (eggcount > 5) {
+      alert("eastereggs activated");
+      $pref_eastereggs = true;
+    }
+  };
 </script>
 
 <div class="wrap">
@@ -74,6 +90,10 @@
       <div class="switch">
         <Select variant="outlined" style="width: 9rem" bind:value={$curr_lang}>
           <Option value="en">English</Option>
+          {#if $pref_eastereggs}
+            <Option value="fa">فارسی</Option>
+            <Option value="x-slv-la">Svitannski</Option>
+          {/if}
           <Option value="zh-TW">繁體中文</Option>
           <Option value="zh-CN">简体中文</Option>
         </Select>
@@ -234,7 +254,7 @@
 
     <div class="subtitle">{l10n($curr_lang, "debug")}</div>
     <div class="setting">
-      <div class="icon">
+      <div class="icon" on:click={onEasterEgg}>
         <Bug height="1.5rem" width="1.5rem" />
       </div>
       <div class="description">
@@ -281,6 +301,10 @@
       </a>
     </div>
 
+    {#await version_info() then nfo}
+      <div class="version">v{nfo.version} / {nfo.platform_details}</div>
+    {/await}
+
     <div class="madeby" use:emojify>
       made with ❤️ by <br />
       <a
@@ -295,6 +319,15 @@
 </div>
 
 <style>
+  .version {
+    font-size: 80%;
+    font-weight: 500;
+    width: 100%;
+    text-align: center;
+    padding-bottom: 1rem;
+    opacity: 0.8;
+  }
+
   .social-buttons {
     width: 100%;
     display: flex;

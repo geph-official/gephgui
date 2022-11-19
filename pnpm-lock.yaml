@@ -20,6 +20,7 @@ specifiers:
   '@tsconfig/svelte': ^3.0.0
   '@vitejs/plugin-legacy': ^2.3.0
   country-code-emoji: ^2.3.0
+  detect-nearest-browser-locale: ^19.0.0
   knuth-shuffle: ^1.0.8
   knuth-shuffle-seeded: ^1.0.6
   openmoji: ^14.0.0
@@ -39,6 +40,7 @@ specifiers:
 dependencies:
   '@vitejs/plugin-legacy': 2.3.0_terser@5.15.1+vite@3.1.6
   country-code-emoji: 2.3.0
+  detect-nearest-browser-locale: 19.0.0
   knuth-shuffle: 1.0.8
   knuth-shuffle-seeded: 1.0.6
   openmoji: 14.0.0
@@ -1445,6 +1447,16 @@ packages:
     resolution: {integrity: sha512-reYkTUJAZb9gUuZ2RvVCNhVHdg62RHnJ7WJl8ftMi4diZ6NWlciOzQN88pUhSELEwflJht4oQDv0F0BMlwaYtA==}
     engines: {node: '>=8'}
     dev: true
+
+  /detect-nearest-browser-locale/19.0.0:
+    resolution: {integrity: sha512-nprsk4sjhtvQThzsc4M1ZbMw0YZce+D8XTr1mxl4VZIeORKTgnHsdIzftRSGdkQ9SZpkZAZEd+ixYka0AKqi5g==}
+    dependencies:
+      detect-nearest-locale: 1.0.1
+    dev: false
+
+  /detect-nearest-locale/1.0.1:
+    resolution: {integrity: sha512-f4BbmpbH5AA4MsW55rnPxAC9b1Ev+6XY3JzlifZiaBAC95jfstbszEq70BM+79vXUw8HAq77TiAz1xcBO1Em2A==}
+    dev: false
 
   /es6-promise/3.3.1:
     resolution: {integrity: sha512-SOp9Phqvqn7jtEUxPWdWfWoLmyt2VaJ6MpvP9Comy1MceMXqE6bxvaTu4iaxpYYPzhny28Lc+M87/c2cPK6lDg==}

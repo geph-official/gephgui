@@ -10,7 +10,7 @@
 
   import { curr_lang, l10n } from "./lib/l10n";
   import Home from "./Home.svelte";
-  import { pref_userpwd } from "./lib/prefs";
+  import { persistentWritable, pref_userpwd } from "./lib/prefs";
   import Settings from "./Settings.svelte";
   import Login from "./Login.svelte";
   import { setErrorContext } from "./lib/utils";
@@ -20,18 +20,51 @@
   import { onMount } from "svelte";
   import { native_gate } from "./native-gate";
   import Graphs from "./Graphs.svelte";
+  import type { Writable } from "svelte/store";
 
   let error_string = "";
   setErrorContext((err) => {
     error_string = err;
   });
+
+  const autoupdate_warning_shown: Writable<boolean> = persistentWritable(
+    "autoupdate_warning_shown_1",
+    false
+  );
 </script>
 
 <svelte:head>
   <title>{l10n($curr_lang, "geph")}</title>
 </svelte:head>
 
-<main lang={$curr_lang}>
+<main lang={$curr_lang} dir="auto">
+  {#await native_gate() then gate}
+    <Dialog
+      open={!$autoupdate_warning_shown && !gate.supports_autoupdate}
+      scrimClickAction=""
+      escapeKeyAction=""
+    >
+      <Header><Title>{l10n($curr_lang, "note")}</Title></Header>
+      <Content>
+        {l10n($curr_lang, "no-update-blurb")} <br />
+        <a href="https://t.me/s/gephannounce" target="_blank" rel="noopener"
+          >@gephannounce</a
+        >
+      </Content>
+      <Actions>
+        <GButton onClick={() => ($autoupdate_warning_shown = true)}>OK</GButton>
+      </Actions>
+    </Dialog>
+  {/await}
+
+  <Dialog open={error_string !== ""} scrimClickAction="" escapeKeyAction="">
+    <Header><Title>{l10n($curr_lang, "error")}</Title></Header>
+    <Content><pre>{error_string}</pre></Content>
+    <Actions>
+      <GButton onClick={() => (error_string = "")}>OK</GButton>
+    </Actions>
+  </Dialog>
+
   <Dialog open={error_string !== ""} scrimClickAction="" escapeKeyAction="">
     <Header><Title>{l10n($curr_lang, "error")}</Title></Header>
     <Content><pre>{error_string}</pre></Content>

@@ -89,3 +89,8 @@ export const pref_use_prc_whitelist: Writable<boolean> = persistentWritable(
  */
 export const pref_app_whitelist: Writable<{ [key: string]: boolean }> =
   persistentWritable("app_whitelist", {});
+
+/**
+ * Whether or not easter eggs are enabled
+ */
+export const pref_eastereggs: Writable<boolean> = writable(false);

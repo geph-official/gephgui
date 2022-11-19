@@ -38,6 +38,7 @@
   "dependencies": {
     "@vitejs/plugin-legacy": "^2.3.0",
     "country-code-emoji": "^2.3.0",
+    "detect-nearest-browser-locale": "^19.0.0",
     "knuth-shuffle": "^1.0.8",
     "knuth-shuffle-seeded": "^1.0.6",
     "openmoji": "^14.0.0",
