@@ -21,39 +21,42 @@
 
     {#key open}
       <div class="outer">
-        {#await native_gate().sync_app_list()}
-          <LinearProgress style="width=100%" indeterminate />
-        {:then app_list}
-          {#each app_list as app}
-            <div class="app">
-              {#await native_gate().get_app_icon_url(app.id)}
-                <div class="icon">
-                  <CircularProgress
-                    style="height:100%; width: 100%"
-                    indeterminate
+        {#await native_gate() then gate}
+          {#await gate.sync_app_list()}
+            <LinearProgress style="width=100%" indeterminate />
+          {:then app_list}
+            {#each app_list as app}
+              <div class="app">
+                {#await gate.get_app_icon_url(app.id)}
+                  <div class="icon">
+                    <CircularProgress
+                      style="height:100%; width: 100%"
+                      indeterminate
+                    />
+                  </div>
+                {:then icon_url}
+                  <img class="icon" src={icon_url} alt="" />
+                {/await}
+                <div class="desc">
+                  {app.friendly_name} <br />
+                  <small>{app.id}</small>
+                </div>
+                <div class="switch">
+                  <Checkbox
+                    checked={Object.keys($pref_app_whitelist).includes(
+                      app.id
+                    ) && $pref_app_whitelist[app.id]}
+                    on:change={(e) => {
+                      const current =
+                        Object.keys($pref_app_whitelist).includes(app.id) &&
+                        $pref_app_whitelist[app.id];
+                      $pref_app_whitelist[app.id] = !current;
+                    }}
                   />
                 </div>
-              {:then icon_url}
-                <img class="icon" src={icon_url} alt="" />
-              {/await}
-              <div class="desc">
-                {app.friendly_name} <br />
-                <small>{app.id}</small>
               </div>
-              <div class="switch">
-                <Checkbox
-                  checked={Object.keys($pref_app_whitelist).includes(app.id) &&
-                    $pref_app_whitelist[app.id]}
-                  on:change={(e) => {
-                    const current =
-                      Object.keys($pref_app_whitelist).includes(app.id) &&
-                      $pref_app_whitelist[app.id];
-                    $pref_app_whitelist[app.id] = !current;
-                  }}
-                />
-              </div>
-            </div>
-          {/each}
+            {/each}
+          {/await}
         {/await}
       </div>
     {/key}
