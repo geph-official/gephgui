@@ -43,8 +43,8 @@
         <Button on:click={on_force_refresh}>
           <Refresh width="1.3rem" height="1.3rem" />
         </Button>
-        <GButton inverted onClick={() => window.open(extend_url)}
-          >{l10n($curr_lang, "buy-plus")}</GButton
+        <a href={extend_url}>
+          <GButton inverted>{l10n($curr_lang, "buy-plus")}</GButton></a
         >
       </div>
     {:else if user_info.level == "plus" && user_info.expires}
