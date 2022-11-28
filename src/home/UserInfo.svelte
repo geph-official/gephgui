@@ -43,7 +43,7 @@
         <Button on:click={on_force_refresh}>
           <Refresh width="1.3rem" height="1.3rem" />
         </Button>
-        <a href={extend_url}>
+        <a href={extend_url} target="_blank" rel="noopener">
           <GButton inverted>{l10n($curr_lang, "buy-plus")}</GButton></a
         >
       </div>
