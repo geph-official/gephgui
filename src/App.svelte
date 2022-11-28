@@ -31,6 +31,11 @@
     "autoupdate_warning_shown_1",
     false
   );
+
+  const privacy_notice_shown: Writable<boolean> = persistentWritable(
+    "privacy_notice_shown",
+    false
+  );
 </script>
 
 <svelte:head>
@@ -53,6 +58,49 @@
       </Content>
       <Actions>
         <GButton onClick={() => ($autoupdate_warning_shown = true)}>OK</GButton>
+      </Actions>
+    </Dialog>
+
+    <Dialog
+      open={!$privacy_notice_shown}
+      scrimClickAction=""
+      escapeKeyAction=""
+    >
+      <Header><Title>{l10n($curr_lang, "note")}</Title></Header>
+      <Content>
+        <p>
+          We never modify, redirect, or inject data into users&#39; traffic. We
+          do not keep user activity details of any kind, and maintain the
+          minimum amount of data required to authenticate users, route traffic
+          through Geph servers, and process payments:
+        </p>
+        <p>
+          <strong>Username &amp; password</strong>: For every user, we store a
+          username, an Argon2 hardened password hash, and the time at which the
+          user was created. We also keep track of all Plus users using opaque
+          subscription IDs. We use this information for user authentication.
+        </p>
+        <p>
+          <strong>Transaction history</strong>: We store a list of all payment
+          activity per user, which does not contain any information about the
+          user&#39;s payment method.
+        </p>
+        <p>
+          <strong>Ephemeral session data</strong>: We temporarily store, in
+          memory, information required to encrypt your traffic and route it
+          through Geph&#39;s servers. This information is deleted after you
+          disconnect, and is never stored persistently.
+        </p>
+        <p>
+          For more information, see our <a
+            href="https://github.com/geph-official/geph4/wiki/Policies-and-terms"
+            target="_blank"
+            rel="nooopener">policies &amp; terms of service</a
+          >.
+        </p>
+      </Content>
+      <Actions>
+        <GButton onClick={() => ($privacy_notice_shown = true)}>OK</GButton>
       </Actions>
     </Dialog>
   {/await}
