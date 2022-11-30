@@ -70,9 +70,11 @@
         <Button on:click={on_force_refresh}>
           <Refresh width="1.3rem" height="1.3rem" />
         </Button>
-        <GButton onClick={() => window.open(extend_url)}>
-          {l10n($curr_lang, "extend")}
-        </GButton>
+        <a href={extend_url} target="_blank" rel="noopener">
+          <GButton>
+            {l10n($curr_lang, "extend")}
+          </GButton>
+        </a>
       </div>
     {/if}
   {:else}
