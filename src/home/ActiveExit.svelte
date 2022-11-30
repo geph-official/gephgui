@@ -62,7 +62,7 @@
           <span class="flag-container"
             >{flag(exit_descriptor.country_code)}</span
           >
-          {exit_descriptor.signing_key.substring(0, 24)}
+          {exit_descriptor.hostname}
         {:else}
           🤔
           {l10n($curr_lang, "automatic-blurb")}{/if}
@@ -138,7 +138,7 @@
   }
 
   .hostname {
-    font-family: "Iosevka", monospace;
+    font-family: "Iosevka", "Consolas", monospace;
   }
 
   .badge {
