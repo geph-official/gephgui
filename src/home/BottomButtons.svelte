@@ -43,7 +43,7 @@
           new_exits.push(exit);
         }
       });
-      new_exits.sort((a, b) => a.hostname.localeCompare(b.hostname));
+      new_exits.sort((a, b) => a.country_code.localeCompare(b.hostname) * 100 + a.city_code.localeCompare(b.city_code) * 10 + a.hostname.localeCompare(b.hostname));
       loading = false;
       return new_exits;
     } else {
