@@ -8,6 +8,10 @@ body {
   font-family: "Inter", system-ui;
 }
 
+a {
+  text-decoration: none;
+}
+
 * {
   font-family: "Inter", system-ui;
 }
