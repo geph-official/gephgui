@@ -102,6 +102,10 @@
     height: 3rem;
   }
 
+  .a {
+    text-decoration: none !important;
+  }
+
   .stretch {
     flex-grow: 1;
     padding-left: 1rem;
