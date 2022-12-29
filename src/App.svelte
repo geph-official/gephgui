@@ -2,7 +2,7 @@
   import Tab, { Icon, Label } from "@smui/tab";
   import TabBar from "@smui/tab-bar";
   let active_tab = "Home";
-  let tabs = ["Home", "Graphs", "Settings"];
+  let tabs = ["Home", "Settings"];
   import ViewDashBoard from "svelte-material-icons/ViewDashboard.svelte";
   import Bell from "svelte-material-icons/Bell.svelte";
   import ChartMultiline from "svelte-material-icons/ChartMultiline.svelte";
@@ -19,7 +19,7 @@
   import GButton from "./lib/GButton.svelte";
   import { onMount } from "svelte";
   import { native_gate } from "./native-gate";
-  import Graphs from "./Graphs.svelte";
+  // import Graphs from "./Graphs.svelte";
   import type { Writable } from "svelte/store";
 
   let error_string = "";
@@ -127,9 +127,9 @@
       {#if active_tab == "Home"}
         <Home />
       {/if}
-      {#if active_tab == "Graphs"}
+      <!-- {#if active_tab == "Graphs"}
         <Graphs />
-      {/if}
+      {/if} -->
       {#if active_tab == "Settings"}
         <Settings />
       {/if}
@@ -140,8 +140,8 @@
         <Icon>
           {#if tab == "Home"}
             <ViewDashBoard />
-          {:else if tab == "Graphs"}
-            <ChartMultiline />
+            <!-- {:else if tab == "Graphs"}
+            <ChartMultiline /> -->
           {:else if tab == "Settings"}
             <CogBox />
           {:else}
