@@ -105,7 +105,7 @@ force-bridges,Bridges,强制桥接,強制橋接
 network,Network,网络,網路
 other,Other,其他,其他
 debug-pack,Debug pack,调试包,調試包
-show-advanced,Show advanced settings,显示高级设置,顯示高級設置
+advanced,Advanced,高级,高級
 auto-proxy,Auto-configure proxy,自动配置代理,自動配置代理
 auto-proxy-blurb,Makes most browsers use Geph,配置大多数浏览器使用迷雾通,配置大多数瀏覽器使用迷霧通
 global-vpn,Network-level VPN,全局VPN,全局VPN
@@ -132,3 +132,6 @@ forum,Forum,用户论坛,用戶論壇
 github,GitHub,GitHub,GitHub
 note,Note,注意,注意
 no-update-blurb,Automatic updates are not available for this platform. Please follow our Telegram channel for update notifications:,自动更新不可用于此平台。请关注我们的Telegram频道以获取更新通知：,自動更新不可用於此平台。請關注我們的Telegram頻道以獲取更新通知：
+advanced-warning,Advanced settings should only be adjusted by experienced users. Incorrect changes may lead to unexpected network behavior or disruptions.,高级设置应只由有经验的用户调整。不正确的更改可能导致意外的现象或连接中断。,高級設置應只由有經驗的用戶調整。不正確的更改可能導致意外的現象或連接中斷。
+protocol,Protocol,传输协议,傳輸協議
+listening-ports,Listening ports,监听端口,監聽端口

@@ -4,9 +4,11 @@
   import Translate from "svelte-material-icons/Translate.svelte";
   import Creation from "svelte-material-icons/Creation.svelte";
   import DirectionsFork from "svelte-material-icons/DirectionsFork.svelte";
+  import Protocol from "svelte-material-icons/Protocol.svelte";
   import ServerNetwork from "svelte-material-icons/ServerNetwork.svelte";
   import AccountCircle from "svelte-material-icons/AccountCircle.svelte";
   import DeleteForever from "svelte-material-icons/DeleteForever.svelte";
+  import Connection from "svelte-material-icons/Connection.svelte";
   import Lan from "svelte-material-icons/Lan.svelte";
   import Bridge from "svelte-material-icons/Translate.svelte";
   import Vpn from "svelte-material-icons/Vpn.svelte";
@@ -19,6 +21,7 @@
     pref_eastereggs,
     pref_global_vpn,
     pref_listen_all,
+    pref_protocol,
     pref_proxy_autoconf,
     pref_routing_mode,
     pref_userpwd,
@@ -217,21 +220,46 @@
             <Switch bind:checked={$pref_proxy_autoconf} />
           </div>
         </div>
-
-        <div class="setting" transition:fade|local>
-          <div class="icon">
-            <Lan height="1.5rem" width="1.5rem" />
-          </div>
-          <div class="description">
-            {l10n($curr_lang, "listen-all")}<br />
-            <small>{l10n($curr_lang, "listen-all-blurb")}</small>
-          </div>
-          <div class="switch">
-            <Switch bind:checked={$pref_listen_all} />
-          </div>
-        </div>
       {/if}
     {/await}
+
+    <div class="divider" />
+
+    <div class="subtitle">{l10n($curr_lang, "advanced")}</div>
+
+    <div class="warning note">
+      {l10n($curr_lang, "advanced-warning")}
+    </div>
+
+    <div class="setting" transition:fade|local>
+      <div class="icon">
+        <Lan height="1.5rem" width="1.5rem" />
+      </div>
+      <div class="description">
+        {l10n($curr_lang, "listen-all")}<br />
+        <small>{l10n($curr_lang, "listen-all-blurb")}</small>
+      </div>
+      <div class="switch">
+        <Switch bind:checked={$pref_listen_all} />
+      </div>
+    </div>
+
+    <div class="setting">
+      <div class="icon">
+        <Connection height="1.5rem" width="1.5rem" />
+      </div>
+      <div class="description">{l10n($curr_lang, "listening-ports")}</div>
+      <div class="switch">
+        <div>
+          9909
+          <div class="chip">SOCKS5</div>
+        </div>
+        <div>
+          9910
+          <div class="chip">HTTP</div>
+        </div>
+      </div>
+    </div>
 
     <div class="setting">
       <div class="icon">
@@ -246,6 +274,24 @@
         >
           <Option value="auto">{l10n($curr_lang, "automatic")}</Option>
           <Option value="bridges">{l10n($curr_lang, "force-bridges")}</Option>
+        </Select>
+      </div>
+    </div>
+
+    <div class="setting">
+      <div class="icon">
+        <Protocol height="1.5rem" width="1.5rem" />
+      </div>
+      <div class="description">{l10n($curr_lang, "protocol")}</div>
+      <div class="switch">
+        <Select
+          variant="outlined"
+          style="width: 9rem"
+          bind:value={$pref_protocol}
+        >
+          <Option value="auto">{l10n($curr_lang, "automatic")}</Option>
+          <Option value="udp">UDP</Option>
+          <Option value="tls">TLS</Option>
         </Select>
       </div>
     </div>
@@ -359,6 +405,16 @@
     color: #111;
   }
 
+  .note {
+    padding: 0.8rem;
+    margin: 0.2rem;
+    border: 1px solid gray;
+    border-radius: 0.5rem;
+    font-size: 0.9rem;
+    opacity: 0.7;
+    font-weight: 600;
+  }
+
   /* HACK */
   :global(.mdc-select--outlined .mdc-select__anchor) {
     height: 2.2rem;
@@ -415,5 +471,18 @@
     font-weight: 500;
     color: black;
     text-decoration: none;
+  }
+
+  .chip {
+    display: inline-block;
+    background-color: #ddd;
+    font-size: 0.9rem;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    padding-top: 0.2rem;
+    padding-bottom: 0.2rem;
+    margin-top: 0.2rem;
+    border-radius: 3rem;
+    opacity: 0.7;
   }
 </style>
