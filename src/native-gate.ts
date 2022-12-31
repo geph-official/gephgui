@@ -124,6 +124,7 @@ export interface DaemonArgs {
   // connection stuff
   exit_hostname: string;
   force_bridges: boolean;
+  force_protocol: string | null;
 
   // platform-specific arguments
   app_whitelist: string[];
