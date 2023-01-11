@@ -82,7 +82,9 @@ export function displayError(err: string) {
  */
 export function emojify(node: HTMLElement) {
   // setup work goes here...
-  twemoji.parse(node);
+  twemoji.parse(node, {
+    base: "https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/",
+  });
   return {
     destroy() {
       // ...cleanup goes here
