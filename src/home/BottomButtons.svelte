@@ -44,7 +44,7 @@
             1000 +
           a.country_code.localeCompare(b.country_code) * 100 +
           a.city_code.localeCompare(b.city_code) * 10 +
-          (a.load - b.load) * 5 +
+          Math.sign(a.load - b.load) * 5 +
           a.hostname.localeCompare(b.hostname)
       );
       loading = false;
