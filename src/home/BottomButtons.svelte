@@ -1,18 +1,17 @@
 <script lang="ts">
-  import Close from "svelte-material-icons/Close.svelte";
   import { curr_lang, l10n } from "../lib/l10n";
   import DataTable, { Head, Body, Row, Cell } from "@smui/data-table";
   import Dialog, { Header, Title, Content, Actions } from "@smui/dialog";
   import GButton from "../lib/GButton.svelte";
-  import flag from "country-code-emoji";
   import { native_gate, type ExitDescriptor } from "../native-gate";
   import Button, { Label } from "@smui/button";
   import LinearProgress from "@smui/linear-progress";
   import type { SnackbarComponentDev } from "@smui/snackbar";
   import Snackbar from "@smui/snackbar";
   import { pref_userpwd } from "../lib/prefs";
-  import { emojify } from "../lib/utils";
   import shuffle from "knuth-shuffle-seeded";
+  import Flag from "../lib/Flag.svelte";
+  import ExitSelector from "./ExitSelector.svelte";
 
   export let running: boolean;
   export let block_plus: boolean;
@@ -35,15 +34,8 @@
       );
       // shuffle and then deduplicate
       shuffle(r);
-      let seen = {};
-      let new_exits: ExitDescriptor[] = [];
-      r.forEach((exit) => {
-        if (!seen[exit.country_code + "." + exit.city_code]) {
-          seen[exit.country_code + "." + exit.city_code] = true;
-          new_exits.push(exit);
-        }
-      });
-      new_exits.sort(
+
+      r.sort(
         (a, b) =>
           a.allowed_levels
             .includes("free")
@@ -52,10 +44,11 @@
             1000 +
           a.country_code.localeCompare(b.country_code) * 100 +
           a.city_code.localeCompare(b.city_code) * 10 +
+          (a.load - b.load) * 5 +
           a.hostname.localeCompare(b.hostname)
       );
       loading = false;
-      return new_exits;
+      return r;
     } else {
       throw "nothing";
     }
@@ -72,59 +65,18 @@
     <Header>
       <Title id="fullscreen-title">{l10n($curr_lang, "exit-selection")}</Title>
     </Header>
-    <DataTable style="width: 100%">
-      <Head>
-        <Row>
-          <Cell>{l10n($curr_lang, "country")}</Cell>
-          <Cell>{l10n($curr_lang, "city")}</Cell>
-          <!-- <Cell>{l10n($curr_lang, "server-id")}</Cell> -->
-          <Cell>{l10n($curr_lang, "allowed")}</Cell>
-        </Row>
-      </Head>
-      {#await sync_exits()}
-        <Body />
-      {:then exit_list}
-        <Body>
-          {#each exit_list as exit}
-            <Row
-              style={block_plus && !exit.allowed_levels.includes("free")
-                ? "background-color: #ccc"
-                : ""}
-              on:click={() => {
-                if (block_plus && !exit.allowed_levels.includes("free")) {
-                  blockSnackbar.open();
-                } else {
-                  onSelectExit(exit);
-                  exit_selection_open = false;
-                }
-              }}
-            >
-              <Cell
-                ><span use:emojify
-                  >{flag(exit.country_code)}
-                  {exit.country_code.toUpperCase()}</span
-                ></Cell
-              >
-              <Cell>{l10n($curr_lang, exit.city_code)}</Cell>
-              <!-- <Cell>{exit.signing_key.substring(0, 10)}</Cell> -->
-              <Cell
-                >{#if exit.allowed_levels.includes("free")}{l10n(
-                    $curr_lang,
-                    "free-server"
-                  )}{:else}{l10n($curr_lang, "plus-server")}{/if}</Cell
-              >
-            </Row>
-          {/each}
-        </Body>
-      {/await}
-
-      <LinearProgress
-        indeterminate
-        aria-label="Data is being loaded..."
-        slot="progress"
-        closed={!loading}
+    {#await sync_exits()}
+      Loading
+    {:then exit_list}
+      <ExitSelector
+        {exit_list}
+        {block_plus}
+        onSelect={(e) => {
+          onSelectExit(e);
+          exit_selection_open = false;
+        }}
       />
-    </DataTable>
+    {/await}
 
     <!-- <Actions>
       <Button
@@ -194,5 +146,17 @@
 
   .spacer {
     height: 0.5rem;
+  }
+
+  .flag {
+    height: 1.3rem;
+    filter: brightness(0.92);
+    margin-right: 0.5rem;
+  }
+
+  .center {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
   }
 </style>

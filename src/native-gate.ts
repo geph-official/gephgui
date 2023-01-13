@@ -102,6 +102,7 @@ export interface ExitDescriptor {
   country_code: string;
   city_code: string;
   allowed_levels: Level[];
+  load: number;
 }
 
 /**
@@ -228,6 +229,16 @@ function mock_native_gate(): NativeGate {
           signing_key:
             "e0c3af135a4c835c1b7b9df3e01be4b69a1c00e948d12bf4df2c33e08d4cecff",
           allowed_levels: ["free", "plus"],
+          load: 0.99,
+        },
+        {
+          hostname: "us-hio-04.exits.geph.io",
+          city_code: "pdx",
+          country_code: "us",
+          signing_key:
+            "e0c3af135a4c835c1b7b9df3e01be4b69a1c00e948d12bf4df2c33e08d4cecff",
+          allowed_levels: ["free", "plus"],
+          load: 0.78,
         },
         {
           hostname: "sg-sgp-04.exits.geph.io",
@@ -236,6 +247,7 @@ function mock_native_gate(): NativeGate {
           signing_key:
             "5b97a2927dc59acec57784a03e620f2c7b595f01e1030d3f7c1aef76d378f83c",
           allowed_levels: ["plus"],
+          load: 0.1,
         },
       ];
     },

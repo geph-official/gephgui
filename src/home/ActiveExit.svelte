@@ -2,13 +2,14 @@
   import Earth from "svelte-material-icons/Earth.svelte";
   import EarthOff from "svelte-material-icons/EarthOff.svelte";
   import type { ExitDescriptor } from "src/native-gate";
-  import flag from "country-code-emoji";
+
   import { curr_lang, l10n } from "../lib/l10n";
   import { emojify } from "../lib/utils";
   import CircularProgress from "@smui/circular-progress";
   export let connection: "connected" | "disconnected" | "connecting";
   export let exit_descriptor: ExitDescriptor | null;
   import { slide } from "svelte/transition";
+  import Flag from "../lib/Flag.svelte";
 
   $: p2p_allowed =
     exit_descriptor &&
@@ -57,11 +58,9 @@
       {/if}
     </div>
     {#key exit_descriptor}
-      <div class="hostname" use:emojify>
+      <div class="hostname">
         {#if exit_descriptor}
-          <span class="flag-container"
-            >{flag(exit_descriptor.country_code)}</span
-          >
+          <Flag country={exit_descriptor.country_code} />
           {exit_descriptor.hostname}
         {:else}
           🤔
@@ -139,6 +138,8 @@
 
   .hostname {
     font-family: "Iosevka", "Consolas", monospace;
+    display: flex;
+    align-items: center;
   }
 
   .badge {

@@ -135,3 +135,5 @@ no-update-blurb,Automatic updates are not available for this platform. Please fo
 advanced-warning,Advanced settings should only be adjusted by experienced users. Incorrect changes may lead to unexpected network behavior or disruptions.,高级设置应只由有经验的用户调整。不正确的更改可能导致意外的现象或连接中断。,高級設置應只由有經驗的用戶調整。不正確的更改可能導致意外的現象或連接中斷。
 protocol,Protocol,传输协议,傳輸協議
 listening-ports,Listening ports,监听端口,監聽端口
+
+show-all-servers,Show all servers,显示所有服务器,顯示所有服務器

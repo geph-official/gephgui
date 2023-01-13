@@ -37,8 +37,10 @@
   },
   "dependencies": {
     "@smui/chips": "7.0.0-beta.0",
+    "@smui/form-field": "7.0.0-beta.0",
     "@vitejs/plugin-legacy": "^2.3.0",
     "country-code-emoji": "^2.3.0",
+    "country-flag-icons": "^1.5.5",
     "detect-nearest-browser-locale": "^19.0.0",
     "knuth-shuffle": "^1.0.8",
     "knuth-shuffle-seeded": "^1.0.6",
