@@ -65,30 +65,20 @@
     <Header>
       <Title id="fullscreen-title">{l10n($curr_lang, "exit-selection")}</Title>
     </Header>
-    {#await sync_exits()}
-      Loading
-    {:then exit_list}
-      <ExitSelector
-        {exit_list}
-        {block_plus}
-        onSelect={(e) => {
-          onSelectExit(e);
-          exit_selection_open = false;
-        }}
-      />
-    {/await}
-
-    <!-- <Actions>
-      <Button
-        on:click={() => {
-          onSelectExit(null);
-        }}
-        color="secondary"
-        variant="unelevated"
-      >
-        <Label>{l10n($curr_lang, "use-automatic")}</Label>
-      </Button>
-    </Actions> -->
+    {#key exit_selection_open}
+      {#await sync_exits()}
+        Loading
+      {:then exit_list}
+        <ExitSelector
+          {exit_list}
+          {block_plus}
+          onSelect={(e) => {
+            onSelectExit(e);
+            exit_selection_open = false;
+          }}
+        />
+      {/await}
+    {/key}
   </Dialog>
 
   <GButton
