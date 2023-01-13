@@ -49,7 +49,7 @@
     >
       <div class="server-row">
         <div class="server-location">
-          <Flag country={exit.country_code} />
+          <Flag large country={exit.country_code} />
           &nbsp;
           <span class="country-code">{exit.country_code.toUpperCase()}</span>
           &nbsp;/&nbsp;{l10n(
@@ -97,10 +97,12 @@
 
   .server {
     background-color: #eee;
-    margin-top: 0.5rem;
-    margin-bottom: 0.5rem;
-    padding: 0.4rem;
-    border-radius: 0.5rem;
+    margin-top: 0.3rem;
+    margin-bottom: 0.3rem;
+    padding: 0.1rem;
+    padding-left: 0.5rem;
+    border-radius: 0.3rem;
+    cursor: pointer;
   }
 
   .server-badges {
@@ -119,6 +121,7 @@
     padding-left: 0.5rem;
     margin: 0.2rem;
     font-weight: 500;
+    font-size: 0.9rem;
   }
 
   .plus {
@@ -130,15 +133,11 @@
     background-color: rgb(226, 255, 226);
   }
 
-  .speed {
-    background-color: hsl(180, 50%, 30%);
-    color: white;
-  }
-
   .server-location {
-    font-size: 1.3rem;
+    font-size: 1.1rem;
     display: flex;
     flex-direction: row;
+    align-items: center;
   }
 
   .server-row {
