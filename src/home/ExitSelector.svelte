@@ -116,12 +116,12 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    padding: 0.3rem;
-    padding-right: 0.5rem;
-    padding-left: 0.5rem;
+    padding: 0.2rem;
+    padding-right: 0.3rem;
+    padding-left: 0.3rem;
     margin: 0.2rem;
     font-weight: 500;
-    font-size: 0.9rem;
+    font-size: 0.8rem;
   }
 
   .plus {
@@ -138,6 +138,7 @@
     display: flex;
     flex-direction: row;
     align-items: center;
+    flex-grow: 1;
   }
 
   .server-row {
