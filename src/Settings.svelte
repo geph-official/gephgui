@@ -94,11 +94,11 @@
         <Select variant="outlined" style="width: 9rem" bind:value={$curr_lang}>
           <Option value="en">English</Option>
           {#if $pref_eastereggs}
-            <Option value="fa">فارسی</Option>
             <Option value="x-slv-la">Svitannski</Option>
           {/if}
           <Option value="zh-TW">繁體中文</Option>
           <Option value="zh-CN">简体中文</Option>
+          <Option value="fa-IR">فارسی</Option>
         </Select>
       </div>
     </div>
@@ -197,7 +197,7 @@
         {#if $pref_use_app_whitelist}
           <AppPicker bind:open={app_picker_open} />
           <div class="setting" transition:fade|local>
-            <div class="icon" style="padding-left: 1rem" />
+            <div class="icon" style="padding-inline-start: 1rem" />
             <div class="switch">
               <GButton inverted onClick={() => (app_picker_open = true)}
                 >{l10n($curr_lang, "select-excluded-apps")}</GButton
@@ -351,7 +351,7 @@
       <div class="version">v{nfo.version} / {nfo.platform_details}</div>
     {/await}
 
-    <div class="madeby" use:emojify>
+    <div class="madeby" use:emojify dir="ltr">
       made with ❤️ by <br />
       <a
         href="https://github.com/nullchinchilla"
@@ -385,7 +385,7 @@
   .social-button img {
     height: 1.5rem;
     width: 1.5rem;
-    margin-right: 0.5rem;
+    margin-inline-end: 0.5rem;
   }
 
   .social-button {
@@ -454,7 +454,7 @@
 
   .description {
     flex-grow: 1;
-    padding-left: 1rem;
+    padding-inline-start: 1rem;
   }
 
   .icon {
@@ -477,12 +477,16 @@
     display: inline-block;
     background-color: #ddd;
     font-size: 0.9rem;
-    padding-left: 0.5rem;
-    padding-right: 0.5rem;
+    padding-inline-start: 0.5rem;
+    padding-inline-end: 0.5rem;
     padding-top: 0.2rem;
     padding-bottom: 0.2rem;
     margin-top: 0.2rem;
     border-radius: 3rem;
     opacity: 0.7;
+  }
+
+  .switch {
+    direction: ltr;
   }
 </style>

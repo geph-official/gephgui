@@ -45,7 +45,7 @@
   display: inline-block;
 }
 .u-inline tr {
-  margin-right: 16px;
+  margin-inline-end: 16px;
 }
 .u-legend th {
   font-weight: 600;
@@ -57,7 +57,7 @@
 .u-legend .u-marker {
   width: 1em;
   height: 1em;
-  margin-right: 4px;
+  margin-inline-end: 4px;
   background-clip: padding-box !important;
 }
 .u-inline.u-live th::after {
@@ -93,7 +93,7 @@
 .u-hz .u-cursor-x,
 .u-vt .u-cursor-y {
   height: 100%;
-  border-right: 1px dashed #607d8b;
+  border-inline-end: 1px dashed #607d8b;
 }
 .u-hz .u-cursor-y,
 .u-vt .u-cursor-x {

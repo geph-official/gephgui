@@ -141,7 +141,7 @@
   .flag {
     height: 1.3rem;
     filter: brightness(0.92);
-    margin-right: 0.5rem;
+    margin-inline-end: 0.5rem;
   }
 
   .center {

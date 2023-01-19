@@ -110,7 +110,7 @@
   }
 
   .bcaption {
-    margin-left: 0.3rem;
+    margin-inline-start: 0.3rem;
   }
 
   .bleft {

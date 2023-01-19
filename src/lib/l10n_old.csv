@@ -1,0 +1,139 @@
+label,en,zh-CN,zh-TW
+geph,Geph,迷雾通,迷霧通
+error,Error,错误,錯誤
+refresh-user,Refresh info,刷新用户信息,刷新用戶訊息
+logout,Log out,退出,退出
+extend,Extend,延长,延長
+loading,Loading,载入中,載入中
+get-unlimited-speed,Get unlimited speed,获取无限速度,獲取無限速度
+buy-plus,Buy Plus!,购买Plus!,購買Plus!
+remaining-days,Remaining days,剩余天数,剩餘天數
+disconnected,Disconnected,已断开,已斷開
+connecting,Connecting,连接中,連接中
+connected,Connected,已连接,已連接
+free-server,All users,所有用户,所有用戶
+plus-server,Plus only,仅限Plus,僅限Plus
+p2p-yes,P2P allowed,允许BT,允許P2P
+p2p-no,P2P banned,禁止BT,禁止P2P
+automatic,Auto,自动,自動
+automatic-blurb,Uses best available server,使用最佳可用服务器,使用最佳可用伺服器
+change-location,Change location,更改位置,更改位置
+connect,Connect,连接,連接
+disconnect,Disconnect,断开,斷開
+exit-selection,Select exit server,选择出口服务器,選擇出口伺服器
+close,Close,关闭,關閉
+country,Country,国家,國家
+city,City,城市,城市
+server-id,ID,服务器 ID,伺服器 ID
+allowed,Allowed,允许,允許
+plus-only-blurb,Only Plus users are allowed on this server, select another one.,仅Plus用户允许访问此服务器
+use-automatic,Automatically select server,自动选择服务器,自動選擇伺服器
+cancel,Cancel,取消,取消
+download,Download,下载,下載
+upload,Upload,上传,上傳
+latency,Latency,延迟,延遲
+protocol,Protocol,协议,協議
+via,Via,经由,經由
+packet-loss,Packet loss,丟包,丟包
+username,Username,用户名,用戶名
+password,Password,密码,密碼
+log-in-blurb,Log in with existing account,使用已有帐号登录,使用已有帳號登錄
+register-blurb,Create a new account,创建新帐号,創建新帳號
+register,Register,注册,註冊
+captcha,Captcha,验证码,驗證碼
+,,,
+,,,
+acc,Accra,阿克拉,阿克拉
+ams,Amsterdam,阿姆斯特丹,阿姆斯特丹
+athens,Athens,雅典,雅典
+bkk,Bangkok,曼谷,曼谷
+beg,Belgrade,贝尔格莱德,貝爾格萊德
+bru,Brussels,布鲁塞尔,布魯塞爾
+bud,Budapest,布达佩斯,布達佩斯
+cmx,Cancun,坎昆,坎昆
+cpt,Cape Town,开普敦,開普敦
+ord,Chicago,芝加哥,芝加哥
+cph,Copenhagen,哥本哈根,哥本哈根
+dal,Dallas,达拉斯,達拉斯
+del,Delhi,德里,德里
+den,Denver,丹佛,丹佛
+dxb,Dubai,迪拜,迪拜
+fra,Frankfurt,法兰克福,法蘭克福
+hel,Helsinki,赫尔辛基,赫爾辛基
+ist,Istanbul,伊斯坦布尔,伊斯坦布爾
+cgk,Jakarta,雅加达,雅加達
+jnb,Johannesburg,约翰内斯堡,約翰尼斯堡
+lom,Lagos,拉各斯,拉各斯
+lca,Larnaca,拉纳卡,拉納卡
+lfw,Lome,洛美,洛美
+lon,London,伦敦,倫敦
+lax,Los Angeles,洛杉矶,洛杉磯
+mad,Madrid,马德里,馬德里
+mnl,Manila,马尼拉,馬尼拉
+mil,Milan,米兰,米蘭
+mtl,Montreal,蒙特利尔,蒙特婁
+mow,Moscow,莫斯科,莫斯科
+nbo,Nairobi,内罗毕,內羅畢
+nyc,New York,纽约,紐約
+oslo,Oslo,奥斯陆,奧斯陸
+par,Paris,巴黎,巴黎
+pdx,Portland,波特兰,波特蘭
+prg,Prague,布拉格,布拉格
+prn,Pristina,普里什蒂纳,普里什蒂纳
+kef,Reykjavik,雷克雅未克,雷克雅維克
+rom,Rome,罗马,羅馬
+sfo,San Francisco,旧金山,舊金山
+seoul,Seoul,首尔,首爾
+sgp,Singapore,新加坡,新加坡
+skp,Skopje,斯科普里,斯科普里
+sto,Stockholm,斯德哥尔摩,斯德哥爾摩
+syd,Sydney,悉尼,悉尼
+rmq,Taichung,台中,台中
+tpe,Taipei,台北,台北
+tlv,Tel Aviv,特拉维夫,特拉維夫
+tyo,Tokyo,东京,東京
+vce,Venice,威尼斯,威尼斯
+vie,Vienna,维也纳,維也納
+waw,Warsaw,华沙,華沙
+zrh,Zurich,苏黎世,蘇黎世
+,,,
+general,General,常规,常規
+language,Language,语言,語言
+exclude-apps,Exclude apps,排除应用,排除應用
+routing-mode,Routing mode,路由模式,路由模式
+force-bridges,Bridges,强制桥接,強制橋接
+network,Network,网络,網路
+other,Other,其他,其他
+debug-pack,Debug pack,调试包,調試包
+advanced,Advanced,高级,高級
+auto-proxy,Auto-configure proxy,自动配置代理,自動配置代理
+auto-proxy-blurb,Makes most browsers use Geph,配置大多数浏览器使用迷雾通,配置大多数瀏覽器使用迷霧通
+global-vpn,Network-level VPN,全局VPN,全局VPN
+listen-all,Listen on all interfaces,监听所有地址,監聽所有地址
+listen-all-blurb,Allows other computers to use Geph,允许其他计算机使用迷雾通,允許其他計算機使用迷霧通
+global-vpn-blurb,Force all traffic to use Geph,强制所有流量使用迷雾通,強制所有流量使用迷霧通
+exclude-apps,Exclude apps,排除应用程序,排除應用程式
+exclude-apps-blurb,Let apps bypass Geph,允许应用程序绕过迷雾通,允許應用程式繞過迷霧通
+select-excluded-apps,Select excluded apps,选择要排除的应用程序,選擇要排除的應用程式
+exclude-prc,Exclude PRC traffic,排除中国大陆流量,排除中國大陸流量
+exclude-prc-blurb,Let Chinese traffic bypass Geph,允许中国大陆流量绕过迷雾通,允許中國大陸流量繞過迷霧通
+debug,Debug,调试,除錯
+debug-pack,Export debug pack,导出调试包,導出除錯包
+debug-pack-blurb,Save debugging info for developers,保存调试信息以供开发人员使用,保存除錯資訊以供開發人員使用
+export,Export,导出,導出
+account,Account,账户,賬戶
+delete,Delete,删除,刪除
+delete-account,Delete account,刪除账户,刪除賬戶
+delete-account-blurb,Permanently delete account,永久删除账户,永久刪除賬戶
+delete-account-are-you-sure,Are you sure you want to delete your account?,你确定要删除你的账户吗？,你確定要刪除你的賬戶嗎？
+about,About,关于,關於
+news,News,通知频道,通知頻道
+forum,Forum,用户论坛,用戶論壇
+github,GitHub,GitHub,GitHub
+note,Note,注意,注意
+no-update-blurb,Automatic updates are not available for this platform. Please follow our Telegram channel for update notifications:,自动更新不可用于此平台。请关注我们的Telegram频道以获取更新通知：,自動更新不可用於此平台。請關注我們的Telegram頻道以獲取更新通知：
+advanced-warning,Advanced settings should only be adjusted by experienced users. Incorrect changes may lead to unexpected network behavior or disruptions.,高级设置应只由有经验的用户调整。不正确的更改可能导致意外的现象或连接中断。,高級設置應只由有經驗的用戶調整。不正確的更改可能導致意外的現象或連接中斷。
+protocol,Protocol,传输协议,傳輸協議
+listening-ports,Listening ports,监听端口,監聽端口
+
+show-all-servers,Show all servers,显示所有服务器,顯示所有服務器

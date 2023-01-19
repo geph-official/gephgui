@@ -100,7 +100,7 @@
     margin-top: 0.3rem;
     margin-bottom: 0.3rem;
     padding: 0.1rem;
-    padding-left: 0.5rem;
+    padding-inline-start: 0.5rem;
     border-radius: 0.3rem;
     cursor: pointer;
   }
@@ -117,8 +117,8 @@
     flex-direction: row;
     align-items: center;
     padding: 0.2rem;
-    padding-right: 0.3rem;
-    padding-left: 0.3rem;
+    padding-inline-end: 0.3rem;
+    padding-inline-start: 0.3rem;
     margin: 0.2rem;
     font-weight: 500;
     font-size: 0.8rem;

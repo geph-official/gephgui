@@ -112,7 +112,7 @@
 
   .connect-icon {
     display: flex;
-    margin-right: 0.3rem;
+    margin-inline-end: 0.3rem;
   }
 
   .description div {
@@ -146,9 +146,9 @@
     border: 1px solid black;
     padding: 0.2rem;
     border-radius: 10rem;
-    padding-left: 0.4rem;
-    padding-right: 0.4rem;
-    margin-right: 0.4rem;
+    padding-inline-start: 0.4rem;
+    padding-inline-end: 0.4rem;
+    margin-inline-end: 0.4rem;
     font-size: 0.9rem;
   }
 

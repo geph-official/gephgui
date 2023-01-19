@@ -14,7 +14,7 @@
   .flag {
     height: 1em;
     filter: contrast(0.8);
-    margin-right: 0.2rem;
+    margin-inline-end: 0.2rem;
     border-radius: 0.2em;
   }
 

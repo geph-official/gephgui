@@ -91,7 +91,7 @@
 
   .desc {
     flex-grow: 1;
-    padding-left: 1rem;
+    padding-inline-start: 1rem;
   }
 
   .icon {

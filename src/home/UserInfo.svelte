@@ -56,7 +56,7 @@
         />
         <div class="stretch">
           <div class="date">{l10n_date($curr_lang, user_info.expires)}</div>
-          <small class="days-left"
+          <small class="days-inline-start"
             >{l10n($curr_lang, "remaining-days")}:
             <b
               >{Math.max(
@@ -104,10 +104,10 @@
 
   .stretch {
     flex-grow: 1;
-    padding-left: 1rem;
+    padding-inline-start: 1rem;
   }
 
-  .days-left {
+  .days-inline-start {
     opacity: 0.7;
   }
 

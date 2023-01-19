@@ -33,8 +33,8 @@
     color: white;
     border-radius: 0.4rem;
     padding: 0.5em;
-    padding-left: 0.7em;
-    padding-right: 0.7em;
+    padding-inline-start: 0.7em;
+    padding-inline-end: 0.7em;
     font-weight: 500;
     font-family: inherit;
     display: flex;
