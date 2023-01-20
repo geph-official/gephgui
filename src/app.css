@@ -23,7 +23,7 @@ pre {
 }
 /* Theme colors. */
 :root {
-  --mdc-typography-font-family: "Inter", system-ui;
+  --mdc-typography-font-family: "Inter", "Vazirmatn", system-ui;
   --mdc-theme-primary: #007bbb;
   --mdc-theme-secondary: #676778;
   --mdc-theme-background: #fff;
