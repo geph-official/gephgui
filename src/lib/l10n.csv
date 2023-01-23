@@ -137,3 +137,5 @@ protocol,Protocol,传输协议,傳輸協議,پروتکل
 listening-ports,Listening ports,监听端口,監聽端口,پورت های فراخوانی شده
 ,,,,
 show-all-servers,Show all servers,显示所有服务器,顯示所有服務器,نمایش تمام سرورها
+plus-is-great,Plus unlocks full speed on&nbsp;<b>all</b>&nbspservers!,Plus解除<b>所有</b>服务器的限速！,Plus解除<b>所有</b>服務器的限速！,بلوس کامل سرعت روی تمام سرورهای !
+free-is-bad,Free accounts limited to <b>125 KB/s</b>. Upgrade to Plus to enjoy unlimited speed!,免费账号仅限于<b>125 KB/s</b>，升级到Plus获得无限速度！,免費帳號僅限於<b>125 KB/s<b>，升級到Plus獲得無限速度！,حساب های رایگان محدود به <b>125 KB/s</b> هستند. با ارتقا به پلاس به سرعت نامحدود لذت ببرید!
