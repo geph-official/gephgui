@@ -11,8 +11,8 @@ remaining-days,Remaining days,剩余天数,剩餘天數,روزهای باقی‌
 disconnected,Disconnected,已断开,已斷開,متصل نیست
 connecting,Connecting,连接中,連接中,درحال اتصال
 connected,Connected,已连接,已連接,متصل شد
-free-server,All users,所有用户,所有用戶,همه کاربران
-plus-server,Plus only,仅限Plus,僅限Plus,مخصوص پلاس
+free-server,Free,所有用户,所有用戶,رایگان
+plus-server,Plus,仅限Plus,僅限Plus,پلاس
 p2p-yes,P2P allowed,允许BT,允許P2P,P2P مجاز
 p2p-no,P2P banned,禁止BT,禁止P2P,P2P غیرمجاز
 automatic,Auto,自动,自動,خودکار
@@ -31,8 +31,8 @@ use-automatic,Automatically select server,自动选择服务器,自動選擇伺�
 cancel,Cancel,取消,取消,لغو
 download,Download,下载,下載,دانلود
 upload,Upload,上传,上傳,آپلود
-latency,Latency,延迟,延遲,تاخیر 
-protocol,Protocol,协议,協議,پروتکل 
+latency,Latency,延迟,延遲,تاخیر
+protocol,Protocol,协议,協議,پروتکل
 via,Via,经由,經由,از طریق
 packet-loss,Packet loss,丟包,丟包,Packet loss
 username,Username,用户名,用戶名,نام کاربری
@@ -137,5 +137,5 @@ protocol,Protocol,传输协议,傳輸協議,پروتکل
 listening-ports,Listening ports,监听端口,監聽端口,پورت های فراخوانی شده
 ,,,,
 show-all-servers,Show all servers,显示所有服务器,顯示所有服務器,نمایش تمام سرورها
-plus-is-great,Plus unlocks full speed on&nbsp;<b>all</b>&nbspservers!,Plus解除<b>所有</b>服务器的限速！,Plus解除<b>所有</b>服務器的限速！,بلوس کامل سرعت روی تمام سرورهای !
-free-is-bad,Free accounts limited to <b>125 KB/s</b>. Upgrade to Plus to enjoy unlimited speed!,免费账号仅限于<b>125 KB/s</b>，升级到Plus获得无限速度！,免費帳號僅限於<b>125 KB/s<b>，升級到Plus獲得無限速度！,حساب های رایگان محدود به <b>125 KB/s</b> هستند. با ارتقا به پلاس به سرعت نامحدود لذت ببرید!
+plus-is-great,Plus unlocks full speed on&nbsp;<b>all</b>&nbspservers!,Plus解除<b>所有</b>服务器的限速！,Plus解除<b>所有</b>服務器的限速！,پلاس قابلیت سرعت نامحدود را روی <b>تمام</b> سرور ها برای شما باز می‌کند!
+free-is-bad,Free accounts are limited to <b>125 KB/s</b>. Upgrade to Plus to enjoy unlimited speed!,免费账号仅限于<b>125 KB/s</b>，升级到Plus获得无限速度！,免費帳號僅限於<b>125 KB/s<b>，升級到Plus獲得無限速度！,سرعت حساب های رایگان محدود به <b>125 KB/s</b> می باشد. با ارتقا به پلاس از سرعت نامحدود لذت ببرید!
