@@ -12,6 +12,7 @@
   import shuffle from "knuth-shuffle-seeded";
   import Flag from "../lib/Flag.svelte";
   import ExitSelector from "./ExitSelector.svelte";
+  import InformationOutline from "svelte-material-icons/InformationOutline.svelte";
 
   export let running: boolean;
   export let block_plus: boolean;
@@ -65,9 +66,16 @@
     <Header>
       <Title id="fullscreen-title">{l10n($curr_lang, "exit-selection")}</Title>
     </Header>
+    <div class="plus-explanation">
+      {#if block_plus}
+        {@html l10n($curr_lang, "free-is-bad")}
+      {:else}
+        {@html l10n($curr_lang, "plus-is-great")}
+      {/if}
+    </div>
     {#key exit_selection_open}
       {#await sync_exits()}
-        Loading
+        <LinearProgress />
       {:then exit_list}
         <ExitSelector
           {exit_list}
@@ -132,6 +140,21 @@
   .wrap {
     width: 50vw;
     margin: 2rem;
+  }
+
+  .plus-explanation {
+    border: 1px solid black;
+    padding: 0.5rem;
+    margin-left: 1rem;
+    margin-right: 1rem;
+    margin-top: 0.5rem;
+
+    align-items: center;
+
+    border-radius: 0.5rem;
+    font-size: 0.95rem;
+    font-weight: 500;
+    opacity: 0.8;
   }
 
   .spacer {
