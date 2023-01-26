@@ -63,6 +63,11 @@ export interface NativeGate {
   get_app_icon_url(id: string): Promise<string>;
 
   /**
+   * Whether this platform supports listening on all interfaces
+   */
+  supports_listen_all: boolean;
+
+  /**
    * Whether this platform supports app whitelists
    */
   supports_app_whitelist: boolean;
@@ -275,6 +280,7 @@ function mock_native_gate(): NativeGate {
       alert("do something:");
     },
 
+    supports_listen_all: true,
     supports_app_whitelist: true,
     supports_proxy_conf: true,
     supports_vpn_conf: true,
