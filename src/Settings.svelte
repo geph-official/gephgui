@@ -221,31 +221,31 @@
           </div>
         </div>
       {/if}
+
+      <div class="divider" />
+
+      <div class="subtitle">{l10n($curr_lang, "advanced")}</div>
+
+      <div class="warning note">
+        {l10n($curr_lang, "advanced-warning")}
+      </div>
+
+      {#if gate.supports_listen_all}
+        <div class="setting" transition:fade|local>
+          <div class="icon">
+            <Lan height="1.5rem" width="1.5rem" />
+          </div>
+          <div class="description">
+            {l10n($curr_lang, "listen-all")}<br />
+            <small>{l10n($curr_lang, "listen-all-blurb")}</small>
+          </div>
+          <div class="switch">
+            <Switch bind:checked={$pref_listen_all} />
+          </div>
+        </div>
+      {/if}
     {/await}
 
-    <div class="divider" />
-
-    <div class="subtitle">{l10n($curr_lang, "advanced")}</div>
-
-    <div class="warning note">
-      {l10n($curr_lang, "advanced-warning")}
-    </div>
-
-  {#if gate.supports_listen_all}
-    <div class="setting" transition:fade|local>
-      <div class="icon">
-        <Lan height="1.5rem" width="1.5rem" />
-      </div>
-      <div class="description">
-        {l10n($curr_lang, "listen-all")}<br />
-        <small>{l10n($curr_lang, "listen-all-blurb")}</small>
-      </div>
-      <div class="switch">
-        <Switch bind:checked={$pref_listen_all} />
-      </div>
-    </div>
-  {/if}
-  
     <div class="setting">
       <div class="icon">
         <Connection height="1.5rem" width="1.5rem" />
