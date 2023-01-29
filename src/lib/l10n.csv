@@ -2,10 +2,10 @@ label,en,zh-CN,zh-TW,fa-IR
 geph,Geph,迷雾通,迷霧通,Geph
 error,Error,错误,錯誤,خطا
 refresh-user,Refresh info,刷新用户信息,刷新用戶訊息,تازه‌سازی اطلاعات
-logout,Log out,退出,退出,خروج
+logout,Log Out,退出,退出,خروج
 extend,Extend,延长,延長,تمدید
 loading,Loading,载入中,載入中,درحال بارگذاری
-get-unlimited-speed,Get unlimited speed,获取无限速度,獲取無限速度,سرعت نامحدود را تجربه کن
+get-unlimited-speed,Get Unlimited Speed,获取无限速度,獲取無限速度,سرعت نامحدود را تجربه کن
 buy-plus,Buy Plus!,购买Plus!,購買Plus!,خرید پلاس!
 remaining-days,Remaining days,剩余天数,剩餘天數,روزهای باقی‌مانده
 disconnected,Disconnected,已断开,已斷開,متصل نیست
@@ -13,28 +13,28 @@ connecting,Connecting,连接中,連接中,درحال اتصال
 connected,Connected,已连接,已連接,متصل شد
 free-server,Free,所有用户,所有用戶,رایگان
 plus-server,Plus,仅限Plus,僅限Plus,پلاس
-p2p-yes,P2P allowed,允许BT,允許P2P,P2P مجاز
-p2p-no,P2P banned,禁止BT,禁止P2P,P2P غیرمجاز
+p2p-yes,P2P Allowed,允许BT,允許P2P,P2P مجاز
+p2p-no,P2P Banned,禁止BT,禁止P2P,P2P غیرمجاز
 automatic,Auto,自动,自動,خودکار
 automatic-blurb,Uses best available server,使用最佳可用服务器,使用最佳可用伺服器,به بهترین سرور موجود وصل می‌شود
-change-location,Change location,更改位置,更改位置,تغییر مکان
+change-location,Change Location,更改位置,更改位置,تغییر مکان
 connect,Connect,连接,連接,اتصال
 disconnect,Disconnect,断开,斷開,قطع اتصال
-exit-selection,Select exit server,选择出口服务器,選擇出口伺服器,سرور خروجی را انتخاب کنید
+exit-selection,Select Exit Server,选择出口服务器,選擇出口伺服器,سرور خروجی را انتخاب کنید
 close,Close,关闭,關閉,بستن
 country,Country,国家,國家,کشور
 city,City,城市,城市,شهر
 server-id,ID,服务器 ID,伺服器 ID,شناسه
 allowed,Allowed,允许,允許,مجاز
 plus-only-blurb,Only Plus users are allowed on this server, select another one.,仅Plus用户允许访问此服务器,این سرور مخصوص اعضای پلاس است
-use-automatic,Automatically select server,自动选择服务器,自動選擇伺服器,انتخاب خودکار سرور
+use-automatic,Automatically Select Server,自动选择服务器,自動選擇伺服器,انتخاب خودکار سرور
 cancel,Cancel,取消,取消,لغو
 download,Download,下载,下載,دانلود
 upload,Upload,上传,上傳,آپلود
 latency,Latency,延迟,延遲,تاخیر
 protocol,Protocol,协议,協議,پروتکل
 via,Via,经由,經由,از طریق
-packet-loss,Packet loss,丟包,丟包,Packet loss
+packet-loss,Packet Loss,丟包,丟包,Packet Loss
 username,Username,用户名,用戶名,نام کاربری
 password,Password,密码,密碼,رمزعبور
 log-in-blurb,Log in with existing account,使用已有帐号登录,使用已有帳號登錄,ورود به حساب کاربری موجود
@@ -99,33 +99,33 @@ zrh,Zurich,苏黎世,蘇黎世,زوریخ
 ,,,,
 general,General,常规,常規,عمومی
 language,Language,语言,語言,زبان
-exclude-apps,Exclude apps,排除应用,排除應用,برنامه های صرف‌نظر شده
-routing-mode,Routing mode,路由模式,路由模式,حالت مسیریابی
+exclude-apps,Exclude Apps,排除应用,排除應用,برنامه های صرف‌نظر شده
+routing-mode,Routing Mode,路由模式,路由模式,حالت مسیریابی
 force-bridges,Bridges,强制桥接,強制橋接,پل ها
 network,Network,网络,網路,شبکه
 other,Other,其他,其他,دیگر
-debug-pack,Debug pack,调试包,調試包,بسته عیب یابی
+debug-pack,Debug Pack,调试包,調試包,بسته عیب یابی
 advanced,Advanced,高级,高級,پیشرفته
-auto-proxy,Auto-configure proxy,自动配置代理,自動配置代理,پیکربندی خودکار پروکسی
+auto-proxy,Auto-Configure Proxy,自动配置代理,自動配置代理,پیکربندی خودکار پروکسی
 auto-proxy-blurb,Makes most browsers use Geph,配置大多数浏览器使用迷雾通,配置大多数瀏覽器使用迷霧通,بیشتر مرورگرها را مجبور میکند که از Geph استفاده کنند
-global-vpn,Network-level VPN,全局VPN,全局VPN,فیلترشکن در سطح شبکه
-listen-all,Listen on all interfaces,监听所有地址,監聽所有地址,گوش‌دادن به همه رابط ها
+global-vpn,Network-Level VPN,全局VPN,全局VPN,فیلترشکن در سطح شبکه
+listen-all,Listen on All Interfaces,监听所有地址,監聽所有地址,گوش‌دادن به همه رابط ها
 listen-all-blurb,Allows other computers to use Geph,允许其他计算机使用迷雾通,允許其他計算機使用迷霧通,اجازه می‌دهد بقیه کامپیوترها از Geph استفاده کنند
 global-vpn-blurb,Force all traffic to use Geph,强制所有流量使用迷雾通,強制所有流量使用迷霧通,همه ترافیک ها را مجبور به استفاده از Geph می کند
-exclude-apps,Exclude apps,排除应用程序,排除應用程式,برنامه های صرف‌نظر شده
+exclude-apps,Exclude Apps,排除应用程序,排除應用程式,برنامه های صرف‌نظر شده
 exclude-apps-blurb,Let apps bypass Geph,允许应用程序绕过迷雾通,允許應用程式繞過迷霧通,این برنامه ها از Geph استفاده نکنند
-select-excluded-apps,Select excluded apps,选择要排除的应用程序,選擇要排除的應用程式,انتخاب برنامه های صرف‌نظر شده
-exclude-prc,Exclude PRC traffic,排除中国大陆流量,排除中國大陸流量,صرف‌نظر از ترافیک RPC
+select-excluded-apps,Select Excluded Apps,选择要排除的应用程序,選擇要排除的應用程式,انتخاب برنامه های صرف‌نظر شده
+exclude-prc,Exclude PRC Traffic,排除中国大陆流量,排除中國大陸流量,صرف‌نظر از ترافیک RPC
 exclude-prc-blurb,Let Chinese traffic bypass Geph,允许中国大陆流量绕过迷雾通,允許中國大陸流量繞過迷霧通,ترافیک چین از Geph عبور نکند
 debug,Debug,调试,除錯,عیب‌یابی
-debug-pack,Export debug pack,导出调试包,導出除錯包,صدور بسته عیب‌یابی
+debug-pack,Export Debug Pack,导出调试包,導出除錯包,صدور بسته عیب‌یابی
 debug-pack-blurb,Save debugging info for developers,保存调试信息以供开发人员使用,保存除錯資訊以供開發人員使用,ذخیره گزارش‌های عیب‌یابی برای توسعه‌دهندگان
 export,Export,导出,導出,صدور
 account,Account,账户,賬戶,حساب کاربری
 delete,Delete,删除,刪除,حذف
-delete-account,Delete account,刪除账户,刪除賬戶,حذف حساب کاربری
+delete-account,Delete Account,刪除账户,刪除賬戶,حذف حساب کاربری
 delete-account-blurb,Permanently delete account,永久删除账户,永久刪除賬戶,حذف دائمی حساب کاربری
-delete-account-are-you-sure,Are you sure you want to delete your account?,你确定要删除你的账户吗？,你確定要刪除你的賬戶嗎？,آیا مطمئن هستید که می‌خواهید اکانت خود را حذف کنید؟
+delete-account-are-you-sure,Are you sure that you want to delete your account?,你确定要删除你的账户吗？,你確定要刪除你的賬戶嗎？,آیا مطمئن هستید که می‌خواهید اکانت خود را حذف کنید؟
 about,About,关于,關於,درباره ما
 news,News,通知频道,通知頻道,اخبار
 forum,Forum,用户论坛,用戶論壇,انجمن
@@ -134,8 +134,8 @@ note,Note,注意,注意,یادداشت
 no-update-blurb,Automatic updates are not available for this platform. Please follow our Telegram channel for update notifications:,自动更新不可用于此平台。请关注我们的Telegram频道以获取更新通知：,自動更新不可用於此平台。請關注我們的Telegram頻道以獲取更新通知：,آپدیت های خودکار برای این پلتفرم در دسترس نیست. برای آپدیت های آینده کانال تلگرام ما را دنبال کنید.
 advanced-warning,Advanced settings should only be adjusted by experienced users. Incorrect changes may lead to unexpected network behavior or disruptions.,高级设置应只由有经验的用户调整。不正确的更改可能导致意外的现象或连接中断。,高級設置應只由有經驗的用戶調整。不正確的更改可能導致意外的現象或連接中斷。,تنظیمات پیشرفته باید توسط کاربران باتجربه انجام شود. تنظیمات اشتباه ممکن است باعث بروز اختلال در شبکه شما شود.
 protocol,Protocol,传输协议,傳輸協議,پروتکل
-listening-ports,Listening ports,监听端口,監聽端口,پورت های فراخوانی شده
+listening-ports,Listening Ports,监听端口,監聽端口,پورت های فراخوانی شده
 ,,,,
-show-all-servers,Show all servers,显示所有服务器,顯示所有服務器,نمایش تمام سرورها
+show-all-servers,Show All Servers,显示所有服务器,顯示所有服務器,نمایش تمام سرورها
 plus-is-great,Plus unlocks full speed on&nbsp;<b>all</b>&nbspservers!,Plus解除<b>所有</b>服务器的限速！,Plus解除<b>所有</b>服務器的限速！,پلاس قابلیت سرعت نامحدود را روی <b>تمام</b> سرور ها برای شما باز می‌کند!
 free-is-bad,Free accounts are limited to <b>125 KB/s</b>. Upgrade to Plus to enjoy unlimited speed!,免费账号仅限于<b>125 KB/s</b>，升级到Plus获得无限速度！,免費帳號僅限於<b>125 KB/s<b>，升級到Plus獲得無限速度！,سرعت حساب های رایگان محدود به <b>125 KB/s</b> می باشد. با ارتقا به پلاس از سرعت نامحدود لذت ببرید!
