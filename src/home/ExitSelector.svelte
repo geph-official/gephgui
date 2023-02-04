@@ -49,7 +49,7 @@
     >
       <div class="server-row">
         <div class="server-location">
-          <Flag large country={exit.country_code} />
+          <Flag country={exit.country_code} />
           &nbsp;
           <span class="country-code">{exit.country_code.toUpperCase()}</span>
           &nbsp;/&nbsp;{l10n(
@@ -64,17 +64,17 @@
               150 - exit.load * 160
             }, 80%, 30%);`}
           >
-            <ChartBoxOutline width="1.4rem" height="1.2rem" />
+            <ChartBoxOutline width="1.2rem" height="1rem" />
             {(exit.load * 100).toFixed(0)}%
           </div>
           {#if exit.allowed_levels.includes("free")}
             <div class="badge free">
-              <CurrencyUsdOff width="1.4rem" height="1.2rem" />
+              <CurrencyUsdOff width="1.2rem" height="1rem" />
               {l10n($curr_lang, "free-server")}
             </div>
           {:else}
             <div class="badge plus">
-              <CurrencyUsd width="1.4rem" height="1.2rem" />
+              <CurrencyUsd width="1.2rem" height="1rem" />
               {l10n($curr_lang, "plus-server")}
             </div>
           {/if}
@@ -116,12 +116,14 @@
     display: flex;
     flex-direction: row;
     align-items: center;
+    justify-content: center;
     padding: 0.2rem;
     padding-inline-end: 0.3rem;
     padding-inline-start: 0.3rem;
     margin: 0.2rem;
     font-weight: 500;
-    font-size: 0.8rem;
+    font-size: 0.7rem;
+    width: 2.5rem;
   }
 
   .plus {
@@ -134,7 +136,7 @@
   }
 
   .server-location {
-    font-size: 1.1rem;
+    font-size: 1rem;
     display: flex;
     flex-direction: row;
     align-items: center;

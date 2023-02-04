@@ -51,7 +51,7 @@
 </script>
 
 <div class="outer">
-  <div class="brow">
+  <!-- <div class="brow">
     <div class="bleft">
       <ProgressDownload size="1.3rem" />
       <div class="bcaption">{l10n($curr_lang, "download")}</div>
@@ -68,7 +68,7 @@
     <div class="bright" style="color:maroon">
       {has_data ? send_speed.toFixed(2) : "-"} Mbps
     </div>
-  </div>
+  </div> -->
   <div class="brow">
     <div class="bleft">
       <SwapVertical size="1.3rem" />
