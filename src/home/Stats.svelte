@@ -26,7 +26,7 @@
       if (basic) {
         has_data = true;
         recv_data = basic.total_recv_bytes;
-        send_data = basic.total_send_bytes;
+        send_data = basic.total_sent_bytes;
         ping = basic.last_ping;
         address = basic.address;
         protocol = basic.protocol;
