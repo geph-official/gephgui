@@ -48,6 +48,7 @@
   onInterval(async () => {
     let gate = await native_gate();
     const is_running = await gate.is_running();
+
     const is_connected = is_running && (await gate.is_connected());
     if ($pref_selected_exit === null && $pref_userpwd) {
       const exits = await gate.sync_exits(

@@ -21,15 +21,12 @@ const l10n_map = (l10n_csv as CsvRow[]).reduce((prev, elem) => {
   return prev;
 }, {});
 
-console.log(l10n_map, l10n_map);
-
 export const l10n = (lang: Natlang, label: string) => {
   try {
-    console.log("l10n", lang, label);
     let v = l10n_map[label][lang] as string;
     return v || "!" + label + "!";
   } catch {
-    return v || "!" + label + "!";
+    return "!" + label + "!";
   }
 };
 

@@ -10,14 +10,10 @@
   import IpNetworkOutline from "svelte-material-icons/IpNetworkOutline.svelte";
   import Protocol from "svelte-material-icons/Protocol.svelte";
   import { curr_lang, l10n } from "../lib/l10n";
-  let recv_data: [number, number][] = [];
-  let send_data: [number, number][] = [];
-  $: send_speed =
-    send_data.length > 0 ? send_data[send_data.length - 1][1] : 0.0;
-  $: recv_speed =
-    recv_data.length > 0 ? recv_data[recv_data.length - 1][1] : 0.0;
+  let recv_data = 0;
+  let send_data = 0;
 
-  $: has_data = recv_data.length > 0;
+  let has_data = false;
   let ping = 0.0;
 
   let address = "";
@@ -26,38 +22,34 @@
   onInterval(async () => {
     const gate = await native_gate();
     try {
-      const r = (await gate.daemon_rpc("timeseries_stats", ["RecvSpeed"])).map(
-        (a) => [a[0], (a[1] / 1_000_000) * 8]
-      );
-      const s = (await gate.daemon_rpc("timeseries_stats", ["SendSpeed"])).map(
-        (a) => [a[0], (a[1] / 1_000_000) * 8]
-      );
       const basic = await gate.daemon_rpc("basic_stats", []);
       if (basic) {
-        recv_data = r;
-        send_data = s;
+        has_data = true;
+        recv_data = basic.total_recv_bytes;
+        send_data = basic.total_send_bytes;
         ping = basic.last_ping;
         address = basic.address;
         protocol = basic.protocol;
       }
     } catch {
-      recv_data = [];
-      send_data = [];
+      recv_data = 0;
+      send_data = 0;
       ping = 0.0;
       address = "";
       protocol = "";
+      has_data = false;
     }
-  }, 2000);
+  }, 500);
 </script>
 
 <div class="outer">
-  <!-- <div class="brow">
+  <div class="brow">
     <div class="bleft">
       <ProgressDownload size="1.3rem" />
       <div class="bcaption">{l10n($curr_lang, "download")}</div>
     </div>
     <div class="bright" style="color:navy">
-      {has_data ? recv_speed.toFixed(2) : "-"} Mbps
+      {has_data ? (recv_data / 1_000_000).toFixed(2) : "-"} MB
     </div>
   </div>
   <div class="brow">
@@ -66,9 +58,9 @@
       <div class="bcaption">{l10n($curr_lang, "upload")}</div>
     </div>
     <div class="bright" style="color:maroon">
-      {has_data ? send_speed.toFixed(2) : "-"} Mbps
+      {has_data ? (send_data / 1_000_000).toFixed(2) : "-"} MB
     </div>
-  </div> -->
+  </div>
   <div class="brow">
     <div class="bleft">
       <SwapVertical size="1.3rem" />

@@ -164,8 +164,8 @@ function mock_native_gate(): NativeGate {
   let running = false;
   return {
     start_daemon: async () => {
-      await random_sleep();
       running = true;
+      await random_sleep();
       setTimeout(() => (connected = true), 1000);
     },
     stop_daemon: async () => {
@@ -201,6 +201,8 @@ function mock_native_gate(): NativeGate {
           last_loss: 0.1,
           protocol: "sosistab-tls",
           address: "0.0.0.0:12345",
+          total_recv_bytes: 1000000,
+          total_send_bytes: 1,
         };
       } else {
         let pts = Array(400).fill(0);
@@ -301,12 +303,14 @@ async function random_sleep() {
 }
 
 export async function native_gate(): Promise<NativeGate> {
-  if (import.meta.env.MODE === "development") {
-    return mock_native_gate();
-  } else {
-    while (!window.hasOwnProperty("NATIVE_GATE")) {
-      await new Promise((r) => setTimeout(r, 100));
-    }
-    return window["NATIVE_GATE"] as NativeGate;
+  if (
+    import.meta.env.MODE === "development" &&
+    !window.hasOwnProperty("NATIVE_GATE")
+  ) {
+    window["NATIVE_GATE"] = mock_native_gate();
   }
+  while (!window.hasOwnProperty("NATIVE_GATE")) {
+    await new Promise((r) => setTimeout(r, 100));
+  }
+  return window["NATIVE_GATE"] as NativeGate;
 }
