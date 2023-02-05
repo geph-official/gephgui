@@ -104,26 +104,26 @@ routing-mode,Routing Mode,路由模式,路由模式,حالت مسیریابی
 force-bridges,Bridges,强制桥接,強制橋接,پل ها
 network,Network,网络,網路,شبکه
 other,Other,其他,其他,دیگر
-debug-pack,Debug Pack,调试包,調試包,بسته عیب یابی
+debug-pack,Debug pack,调试包,調試包,بسته عیب یابی
 advanced,Advanced,高级,高級,پیشرفته
-auto-proxy,Auto-Configure Proxy,自动配置代理,自動配置代理,پیکربندی خودکار پروکسی
+auto-proxy,Auto-configure proxy,自动配置代理,自動配置代理,پیکربندی خودکار پروکسی
 auto-proxy-blurb,Makes most browsers use Geph,配置大多数浏览器使用迷雾通,配置大多数瀏覽器使用迷霧通,بیشتر مرورگرها را مجبور میکند که از Geph استفاده کنند
-global-vpn,Network-Level VPN,全局VPN,全局VPN,فیلترشکن در سطح شبکه
-listen-all,Listen on All Interfaces,监听所有地址,監聽所有地址,گوش‌دادن به همه رابط ها
+global-vpn,Network-level VPN,全局VPN,全局VPN,فیلترشکن در سطح شبکه
+listen-all,Listen on all interfaces,监听所有地址,監聽所有地址,گوش‌دادن به همه رابط ها
 listen-all-blurb,Allows other computers to use Geph,允许其他计算机使用迷雾通,允許其他計算機使用迷霧通,اجازه می‌دهد بقیه کامپیوترها از Geph استفاده کنند
 global-vpn-blurb,Force all traffic to use Geph,强制所有流量使用迷雾通,強制所有流量使用迷霧通,همه ترافیک ها را مجبور به استفاده از Geph می کند
-exclude-apps,Exclude Apps,排除应用程序,排除應用程式,برنامه های صرف‌نظر شده
+exclude-apps,Exclude apps,排除应用程序,排除應用程式,برنامه های صرف‌نظر شده
 exclude-apps-blurb,Let apps bypass Geph,允许应用程序绕过迷雾通,允許應用程式繞過迷霧通,این برنامه ها از Geph استفاده نکنند
-select-excluded-apps,Select Excluded Apps,选择要排除的应用程序,選擇要排除的應用程式,انتخاب برنامه های صرف‌نظر شده
+select-excluded-apps,Select excluded apps,选择要排除的应用程序,選擇要排除的應用程式,انتخاب برنامه های صرف‌نظر شده
 exclude-prc,Exclude PRC Traffic,排除中国大陆流量,排除中國大陸流量,صرف‌نظر از ترافیک RPC
 exclude-prc-blurb,Let Chinese traffic bypass Geph,允许中国大陆流量绕过迷雾通,允許中國大陸流量繞過迷霧通,ترافیک چین از Geph عبور نکند
 debug,Debug,调试,除錯,عیب‌یابی
-debug-pack,Export Debug Pack,导出调试包,導出除錯包,صدور بسته عیب‌یابی
+debug-pack,Export debug pack,导出调试包,導出除錯包,صدور بسته عیب‌یابی
 debug-pack-blurb,Save debugging info for developers,保存调试信息以供开发人员使用,保存除錯資訊以供開發人員使用,ذخیره گزارش‌های عیب‌یابی برای توسعه‌دهندگان
 export,Export,导出,導出,صدور
 account,Account,账户,賬戶,حساب کاربری
 delete,Delete,删除,刪除,حذف
-delete-account,Delete Account,刪除账户,刪除賬戶,حذف حساب کاربری
+delete-account,Delete account,刪除账户,刪除賬戶,حذف حساب کاربری
 delete-account-blurb,Permanently delete account,永久删除账户,永久刪除賬戶,حذف دائمی حساب کاربری
 delete-account-are-you-sure,Are you sure that you want to delete your account?,你确定要删除你的账户吗？,你確定要刪除你的賬戶嗎？,آیا مطمئن هستید که می‌خواهید اکانت خود را حذف کنید؟
 about,About,关于,關於,درباره ما
@@ -134,8 +134,8 @@ note,Note,注意,注意,یادداشت
 no-update-blurb,Automatic updates are not available for this platform. Please follow our Telegram channel for update notifications:,自动更新不可用于此平台。请关注我们的Telegram频道以获取更新通知：,自動更新不可用於此平台。請關注我們的Telegram頻道以獲取更新通知：,آپدیت های خودکار برای این پلتفرم در دسترس نیست. برای آپدیت های آینده کانال تلگرام ما را دنبال کنید.
 advanced-warning,Advanced settings should only be adjusted by experienced users. Incorrect changes may lead to unexpected network behavior or disruptions.,高级设置应只由有经验的用户调整。不正确的更改可能导致意外的现象或连接中断。,高級設置應只由有經驗的用戶調整。不正確的更改可能導致意外的現象或連接中斷。,تنظیمات پیشرفته باید توسط کاربران باتجربه انجام شود. تنظیمات اشتباه ممکن است باعث بروز اختلال در شبکه شما شود.
 protocol,Protocol,传输协议,傳輸協議,پروتکل
-listening-ports,Listening Ports,监听端口,監聽端口,پورت های فراخوانی شده
+listening-ports,Listening ports,监听端口,監聽端口,پورت های فراخوانی شده
 ,,,,
-show-all-servers,Show All Servers,显示所有服务器,顯示所有服務器,نمایش تمام سرورها
+show-all-servers,Show all servers,显示所有服务器,顯示所有服務器,نمایش تمام سرورها
 plus-is-great,Plus unlocks full speed on&nbsp;<b>all</b>&nbspservers!,Plus解除<b>所有</b>服务器的限速！,Plus解除<b>所有</b>服務器的限速！,پلاس قابلیت سرعت نامحدود را روی <b>تمام</b> سرور ها برای شما باز می‌کند!
 free-is-bad,Free accounts are limited to <b>125 KB/s</b>. Upgrade to Plus to enjoy unlimited speed!,免费账号仅限于<b>125 KB/s</b>，升级到Plus获得无限速度！,免費帳號僅限於<b>125 KB/s<b>，升級到Plus獲得無限速度！,سرعت حساب های رایگان محدود به <b>125 KB/s</b> می باشد. با ارتقا به پلاس از سرعت نامحدود لذت ببرید!
