@@ -2,10 +2,10 @@ label,en,zh-CN,zh-TW,fa-IR
 geph,Geph,迷雾通,迷霧通,Geph
 error,Error,错误,錯誤,خطا
 refresh-user,Refresh info,刷新用户信息,刷新用戶訊息,تازه‌سازی اطلاعات
-logout,Log Out,退出,退出,خروج
+logout,Log out,退出,退出,خروج
 extend,Extend,延长,延長,تمدید
 loading,Loading,载入中,載入中,درحال بارگذاری
-get-unlimited-speed,Get Unlimited Speed,获取无限速度,獲取無限速度,سرعت نامحدود را تجربه کن
+get-unlimited-speed,Get unlimited speed,获取无限速度,獲取無限速度,سرعت نامحدود را تجربه کن
 buy-plus,Buy Plus!,购买Plus!,購買Plus!,خرید پلاس!
 remaining-days,Remaining days,剩余天数,剩餘天數,روزهای باقی‌مانده
 disconnected,Disconnected,已断开,已斷開,متصل نیست
@@ -13,8 +13,8 @@ connecting,Connecting,连接中,連接中,درحال اتصال
 connected,Connected,已连接,已連接,متصل شد
 free-server,Free,所有用户,所有用戶,رایگان
 plus-server,Plus,仅限Plus,僅限Plus,پلاس
-p2p-yes,P2P Allowed,允许BT,允許P2P,P2P مجاز
-p2p-no,P2P Banned,禁止BT,禁止P2P,P2P غیرمجاز
+p2p-yes,P2P allowed,允许BT,允許P2P,P2P مجاز
+p2p-no,P2P banned,禁止BT,禁止P2P,P2P غیرمجاز
 automatic,Auto,自动,自動,خودکار
 automatic-blurb,Uses best available server,使用最佳可用服务器,使用最佳可用伺服器,به بهترین سرور موجود وصل می‌شود
 change-location,Change Location,更改位置,更改位置,تغییر مکان
@@ -115,7 +115,7 @@ global-vpn-blurb,Force all traffic to use Geph,强制所有流量使用迷雾通
 exclude-apps,Exclude apps,排除应用程序,排除應用程式,برنامه های صرف‌نظر شده
 exclude-apps-blurb,Let apps bypass Geph,允许应用程序绕过迷雾通,允許應用程式繞過迷霧通,این برنامه ها از Geph استفاده نکنند
 select-excluded-apps,Select excluded apps,选择要排除的应用程序,選擇要排除的應用程式,انتخاب برنامه های صرف‌نظر شده
-exclude-prc,Exclude PRC Traffic,排除中国大陆流量,排除中國大陸流量,صرف‌نظر از ترافیک RPC
+exclude-prc,Exclude PRC traffic,排除中国大陆流量,排除中國大陸流量,صرف‌نظر از ترافیک RPC
 exclude-prc-blurb,Let Chinese traffic bypass Geph,允许中国大陆流量绕过迷雾通,允許中國大陸流量繞過迷霧通,ترافیک چین از Geph عبور نکند
 debug,Debug,调试,除錯,عیب‌یابی
 debug-pack,Export debug pack,导出调试包,導出除錯包,صدور بسته عیب‌یابی
