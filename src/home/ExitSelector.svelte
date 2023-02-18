@@ -61,7 +61,7 @@
           <div
             class="badge"
             style={`color: white; background-color: hsl(${
-              150 - exit.load * 160
+              150 - Math.min(exit.load, 1.3) * 160
             }, 80%, 30%);`}
           >
             <ChartBoxOutline width="1.2rem" height="1rem" />

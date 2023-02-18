@@ -1,7 +1,7 @@
 <script lang="ts">
   import { native_gate } from "./native-gate";
   import { extractFromXml } from "@extractus/feed-extractor";
-  import { detect, detectAll } from "tinyld/heavy";
+  import { detect, detectAll } from "tinyld";
   import { curr_lang, l10n_date } from "./lib/l10n";
 
   export let announces: any[];
@@ -10,7 +10,9 @@
     if ($curr_lang === "en") {
       return detect(line) == "en";
     } else if ($curr_lang.includes("zh")) {
-      return detect(line) == "zh" || detect(line) == "ja";
+      return (
+        detect(line) == "zh" || detect(line) == "ja" || detect(line) == "sr"
+      );
     } else if ($curr_lang.includes("fa")) {
       return detect(line) == "fa";
     } else {
