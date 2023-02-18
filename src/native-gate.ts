@@ -1,3 +1,5 @@
+import MockRss from "./native-gate-mock-rss";
+
 /**
  * An object that represents the communication interface with the native side of a Geph frontend.
  */
@@ -222,6 +224,8 @@ function mock_native_gate(): NativeGate {
         };
       } else if (method === "register_user") {
         return true;
+      } else if (method === "get_announcements") {
+        return MockRss;
       } else {
         throw "idk";
       }

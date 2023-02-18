@@ -8,8 +8,8 @@ export type Natlang = "en" | "zh-CN" | "zh-TW" | "fa" | "x-slv-la" | "x-slv-cy";
 
 // The current language.
 export const curr_lang: Writable<Natlang> = persistentWritable(
-  "language",
-  detectNearestBrowserLocale(["en", "zh-CN", "zh-TW"])
+  "languager",
+  detectNearestBrowserLocale(["en", "zh-CN", "zh-TW", "fa"])
 );
 
 interface CsvRow {

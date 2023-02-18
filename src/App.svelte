@@ -2,8 +2,9 @@
   import Tab, { Icon, Label } from "@smui/tab";
   import TabBar from "@smui/tab-bar";
   let active_tab = "Home";
-  let tabs = ["Home", "Settings"];
+  let tabs = ["Home", "Announcements", "Settings"];
   import ViewDashBoard from "svelte-material-icons/ViewDashboard.svelte";
+  import Bullhorn from "svelte-material-icons/Bullhorn.svelte";
   import Bell from "svelte-material-icons/Bell.svelte";
   import ChartMultiline from "svelte-material-icons/ChartMultiline.svelte";
   import CogBox from "svelte-material-icons/CogBox.svelte";
@@ -21,6 +22,7 @@
   import { native_gate } from "./native-gate";
   // import Graphs from "./Graphs.svelte";
   import type { Writable } from "svelte/store";
+  import Announcements from "./Announcements.svelte";
 
   let error_string = "";
   setErrorContext((err) => {
@@ -36,6 +38,45 @@
     "privacy_notice_shown",
     false
   );
+
+  import { extractFromXml } from "@extractus/feed-extractor";
+
+  interface Announcement {
+    description: string;
+
+    pubDate: string;
+    link: string;
+  }
+
+  const getAnnouncements = async () => {
+    const gate = await native_gate();
+    const resp: string = await gate.binder_rpc("get_announcements", []);
+    const feed: any = extractFromXml(resp, {
+      descriptionMaxLen: 100000,
+      normalization: false,
+    });
+    console.log(feed);
+    return feed.item as any as Announcement[];
+  };
+
+  const announcements: Writable<Announcement[]> = persistentWritable(
+    "announcements",
+    []
+  );
+  const announceHighlight = persistentWritable("annhigh", false);
+
+  onMount(async () => {
+    const new_announce = await getAnnouncements();
+    if (JSON.stringify(new_announce) != JSON.stringify($announcements)) {
+      $announcements = new_announce;
+      $announceHighlight = true;
+    }
+  });
+
+  $: {
+    if ($announceHighlight && active_tab == "Announcements")
+      $announceHighlight = false;
+  }
 </script>
 
 <svelte:head>
@@ -127,9 +168,9 @@
       {#if active_tab == "Home"}
         <Home />
       {/if}
-      <!-- {#if active_tab == "Graphs"}
-        <Graphs />
-      {/if} -->
+      {#if active_tab == "Announcements"}
+        <Announcements announces={$announcements} />
+      {/if}
       {#if active_tab == "Settings"}
         <Settings />
       {/if}
@@ -140,8 +181,8 @@
         <Icon>
           {#if tab == "Home"}
             <ViewDashBoard />
-            <!-- {:else if tab == "Graphs"}
-            <ChartMultiline /> -->
+          {:else if tab == "Announcements"}
+            <Bullhorn color={$announceHighlight && "red"} />
           {:else if tab == "Settings"}
             <CogBox />
           {:else}
@@ -167,5 +208,7 @@
     flex-grow: 1;
 
     overflow-y: scroll;
+    padding: 0;
+    margin: 0;
   }
 </style>

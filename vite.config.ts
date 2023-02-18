@@ -13,4 +13,9 @@ export default defineConfig({
       targets: ["defaults", ">0.01%"],
     }),
   ],
+  resolve: {
+    alias: {
+      stream: "stream-browserify",
+    },
+  },
 });
