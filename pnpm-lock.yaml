@@ -39,7 +39,7 @@ specifiers:
   svelte-material-ui: ^6.2.0
   svelte-preprocess: ^4.10.7
   terser: ^5.15.1
-  tinyld: ^1.3.2
+  tinyld: '=1.3.1'
   tslib: ^2.4.0
   twemoji: ^14.0.2
   typescript: ^4.6.4
@@ -64,7 +64,7 @@ dependencies:
   svelte-material-icons: 2.0.4_svelte@3.50.1
   svelte-material-ui: 6.2.0_qy6w2iv5hnh55blsjuu7uihyzm
   terser: 5.15.1
-  tinyld: 1.3.2
+  tinyld: 1.3.1
   twemoji: 14.0.2
   uplot: 1.6.22
 
@@ -2579,8 +2579,8 @@ packages:
       commander: 2.20.3
       source-map-support: 0.5.21
 
-  /tinyld/1.3.2:
-    resolution: {integrity: sha512-VBeK+qS2mDggbJpNm+iCitULKbrJnkdvv3Lm/ptSVRBzKaPS/LXGKCByrascOFaFGYZM5sXT2JyqfcHKp9a2kg==}
+  /tinyld/1.3.1:
+    resolution: {integrity: sha512-INB2is03ygze5dUeAp5wCYBUf/+FsXcElCmfewe1ujirCUTe4nGUNDN229Ay/C2W+f15qD7uhclstNHY+a6fgg==}
     engines: {node: '>= 12.10.0', npm: '>= 6.12.0', yarn: '>= 1.20.0'}
     hasBin: true
     dev: false
