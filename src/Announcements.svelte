@@ -29,7 +29,8 @@
       .map((line) => line.trim())
       .join("<br>")
       .replaceAll(/(<br>)(<br>)+/g, "<br><br>")
-      .replaceAll(/^(<br>)*|(<br>)*$/g, "");
+      .replaceAll(/^(<br>)*|(<br>)*$/g, "")
+      .replaceAll(/onclick=.*\"/g, "");
     console.log(lala);
     return lala;
   };
