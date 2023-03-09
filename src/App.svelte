@@ -60,14 +60,17 @@
   };
 
   const announcements: Writable<Announcement[]> = persistentWritable(
-    "announcements",
+    "announcements1",
     []
   );
   const announceHighlight = persistentWritable("annhigh", false);
 
   onMount(async () => {
     const new_announce = await getAnnouncements();
-    if (JSON.stringify(new_announce) != JSON.stringify($announcements)) {
+    if (
+      new_announce.length > 0 &&
+      new_announce[0].link != $announcements.at(0)?.link
+    ) {
       $announcements = new_announce;
       $announceHighlight = true;
     }
