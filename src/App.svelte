@@ -66,14 +66,16 @@
   const announceHighlight = persistentWritable("annhigh", false);
 
   onMount(async () => {
-    const new_announce = await getAnnouncements();
-    if (
-      new_announce.length > 0 &&
-      new_announce[0].link != $announcements.at(0)?.link
-    ) {
-      $announcements = new_announce;
-      $announceHighlight = true;
-    }
+    try {
+      const new_announce = await getAnnouncements();
+      if (
+        new_announce.length > 0 &&
+        new_announce[0].link != $announcements.at(0)?.link
+      ) {
+        $announcements = new_announce;
+        $announceHighlight = true;
+      }
+    } catch {}
   });
 
   $: {
