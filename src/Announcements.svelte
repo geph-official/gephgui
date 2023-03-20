@@ -39,7 +39,6 @@
 </script>
 
 <div class="outer">
-  {announces.length} long
   {#each announces as item}
     {#if cleanItem(item).length > 0}
       <div class="announce-card">
