@@ -22,7 +22,7 @@
 
   const cleanItem = (item: any) => {
     let lala = item.description
-      .replaceAll("<p>", '<p dir="auto">')
+      .replace("<p>", '<p dir="auto">')
       .split("<br>")
       .filter((line) => {
         console.log("detect", line, detect(line));
@@ -30,9 +30,9 @@
       })
       .map((line) => line.trim())
       .join("<br>")
-      .replaceAll(/(<br>)(<br>)+/g, "<br><br>")
-      .replaceAll(/^(<br>)*|(<br>)*$/g, "")
-      .replaceAll(/onclick=.*\"/g, "");
+      .replace(/(<br>)(<br>)+/g, "<br><br>")
+      .replace(/^(<br>)*|(<br>)*$/g, "")
+      .replace(/onclick=.*\"/g, "");
     console.log(lala);
     return lala;
   };
