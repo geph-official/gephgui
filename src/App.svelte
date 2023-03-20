@@ -74,7 +74,7 @@
         new_announce.length > 0 &&
         new_announce[0].link != $announcements.at(0)?.link
       ) {
-        alert(
+        console.log(
           "announce changed: " +
             new_announce[0].link +
             " vs " +
