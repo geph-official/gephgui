@@ -69,6 +69,7 @@
   onMount(async () => {
     try {
       const new_announce = await getAnnouncements();
+      console.log("new announce", new_announce);
       if (
         new_announce.length > 0 &&
         new_announce[0].link != $announcements.at(0)?.link
