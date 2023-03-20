@@ -51,6 +51,7 @@
   const getAnnouncements = async () => {
     const gate = await native_gate();
     const resp: string = await gate.binder_rpc("get_announcements", []);
+    console.log("get_announcements returned " + resp);
     const feed: any = extractFromXml(resp, {
       descriptionMaxLen: 100000,
       normalization: false,
