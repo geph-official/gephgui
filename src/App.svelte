@@ -78,7 +78,7 @@
           "announce changed: " +
             new_announce[0].link +
             " vs " +
-            $announcements[0].link
+            $announcements.at(0)?.link
         );
         $announcements = new_announce;
         $announceHighlight = true;
