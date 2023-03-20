@@ -72,6 +72,7 @@
         new_announce.length > 0 &&
         new_announce[0].link != $announcements.at(0)?.link
       ) {
+        alert("announce changed: " + new_announce[0].link + " vs " + $announcements[0].link);
         $announcements = new_announce;
         $announceHighlight = true;
       }
