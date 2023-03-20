@@ -72,13 +72,14 @@
       console.log("new announce", new_announce);
       if (
         new_announce.length > 0 &&
-        new_announce[0].link != $announcements.at(0)?.link
+        ($announcements.length == 0 ||
+          new_announce[0].link != $announcements[0].link)
       ) {
         console.log(
           "announce changed: " +
-            new_announce[0].link +
+            JSON.stringify(new_announce) +
             " vs " +
-            $announcements.at(0)?.link
+            JSON.stringify($announcements)
         );
         $announcements = new_announce;
         $announceHighlight = true;
