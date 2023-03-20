@@ -83,7 +83,7 @@
         $announceHighlight = true;
       }
     } catch (e: any) {
-      alert("error loading announcements: " + e.toString());
+      console.error("error loading announcements: " + e.toString());
     }
   });
 
