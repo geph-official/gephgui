@@ -122,12 +122,32 @@ export interface AppDescriptor {
 }
 
 /**
+ * Auth info
+ */
+export enum AuthKind {
+  Keypair,
+  Password,
+}
+
+export interface AuthKeypair {
+  kind: AuthKind.Keypair;
+  sk_path: string;
+}
+
+export interface AuthPassword {
+  kind: AuthKind.Password;
+  username: string;
+  password: string;
+}
+
+export type Authentication = AuthKeypair | AuthPassword;
+
+/**
  * Arguments passed to start the Geph daemon.
  */
 export interface DaemonArgs {
   // core arguments
-  username: string;
-  password: string;
+  auth_info: Authentication;
 
   // connection stuff
   exit_hostname: string;

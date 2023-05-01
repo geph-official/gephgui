@@ -1,4 +1,4 @@
-import type { ExitDescriptor } from "../native-gate";
+import type { Authentication, ExitDescriptor } from "../native-gate";
 import { writable, type Writable } from "svelte/store";
 
 export function persistentWritable<T>(
@@ -27,9 +27,8 @@ export function persistentWritable<T>(
 /**
  * The current username and password.
  */
-export const pref_userpwd: Writable<{
-  username: string;
-  password: string;
+export const pref_auth: Writable<{
+  auth: Authentication
 } | null> = persistentWritable("userpwd", null);
 
 /**
