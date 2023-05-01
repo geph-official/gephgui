@@ -37,17 +37,17 @@ export interface NativeGate {
   /**
    * Purges all caches
    */
-  purge_caches(username: string, password: string): Promise<void>;
+  purge_caches(auth: Authentication): Promise<void>;
 
   /**
    * Obtains the current user information
    */
-  sync_user_info(username: string, password: string): Promise<SubscriptionInfo>;
+  sync_user_info(auth: Authentication): Promise<SubscriptionInfo>;
 
   /**
    * Obtains the list of all exits
    */
-  sync_exits(username: string, password: string): Promise<ExitDescriptor[]>;
+  sync_exits(auth: Authentication): Promise<ExitDescriptor[]>;
 
   /**
    * Gets the list of apps
@@ -147,7 +147,7 @@ export type Authentication = AuthKeypair | AuthPassword;
  */
 export interface DaemonArgs {
   // core arguments
-  auth_info: Authentication;
+  auth: Authentication;
 
   // connection stuff
   exit_hostname: string;
@@ -201,18 +201,25 @@ function mock_native_gate(): NativeGate {
     is_running: async () => {
       return running;
     },
-    sync_user_info: async (username, password) => {
+    sync_user_info: async (auth) => {
       await random_sleep();
-      if (username !== "bunsim") {
-        throw "incorrect username";
+      switch (auth.kind) {
+        case AuthKind.Keypair: throw "incorrect authkind"
+        case AuthKind.Password:
+          {
+            if (auth.username !== "bunsim") {
+              throw "incorrect username";
+            }
+            return {
+              level: "plus",
+              expires: new Date(),
+            };
+          }
       }
-      return {
-        level: "plus",
-        expires: new Date(),
-      };
+
     },
 
-    purge_caches: async (username, password) => {
+    purge_caches: async (auth) => {
       await random_sleep();
     },
 
@@ -251,7 +258,7 @@ function mock_native_gate(): NativeGate {
       }
     },
 
-    sync_exits: async (username, password) => {
+    sync_exits: async (auth) => {
       return [
         {
           hostname: "us-hio-03.exits.geph.io",
