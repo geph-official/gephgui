@@ -6,26 +6,19 @@
   import Refresh from "svelte-material-icons/Refresh.svelte";
   import { curr_lang, l10n, l10n_date } from "../lib/l10n";
   import { native_gate, type SubscriptionInfo } from "../native-gate";
-  import { pref_userpwd } from "../lib/prefs";
+  import { pref_auth } from "../lib/prefs";
   import GButton from "../lib/GButton.svelte";
   import Button from "@smui/button";
-  export let username: string;
   export let user_info: SubscriptionInfo | null = null;
 
   let loading = false;
 
-  $: extend_url = `https://geph.io/billing/login?next=%2Fbilling%2Fdashboard&uname=${encodeURIComponent(
-    username
-  )}&pwd=${encodeURIComponent($pref_userpwd ? $pref_userpwd.password : "")}`;
-
   const on_force_refresh = async () => {
     loading = true;
     try {
-      if ($pref_userpwd) {
+      if ($pref_auth) {
         console.log("start purge");
-        await (
-          await native_gate()
-        ).purge_caches($pref_userpwd.username, $pref_userpwd.password);
+        await (await native_gate()).purge_caches($pref_auth.auth);
         console.log("end purge purge");
       }
     } finally {
@@ -43,8 +36,15 @@
         <Button on:click={on_force_refresh}>
           <Refresh width="1.3rem" height="1.3rem" />
         </Button>
-        <a href={extend_url} target="_blank" rel="noopener">
-          <GButton inverted>{l10n($curr_lang, "buy-plus")}</GButton></a
+        <GButton
+          inverted
+          onClick={async () => {
+            let gate = await native_gate();
+            let extend_url = await gate.binder_rpc(
+              "get_login_url",
+              [""] // TODO!
+            );
+          }}>{l10n($curr_lang, "buy-plus")}</GButton
         >
       </div>
     {:else if user_info.level == "plus" && user_info.expires}
@@ -70,11 +70,17 @@
         <Button on:click={on_force_refresh}>
           <Refresh width="1.3rem" height="1.3rem" />
         </Button>
-        <a href={extend_url} target="_blank" rel="noopener">
-          <GButton>
-            {l10n($curr_lang, "extend")}
-          </GButton>
-        </a>
+        <GButton
+          onClick={async () => {
+            let gate = await native_gate();
+            let extend_url = await gate.binder_rpc(
+              "get_login_url",
+              [""] // TODO!
+            );
+          }}
+        >
+          {l10n($curr_lang, "extend")}
+        </GButton>
       </div>
     {/if}
   {:else}

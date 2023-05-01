@@ -11,7 +11,7 @@
 
   import { curr_lang, l10n } from "./lib/l10n";
   import Home from "./Home.svelte";
-  import { persistentWritable, pref_userpwd } from "./lib/prefs";
+  import { persistentWritable, pref_auth } from "./lib/prefs";
   import Settings from "./Settings.svelte";
   import Login from "./Login.svelte";
   import { setErrorContext } from "./lib/utils";
@@ -177,7 +177,7 @@
       <GButton onClick={() => (error_string = "")}>OK</GButton>
     </Actions>
   </Dialog>
-  {#if !$pref_userpwd}
+  {#if !$pref_auth}
     <Login />
   {:else}
     <div class="big-container">

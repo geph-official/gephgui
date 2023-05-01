@@ -24,11 +24,11 @@
     pref_protocol,
     pref_proxy_autoconf,
     pref_routing_mode,
-    pref_userpwd,
+    pref_auth,
     pref_use_app_whitelist,
     pref_use_prc_whitelist,
   } from "./lib/prefs";
-  import { native_gate } from "./native-gate";
+  import { AuthKind, native_gate } from "./native-gate";
   import GButton from "./lib/GButton.svelte";
   import AppPicker from "./settings/AppPicker.svelte";
 
@@ -44,7 +44,7 @@
     try {
       await gate.stop_daemon();
     } catch {}
-    $pref_userpwd = null;
+    $pref_auth = null;
     localStorage.clear();
     window.location.reload();
   };
@@ -54,15 +54,22 @@
   };
   const finish_delete_account = async () => {
     let gate = await native_gate();
-    if ($pref_userpwd) {
-      const copy = $pref_userpwd;
+    if ($pref_auth) {
+      const copy = $pref_auth;
       try {
-        await gate.binder_rpc("delete_user", [copy.username, copy.password]);
-        gate.purge_caches(copy.username, copy.password);
+        // add a native-gate endpoint to
+        switch (copy.auth.kind) {
+          case AuthKind.Keypair: // TDOO!!!
+          case AuthKind.Password:
+            await gate.binder_rpc("delete_user", [
+              { username: copy.auth.username, password: copy.auth.password },
+            ]);
+        }
+        gate.purge_caches(copy.auth);
       } catch (e) {
         displayError(e.toString());
       }
-      $pref_userpwd = null;
+      $pref_auth = null;
     }
   };
 
@@ -107,12 +114,13 @@
     <div class="subtitle">{l10n($curr_lang, "account")}</div>
 
     <div class="setting">
-      <div class="icon">
+      <!-- <div class="icon">
         <AccountCircle height="1.5rem" width="1.5rem" />
       </div>
       <div class="description">
         <b>{$pref_userpwd ? $pref_userpwd.username : ""}</b>
       </div>
+      // TODO: Match here! -->
       <div class="switch">
         <GButton color="warning" inverted onClick={on_logout}
           >{l10n($curr_lang, "logout")}</GButton

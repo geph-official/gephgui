@@ -15,13 +15,14 @@
     pref_proxy_autoconf,
     pref_routing_mode,
     pref_selected_exit,
-    pref_userpwd,
+    pref_auth,
     pref_listen_all,
     pref_use_app_whitelist,
     pref_protocol,
   } from "./lib/prefs";
   import { displayError, onInterval } from "./lib/utils";
   import { native_gate, type SubscriptionInfo } from "./native-gate";
+  import Announcements from "./Announcements.svelte";
 
   // Connections status things. We use a persistent store because on iOS and Android the webview can stop at any time.
   const connection_status: Writable<
@@ -33,11 +34,8 @@
   onInterval(async () => {
     let gate = await native_gate();
     try {
-      if ($pref_userpwd) {
-        $user_info = await gate.sync_user_info(
-          $pref_userpwd.username,
-          $pref_userpwd.password
-        );
+      if ($pref_auth) {
+        $user_info = await gate.sync_user_info($pref_auth.auth);
       }
     } catch (e) {
       reportError("error syncing info: " + user_info);
@@ -50,11 +48,8 @@
     const is_running = await gate.is_running();
 
     const is_connected = is_running && (await gate.is_connected());
-    if ($pref_selected_exit === null && $pref_userpwd) {
-      const exits = await gate.sync_exits(
-        $pref_userpwd.username,
-        $pref_userpwd.password
-      );
+    if ($pref_selected_exit === null && $pref_auth) {
+      const exits = await gate.sync_exits($pref_auth.auth);
       if (exits.length > 0) {
         while (true) {
           let ridx = Math.floor(Math.random() * exits.length);
@@ -77,8 +72,8 @@
 </script>
 
 <div class="home">
-  {#if $pref_userpwd}
-    <UserInfo username={$pref_userpwd.username} user_info={$user_info} />
+  {#if $pref_auth}
+    <UserInfo username={$pref_auth.username} user_info={$user_info} />
   {:else}
     <h1>NO USERPWD</h1>
   {/if}
@@ -90,16 +85,15 @@
 
   <Stats />
 
-  {#key $pref_userpwd}
+  {#key $pref_auth}
     <BottomButtons
       running={$connection_status !== "disconnected"}
       onConnect={async () => {
         let gate = await native_gate();
         try {
-          if ($pref_userpwd && $pref_selected_exit) {
+          if ($pref_auth && $pref_selected_exit) {
             await gate.start_daemon({
-              username: $pref_userpwd.username,
-              password: $pref_userpwd.password,
+              auth: $pref_auth.auth,
               exit_hostname: $pref_selected_exit.hostname,
               app_whitelist: $pref_use_app_whitelist
                 ? Object.keys($pref_app_whitelist).filter(

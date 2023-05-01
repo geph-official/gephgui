@@ -60,6 +60,11 @@ export interface NativeGate {
   export_debug_pack(): Promise<void>;
 
   /**
+   * Exports debug pack
+   */
+  get_login_url(auth: Authentication): Promise<string>;
+
+  /**
    * Obtains the icon of an app
    */
   get_app_icon_url(id: string): Promise<string>;
@@ -311,6 +316,10 @@ function mock_native_gate(): NativeGate {
 
     async export_debug_pack() {
       alert("do something:");
+    },
+
+    async get_login_url(auth) {
+      return "geph.io/en"
     },
 
     supports_listen_all: true,
