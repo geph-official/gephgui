@@ -4,17 +4,33 @@ import "./vazirmatn-font/vazirmatn.css";
 import "./app.css";
 import "./uPlot.min.css";
 import App from "./App.svelte";
-import { auto as autoDark, enable as enableDark } from "darkreader";
+import {
+  auto as autoDark,
+  enable as enableDark,
+  disable as disableDark,
+} from "darkreader";
+import { pref_lightdark } from "./lib/prefs";
 
 const app = new App({
   target: document.getElementById("app") as any,
 });
 
-autoDark({
-  brightness: 100,
-  contrast: 90,
-  sepia: 10,
-});
+const setDark = (value: any) => {
+  const darkTheme = {
+    brightness: 100,
+    contrast: 90,
+    sepia: 0,
+  };
+  if (value === "auto") {
+    autoDark(darkTheme);
+  } else if (value === "dark") {
+    enableDark(darkTheme);
+  } else if (value === "light") {
+    disableDark();
+  }
+};
+
+pref_lightdark.subscribe(setDark);
 
 // HACK to get rid of ugly hover and focus indicators, especially on mobile
 window.addEventListener("load", (_) => {

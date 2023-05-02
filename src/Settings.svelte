@@ -4,6 +4,7 @@
   import Translate from "svelte-material-icons/Translate.svelte";
   import Creation from "svelte-material-icons/Creation.svelte";
   import DirectionsFork from "svelte-material-icons/DirectionsFork.svelte";
+  import ThemeLightDark from "svelte-material-icons/ThemeLightDark.svelte";
   import Protocol from "svelte-material-icons/Protocol.svelte";
   import ServerNetwork from "svelte-material-icons/ServerNetwork.svelte";
   import AccountCircle from "svelte-material-icons/AccountCircle.svelte";
@@ -20,6 +21,7 @@
   import {
     pref_eastereggs,
     pref_global_vpn,
+    pref_lightdark,
     pref_listen_all,
     pref_protocol,
     pref_proxy_autoconf,
@@ -101,6 +103,22 @@
           <Option value="fa-IR">فارسی</Option>
         </Select>
       </div>
+    </div>
+
+    <div class="setting">
+      <div class="icon">
+        <ThemeLightDark height="1.5rem" width="1.5rem" />
+      </div>
+      <div class="description">{l10n($curr_lang, "theme")}</div>
+      <Select
+        variant="outlined"
+        style="width: 9rem"
+        bind:value={$pref_lightdark}
+      >
+        <Option value="light">{l10n($curr_lang, "light")}</Option>
+        <Option value="dark">{l10n($curr_lang, "dark")}</Option>
+        <Option value="auto">{l10n($curr_lang, "automatic")}</Option>
+      </Select>
     </div>
 
     <div class="divider" />
