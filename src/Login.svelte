@@ -14,6 +14,16 @@
   let loading = false;
 
   let register_open = false;
+
+  const translateError = (err: string) => {
+    if (err.includes("invalid")) {
+      return l10n($curr_lang, "invalid-username-or-password");
+    } else if (err.includes("too many")) {
+      return l10n($curr_lang, "login-server-overloaded");
+    } else {
+      return err;
+    }
+  };
 </script>
 
 <div class="wrap">
@@ -59,7 +69,7 @@
                 password: password,
               };
             } catch (err) {
-              await showErrorModal(err.toString());
+              await showErrorModal(translateError(err.toString()));
             } finally {
               loading = false;
             }
