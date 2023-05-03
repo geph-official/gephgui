@@ -2,8 +2,7 @@ import { writable, type Writable } from "svelte/store";
 
 export const loadingContent: Writable<string | null> = writable(null);
 
-export const errorContent: Writable<string | null> =
-  writable("oh no an errorrrrr");
+export const errorContent: Writable<string | null> = writable(null);
 
 /**
  * Runs the provided async function, showing a loading spinner while the function runs.
@@ -14,12 +13,14 @@ export const errorContent: Writable<string | null> =
  */
 export const runWithSpinner = async (
   label: string,
+  ms: number,
   f: () => Promise<any>
 ): Promise<void> => {
-  loadingContent.set(label);
+  let stopper = setTimeout(() => loadingContent.set(label), ms);
   try {
     await f();
   } finally {
+    clearTimeout(stopper);
     loadingContent.set(null);
   }
 };

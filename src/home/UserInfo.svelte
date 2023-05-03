@@ -9,6 +9,7 @@
   import { pref_userpwd } from "../lib/prefs";
   import GButton from "../lib/GButton.svelte";
   import Button from "@smui/button";
+  import { runWithSpinner } from "../lib/modals";
   export let username: string;
   export let user_info: SubscriptionInfo | null = null;
 
@@ -19,18 +20,24 @@
   )}&pwd=${encodeURIComponent($pref_userpwd ? $pref_userpwd.password : "")}`;
 
   const on_force_refresh = async () => {
-    loading = true;
-    try {
-      if ($pref_userpwd) {
-        console.log("start purge");
-        await (
-          await native_gate()
-        ).purge_caches($pref_userpwd.username, $pref_userpwd.password);
-        console.log("end purge purge");
+    await runWithSpinner(
+      l10n($curr_lang, "refreshing-user-info") + "...",
+      0,
+      async () => {
+        loading = true;
+        try {
+          if ($pref_userpwd) {
+            console.log("start purge");
+            await (
+              await native_gate()
+            ).purge_caches($pref_userpwd.username, $pref_userpwd.password);
+            console.log("end purge purge");
+          }
+        } finally {
+          loading = false;
+        }
       }
-    } finally {
-      loading = false;
-    }
+    );
   };
 </script>
 

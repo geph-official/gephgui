@@ -34,10 +34,11 @@
   import GButton from "./lib/GButton.svelte";
   import AppPicker from "./settings/AppPicker.svelte";
 
-  import { displayError, emojify } from "./lib/utils";
+  import { emojify } from "./lib/utils";
   import Dialog from "@smui/dialog/src/Dialog.svelte";
   import { Actions, Content, Title } from "@smui/dialog";
   import Button from "@smui/button/src/Button.svelte";
+  import { showErrorModal } from "./lib/modals";
 
   let app_picker_open = false;
 
@@ -62,7 +63,7 @@
         await gate.binder_rpc("delete_user", [copy.username, copy.password]);
         gate.purge_caches(copy.username, copy.password);
       } catch (e) {
-        displayError(e.toString());
+        await showErrorModal(e.toString());
       }
       $pref_userpwd = null;
     }

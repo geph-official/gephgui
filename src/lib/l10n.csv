@@ -142,3 +142,6 @@ free-is-bad,Free accounts are limited to <b>125 KB/s</b>. Upgrade to Plus to enj
 theme,Theme,主题,主題,قالب
 light,Light,亮色,亮色,روشن
 dark,Dark,暗色,暗色,تیره
+logging-in,Logging in,登录中,登錄中,ورود به حساب 
+logging-out,Logging out,登出中,登出中,خروج از حساب
+refreshing-user-info,Refreshing user info,正在刷新用户信息,正在刷新用戶信息,به روز رسانی اطلاعات کاربر

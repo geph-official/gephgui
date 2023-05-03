@@ -15,7 +15,7 @@
   import { persistentWritable, pref_userpwd } from "./lib/prefs";
   import Settings from "./Settings.svelte";
   import Login from "./Login.svelte";
-  import { setErrorContext } from "./lib/utils";
+
   import Dialog from "@smui/dialog";
   import { Content, Header, Title, Actions } from "@smui/dialog";
   import GButton from "./lib/GButton.svelte";
@@ -24,11 +24,6 @@
   // import Graphs from "./Graphs.svelte";
   import type { Writable } from "svelte/store";
   import Announcements from "./Announcements.svelte";
-
-  let error_string = "";
-  setErrorContext((err) => {
-    error_string = err;
-  });
 
   const autoupdate_warning_shown: Writable<boolean> = persistentWritable(
     "autoupdate_warning_shown_1",
@@ -164,14 +159,6 @@
       </Actions>
     </Dialog>
   {/await}
-
-  <Dialog open={error_string !== ""} scrimClickAction="" escapeKeyAction="">
-    <Header><Title>{l10n($curr_lang, "error")}</Title></Header>
-    <Content><pre>{error_string}</pre></Content>
-    <Actions>
-      <GButton onClick={() => (error_string = "")}>OK</GButton>
-    </Actions>
-  </Dialog>
 
   <Dialog
     open={$loadingContent !== null}

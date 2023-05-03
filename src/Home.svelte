@@ -7,6 +7,8 @@
   import Stats from "./home/Stats.svelte";
 
   import UserInfo from "./home/UserInfo.svelte";
+  import { curr_lang, l10n } from "./lib/l10n";
+  import { runWithSpinner, showErrorModal } from "./lib/modals";
   import {
     persistentWritable,
     pref_app_whitelist,
@@ -20,7 +22,7 @@
     pref_use_app_whitelist,
     pref_protocol,
   } from "./lib/prefs";
-  import { displayError, onInterval } from "./lib/utils";
+  import { onInterval } from "./lib/utils";
   import { native_gate, type SubscriptionInfo } from "./native-gate";
 
   // Connections status things. We use a persistent store because on iOS and Android the webview can stop at any time.
@@ -33,16 +35,22 @@
   onInterval(async () => {
     let gate = await native_gate();
     try {
-      if ($pref_userpwd) {
-        $user_info = await gate.sync_user_info(
-          $pref_userpwd.username,
-          $pref_userpwd.password
-        );
-      }
+      await runWithSpinner(
+        l10n($curr_lang, "refreshing-user-info") + "...",
+        1000,
+        async () => {
+          if ($pref_userpwd) {
+            $user_info = await gate.sync_user_info(
+              $pref_userpwd.username,
+              $pref_userpwd.password
+            );
+          }
+        }
+      );
     } catch (e) {
-      reportError("error syncing info: " + user_info);
+      await showErrorModal("error syncing info: " + JSON.stringify(e));
     }
-  }, 10000);
+  }, 60000);
 
   // the main monitor loop
   onInterval(async () => {
@@ -118,7 +126,7 @@
             throw "no userpwd";
           }
         } catch (err) {
-          displayError(err.toString());
+          await showErrorModal(err.toString());
         }
       }}
       onDisconnect={async () => {
@@ -126,7 +134,7 @@
         try {
           await gate.stop_daemon();
         } catch (err) {
-          reportError(err.toString());
+          await showErrorModal(err.toString());
         }
       }}
       onSelectExit={(exit) => {
