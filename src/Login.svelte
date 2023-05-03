@@ -85,8 +85,7 @@
   }
 
   .big-logo {
-    width: 50vw;
-    height: 50vw;
+    width: 50vmin;
   }
 
   .form {
