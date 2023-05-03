@@ -5,6 +5,7 @@
   let tabs = ["Home", "Announcements", "Settings"];
   import ViewDashBoard from "svelte-material-icons/ViewDashboard.svelte";
   import Bullhorn from "svelte-material-icons/Bullhorn.svelte";
+  import AlertCircleOutline from "svelte-material-icons/AlertCircleOutline.svelte";
   import Bell from "svelte-material-icons/Bell.svelte";
   import ChartMultiline from "svelte-material-icons/ChartMultiline.svelte";
   import CogBox from "svelte-material-icons/CogBox.svelte";
@@ -40,6 +41,8 @@
   );
 
   import { extractFromXml } from "@extractus/feed-extractor";
+  import { errorContent, loadingContent } from "./lib/modals";
+  import CircularProgress from "@smui/circular-progress/src/CircularProgress.svelte";
 
   interface Announcement {
     description: string;
@@ -170,13 +173,29 @@
     </Actions>
   </Dialog>
 
-  <Dialog open={error_string !== ""} scrimClickAction="" escapeKeyAction="">
+  <Dialog
+    open={$loadingContent !== null}
+    scrimClickAction=""
+    escapeKeyAction=""
+  >
+    <div class="modal-inner">
+      <CircularProgress style="height: 32px; width: 32px;" indeterminate />
+      <div class="modal-label">
+        {@html $loadingContent}
+      </div>
+    </div>
+  </Dialog>
+
+  <Dialog open={$errorContent !== null} scrimClickAction="" escapeKeyAction="">
     <Header><Title>{l10n($curr_lang, "error")}</Title></Header>
-    <Content><pre>{error_string}</pre></Content>
+    <div class="modal-label" style="margin-left: 1.5rem">
+      {@html $errorContent}
+    </div>
     <Actions>
-      <GButton onClick={() => (error_string = "")}>OK</GButton>
+      <GButton onClick={() => ($errorContent = null)}>OK</GButton>
     </Actions>
   </Dialog>
+
   {#if !$pref_userpwd}
     <Login />
   {:else}
@@ -226,5 +245,17 @@
     overflow-y: scroll;
     padding: 0;
     margin: 0;
+  }
+
+  .modal-inner {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 2rem;
+    padding: 1rem;
+  }
+
+  .modal-label {
+    margin-left: 1rem;
   }
 </style>

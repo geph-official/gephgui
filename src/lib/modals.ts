@@ -1,8 +1,9 @@
 import { writable, type Writable } from "svelte/store";
 
-const loadingContent: Writable<string | null> = writable(null);
+export const loadingContent: Writable<string | null> = writable(null);
 
-const errorContent: Writable<string | null> = writable(null);
+export const errorContent: Writable<string | null> =
+  writable("oh no an errorrrrr");
 
 /**
  * Runs the provided async function, showing a loading spinner while the function runs.
@@ -30,7 +31,7 @@ export const runWithSpinner = async (
  * @returns {Promise<void>}
  */
 export const showErrorModal = (s: string) => {
-  new Promise<void>((resolve, reject) => {
+  return new Promise<void>((resolve, reject) => {
     errorContent.set(s);
     let us = errorContent.subscribe((s) => {
       if (s === null) {

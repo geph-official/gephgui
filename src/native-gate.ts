@@ -183,6 +183,7 @@ function mock_native_gate(): NativeGate {
     },
     sync_user_info: async (username, password) => {
       await random_sleep();
+
       if (username !== "bunsim") {
         throw "incorrect username";
       }

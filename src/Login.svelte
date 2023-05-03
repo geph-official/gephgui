@@ -6,6 +6,7 @@
   import { native_gate } from "./native-gate";
   import Register from "./login/Register.svelte";
   import { displayError } from "./lib/utils";
+  import { runWithSpinner, showErrorModal } from "./lib/modals";
 
   let username = "";
   let password = "";
@@ -46,18 +47,22 @@
     <GButton
       disabled={loading}
       onClick={async () => {
-        loading = true;
-        try {
-          await (await native_gate()).sync_user_info(username, password);
-          $pref_userpwd = {
-            username: username,
-            password: password,
-          };
-        } catch (err) {
-          displayError(err.toString());
-        } finally {
-          loading = false;
-        }
+        await showErrorModal("step 1");
+        await showErrorModal("step 2");
+        await runWithSpinner("Logging in...", async () => {
+          loading = true;
+          try {
+            await (await native_gate()).sync_user_info(username, password);
+            $pref_userpwd = {
+              username: username,
+              password: password,
+            };
+          } catch (err) {
+            displayError(err.toString());
+          } finally {
+            loading = false;
+          }
+        });
       }}>{l10n($curr_lang, "log-in-blurb")}</GButton
     >
     <br />
