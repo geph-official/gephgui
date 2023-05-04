@@ -27,6 +27,7 @@
   let exit_selection_open = false;
   let loading = true;
   const sync_exits = async () => {
+    let rval: any = null;
     await runWithSpinner(l10n($curr_lang, "loading") + "...", 0, async () => {
       loading = true;
       if ($pref_userpwd) {
@@ -51,11 +52,12 @@
             a.hostname.localeCompare(b.hostname)
         );
         loading = false;
-        return r;
+        rval = r;
       } else {
         throw "nothing";
       }
     });
+    return rval;
   };
 
   let blockSnackbar: SnackbarComponentDev;
