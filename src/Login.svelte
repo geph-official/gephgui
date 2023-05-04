@@ -2,11 +2,12 @@
   import Textfield from "@smui/textfield";
   import GButton from "./lib/GButton.svelte";
   import { curr_lang, l10n } from "./lib/l10n";
-  import { pref_userpwd } from "./lib/prefs";
-  import { native_gate } from "./native-gate";
+  import { pref_auth } from "./lib/prefs";
+  import { AuthKind, native_gate, type AuthPassword } from "./native-gate";
   import Register from "./login/Register.svelte";
 
   import { runWithSpinner, showErrorModal } from "./lib/modals";
+  import { get_credentials } from "./lib/utils";
 
   let username = "";
   let password = "";
@@ -23,6 +24,37 @@
     } else {
       return err;
     }
+  };
+
+  const handleLoginClick = async () => {
+    await runWithSpinner(
+      l10n($curr_lang, "logging-in") + "...",
+      0,
+      async () => {
+        loading = true;
+        try {
+          // TODO (stage 4): update this to accept keypair login!
+          let auth: AuthPassword = {
+            kind: AuthKind.Password,
+            username: username,
+            password: password,
+          };
+
+          let creds = get_credentials(auth);
+          let gate = await native_gate();
+          console.log("in login component!!!");
+          await gate.sync_user_info(creds);
+
+          $pref_auth = {
+            auth: auth,
+          };
+        } catch (err) {
+          await showErrorModal(translateError(err.toString()));
+        } finally {
+          loading = false;
+        }
+      }
+    );
   };
 </script>
 
@@ -54,28 +86,8 @@
       bind:value={password}
     />
     <br />
-    <GButton
-      disabled={loading}
-      onClick={async () => {
-        await runWithSpinner(
-          l10n($curr_lang, "logging-in") + "...",
-          0,
-          async () => {
-            loading = true;
-            try {
-              await (await native_gate()).sync_user_info(username, password);
-              $pref_userpwd = {
-                username: username,
-                password: password,
-              };
-            } catch (err) {
-              await showErrorModal(translateError(err.toString()));
-            } finally {
-              loading = false;
-            }
-          }
-        );
-      }}>{l10n($curr_lang, "log-in-blurb")}</GButton
+    <GButton disabled={loading} onClick={handleLoginClick}
+      >{l10n($curr_lang, "log-in-blurb")}</GButton
     >
     <br />
     <GButton inverted disabled={loading} onClick={() => (register_open = true)}

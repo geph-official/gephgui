@@ -8,12 +8,13 @@
   import LinearProgress from "@smui/linear-progress";
   import type { SnackbarComponentDev } from "@smui/snackbar";
   import Snackbar from "@smui/snackbar";
-  import { pref_userpwd } from "../lib/prefs";
+  import { pref_auth } from "../lib/prefs";
   import shuffle from "knuth-shuffle-seeded";
   import Flag from "../lib/Flag.svelte";
   import ExitSelector from "./ExitSelector.svelte";
   import InformationOutline from "svelte-material-icons/InformationOutline.svelte";
   import { runWithSpinner } from "../lib/modals";
+  import { get_credentials } from "../lib/utils";
 
   export let running: boolean;
   export let block_plus: boolean;
@@ -33,12 +34,10 @@
       250,
       async () => {
         loading = true;
-        if ($pref_userpwd) {
+        if ($pref_auth) {
           let gate = await native_gate();
-          const r = await gate.sync_exits(
-            $pref_userpwd.username,
-            $pref_userpwd.password
-          );
+          let creds = get_credentials($pref_auth.auth);
+          const r = await gate.sync_exits(creds);
           // shuffle and then deduplicate
           shuffle(r);
 

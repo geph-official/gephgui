@@ -84,7 +84,7 @@
   {#if $pref_auth}
     <UserInfo user_info={$user_info} />
   {:else}
-    <h1>NO USERPWD</h1>
+    <h1>Authentication info is not available</h1>
   {/if}
 
   <ActiveExit

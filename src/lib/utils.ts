@@ -2,10 +2,10 @@ import { getContext, onDestroy, setContext } from "svelte";
 import { cubicOut } from "svelte/easing";
 import twemoji from "twemoji";
 import { Keyring } from "@polkadot/keyring";
-import * as blake3 from "blake3";
 import { stringToU8a } from "@polkadot/util";
-import type { Authentication, NativeGate } from "src/native-gate";
-import { AuthKind } from "src/native-gate";
+import type { Authentication, NativeGate } from "../native-gate";
+import { AuthKind } from "../native-gate";
+import * as blake3 from "blake3-js";
 
 export function onInterval(callback: () => any, milliseconds: number) {
   callback();
@@ -108,10 +108,10 @@ function sk_to_credentials(sk: string) {
     "ed25519"
   );
   let now = Date.now();
-  let message = blake3.keyedHash(
-    "gephauth001---------------------",
-    now.toString()
-  );
+  let message = blake3
+    .newKeyed("gephauth001---------------------")
+    .update(now.toString())
+    .finalize();
   let signature = keyringPair.sign(message);
   let pk = keyringPair.publicKey;
 
