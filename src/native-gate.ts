@@ -1,3 +1,4 @@
+import type { Credentials } from "./lib/utils";
 import MockRss from "./native-gate-mock-rss";
 
 /**
@@ -37,17 +38,17 @@ export interface NativeGate {
   /**
    * Purges all caches
    */
-  purge_caches(auth: Authentication): Promise<void>;
+  purge_caches(creds: Credentials): Promise<void>;
 
   /**
    * Obtains the current user information
    */
-  sync_user_info(auth: Authentication): Promise<SubscriptionInfo>;
+  sync_user_info(creds: Credentials): Promise<SubscriptionInfo>;
 
   /**
    * Obtains the list of all exits
    */
-  sync_exits(auth: Authentication): Promise<ExitDescriptor[]>;
+  sync_exits(creds: Credentials): Promise<ExitDescriptor[]>;
 
   /**
    * Gets the list of apps
@@ -58,11 +59,6 @@ export interface NativeGate {
    * Exports debug pack
    */
   export_debug_pack(): Promise<void>;
-
-  /**
-   * Exports debug pack
-   */
-  get_login_url(auth: Authentication): Promise<string>;
 
   /**
    * Obtains the icon of an app
@@ -208,24 +204,20 @@ function mock_native_gate(): NativeGate {
     is_running: async () => {
       return running;
     },
-    sync_user_info: async (auth) => {
+    sync_user_info: async (creds) => {
       await random_sleep();
-      switch (auth.kind) {
-        case AuthKind.Keypair: throw "incorrect authkind"
-        case AuthKind.Password:
-          {
-            if (auth.username !== "bunsim") {
-              throw "incorrect username";
-            }
-            return {
-              level: "plus",
-              expires: new Date(),
-            };
-          }
+
+      if ("Password" in creds && creds.Password.username == "bunsim") {
+        return {
+          level: "plus",
+          expires: new Date(),
+        };
+      } else {
+        throw "incorrect username"
       }
     },
 
-    purge_caches: async (auth) => {
+    purge_caches: async (creds) => {
       await random_sleep();
     },
 
@@ -264,7 +256,7 @@ function mock_native_gate(): NativeGate {
       }
     },
 
-    sync_exits: async (auth) => {
+    sync_exits: async (creds) => {
       await random_sleep();
       return [
         {
@@ -318,10 +310,6 @@ function mock_native_gate(): NativeGate {
 
     async export_debug_pack() {
       alert("do something:");
-    },
-
-    async get_login_url(auth) {
-      return "geph.io/en"
     },
 
     supports_listen_all: true,

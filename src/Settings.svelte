@@ -30,7 +30,7 @@
     pref_use_app_whitelist,
     pref_use_prc_whitelist,
   } from "./lib/prefs";
-  import { AuthKind, native_gate } from "./native-gate";
+  import { native_gate } from "./native-gate";
   import GButton from "./lib/GButton.svelte";
   import AppPicker from "./settings/AppPicker.svelte";
 
@@ -39,6 +39,7 @@
   import { Actions, Content, Title } from "@smui/dialog";
   import Button from "@smui/button/src/Button.svelte";
   import { showErrorModal } from "./lib/modals";
+  import { get_credentials } from "./lib/utils";
 
   let app_picker_open = false;
 
@@ -59,16 +60,10 @@
     let gate = await native_gate();
     if ($pref_auth) {
       const copy = $pref_auth;
+      const creds = get_credentials(copy.auth);
       try {
-        // add a native-gate endpoint to
-        switch (copy.auth.kind) {
-          case AuthKind.Keypair: // TDOO!!!
-          case AuthKind.Password:
-            await gate.binder_rpc("delete_user", [
-              { username: copy.auth.username, password: copy.auth.password },
-            ]);
-        }
-        gate.purge_caches(copy.auth);
+        await gate.binder_rpc("delete_user", [creds]);
+        gate.purge_caches(creds);
       } catch (e) {
         await showErrorModal(e.toString());
       }
@@ -137,7 +132,20 @@
         <AccountCircle height="1.5rem" width="1.5rem" />
       </div>
       <div class="description">
-        <b>{$pref_userpwd ? $pref_userpwd.username : ""}</b>
+        <b>{
+          $pref_auth ? {
+            switch ($pref_auth.auth.kind) {
+              case AuthKind.Password: {
+                $pref_auth.auth.username
+                break;
+              }
+              case Authkind.Keypair: {
+                "OTP: password123secure"
+                break; 
+              }
+            }
+          }: ""
+        }</b>
       </div>
       // TODO: Match here! -->
       <div class="switch">

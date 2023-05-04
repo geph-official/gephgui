@@ -5,17 +5,13 @@
   import Heart from "svelte-material-icons/Heart.svelte";
   import Refresh from "svelte-material-icons/Refresh.svelte";
   import { curr_lang, l10n, l10n_date } from "../lib/l10n";
-  import { AuthKind, native_gate, type SubscriptionInfo } from "../native-gate";
+  import { native_gate, type SubscriptionInfo } from "../native-gate";
   import { pref_auth } from "../lib/prefs";
   import GButton from "../lib/GButton.svelte";
   import Button from "@smui/button";
   import { runWithSpinner } from "../lib/modals";
-  import { Keyring } from "@polkadot/keyring";
-  import * as blake3 from "blake3";
-  import { stringToU8a } from "@polkadot/util";
-  import { derived } from "svelte/store";
+  import { get_credentials, get_subscription_url } from "../lib/utils";
 
-  export let username: string;
   export let user_info: SubscriptionInfo | null = null;
 
   let loading = false;
@@ -29,7 +25,8 @@
         try {
           if ($pref_auth) {
             console.log("start purge");
-            await (await native_gate()).purge_caches($pref_auth.auth);
+            const creds = get_credentials($pref_auth.auth);
+            await (await native_gate()).purge_caches(creds);
             console.log("end purge purge");
           }
         } finally {
@@ -59,34 +56,9 @@
               return;
             }
 
-            switch (auth_store.auth.kind) {
-              case AuthKind.Keypair:
-                let sk = auth_store.auth.sk;
-                let keyring = new Keyring();
-                let keyringPair = keyring.addFromSeed(
-                  stringToU8a(sk),
-                  { name: "geph-sk" },
-                  "ed25519"
-                );
-                let now = Date.now();
-                let message = blake3.keyedHash(
-                  "gephauth001---------------------",
-                  now.toString()
-                );
-                let signature = keyringPair.sign(message);
-                let pk = keyringPair.publicKey;
+            let extend_url = await get_subscription_url(auth_store.auth, gate);
 
-                let creds = {
-                  pubkey: pk,
-                  unix_secs: now,
-                  signature,
-                };
-                let extend_url = await gate.binder_rpc("get_login_url", [
-                  creds,
-                ]);
-              case AuthKind.Password:
-              // TODO!
-            }
+            window.open(extend_url);
           }}>{l10n($curr_lang, "buy-plus")}</GButton
         >
       </div>
@@ -116,10 +88,15 @@
         <GButton
           onClick={async () => {
             let gate = await native_gate();
-            let extend_url = await gate.binder_rpc(
-              "get_login_url",
-              [""] // TODO!
-            );
+            let auth_store = $pref_auth;
+            if (!auth_store) {
+              // TODO: handle error with error modal shiny wow
+              return;
+            }
+
+            let extend_url = await get_subscription_url(auth_store.auth, gate);
+
+            window.open(extend_url);
           }}
         >
           {l10n($curr_lang, "extend")}

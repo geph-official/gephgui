@@ -22,9 +22,8 @@
     pref_use_app_whitelist,
     pref_protocol,
   } from "./lib/prefs";
-  import { onInterval } from "./lib/utils";
+  import { get_credentials, onInterval } from "./lib/utils";
   import { native_gate, type SubscriptionInfo } from "./native-gate";
-  import Announcements from "./Announcements.svelte";
 
   // Connections status things. We use a persistent store because on iOS and Android the webview can stop at any time.
   const connection_status: Writable<
@@ -41,8 +40,8 @@
         1000,
         async () => {
           if ($pref_auth) {
-            // TODO
-            $user_info = await gate.sync_user_info($pref_auth.auth);
+            let creds = get_credentials($pref_auth.auth);
+            $user_info = await gate.sync_user_info(creds);
           }
         }
       );
@@ -58,7 +57,8 @@
 
     const is_connected = is_running && (await gate.is_connected());
     if ($pref_selected_exit === null && $pref_auth) {
-      const exits = await gate.sync_exits($pref_auth.auth);
+      let creds = get_credentials($pref_auth.auth);
+      const exits = await gate.sync_exits(creds);
       if (exits.length > 0) {
         while (true) {
           let ridx = Math.floor(Math.random() * exits.length);
@@ -82,7 +82,7 @@
 
 <div class="home">
   {#if $pref_auth}
-    <UserInfo username={$pref_auth.username} user_info={$user_info} />
+    <UserInfo user_info={$user_info} />
   {:else}
     <h1>NO USERPWD</h1>
   {/if}
