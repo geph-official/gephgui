@@ -13,6 +13,7 @@
   import Flag from "../lib/Flag.svelte";
   import ExitSelector from "./ExitSelector.svelte";
   import InformationOutline from "svelte-material-icons/InformationOutline.svelte";
+  import { runWithSpinner } from "src/lib/modals";
 
   export let running: boolean;
   export let block_plus: boolean;
@@ -26,33 +27,35 @@
   let exit_selection_open = false;
   let loading = true;
   const sync_exits = async () => {
-    loading = true;
-    if ($pref_userpwd) {
-      let gate = await native_gate();
-      const r = await gate.sync_exits(
-        $pref_userpwd.username,
-        $pref_userpwd.password
-      );
-      // shuffle and then deduplicate
-      shuffle(r);
+    await runWithSpinner(l10n($curr_lang, "loading") + "...", 0, async () => {
+      loading = true;
+      if ($pref_userpwd) {
+        let gate = await native_gate();
+        const r = await gate.sync_exits(
+          $pref_userpwd.username,
+          $pref_userpwd.password
+        );
+        // shuffle and then deduplicate
+        shuffle(r);
 
-      r.sort(
-        (a, b) =>
-          a.allowed_levels
-            .includes("free")
-            .toString()
-            .localeCompare(b.allowed_levels.includes("free").toString()) *
-            1000 +
-          a.country_code.localeCompare(b.country_code) * 100 +
-          a.city_code.localeCompare(b.city_code) * 10 +
-          Math.sign(a.load - b.load) * 5 +
-          a.hostname.localeCompare(b.hostname)
-      );
-      loading = false;
-      return r;
-    } else {
-      throw "nothing";
-    }
+        r.sort(
+          (a, b) =>
+            a.allowed_levels
+              .includes("free")
+              .toString()
+              .localeCompare(b.allowed_levels.includes("free").toString()) *
+              1000 +
+            a.country_code.localeCompare(b.country_code) * 100 +
+            a.city_code.localeCompare(b.city_code) * 10 +
+            Math.sign(a.load - b.load) * 5 +
+            a.hostname.localeCompare(b.hostname)
+        );
+        loading = false;
+        return r;
+      } else {
+        throw "nothing";
+      }
+    });
   };
 
   let blockSnackbar: SnackbarComponentDev;
