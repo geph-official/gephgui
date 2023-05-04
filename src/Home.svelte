@@ -40,11 +40,9 @@
         l10n($curr_lang, "refreshing-user-info") + "...",
         1000,
         async () => {
-            if ($pref_auth) {
-                $user_info = await gate.sync_user_info($pref_auth.auth);
-            }
-              // TODO
-            );
+          if ($pref_auth) {
+            // TODO
+            $user_info = await gate.sync_user_info($pref_auth.auth);
           }
         }
       );

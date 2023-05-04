@@ -136,7 +136,9 @@ export enum AuthKind {
 
 export interface AuthKeypair {
   kind: AuthKind.Keypair;
-  sk_path: string;
+
+  // Hex-encoded secret key
+  sk: string;
 }
 
 export interface AuthPassword {
@@ -334,7 +336,7 @@ function mock_native_gate(): NativeGate {
         platform_details: "MockLinux Trololol",
         version: "0.0.0-mock",
       };
-    },
+    }
   };
 }
 

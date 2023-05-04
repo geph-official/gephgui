@@ -29,7 +29,7 @@ export function persistentWritable<T>(
  */
 export const pref_auth: Writable<{
   auth: Authentication
-} | null> = persistentWritable("userpwd", null);
+} | null> = persistentWritable("auth", null);
 
 /**
  * Selected exit
