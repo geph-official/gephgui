@@ -28,7 +28,7 @@
   let loading = true;
   const sync_exits = async () => {
     let rval: any = null;
-    await runWithSpinner(l10n($curr_lang, "loading") + "...", 0, async () => {
+    await runWithSpinner(l10n($curr_lang, "loading") + "...", 100, async () => {
       loading = true;
       if ($pref_userpwd) {
         let gate = await native_gate();
