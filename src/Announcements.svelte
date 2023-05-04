@@ -1,20 +1,22 @@
 <script lang="ts">
-  import { native_gate } from "./native-gate";
-  import { extractFromXml } from "@extractus/feed-extractor";
   import { detect, detectAll } from "tinyld";
   import { curr_lang, l10n_date } from "./lib/l10n";
-
+  import memoize from "memoizee";
   export let announces: any[];
+
+  const detectMemoized = memoize(detect);
 
   const isCurrentLanguage = (line: string) => {
     if ($curr_lang === "en") {
-      return detect(line) == "en";
+      return detectMemoized(line) == "en";
     } else if ($curr_lang.includes("zh")) {
       return (
-        detect(line) == "zh" || detect(line) == "ja" || detect(line) == "sr"
+        detectMemoized(line) == "zh" ||
+        detectMemoized(line) == "ja" ||
+        detectMemoized(line) == "sr"
       );
     } else if ($curr_lang.includes("fa")) {
-      return detect(line) == "fa";
+      return detectMemoized(line) == "fa";
     } else {
       return true;
     }
@@ -25,7 +27,7 @@
       .replace("<p>", '<p dir="auto">')
       .split("<br>")
       .filter((line) => {
-        console.log("detect", line, detect(line));
+        console.log("detect", line, detectMemoized(line));
         return line.length == 0 || isCurrentLanguage(line);
       })
       .map((line) => line.trim())

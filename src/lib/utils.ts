@@ -63,21 +63,6 @@ export function horizSlide(
 }
 
 /**
- * Sets the error handling context.
- */
-let error_callback = (err: string) => {};
-export function setErrorContext(callback: (err: string) => void) {
-  error_callback = callback;
-}
-
-/**
- * Report an error.
- */
-export function displayError(err: string) {
-  error_callback(err);
-}
-
-/**
  * Display emojis properly
  */
 export function emojify(node: HTMLElement) {

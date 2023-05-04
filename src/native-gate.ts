@@ -221,7 +221,6 @@ function mock_native_gate(): NativeGate {
             };
           }
       }
-
     },
 
     purge_caches: async (auth) => {
@@ -264,6 +263,7 @@ function mock_native_gate(): NativeGate {
     },
 
     sync_exits: async (auth) => {
+      await random_sleep();
       return [
         {
           hostname: "us-hio-03.exits.geph.io",

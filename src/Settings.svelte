@@ -4,6 +4,7 @@
   import Translate from "svelte-material-icons/Translate.svelte";
   import Creation from "svelte-material-icons/Creation.svelte";
   import DirectionsFork from "svelte-material-icons/DirectionsFork.svelte";
+  import ThemeLightDark from "svelte-material-icons/ThemeLightDark.svelte";
   import Protocol from "svelte-material-icons/Protocol.svelte";
   import ServerNetwork from "svelte-material-icons/ServerNetwork.svelte";
   import AccountCircle from "svelte-material-icons/AccountCircle.svelte";
@@ -20,6 +21,7 @@
   import {
     pref_eastereggs,
     pref_global_vpn,
+    pref_lightdark,
     pref_listen_all,
     pref_protocol,
     pref_proxy_autoconf,
@@ -32,10 +34,11 @@
   import GButton from "./lib/GButton.svelte";
   import AppPicker from "./settings/AppPicker.svelte";
 
-  import { displayError, emojify } from "./lib/utils";
+  import { emojify } from "./lib/utils";
   import Dialog from "@smui/dialog/src/Dialog.svelte";
   import { Actions, Content, Title } from "@smui/dialog";
   import Button from "@smui/button/src/Button.svelte";
+  import { showErrorModal } from "./lib/modals";
 
   let app_picker_open = false;
 
@@ -67,7 +70,7 @@
         }
         gate.purge_caches(copy.auth);
       } catch (e) {
-        displayError(e.toString());
+        await showErrorModal(e.toString());
       }
       $pref_auth = null;
     }
@@ -108,6 +111,22 @@
           <Option value="fa-IR">فارسی</Option>
         </Select>
       </div>
+    </div>
+
+    <div class="setting">
+      <div class="icon">
+        <ThemeLightDark height="1.5rem" width="1.5rem" />
+      </div>
+      <div class="description">{l10n($curr_lang, "theme")}</div>
+      <Select
+        variant="outlined"
+        style="width: 9rem"
+        bind:value={$pref_lightdark}
+      >
+        <Option value="light">{l10n($curr_lang, "light")}</Option>
+        <Option value="dark">{l10n($curr_lang, "dark")}</Option>
+        <Option value="auto">{l10n($curr_lang, "automatic")}</Option>
+      </Select>
     </div>
 
     <div class="divider" />
