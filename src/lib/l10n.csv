@@ -148,3 +148,4 @@ refreshing-user-info,Refreshing user info,正在刷新用户信息,正在刷新�
 invalid-username-or-password,Invalid username or password,无效的用户名或密码,無效的用戶名或密碼,نام کاربری یا کلمه عبور نادرست است
 login-server-overloaded,The login server is currently overloaded. Please try again later.,登录服务器当前超负载。请稍后重试。,登錄服務器當前超負荷。請稍後重試。,سرور ورود در حال حاضر فشارزا است. لطفا بعدا دوباره امتحان کنید.
 no-internet-connection,No Internet connection,无网络连接,無網絡連接,اتصال اینترنت وجود ندارد
+loading-server-list,Loading server list,正在加载服务器列表,正在加載伺服器列表,بارگذاری لیست سرور

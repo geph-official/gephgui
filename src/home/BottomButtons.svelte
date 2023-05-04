@@ -24,39 +24,43 @@
   let in_flux = false;
 
   // dialog stuff
-  let exit_selection_open = false;
+  let exit_list: ExitDescriptor[] | null = null;
   let loading = true;
   const sync_exits = async () => {
     let rval: any = null;
-    await runWithSpinner(l10n($curr_lang, "loading") + "...", 100, async () => {
-      loading = true;
-      if ($pref_userpwd) {
-        let gate = await native_gate();
-        const r = await gate.sync_exits(
-          $pref_userpwd.username,
-          $pref_userpwd.password
-        );
-        // shuffle and then deduplicate
-        shuffle(r);
+    await runWithSpinner(
+      l10n($curr_lang, "loading-server-list") + "...",
+      250,
+      async () => {
+        loading = true;
+        if ($pref_userpwd) {
+          let gate = await native_gate();
+          const r = await gate.sync_exits(
+            $pref_userpwd.username,
+            $pref_userpwd.password
+          );
+          // shuffle and then deduplicate
+          shuffle(r);
 
-        r.sort(
-          (a, b) =>
-            a.allowed_levels
-              .includes("free")
-              .toString()
-              .localeCompare(b.allowed_levels.includes("free").toString()) *
-              1000 +
-            a.country_code.localeCompare(b.country_code) * 100 +
-            a.city_code.localeCompare(b.city_code) * 10 +
-            Math.sign(a.load - b.load) * 5 +
-            a.hostname.localeCompare(b.hostname)
-        );
-        loading = false;
-        rval = r;
-      } else {
-        throw "nothing";
+          r.sort(
+            (a, b) =>
+              a.allowed_levels
+                .includes("free")
+                .toString()
+                .localeCompare(b.allowed_levels.includes("free").toString()) *
+                1000 +
+              a.country_code.localeCompare(b.country_code) * 100 +
+              a.city_code.localeCompare(b.city_code) * 10 +
+              Math.sign(a.load - b.load) * 5 +
+              a.hostname.localeCompare(b.hostname)
+          );
+          loading = false;
+          rval = r;
+        } else {
+          throw "nothing";
+        }
       }
-    });
+    );
     return rval;
   };
 
@@ -67,7 +71,12 @@
   <Snackbar bind:this={blockSnackbar}>
     <Label>{l10n($curr_lang, "plus-only-blurb")}</Label>
   </Snackbar>
-  <Dialog bind:open={exit_selection_open} fullscreen>
+  <Dialog
+    open={exit_list !== null}
+    fullscreen
+    scrimClickAction=""
+    escapeKeyAction=""
+  >
     <Header>
       <Title id="fullscreen-title">{l10n($curr_lang, "exit-selection")}</Title>
     </Header>
@@ -78,20 +87,16 @@
         {@html l10n($curr_lang, "plus-is-great")}
       {/if}
     </div>
-    {#key exit_selection_open}
-      {#await sync_exits()}
-        <LinearProgress />
-      {:then exit_list}
-        <ExitSelector
-          {exit_list}
-          {block_plus}
-          onSelect={(e) => {
-            onSelectExit(e);
-            exit_selection_open = false;
-          }}
-        />
-      {/await}
-    {/key}
+    {#if exit_list}
+      <ExitSelector
+        {exit_list}
+        {block_plus}
+        onSelect={(e) => {
+          onSelectExit(e);
+          exit_list = null;
+        }}
+      />
+    {/if}
   </Dialog>
 
   <GButton
@@ -100,7 +105,7 @@
     stretch
     inverted
     color="black"
-    onClick={() => (exit_selection_open = true)}
+    onClick={async () => (exit_list = await sync_exits())}
     >{l10n($curr_lang, "change-location")}</GButton
   >
   <div class="spacer" />

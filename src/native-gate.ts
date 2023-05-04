@@ -233,6 +233,7 @@ function mock_native_gate(): NativeGate {
     },
 
     sync_exits: async (username, password) => {
+      await random_sleep();
       return [
         {
           hostname: "us-hio-03.exits.geph.io",
