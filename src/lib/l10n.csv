@@ -17,17 +17,17 @@ p2p-yes,P2P allowed,允许BT,允許P2P,P2P مجاز
 p2p-no,P2P banned,禁止BT,禁止P2P,P2P غیرمجاز
 automatic,Auto,自动,自動,خودکار
 automatic-blurb,Uses best available server,使用最佳可用服务器,使用最佳可用伺服器,به بهترین سرور موجود وصل می‌شود
-change-location,Change Location,更改位置,更改位置,تغییر مکان
+change-location,Change location,更改位置,更改位置,تغییر مکان
 connect,Connect,连接,連接,اتصال
 disconnect,Disconnect,断开,斷開,قطع اتصال
-exit-selection,Select Exit Server,选择出口服务器,選擇出口伺服器,سرور خروجی را انتخاب کنید
+exit-selection,Select exit server,选择出口服务器,選擇出口伺服器,سرور خروجی را انتخاب کنید
 close,Close,关闭,關閉,بستن
 country,Country,国家,國家,کشور
 city,City,城市,城市,شهر
 server-id,ID,服务器 ID,伺服器 ID,شناسه
 allowed,Allowed,允许,允許,مجاز
 plus-only-blurb,Only Plus users are allowed on this server, select another one.,仅Plus用户允许访问此服务器,این سرور مخصوص اعضای پلاس است
-use-automatic,Automatically Select Server,自动选择服务器,自動選擇伺服器,انتخاب خودکار سرور
+use-automatic,Automatically select server,自动选择服务器,自動選擇伺服器,انتخاب خودکار سرور
 cancel,Cancel,取消,取消,لغو
 download,Download,下载,下載,دانلود
 upload,Upload,上传,上傳,آپلود
