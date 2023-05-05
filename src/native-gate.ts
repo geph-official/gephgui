@@ -208,6 +208,8 @@ function mock_native_gate(): NativeGate {
           total_recv_bytes: 1000000,
           total_send_bytes: 1,
         };
+      } else if (method === "get_logs") {
+        return MockLogs;
       } else {
         let pts = Array(400).fill(0);
         for (let i = 0; i < 400; i++) {
@@ -228,10 +230,7 @@ function mock_native_gate(): NativeGate {
         return true;
       } else if (method === "get_announcements") {
         return MockRss;
-      } else if (method === "get_logs") {
-        return MockLogs;
-      }
-      {
+      } else {
         throw "idk";
       }
     },
@@ -250,6 +249,42 @@ function mock_native_gate(): NativeGate {
         },
         {
           hostname: "us-hio-04.exits.geph.io",
+          city_code: "pdx",
+          country_code: "us",
+          signing_key:
+            "e0c3af135a4c835c1b7b9df3e01be4b69a1c00e948d12bf4df2c33e08d4cecff",
+          allowed_levels: ["free", "plus"],
+          load: 0.78,
+        },
+        {
+          hostname: "us-hio-04.exits.geph.io",
+          city_code: "pdx",
+          country_code: "us",
+          signing_key:
+            "e0c3af135a4c835c1b7b9df3e01be4b69a1c00e948d12bf4df2c33e08d4cecff",
+          allowed_levels: ["free", "plus"],
+          load: 0.78,
+        },
+        {
+          hostname: "us-hio-03.exits.geph.io",
+          city_code: "pdx",
+          country_code: "us",
+          signing_key:
+            "e0c3af135a4c835c1b7b9df3e01be4b69a1c00e948d12bf4df2c33e08d4cecff",
+          allowed_levels: ["free", "plus"],
+          load: 0.78,
+        },
+        {
+          hostname: "us-hio-05.exits.geph.io",
+          city_code: "pdx",
+          country_code: "us",
+          signing_key:
+            "e0c3af135a4c835c1b7b9df3e01be4b69a1c00e948d12bf4df2c33e08d4cecff",
+          allowed_levels: ["free", "plus"],
+          load: 0.78,
+        },
+        {
+          hostname: "us-hio-06.exits.geph.io",
           city_code: "pdx",
           country_code: "us",
           signing_key:

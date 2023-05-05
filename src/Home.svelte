@@ -50,7 +50,7 @@
     } catch (e) {
       await showErrorModal("error syncing info: " + JSON.stringify(e));
     }
-  }, 60000);
+  }, 1000);
 
   // the main monitor loop
   onInterval(async () => {
@@ -95,8 +95,6 @@
     connection={$connection_status}
     exit_descriptor={$pref_selected_exit}
   />
-
-  <Stats />
 
   {#key $pref_userpwd}
     <BottomButtons

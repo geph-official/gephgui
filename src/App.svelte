@@ -2,12 +2,10 @@
   import Tab, { Icon, Label } from "@smui/tab";
   import TabBar from "@smui/tab-bar";
   let active_tab = "Home";
-  let tabs = ["Home", "Announcements", "Settings"];
+  let tabs = ["Home", "Announcements", "Logs", "Settings"];
+  import CodeBracesBox from "svelte-material-icons/CodeBracesBox.svelte";
   import ViewDashBoard from "svelte-material-icons/ViewDashboard.svelte";
   import Bullhorn from "svelte-material-icons/Bullhorn.svelte";
-  import AlertCircleOutline from "svelte-material-icons/AlertCircleOutline.svelte";
-  import Bell from "svelte-material-icons/Bell.svelte";
-  import ChartMultiline from "svelte-material-icons/ChartMultiline.svelte";
   import CogBox from "svelte-material-icons/CogBox.svelte";
 
   import { curr_lang, l10n } from "./lib/l10n";
@@ -38,6 +36,7 @@
   import { extractFromXml } from "@extractus/feed-extractor";
   import { errorContent, loadingContent } from "./lib/modals";
   import CircularProgress from "@smui/circular-progress/src/CircularProgress.svelte";
+  import Logs from "./Logs.svelte";
 
   interface Announcement {
     description: string;
@@ -193,6 +192,9 @@
       {#if active_tab == "Announcements"}
         <Announcements announces={$announcements} />
       {/if}
+      {#if active_tab == "Logs"}
+        <Logs />
+      {/if}
       {#if active_tab == "Settings"}
         <Settings />
       {/if}
@@ -205,6 +207,8 @@
             <ViewDashBoard />
           {:else if tab == "Announcements"}
             <Bullhorn color={$announceHighlight && "red"} />
+          {:else if tab == "Logs"}
+            <CodeBracesBox />
           {:else if tab == "Settings"}
             <CogBox />
           {:else}
