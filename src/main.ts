@@ -51,7 +51,7 @@ window.addEventListener("load", (_) => {
           styleSheet.deleteRule(ri);
         }
 
-        // styleSheet.insertRule(":focus-visible { outline: none } ");
+        styleSheet.insertRule(":focus-visible { outline: none } ");
       }
     }
   } catch (ex) {
