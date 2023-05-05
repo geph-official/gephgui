@@ -76,6 +76,8 @@ export function emojify(node: HTMLElement) {
   };
 }
 
+export type RpcAuthKind = { Password: { password: string; username: string; } } | { Signature: {} };
+
 export type Credentials = { Password: { password: string; username: string; } } | { Keypair: Keypair };
 
 export interface Keypair {
@@ -83,6 +85,22 @@ export interface Keypair {
   unix_secs: number,
   signature: Uint8Array,
 };
+
+export function get_rpc_authkind(auth: Authentication): RpcAuthKind {
+  switch (auth.kind) {
+    case AuthKind.Password: {
+      return {
+        Password: {
+          username: auth.username,
+          password: auth.password,
+        }
+      }
+    }
+    case AuthKind.Keypair: {
+      return { Signature: {} }
+    }
+  }
+}
 
 export function get_credentials(auth: Authentication): Credentials {
   switch (auth.kind) {

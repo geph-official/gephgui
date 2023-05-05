@@ -22,7 +22,7 @@
     pref_use_app_whitelist,
     pref_protocol,
   } from "./lib/prefs";
-  import { get_credentials, onInterval } from "./lib/utils";
+  import { get_credentials, get_rpc_authkind, onInterval } from "./lib/utils";
   import { native_gate, type SubscriptionInfo } from "./native-gate";
 
   // Connections status things. We use a persistent store because on iOS and Android the webview can stop at any time.
@@ -40,8 +40,8 @@
         1000,
         async () => {
           if ($pref_auth) {
-            let creds = get_credentials($pref_auth.auth);
-            $user_info = await gate.sync_user_info(creds);
+            let rpc_authkind = get_rpc_authkind($pref_auth.auth);
+            $user_info = await gate.sync_user_info(rpc_authkind);
           }
         }
       );
@@ -57,8 +57,8 @@
 
     const is_connected = is_running && (await gate.is_connected());
     if ($pref_selected_exit === null && $pref_auth) {
-      let creds = get_credentials($pref_auth.auth);
-      const exits = await gate.sync_exits(creds);
+      let rpc_authkind = get_rpc_authkind($pref_auth.auth);
+      const exits = await gate.sync_exits(rpc_authkind);
       if (exits.length > 0) {
         while (true) {
           let ridx = Math.floor(Math.random() * exits.length);
@@ -102,7 +102,7 @@
         try {
           if ($pref_auth && $pref_selected_exit) {
             await gate.start_daemon({
-              auth: $pref_auth.auth,
+              auth: get_rpc_authkind($pref_auth.auth),
               exit_hostname: $pref_selected_exit.hostname,
               app_whitelist: $pref_use_app_whitelist
                 ? Object.keys($pref_app_whitelist).filter(

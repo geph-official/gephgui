@@ -1,4 +1,4 @@
-import type { Credentials } from "./lib/utils";
+import type { RpcAuthKind } from "./lib/utils";
 import MockRss from "./native-gate-mock-rss";
 
 /**
@@ -38,17 +38,17 @@ export interface NativeGate {
   /**
    * Purges all caches
    */
-  purge_caches(creds: Credentials): Promise<void>;
+  purge_caches(auth: RpcAuthKind): Promise<void>;
 
   /**
    * Obtains the current user information
    */
-  sync_user_info(creds: Credentials): Promise<SubscriptionInfo>;
+  sync_user_info(auth: RpcAuthKind): Promise<SubscriptionInfo>;
 
   /**
    * Obtains the list of all exits
    */
-  sync_exits(creds: Credentials): Promise<ExitDescriptor[]>;
+  sync_exits(auth: RpcAuthKind): Promise<ExitDescriptor[]>;
 
   /**
    * Gets the list of apps
@@ -150,14 +150,14 @@ export type Authentication = AuthKeypair | AuthPassword;
  */
 export interface DaemonArgs {
   // core arguments
-  auth: Authentication;
+  auth: RpcAuthKind;
 
   // connection stuff
   exit_hostname: string;
   force_bridges: boolean;
   force_protocol: string | null;
 
-  // platform-specific arguments
+  // platform-specific argumentsAuthentication
   app_whitelist: string[];
   prc_whitelist: boolean;
   vpn_mode: boolean;
@@ -204,10 +204,10 @@ function mock_native_gate(): NativeGate {
     is_running: async () => {
       return running;
     },
-    sync_user_info: async (creds) => {
+    sync_user_info: async (auth) => {
       await random_sleep();
 
-      if ("Password" in creds && creds.Password.username == "bunsim") {
+      if ("Password" in auth && auth.Password.username == "bunsim") {
         return {
           level: "plus",
           expires: new Date(),
@@ -217,7 +217,7 @@ function mock_native_gate(): NativeGate {
       }
     },
 
-    purge_caches: async (creds) => {
+    purge_caches: async (auth) => {
       await random_sleep();
     },
 
@@ -256,7 +256,7 @@ function mock_native_gate(): NativeGate {
       }
     },
 
-    sync_exits: async (creds) => {
+    sync_exits: async (auth) => {
       await random_sleep();
       return [
         {
