@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { onMount } from "svelte";
+
   import type { Writable } from "svelte/store";
 
   import Stats from "./home/Stats.svelte";
@@ -8,6 +10,11 @@
   const logs: Writable<[number, string][]> = persistentWritable("logs", []);
   let logs_container: HTMLElement;
   let running = false;
+  onMount(() => {
+    logs_container.scroll({
+      top: logs_container.scrollHeight,
+    });
+  });
   onInterval(async () => {
     if (!running) {
       running = true;
@@ -41,6 +48,7 @@
   <Stats />
   <div class="logs" bind:this={logs_container}>
     {#each $logs as [tstamp, line]}
+      {new Date(tstamp * 1000.0).toISOString().replace(".000Z", "")}
       {line.replace(/\[.*?\s/s, "[").trim()}<br />
     {/each}
   </div>
