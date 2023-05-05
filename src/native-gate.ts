@@ -1,4 +1,5 @@
 import MockRss from "./native-gate-mock-rss";
+import MockLogs from "./native-gate-mock-logs";
 
 /**
  * An object that represents the communication interface with the native side of a Geph frontend.
@@ -27,12 +28,12 @@ export interface NativeGate {
   /**
    * Calls the daemon RPC endpoint
    */
-  daemon_rpc(method: string, args: any[]): Promise<any>;
+  daemon_rpc(method: string, args: any[]): Promise<unknown>;
 
   /**
    * Calls the binder RPC endpoint
    */
-  binder_rpc(method: string, args: any[]): Promise<any>;
+  binder_rpc(method: string, args: any[]): Promise<unknown>;
 
   /**
    * Purges all caches
@@ -227,7 +228,10 @@ function mock_native_gate(): NativeGate {
         return true;
       } else if (method === "get_announcements") {
         return MockRss;
-      } else {
+      } else if (method === "get_logs") {
+        return MockLogs;
+      }
+      {
         throw "idk";
       }
     },
