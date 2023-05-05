@@ -41,7 +41,7 @@
   <Stats />
   <div class="logs" bind:this={logs_container}>
     {#each $logs as [tstamp, line]}
-      {line.replace(/\[.*?\s/g, "[").trim()}<br />
+      {line.replace(/\[.*?\s/s, "[").trim()}<br />
     {/each}
   </div>
 </div>
