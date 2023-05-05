@@ -10,7 +10,11 @@
   import GButton from "../lib/GButton.svelte";
   import Button from "@smui/button";
   import { runWithSpinner } from "../lib/modals";
-  import { get_credentials, get_subscription_url } from "../lib/utils";
+  import {
+    get_credentials,
+    get_rpc_authkind,
+    get_subscription_url,
+  } from "../lib/utils";
 
   export let user_info: SubscriptionInfo | null = null;
 
@@ -25,8 +29,8 @@
         try {
           if ($pref_auth) {
             console.log("start purge");
-            const creds = get_credentials($pref_auth.auth);
-            await (await native_gate()).purge_caches(creds);
+            const auth_kind = get_rpc_authkind($pref_auth.auth);
+            await (await native_gate()).purge_caches(auth_kind);
             console.log("end purge purge");
           }
         } finally {

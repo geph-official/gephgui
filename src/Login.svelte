@@ -7,7 +7,7 @@
   import Register from "./login/Register.svelte";
 
   import { runWithSpinner, showErrorModal } from "./lib/modals";
-  import { get_credentials } from "./lib/utils";
+  import { get_credentials, get_rpc_authkind } from "./lib/utils";
 
   let username = "";
   let password = "";
@@ -40,10 +40,9 @@
             password: password,
           };
 
-          let creds = get_credentials(auth);
+          let rpc_authkind = get_rpc_authkind(auth);
           let gate = await native_gate();
-          console.log("in login component!!!");
-          await gate.sync_user_info(creds);
+          await gate.sync_user_info(rpc_authkind);
 
           $pref_auth = {
             auth: auth,
