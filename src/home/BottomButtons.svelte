@@ -14,7 +14,7 @@
   import ExitSelector from "./ExitSelector.svelte";
   import InformationOutline from "svelte-material-icons/InformationOutline.svelte";
   import { runWithSpinner } from "../lib/modals";
-  import { get_credentials } from "../lib/utils";
+  import { get_credentials, get_rpc_authkind } from "../lib/utils";
 
   export let running: boolean;
   export let block_plus: boolean;
@@ -36,8 +36,8 @@
         loading = true;
         if ($pref_auth) {
           let gate = await native_gate();
-          let creds = get_credentials($pref_auth.auth);
-          const r = await gate.sync_exits(creds);
+          let rpc_authkind = get_rpc_authkind($pref_auth.auth);
+          const r = await gate.sync_exits(rpc_authkind);
           // shuffle and then deduplicate
           shuffle(r);
 

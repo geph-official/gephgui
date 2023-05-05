@@ -48,7 +48,7 @@
     } catch (e) {
       await showErrorModal("error syncing info: " + JSON.stringify(e));
     }
-  }, 60000);
+  }, 1000);
 
   // the main monitor loop
   onInterval(async () => {

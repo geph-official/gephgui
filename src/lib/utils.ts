@@ -142,7 +142,7 @@ function sk_to_credentials(sk: string) {
   };
 }
 
-export async function get_subscription_url(auth: Authentication, gate: NativeGate): Promise<string> {
+export async function get_subscription_url(auth: Authentication, gate: NativeGate): Promise<unknown> {
   let creds = get_credentials(auth);
   return await gate.binder_rpc("get_login_url", [creds]);
 }

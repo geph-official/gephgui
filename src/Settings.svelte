@@ -30,16 +30,17 @@
     pref_use_app_whitelist,
     pref_use_prc_whitelist,
   } from "./lib/prefs";
-  import { native_gate } from "./native-gate";
+  import { native_gate, type Authentication, AuthKind } from "./native-gate";
   import GButton from "./lib/GButton.svelte";
   import AppPicker from "./settings/AppPicker.svelte";
 
-  import { emojify } from "./lib/utils";
+  import { emojify, get_rpc_authkind } from "./lib/utils";
   import Dialog from "@smui/dialog/src/Dialog.svelte";
   import { Actions, Content, Title } from "@smui/dialog";
   import Button from "@smui/button/src/Button.svelte";
   import { showErrorModal } from "./lib/modals";
   import { get_credentials } from "./lib/utils";
+  import { auto } from "darkreader";
 
   let app_picker_open = false;
 
@@ -63,7 +64,7 @@
       const creds = get_credentials(copy.auth);
       try {
         await gate.binder_rpc("delete_user", [creds]);
-        gate.purge_caches(creds);
+        gate.purge_caches(get_rpc_authkind(copy.auth));
       } catch (e) {
         await showErrorModal(e.toString());
       }
@@ -83,6 +84,17 @@
     if (eggcount > 5) {
       alert("eastereggs activated");
       $pref_eastereggs = true;
+    }
+  };
+
+  const usernameOrOtp = (auth: Authentication) => {
+    switch (auth.kind) {
+      case AuthKind.Password: {
+        return auth.username;
+      }
+      case AuthKind.Keypair: {
+        return "OTP: password123secure";
+      }
     }
   };
 </script>
@@ -128,26 +140,12 @@
     <div class="subtitle">{l10n($curr_lang, "account")}</div>
 
     <div class="setting">
-      <!-- <div class="icon">
+      <div class="icon">
         <AccountCircle height="1.5rem" width="1.5rem" />
       </div>
       <div class="description">
-        <b>{
-          $pref_auth ? {
-            switch ($pref_auth.auth.kind) {
-              case AuthKind.Password: {
-                $pref_auth.auth.username
-                break;
-              }
-              case Authkind.Keypair: {
-                "OTP: password123secure"
-                break; 
-              }
-            }
-          }: ""
-        }</b>
+        <b>{$pref_auth ? usernameOrOtp($pref_auth.auth) : ""}</b>
       </div>
-      // TODO: Match here! -->
       <div class="switch">
         <GButton color="warning" inverted onClick={on_logout}
           >{l10n($curr_lang, "logout")}</GButton
