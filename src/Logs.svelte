@@ -62,7 +62,8 @@
     padding: 0.5rem;
     margin-top: 1rem;
     border: 1px solid black;
-    font-family: "Roboto Mono", "Menlo", "Consolas", monospace;
+    font-family: "Roboto Mono", "Iosevka", "Menlo", "Consolas", "DejaVu Mono",
+      monospace;
     flex-grow: 1;
     overflow-y: scroll;
     overflow-x: scroll;
