@@ -22,7 +22,7 @@
     pref_use_app_whitelist,
     pref_protocol,
   } from "./lib/prefs";
-  import { get_credentials, get_rpc_authkind, onInterval } from "./lib/utils";
+  import { get_rpc_authkind, onInterval } from "./lib/utils";
   import { native_gate, type SubscriptionInfo } from "./native-gate";
 
   // Connections status things. We use a persistent store because on iOS and Android the webview can stop at any time.

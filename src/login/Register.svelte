@@ -3,11 +3,12 @@
 
   import Dialog, { Actions, Content, Header, Title } from "@smui/dialog";
   import Textfield from "@smui/textfield";
-  import { native_gate } from "../native-gate";
+  import { AuthKind, native_gate, type AuthPassword } from "../native-gate";
   import { curr_lang, l10n } from "../lib/l10n";
   import GButton from "../lib/GButton.svelte";
   import { onMount } from "svelte";
   import { prevent_default } from "svelte/internal";
+  import { get_credentials } from "../lib/utils";
 
   export let open: boolean;
   let username = "";
@@ -29,6 +30,14 @@
     error_string = e;
     setTimeout(() => (error_string = ""), 5000);
   };
+
+  const build_auth = (username: string, password: string): AuthPassword => {
+    return {
+      kind: AuthKind.Password,
+      username,
+      password
+    }
+  }
 
   export let onRegisterSuccess: (username: string, password: string) => void;
 
@@ -87,9 +96,10 @@
       onClick={async () => {
         try {
           let gate = await native_gate();
-          await gate.binder_rpc("register_user", [
-            username,
-            password,
+          let auth = build_auth(username, password);
+          let creds = get_credentials(auth);
+          await gate.binder_rpc("register_user_v2", [
+            creds,
             captcha_id,
             captcha_soln,
           ]);
