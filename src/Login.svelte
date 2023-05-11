@@ -104,10 +104,7 @@
       <GButton inverted disabled={loading} onClick={() => (register_open = true)}>
         {l10n($curr_lang, "register-blurb")}
       </GButton>
-      <br />
-    {/if}
-
-    {#if !pubkey_login}
+    {:else}
       <Textfield
         variant="outlined"
         label={l10n($curr_lang, "username")}

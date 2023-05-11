@@ -2,7 +2,7 @@ import { getContext, onDestroy, setContext } from "svelte";
 import { cubicOut } from "svelte/easing";
 import twemoji from "twemoji";
 import { Keyring } from "@polkadot/keyring";
-import { stringToU8a } from "@polkadot/util";
+import { hexToU8a } from "@polkadot/util";
 import type { Authentication, NativeGate } from "../native-gate";
 import { AuthKind } from "../native-gate";
 import * as blake3 from "blake3-js";
@@ -125,7 +125,7 @@ export function get_credentials(auth: Authentication): Credentials {
 function sk_to_credentials(sk: string): Credentials {
   let keyring = new Keyring();
   let keypair = keyring.addFromSeed(
-    stringToU8a(sk),
+    hexToU8a(sk),
     { name: "geph-sk" },
     "ed25519"
   );

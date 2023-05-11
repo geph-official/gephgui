@@ -7,8 +7,8 @@
   import GButton from "../lib/GButton.svelte";
   import { onMount } from "svelte";
   import { get_credentials } from "../lib/utils";
-  import { u8aToString } from "@polkadot/util";
-  import { ed25519PairFromSeed, mnemonicGenerate, mnemonicToMiniSecret } from "@polkadot/util-crypto";
+  import { u8aToHex } from "@polkadot/util";
+  import { mnemonicGenerate, mnemonicToMiniSecret } from "@polkadot/util-crypto";
 
   export let open: boolean;
 
@@ -31,13 +31,12 @@
     setTimeout(() => (error_string = ""), 5000);
   };
 
-  const generate_sk = () => {
+  const generate_secret = () => {
     const phrase = mnemonicGenerate();
-    const seed = mnemonicToMiniSecret(phrase);
-    const { secretKey } = ed25519PairFromSeed(seed);
-    const sk = u8aToString(secretKey);
+    const secret = mnemonicToMiniSecret(phrase);
 
-    return sk;
+    return u8aToHex(secret);
+
   }
 
   const build_auth = (sk: string): AuthKeypair => {
@@ -69,12 +68,14 @@
         <img class="captcha" alt="empty captcha"/>
       {/if}
         <div class="divider" />
+
         <Textfield
           variant="outlined"
           type="numeric"
           label={l10n($curr_lang, "captcha")}
           bind:value={captcha_soln}
         />
+
       {#if error_string !== ""}
         <div class="error">{error_string}</div>
       {/if}
@@ -94,7 +95,7 @@
       onClick={async () => {
         try {
           let gate = await native_gate();
-          let sk = generate_sk();
+          let sk = generate_secret();
           let auth = build_auth(sk);
           let creds = get_credentials(auth);
 
