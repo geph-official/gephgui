@@ -2,7 +2,7 @@ import { getContext, onDestroy, setContext } from "svelte";
 import { cubicOut } from "svelte/easing";
 import twemoji from "twemoji";
 import { Keyring } from "@polkadot/keyring";
-import { hexToU8a } from "@polkadot/util";
+import { hexToU8a, u8aToHex } from "@polkadot/util";
 import type { Authentication, NativeGate } from "../native-gate";
 import { AuthKind } from "../native-gate";
 import * as blake3 from "blake3-js";
@@ -81,9 +81,9 @@ export type RpcAuthKind = { Password: { password: string; username: string; } } 
 export type Credentials = { Password: { password: string; username: string; } } | { Signature: SignatureCreds };
 
 export interface SignatureCreds {
-  pubkey: Uint8Array,
+  pubkey: string,
   unix_secs: number,
-  signature: Uint8Array,
+  signature: number[],
 };
 
 export function get_rpc_authkind(auth: Authentication): RpcAuthKind {
@@ -134,12 +134,13 @@ function sk_to_credentials(sk: string): Credentials {
     .newKeyed("gephauth001---------------------")
     .update(now.toString())
     .finalize();
-  let signature = keypair.sign(message);
-  let pk = keypair.publicKey;
+  let pubkey = u8aToHex(keypair.publicKey).replace("0x", "");
+  // Uint8Array -> hex string -> number[] byte array
+  let signature = u8aToHex(keypair.sign(message)).replace("0x", "").match(/.{1,2}/g)?.map(pair => parseInt(pair, 16))!;
 
   return {
     Signature: {
-      pubkey: pk,
+      pubkey,
       unix_secs: now,
       signature,
     }

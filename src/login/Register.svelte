@@ -36,7 +36,6 @@
     const secret = mnemonicToMiniSecret(phrase);
 
     return u8aToHex(secret);
-
   }
 
   const build_auth = (sk: string): AuthKeypair => {
@@ -98,6 +97,7 @@
           let sk = generate_secret();
           let auth = build_auth(sk);
           let creds = get_credentials(auth);
+          console.log("credentials: ", creds);
 
           await gate.binder_rpc("register_user_v2", [
             creds,
