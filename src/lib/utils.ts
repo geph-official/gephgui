@@ -76,11 +76,11 @@ export function emojify(node: HTMLElement) {
   };
 }
 
-export type RpcAuthKind = { Password: { password: string; username: string; } } | { Signature: {} };
+export type RpcAuthKind = { Password: { password: string; username: string; } } | { Signature: { sk: string; } };
 
-export type Credentials = { Password: { password: string; username: string; } } | { Keypair: Keypair };
+export type Credentials = { Password: { password: string; username: string; } } | { Signature: SignatureCreds };
 
-export interface Keypair {
+export interface SignatureCreds {
   pubkey: Uint8Array,
   unix_secs: number,
   signature: Uint8Array,
@@ -97,7 +97,11 @@ export function get_rpc_authkind(auth: Authentication): RpcAuthKind {
       }
     }
     case AuthKind.Keypair: {
-      return { Signature: {} }
+      return { 
+        Signature: {
+          sk: auth.sk
+        } 
+      }
     }
   }
 }
@@ -118,9 +122,9 @@ export function get_credentials(auth: Authentication): Credentials {
   }
 }
 
-function sk_to_credentials(sk: string) {
+function sk_to_credentials(sk: string): Credentials {
   let keyring = new Keyring();
-  let keyringPair = keyring.addFromSeed(
+  let keypair = keyring.addFromSeed(
     stringToU8a(sk),
     { name: "geph-sk" },
     "ed25519"
@@ -130,11 +134,11 @@ function sk_to_credentials(sk: string) {
     .newKeyed("gephauth001---------------------")
     .update(now.toString())
     .finalize();
-  let signature = keyringPair.sign(message);
-  let pk = keyringPair.publicKey;
+  let signature = keypair.sign(message);
+  let pk = keypair.publicKey;
 
   return {
-    Keypair: {
+    Signature: {
       pubkey: pk,
       unix_secs: now,
       signature,

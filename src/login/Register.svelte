@@ -1,22 +1,22 @@
 <script lang="ts">
-  import Button, { Label } from "@smui/button";
-
+  import { Label } from "@smui/button";
   import Dialog, { Actions, Content, Header, Title } from "@smui/dialog";
   import Textfield from "@smui/textfield";
-  import { AuthKind, native_gate, type AuthPassword } from "../native-gate";
+  import { AuthKind, native_gate, type AuthKeypair } from "../native-gate";
   import { curr_lang, l10n } from "../lib/l10n";
   import GButton from "../lib/GButton.svelte";
   import { onMount } from "svelte";
-  import { prevent_default } from "svelte/internal";
   import { get_credentials } from "../lib/utils";
+  import { u8aToString } from "@polkadot/util";
+  import { ed25519PairFromSeed, mnemonicGenerate, mnemonicToMiniSecret } from "@polkadot/util-crypto";
 
   export let open: boolean;
-  let username = "";
-  let password = "";
+
   let captcha_soln = "";
 
   let captcha_data: string | null = null;
   let captcha_id: string = "";
+
   const load_captcha = async () => {
     let gate = await native_gate();
     const captcha = await gate.binder_rpc("get_captcha", []);
@@ -31,52 +31,50 @@
     setTimeout(() => (error_string = ""), 5000);
   };
 
-  const build_auth = (username: string, password: string): AuthPassword => {
+  const generate_sk = () => {
+    const phrase = mnemonicGenerate();
+    const seed = mnemonicToMiniSecret(phrase);
+    const { secretKey } = ed25519PairFromSeed(seed);
+    const sk = u8aToString(secretKey);
+
+    return sk;
+  }
+
+  const build_auth = (sk: string): AuthKeypair => {
     return {
-      kind: AuthKind.Password,
-      username,
-      password
+      kind: AuthKind.Keypair,
+      sk,
     }
   }
 
-  export let onRegisterSuccess: (username: string, password: string) => void;
+  export let onRegisterSuccess: (sk: string) => void;
 
   onMount(load_captcha);
 </script>
 
 <Dialog bind:open scrimClickAction="" escapeKeyAction="">
-  <Header
-    ><Title id="fullscreen-title">{l10n($curr_lang, "register")}</Title></Header
-  >
+  <Header>
+    <Title id="fullscreen-title">{l10n($curr_lang, "register")}</Title>
+  </Header>
+
   <Content>
     <div class="form">
-      <Textfield
-        variant="outlined"
-        label={l10n($curr_lang, "username")}
-        bind:value={username}
-      />
-      <div class="divider" />
-      <Textfield
-        variant="outlined"
-        type="password"
-        label={l10n($curr_lang, "password")}
-        bind:value={password}
-      />
-      <div class="divider" />
       {#if captcha_data}
         <img
           class="captcha"
           src={"data:image/png;base64," + captcha_data}
-        />{:else}
-        <img class="captcha" />
+          alt="captcha"
+        />
+      {:else}
+        <img class="captcha" alt="empty captcha"/>
       {/if}
-      <div class="divider" />
-      <Textfield
-        variant="outlined"
-        type="numeric"
-        label={l10n($curr_lang, "captcha")}
-        bind:value={captcha_soln}
-      />
+        <div class="divider" />
+        <Textfield
+          variant="outlined"
+          type="numeric"
+          label={l10n($curr_lang, "captcha")}
+          bind:value={captcha_soln}
+        />
       {#if error_string !== ""}
         <div class="error">{error_string}</div>
       {/if}
@@ -96,14 +94,17 @@
       onClick={async () => {
         try {
           let gate = await native_gate();
-          let auth = build_auth(username, password);
+          let sk = generate_sk();
+          let auth = build_auth(sk);
           let creds = get_credentials(auth);
+
           await gate.binder_rpc("register_user_v2", [
             creds,
             captcha_id,
             captcha_soln,
           ]);
-          onRegisterSuccess(username, password);
+
+          onRegisterSuccess(sk);
           open = false;
         } catch (e) {
           show_error(e.toString());

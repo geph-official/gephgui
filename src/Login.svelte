@@ -3,11 +3,15 @@
   import GButton from "./lib/GButton.svelte";
   import { curr_lang, l10n } from "./lib/l10n";
   import { pref_auth } from "./lib/prefs";
-  import { AuthKind, native_gate, type AuthPassword } from "./native-gate";
+  import { AuthKind, native_gate, type Authentication } from "./native-gate";
   import Register from "./login/Register.svelte";
 
   import { runWithSpinner, showErrorModal } from "./lib/modals";
-  import { get_credentials, get_rpc_authkind } from "./lib/utils";
+  import { get_rpc_authkind } from "./lib/utils";
+
+  let pubkey_login = true;
+
+  let secret = "";
 
   let username = "";
   let password = "";
@@ -33,12 +37,20 @@
       async () => {
         loading = true;
         try {
-          // TODO (stage 4): update this to accept keypair login!
-          let auth: AuthPassword = {
-            kind: AuthKind.Password,
-            username: username,
-            password: password,
-          };
+          let auth: Authentication;
+          
+          if (pubkey_login) {
+            auth = {
+              kind: AuthKind.Keypair,
+              sk: secret
+            }
+          } else {
+            auth = {
+              kind: AuthKind.Password,
+              username: username,
+              password: password,
+            };
+          }
 
           let rpc_authkind = get_rpc_authkind(auth);
           let gate = await native_gate();
@@ -61,37 +73,72 @@
   {#if register_open}
     <Register
       bind:open={register_open}
-      onRegisterSuccess={(u, p) => {
-        console.log(u, p);
-        username = u;
-        password = p;
+      onRegisterSuccess={(s) => {
+        console.log(s);
+        secret = s;
       }}
     />
   {/if}
-  <img class="big-logo" src="gephlogo.png" />
+  <img class="big-logo" src="gephlogo.png" alt="big logo" />
   <div class="form">
-    <Textfield
-      variant="outlined"
-      label={l10n($curr_lang, "username")}
-      bind:value={username}
-      input$autocorrect="off"
-      input$autocapitalize="none"
-    />
-    <br />
-    <Textfield
-      variant="outlined"
-      type="password"
-      label={l10n($curr_lang, "password")}
-      bind:value={password}
-    />
-    <br />
-    <GButton disabled={loading} onClick={handleLoginClick}
-      >{l10n($curr_lang, "log-in-blurb")}</GButton
-    >
-    <br />
-    <GButton inverted disabled={loading} onClick={() => (register_open = true)}
-      >{l10n($curr_lang, "register-blurb")}</GButton
-    >
+    {#if pubkey_login}
+      <Textfield
+        variant="outlined"
+        label={l10n($curr_lang, "secret")}
+        bind:value={secret}
+        input$autocorrect="off"
+        input$autocapitalize="none"
+      />
+      <br />
+
+      <GButton disabled={loading} onClick={handleLoginClick}>
+        {l10n($curr_lang, "log-in-blurb")}
+      </GButton>
+      <br />
+
+      <GButton inverted disabled={loading} onClick={() => (pubkey_login = false)}>
+        {l10n($curr_lang, "password-login")}
+      </GButton>
+      <br />
+
+      <GButton inverted disabled={loading} onClick={() => (register_open = true)}>
+        {l10n($curr_lang, "register-blurb")}
+      </GButton>
+      <br />
+    {/if}
+
+    {#if !pubkey_login}
+      <Textfield
+        variant="outlined"
+        label={l10n($curr_lang, "username")}
+        bind:value={username}
+        input$autocorrect="off"
+        input$autocapitalize="none"
+      />
+      <br />
+
+      <Textfield
+        variant="outlined"
+        type="password"
+        label={l10n($curr_lang, "password")}
+        bind:value={password}
+      />
+      <br />
+
+      <GButton disabled={loading} onClick={handleLoginClick}>
+        {l10n($curr_lang, "log-in-blurb")}
+      </GButton>
+      <br />
+
+      <GButton inverted disabled={loading} onClick={() => (pubkey_login = true)}>
+        {l10n($curr_lang, "keypair-login")}
+      </GButton>
+      <br />
+
+      <GButton inverted disabled={loading} onClick={() => (register_open = true)}>
+        {l10n($curr_lang, "register-blurb")}
+      </GButton>
+    {/if}
   </div>
 </div>
 

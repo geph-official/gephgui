@@ -37,6 +37,9 @@ via,Via,经由,經由,از طریق
 packet-loss,Packet Loss,丟包,丟包,Packet Loss
 username,Username,用户名,用戶名,نام کاربری
 password,Password,密码,密碼,رمزعبور
+secret,Secret Key,密钥,密鑰,کلید مخفی
+password-login,Login with username and password,使用用户名和密码登录,使用用戶名和密碼登錄,با نام کاربری و رمز عبور وارد شوید
+keypair-login,Login with a secret key,使用密钥登录,使用密鑰登錄,با یک کلید مخفی وارد شوید
 log-in-blurb,Log in with existing account,使用已有帐号登录,使用已有帳號登錄,ورود به حساب کاربری موجود
 register-blurb,Create a new account,创建新帐号,創建新帳號,ایجاد حساب کاربری جدید
 register,Register,注册,註冊,افتتاح حساب
