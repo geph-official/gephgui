@@ -10,11 +10,18 @@
   const logs: Writable<[number, string][]> = persistentWritable("logs", []);
   let logs_container: HTMLElement;
   let running = false;
+
+  // Function to check if the screen is scrolled to the bottom
+  function shouldScrollToBottom(element: HTMLElement): boolean {
+    return element.scrollHeight - element.scrollTop - element.clientHeight < 5;
+  }
+
   onMount(() => {
     logs_container.scroll({
       top: logs_container.scrollHeight,
     });
   });
+
   onInterval(async () => {
     if (!running) {
       running = true;
@@ -35,12 +42,14 @@
           if ($logs.length > 1000) {
             $logs = $logs.slice($logs.length / 2); // set $logs to latter half of $logs
           }
-          setTimeout(() => {
-            logs_container.scroll({
-              top: logs_container.scrollHeight,
-              // behavior: "smooth",
-            });
-          }, 500);
+          if (shouldScrollToBottom(logs_container)) {
+            setTimeout(() => {
+              logs_container.scroll({
+                top: logs_container.scrollHeight,
+                behavior: "smooth",
+              });
+            }, 100);
+          }
         } catch (e) {}
       } finally {
         running = false;
