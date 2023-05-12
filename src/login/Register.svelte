@@ -97,7 +97,6 @@
           let sk = generate_secret();
           let auth = build_auth(sk);
           let creds = get_credentials(auth);
-          console.log("credentials: ", creds);
 
           await gate.binder_rpc("register_user_v2", [
             creds,
@@ -105,7 +104,7 @@
             captcha_soln,
           ]);
 
-          onRegisterSuccess(sk);
+          onRegisterSuccess(sk.replace("0x", ""));
           open = false;
         } catch (e) {
           show_error(e.toString());
