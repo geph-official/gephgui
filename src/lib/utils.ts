@@ -2,6 +2,7 @@ import { getContext, onDestroy, setContext } from "svelte";
 import { cubicOut } from "svelte/easing";
 import twemoji from "twemoji";
 import { Keyring } from "@polkadot/keyring";
+import type { Keypair } from '@polkadot/util-crypto/types';
 import { hexToU8a, u8aToHex } from "@polkadot/util";
 import type { Authentication, NativeGate } from "../native-gate";
 import { AuthKind } from "../native-gate";
@@ -99,7 +100,7 @@ export function get_rpc_authkind(auth: Authentication): RpcAuthKind {
     case AuthKind.Keypair: {
       return { 
         Signature: {
-          sk: auth.sk
+          sk: u8aToHex(auth.sk).replace("0x", ""),
         } 
       }
     }
@@ -117,31 +118,33 @@ export function get_credentials(auth: Authentication): Credentials {
       }
     }
     case AuthKind.Keypair: {
-      return sk_to_credentials(auth.sk);
+      return sk_to_credentials(auth.sk, auth.pk);
     }
   }
 }
 
-function sk_to_credentials(sk: string): Credentials {
-  let keyring = new Keyring();
-  let keypair = keyring.addFromSeed(
-    hexToU8a(sk),
-    { name: "geph-sk" },
-    "ed25519"
-  );
-  let now = Date.now();
-  let message = blake3
+function sk_to_credentials(secretKey: Uint8Array, publicKey: Uint8Array): Credentials {
+  const keypair: Keypair = {
+    secretKey,
+    publicKey,
+  };
+  const keyring = new Keyring({ type: "ed25519" });
+  const signer = keyring.createFromPair(keypair);
+
+  const unix_secs = Math.floor(Date.now() / 1000);
+  const unix_secs_bytes = hexToU8a(unix_secs.toString(16));
+  const message = blake3
     .newKeyed("gephauth001---------------------")
-    .update(now.toString())
+    .update(unix_secs_bytes)
     .finalize();
-  let pubkey = u8aToHex(keypair.publicKey).replace("0x", "");
+  const pubkey = u8aToHex(keypair.publicKey).replace("0x", "");
   // Uint8Array -> hex string -> number[] byte array
-  let signature = u8aToHex(keypair.sign(message)).replace("0x", "").match(/.{1,2}/g)?.map(pair => parseInt(pair, 16))!;
+  let signature = u8aToHex(signer.sign(message)).replace("0x", "").match(/.{1,2}/g)?.map(pair => parseInt(pair, 16))!;
 
   return {
     Signature: {
       pubkey,
-      unix_secs: now,
+      unix_secs,
       signature,
     }
   };

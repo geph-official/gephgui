@@ -8,7 +8,7 @@
   import { onMount } from "svelte";
   import { get_credentials } from "../lib/utils";
   import { u8aToHex } from "@polkadot/util";
-  import { mnemonicGenerate, mnemonicToMiniSecret } from "@polkadot/util-crypto";
+  import { ed25519PairFromSeed, mnemonicGenerate, mnemonicToMiniSecret } from "@polkadot/util-crypto";
 
   export let open: boolean;
 
@@ -31,17 +31,19 @@
     setTimeout(() => (error_string = ""), 5000);
   };
 
-  const generate_secret = () => {
+  const generate_keys = () => {
     const phrase = mnemonicGenerate();
     const secret = mnemonicToMiniSecret(phrase);
+    const { publicKey, secretKey } = ed25519PairFromSeed(secret);
 
-    return u8aToHex(secret);
+    return { publicKey, secretKey };
   }
 
-  const build_auth = (sk: string): AuthKeypair => {
+  const build_auth = (sk: Uint8Array, pk: Uint8Array): AuthKeypair => {
     return {
       kind: AuthKind.Keypair,
       sk,
+      pk
     }
   }
 
@@ -94,8 +96,8 @@
       onClick={async () => {
         try {
           let gate = await native_gate();
-          let sk = generate_secret();
-          let auth = build_auth(sk);
+          let { secretKey, publicKey } = generate_keys();
+          let auth = build_auth(secretKey, publicKey);
           let creds = get_credentials(auth);
 
           await gate.binder_rpc("register_user_v2", [
@@ -104,7 +106,7 @@
             captcha_soln,
           ]);
 
-          onRegisterSuccess(sk.replace("0x", ""));
+          onRegisterSuccess(u8aToHex(secretKey).replace("0x", ""));
           open = false;
         } catch (e) {
           show_error(e.toString());

@@ -133,9 +133,8 @@ export enum AuthKind {
 
 export interface AuthKeypair {
   kind: AuthKind.Keypair;
-
-  // Hex-encoded secret key
-  sk: string;
+  sk: Uint8Array;
+  pk: Uint8Array;
 }
 
 export interface AuthPassword {
@@ -250,7 +249,7 @@ function mock_native_gate(): NativeGate {
           png_data:
             "iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAAM1BMVEWA2HEdwgUkwwBCxS5RxT1YyE5szGJ/0HiQ1YmZ2JSh2p2v363B5b7R68/b79js9+z///9HPSCbAAAAAXRSTlMAQObYZgAAAOxJREFUOMuFk1cWhCAMRWmhCYT9r3akSRv0fciRXEIKIYQQxuhfMUaSDtbK3AB91YeD5KIC4gp4y+n1QLmBu9iE+g8gMQ5ybAVgst/ECoS4SM+AypuVwuQNZyAHaMoSCi4nIEdw8ewChUmL3YEuvJQAfgTQSJfD8PoBxiRQ9pIFqIAd7X6koQC832GuKZxQC6X6kVSlDNVv7YVuNU67Mv/JnK5v3VTlFuuXmmMDaib6CLAYFAUF7gRIW96Ajlvjlze7dB42YH5blm5Ay+exbwAFP0SYgH0uwDrntFAeDkAfmjJ7X6P3PbwvSDL/AIYAHEpiL5B+AAAAAElFTkSuQmCC",
         };
-      } else if (method === "register_user") {
+      } else if (method === "register_user_v2") {
         return true;
       } else if (method === "get_announcements") {
         return MockRss;
