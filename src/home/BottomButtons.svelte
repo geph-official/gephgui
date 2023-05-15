@@ -14,7 +14,7 @@
   import ExitSelector from "./ExitSelector.svelte";
   import InformationOutline from "svelte-material-icons/InformationOutline.svelte";
   import { runWithSpinner } from "../lib/modals";
-  import { get_credentials, get_rpc_authkind } from "../lib/utils";
+  import { get_rpc_authkind } from "../lib/utils";
 
   export let running: boolean;
   export let block_plus: boolean;

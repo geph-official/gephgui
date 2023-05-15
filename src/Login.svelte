@@ -5,9 +5,9 @@
   import { pref_auth } from "./lib/prefs";
   import { AuthKind, native_gate, type Authentication } from "./native-gate";
   import Register from "./login/Register.svelte";
-
   import { runWithSpinner, showErrorModal } from "./lib/modals";
   import { get_rpc_authkind } from "./lib/utils";
+  import { hexToU8a } from "@polkadot/util";
 
   let pubkey_login = true;
 
@@ -42,7 +42,8 @@
           if (pubkey_login) {
             auth = {
               kind: AuthKind.Keypair,
-              sk: secret
+              sk: hexToU8a(secret),
+              pk: hexToU8a(secret.slice(32))
             }
           } else {
             auth = {
