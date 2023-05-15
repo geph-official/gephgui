@@ -118,12 +118,12 @@ export function get_credentials(auth: Authentication): Credentials {
       }
     }
     case AuthKind.Keypair: {
-      return sk_to_credentials(auth.sk, auth.pk);
+      return keypair_to_credentials(auth.sk, auth.pk);
     }
   }
 }
 
-function sk_to_credentials(secretKey: Uint8Array, publicKey: Uint8Array): Credentials {
+function keypair_to_credentials(secretKey: Uint8Array, publicKey: Uint8Array): Credentials {
   const keypair: Keypair = {
     secretKey,
     publicKey,
@@ -132,11 +132,19 @@ function sk_to_credentials(secretKey: Uint8Array, publicKey: Uint8Array): Creden
   const signer = keyring.createFromPair(keypair);
 
   const unix_secs = Math.floor(Date.now() / 1000);
-  const unix_secs_bytes = hexToU8a(unix_secs.toString(16));
+  let unix_secs_bytes = hexToU8a(unix_secs.toString(16));
+  // have to turn Uint8Array into an Array in order to use unshift
+  let normal_array = Array.from(unix_secs_bytes);
+  while (normal_array.length < 8) {
+    normal_array.unshift(0);
+  }
+  const unix_secs_bytes_padded = new Uint8Array(normal_array);
+
   const message = blake3
     .newKeyed("gephauth001---------------------")
-    .update(unix_secs_bytes)
+    .update(unix_secs_bytes_padded)
     .finalize();
+
   const pubkey = u8aToHex(keypair.publicKey).replace("0x", "");
   // Uint8Array -> hex string -> number[] byte array
   let signature = u8aToHex(signer.sign(message)).replace("0x", "").match(/.{1,2}/g)?.map(pair => parseInt(pair, 16))!;
