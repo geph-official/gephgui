@@ -10,6 +10,7 @@ import {
   disable as disableDark,
 } from "darkreader";
 import { pref_lightdark } from "./lib/prefs";
+import { wallet_secret_from_str, wallet_secret_to_string } from "mip102-wasm";
 
 const app = new App({
   target: document.getElementById("app") as any,

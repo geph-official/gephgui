@@ -7,6 +7,7 @@ import { hexToU8a, u8aToHex } from "@polkadot/util";
 import type { Authentication, NativeGate } from "../native-gate";
 import { AuthKind } from "../native-gate";
 import * as blake3 from "blake3-js";
+import { wallet_secret_to_string } from "mip102-wasm";
 
 export function onInterval(callback: () => any, milliseconds: number) {
   callback();
@@ -98,10 +99,10 @@ export function get_rpc_authkind(auth: Authentication): RpcAuthKind {
       }
     }
     case AuthKind.Keypair: {
-      return { 
+      return {
         Signature: {
           sk: u8aToHex(auth.sk).replace("0x", ""),
-        } 
+        }
       }
     }
   }
