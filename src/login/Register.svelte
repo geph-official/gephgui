@@ -7,8 +7,9 @@
   import GButton from "../lib/GButton.svelte";
   import { onMount } from "svelte";
   import { get_credentials } from "../lib/utils";
-  import { u8aToHex } from "@polkadot/util";
   import { ed25519PairFromSeed, mnemonicGenerate, mnemonicToMiniSecret } from "@polkadot/util-crypto";
+  import { wallet_secret_from_str, wallet_secret_to_string } from "mip102-wasm";
+  import base32 from "base32.js";
 
   export let open: boolean;
 
@@ -106,7 +107,12 @@
             captcha_soln,
           ]);
 
-          onRegisterSuccess(u8aToHex(secretKey).replace("0x", ""));
+          let encoder = new base32.Encoder({ type: "crockford", lc: true });
+          let secret = Array.from(secretKey).slice(0,32);
+          let base32_sk = encoder.write(secret).finalize();
+          let wallet_secret = wallet_secret_from_str(base32_sk);
+
+          onRegisterSuccess(wallet_secret_to_string(wallet_secret));
           open = false;
         } catch (e) {
           show_error(e.toString());

@@ -7,7 +7,7 @@
   import Register from "./login/Register.svelte";
   import { runWithSpinner, showErrorModal } from "./lib/modals";
   import { get_rpc_authkind } from "./lib/utils";
-  import { hexToU8a } from "@polkadot/util";
+  import { wallet_secret_from_str } from "mip102-wasm";
 
   let pubkey_login = true;
 
@@ -40,10 +40,14 @@
           let auth: Authentication;
           
           if (pubkey_login) {
+            const wallet_secret = wallet_secret_from_str(secret);
+            const sk = wallet_secret.payload;
+            const pk = new Uint8Array(Array.from(wallet_secret.payload).slice(32));
+
             auth = {
               kind: AuthKind.Keypair,
-              sk: hexToU8a(secret),
-              pk: hexToU8a(secret.slice(32))
+              sk,
+              pk
             }
           } else {
             auth = {
