@@ -125,36 +125,39 @@ export function get_credentials(auth: Authentication): Credentials {
 }
 
 function keypair_to_credentials(secretKey: Uint8Array, publicKey: Uint8Array): Credentials {
+  const keyring = new Keyring({ type: "ed25519" });
   const keypair: Keypair = {
     secretKey,
     publicKey,
   };
-  const keyring = new Keyring({ type: "ed25519" });
   const signer = keyring.createFromPair(keypair);
 
   const unix_secs = Math.floor(Date.now() / 1000);
-  let unix_secs_bytes = hexToU8a(unix_secs.toString(16));
-  // have to turn Uint8Array into an Array in order to use unshift
-  let normal_array = Array.from(unix_secs_bytes);
-  while (normal_array.length < 8) {
-    normal_array.unshift(0);
+  const unix_secs_bytes = hexToU8a(unix_secs.toString(16));
+  // have to convert Uint8Array into an Array in order to use unshift
+  let editable = Array.from(unix_secs_bytes);
+  while (editable.length < 8) {
+    editable.unshift(0);
   }
-  const unix_secs_bytes_padded = new Uint8Array(normal_array);
+  const unix_secs_bytes_padded = new Uint8Array(editable);
 
   const message = blake3
     .newKeyed("gephauth001---------------------")
     .update(unix_secs_bytes_padded)
     .finalize();
+  const message_bytes = hexToU8a(message);
 
-  const pubkey = u8aToHex(keypair.publicKey).replace("0x", "");
+  const pubkey = u8aToHex(signer.publicKey).replace("0x", "");
+
   // Uint8Array -> hex string -> number[] byte array
-  let signature = u8aToHex(signer.sign(message)).replace("0x", "").match(/.{1,2}/g)?.map(pair => parseInt(pair, 16))!;
+  const signature = signer.sign(message_bytes);
+  const signature_formatted = u8aToHex(signature).replace("0x", "").match(/.{1,2}/g)?.map(pair => parseInt(pair, 16))!;
 
   return {
     Signature: {
       pubkey,
       unix_secs,
-      signature,
+      signature: signature_formatted
     }
   };
 }
