@@ -101,7 +101,7 @@
           {/if}
           <Option value="zh-TW">繁體中文</Option>
           <Option value="zh-CN">简体中文</Option>
-          <Option value="fa-IR">فارسی</Option>
+          <Option value="fa">فارسی</Option>
         </Select>
       </div>
     </div>

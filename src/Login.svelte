@@ -18,7 +18,7 @@
   const translateError = (err: string) => {
     if (err.includes("invalid")) {
       return l10n($curr_lang, "invalid-username-or-password");
-    } else if (err.includes("too many")) {
+    } else if (err.includes("429")) {
       return l10n($curr_lang, "login-server-overloaded");
     } else {
       return err;
