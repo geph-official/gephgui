@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { writable, type Writable } from "svelte/store";
+  import type { Writable } from "svelte/store";
 
   import ActiveExit from "./home/ActiveExit.svelte";
   import BottomButtons from "./home/BottomButtons.svelte";
@@ -21,6 +21,7 @@
     pref_listen_all,
     pref_use_app_whitelist,
     pref_protocol,
+    user_info_store,
   } from "./lib/prefs";
   import { onInterval } from "./lib/utils";
   import { native_gate, type SubscriptionInfo } from "./native-gate";
@@ -30,8 +31,6 @@
     "connected" | "connecting" | "disconnected"
   > = persistentWritable("connection_status", "disconnected");
 
-  const user_info: Writable<SubscriptionInfo | null> = writable(null);
-
   onInterval(async () => {
     let gate = await native_gate();
     try {
@@ -40,7 +39,7 @@
         1000,
         async () => {
           if ($pref_userpwd) {
-            $user_info = await gate.sync_user_info(
+            $user_info_store = await gate.sync_user_info(
               $pref_userpwd.username,
               $pref_userpwd.password
             );
@@ -48,7 +47,7 @@
         }
       );
     } catch (e) {
-      await showErrorModal("error syncing info: " + JSON.stringify(e));
+      // non-fatal error; display nothing
     }
   }, 60000);
 
@@ -86,7 +85,7 @@
 
 <div class="home">
   {#if $pref_userpwd}
-    <UserInfo username={$pref_userpwd.username} user_info={$user_info} />
+    <UserInfo username={$pref_userpwd.username} user_info={$user_info_store} />
   {:else}
     <h1>NO USERPWD</h1>
   {/if}
@@ -138,7 +137,7 @@
       onSelectExit={(exit) => {
         $pref_selected_exit = exit;
       }}
-      block_plus={$user_info ? $user_info.level === "free" : true}
+      block_plus={$user_info_store ? $user_info_store.level === "free" : true}
     />
   {/key}
 </div>

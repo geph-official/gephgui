@@ -6,7 +6,7 @@
   import Refresh from "svelte-material-icons/Refresh.svelte";
   import { curr_lang, l10n, l10n_date } from "../lib/l10n";
   import { native_gate, type SubscriptionInfo } from "../native-gate";
-  import { pref_userpwd } from "../lib/prefs";
+  import { pref_userpwd, user_info_store } from "../lib/prefs";
   import GButton from "../lib/GButton.svelte";
   import Button from "@smui/button";
   import { runWithSpinner } from "../lib/modals";
@@ -28,10 +28,19 @@
         try {
           if ($pref_userpwd) {
             console.log("start purge");
-            await (
-              await native_gate()
-            ).purge_caches($pref_userpwd.username, $pref_userpwd.password);
-            console.log("end purge purge");
+            let gate = await native_gate();
+            await gate.purge_caches(
+              $pref_userpwd.username,
+              $pref_userpwd.password
+            );
+            console.log("end purge");
+            console.log("start sync after purge");
+            $user_info_store = await gate.sync_user_info(
+              $pref_userpwd.username,
+              $pref_userpwd.password
+            );
+            user_info = $user_info_store;
+            console.log("end sync after purge");
           }
         } finally {
           loading = false;

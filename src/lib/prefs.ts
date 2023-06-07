@@ -1,4 +1,4 @@
-import type { ExitDescriptor } from "../native-gate";
+import type { ExitDescriptor, SubscriptionInfo } from "../native-gate";
 import { writable, type Writable } from "svelte/store";
 
 export function persistentWritable<T>(
@@ -31,6 +31,8 @@ export const pref_userpwd: Writable<{
   username: string;
   password: string;
 } | null> = persistentWritable("userpwd", null);
+
+export const user_info_store: Writable<SubscriptionInfo | null> = writable(null);
 
 /**
  * Selected exit
