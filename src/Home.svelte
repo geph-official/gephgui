@@ -34,14 +34,12 @@
   onInterval(async () => {
     let gate = await native_gate();
     try {
-      async () => {
-        if ($pref_userpwd) {
-          $user_info_store = await gate.sync_user_info(
-            $pref_userpwd.username,
-            $pref_userpwd.password
-          );
-        }
-      };
+      if ($pref_userpwd) {
+        $user_info_store = await gate.sync_user_info(
+          $pref_userpwd.username,
+          $pref_userpwd.password
+        );
+      }
     } catch (e) {
       // non-fatal error; display nothing
     }
