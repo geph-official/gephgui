@@ -22,6 +22,7 @@
   // import Graphs from "./Graphs.svelte";
   import type { Writable } from "svelte/store";
   import Announcements from "./Announcements.svelte";
+  import Spinner from "./lib/Spinner.svelte";
 
   const autoupdate_warning_shown: Writable<boolean> = persistentWritable(
     "autoupdate_warning_shown_1",
@@ -35,7 +36,6 @@
 
   import { extractFromXml } from "@extractus/feed-extractor";
   import { errorContent, loadingContent } from "./lib/modals";
-  import CircularProgress from "@smui/circular-progress/src/CircularProgress.svelte";
   import Logs from "./Logs.svelte";
 
   interface Announcement {
@@ -165,7 +165,7 @@
     escapeKeyAction=""
   >
     <div class="modal-inner">
-      <CircularProgress style="height: 32px; width: 32px;" indeterminate />
+      <Spinner />
       <div class="modal-label">
         {@html $loadingContent}
       </div>

@@ -41,7 +41,7 @@
         );
       }
     } catch (e) {
-      // non-fatal error; display nothing
+      // non-fatal error; display nothing!
     }
   }, 60000);
 
