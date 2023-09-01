@@ -5,7 +5,7 @@
   import Heart from "svelte-material-icons/Heart.svelte";
   import Refresh from "svelte-material-icons/Refresh.svelte";
   import { curr_lang, l10n, l10n_date } from "../lib/l10n";
-  import { native_gate, type SubscriptionInfo } from "../native-gate";
+  import type { SubscriptionInfo } from "../native-gate";
   import { pref_userpwd, user_info_store } from "../lib/prefs";
   import GButton from "../lib/GButton.svelte";
   import Button from "@smui/button";
@@ -18,36 +18,6 @@
   $: extend_url = `https://geph.io/billing/login?next=%2Fbilling%2Fdashboard&uname=${encodeURIComponent(
     username
   )}&pwd=${encodeURIComponent($pref_userpwd ? $pref_userpwd.password : "")}`;
-
-  const on_force_refresh = async () => {
-    await runWithSpinner(
-      l10n($curr_lang, "refreshing-user-info") + "...",
-      0,
-      async () => {
-        loading = true;
-        try {
-          if ($pref_userpwd) {
-            console.log("start purge");
-            let gate = await native_gate();
-            await gate.purge_caches(
-              $pref_userpwd.username,
-              $pref_userpwd.password
-            );
-            console.log("end purge");
-            console.log("start sync after purge");
-            $user_info_store = await gate.sync_user_info(
-              $pref_userpwd.username,
-              $pref_userpwd.password
-            );
-            user_info = $user_info_store;
-            console.log("end sync after purge");
-          }
-        } finally {
-          loading = false;
-        }
-      }
-    );
-  };
 </script>
 
 <div class="userinfo">
@@ -56,9 +26,7 @@
       <div class="urow">
         <Heart width="1.5rem" height="1.5rem" color="#b71c1c" />
         <div class="stretch">{l10n($curr_lang, "get-unlimited-speed")}</div>
-        <Button on:click={on_force_refresh}>
-          <Refresh width="1.3rem" height="1.3rem" />
-        </Button>
+
         <a href={extend_url} target="_blank" rel="noopener">
           <GButton inverted>{l10n($curr_lang, "buy-plus")}</GButton></a
         >
@@ -83,9 +51,7 @@
             ></small
           >
         </div>
-        <Button on:click={on_force_refresh}>
-          <Refresh width="1.3rem" height="1.3rem" />
-        </Button>
+
         <a href={extend_url} target="_blank" rel="noopener">
           <GButton>
             {l10n($curr_lang, "extend")}
