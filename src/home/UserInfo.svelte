@@ -21,7 +21,7 @@
 </script>
 
 <div class="userinfo">
-  {#if user_info && !loading}
+  {#if user_info}
     {#if user_info.level == "free"}
       <div class="urow">
         <Heart width="1.5rem" height="1.5rem" color="#b71c1c" />
