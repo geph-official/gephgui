@@ -22,7 +22,7 @@
   onInterval(async () => {
     const gate = await native_gate();
     try {
-      const basic = await gate.daemon_rpc("basic_stats", []);
+      const basic = (await gate.daemon_rpc("basic_stats", [])) as any;
       if (basic) {
         has_data = true;
         recv_data = basic.total_recv_bytes;

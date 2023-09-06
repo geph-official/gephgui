@@ -24,7 +24,12 @@
     user_info_store,
   } from "./lib/prefs";
   import { onInterval } from "./lib/utils";
-  import { native_gate, type SubscriptionInfo } from "./native-gate";
+  import {
+    native_gate,
+    subinfo_deserialize,
+    subinfo_serialize,
+    type SubscriptionInfo,
+  } from "./native-gate";
 
   // Connections status things. We use a persistent store because on iOS and Android the webview can stop at any time.
   const connection_status: Writable<
@@ -35,9 +40,11 @@
     let gate = await native_gate();
     try {
       if ($pref_userpwd) {
-        $user_info_store = await gate.sync_user_info(
-          $pref_userpwd.username,
-          $pref_userpwd.password
+        $user_info_store = subinfo_serialize(
+          await gate.sync_user_info(
+            $pref_userpwd.username,
+            $pref_userpwd.password
+          )
         );
       }
     } catch (e) {
@@ -79,7 +86,10 @@
 
 <div class="home">
   {#if $pref_userpwd}
-    <UserInfo username={$pref_userpwd.username} user_info={$user_info_store} />
+    <UserInfo
+      username={$pref_userpwd.username}
+      user_info={$user_info_store && subinfo_deserialize($user_info_store)}
+    />
   {:else}
     <h1>NO USERPWD</h1>
   {/if}

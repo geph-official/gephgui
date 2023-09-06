@@ -160,6 +160,29 @@ export interface SubscriptionInfo {
   expires: Date | null;
 }
 
+export interface SubscriptionInfoSerializable {
+  level: Level;
+  expires_unix: number | null;
+}
+
+export const subinfo_serialize = (
+  nfo: SubscriptionInfo
+): SubscriptionInfoSerializable => {
+  return {
+    level: nfo.level,
+    expires_unix: nfo.expires ? nfo.expires.getTime() : null,
+  };
+};
+
+export const subinfo_deserialize = (
+  nfo: SubscriptionInfoSerializable
+): SubscriptionInfo => {
+  return {
+    level: nfo.level,
+    expires: nfo.expires_unix ? new Date(nfo.expires_unix) : null,
+  };
+};
+
 type Level = "free" | "plus";
 
 function mock_native_gate(): NativeGate {
