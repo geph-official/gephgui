@@ -83,5 +83,6 @@
   .logs div {
     font-family: "Iosevka", "Menlo", "Consolas", "DejaVu Mono", monospace;
     width: 100%;
+    word-wrap: break-word;
   }
 </style>
