@@ -2,9 +2,23 @@ import { getContext, onDestroy, setContext } from "svelte";
 import { cubicOut } from "svelte/easing";
 import twemoji from "twemoji";
 
-export function onInterval(callback: () => any, milliseconds: number) {
+export function onInterval(callback: () => Promise<any>, milliseconds: number) {
   callback();
-  const interval = setInterval(callback, milliseconds);
+
+  // we use a "lock" to prevent two overlapping instances from running.
+  let running = false;
+  const interval = setInterval(async () => {
+    if (running) {
+      return;
+    }
+
+    running = true;
+    try {
+      await callback();
+    } finally {
+      running = false;
+    }
+  }, milliseconds);
 
   onDestroy(() => {
     clearInterval(interval);
