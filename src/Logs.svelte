@@ -51,9 +51,11 @@
 <div class="wrap">
   <Stats />
   <div class="logs" bind:this={logs_container}>
-    {#each $logs as [tstamp, line]}
-      {new Date(tstamp * 1000.0).toISOString().replace(".000Z", "")}
-      {line.replace(/\[.*?\s/s, "[").trim()}<br />
+    {#each $logs as [tstamp, line] (tstamp)}
+      <div>
+        {new Date(tstamp * 1000.0).toISOString().replace(".000Z", "")}
+        {line.replace(/\[.*?\s/s, "[").trim()}
+      </div>
     {/each}
   </div>
 </div>
