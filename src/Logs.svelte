@@ -77,7 +77,7 @@
     margin-top: 1rem;
     border: 1px solid black;
     flex-grow: 1;
-    overflow-x: scroll;
+    overflow-y: scroll;
   }
 
   .logs div {
