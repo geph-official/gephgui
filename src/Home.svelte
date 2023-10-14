@@ -66,14 +66,10 @@
         $pref_userpwd.password
       );
       if (exits.length > 0) {
-        while (true) {
-          let ridx = Math.floor(Math.random() * exits.length);
-          let exit = exits[ridx];
-          if (exit.allowed_levels.includes("free")) {
-            $pref_selected_exit = exit;
-            break;
-          }
-        }
+        let least_loaded = exits
+          .filter((e) => e.allowed_levels.includes("free"))
+          .sort((a, b) => a.load - b.load)[0];
+        $pref_selected_exit = least_loaded;
       }
     }
 
