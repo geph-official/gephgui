@@ -57,7 +57,9 @@
     let gate = await native_gate();
     const is_running = await gate.is_running();
 
+    console.time("main_monitor_connected");
     const is_connected = is_running && (await gate.is_connected());
+    console.timeEnd("main_monitor_connected");
     if ($pref_selected_exit === null && $pref_userpwd) {
       const exits = await gate.sync_exits(
         $pref_userpwd.username,
@@ -74,10 +76,12 @@
         }
       }
     }
+
+    console.log("main monitor loop IS CONNECTED: ", is_connected);
     if (is_connected) {
       $connection_status = "connected";
     } else if (is_running) {
-      $connection_status = "connecting";
+      // $connection_status = "connecting";
     } else {
       $connection_status = "disconnected";
     }
@@ -106,7 +110,8 @@
         let gate = await native_gate();
         try {
           if ($pref_userpwd && $pref_selected_exit) {
-            await gate.start_daemon({
+            console.time("start_daemon");
+            const params = {
               username: $pref_userpwd.username,
               password: $pref_userpwd.password,
               exit_hostname: $pref_selected_exit.hostname,
@@ -121,8 +126,40 @@
               listen_all: $pref_listen_all,
               force_bridges: $pref_routing_mode === "bridges",
               force_protocol: $pref_protocol === "auto" ? null : $pref_protocol,
-            });
-            $connection_status = "connecting";
+            };
+
+            console.log("start_daemon params: ", params);
+
+            const startDaemonPromise = gate.start_daemon(params);
+
+            try {
+              const timeoutPromise = new Promise((_, reject) => {
+                const id = setTimeout(() => {
+                  clearTimeout(id);
+                  reject(new Error("Timeout"));
+                }, 10000);
+              });
+
+              console.log("starting race");
+              $connection_status = "connecting";
+              let result = await Promise.race([
+                startDaemonPromise,
+                timeoutPromise,
+              ]);
+              console.log(
+                "start_daemon finished before the timeout? result -- ",
+                result
+              );
+              console.timeEnd("start_daemon");
+              // $connection_status will get set to connected by the main monitor loop
+            } catch (err) {
+              console.log("error from start_daemon: ", err);
+              console.timeEnd("start_daemon");
+              if (err.message === "Timeout") {
+                $connection_status = "disconnected";
+                await showErrorModal("No internet connection");
+              }
+            }
           } else {
             throw "no userpwd";
           }
