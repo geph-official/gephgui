@@ -9,7 +9,6 @@
   import { native_gate } from "./native-gate";
   const logs: Writable<[number, string][]> = persistentWritable("logs", []);
   let logs_container: HTMLElement;
-  let running = false;
 
   // Function to check if the screen is scrolled to the bottom
   function shouldScrollToBottom(element: HTMLElement): boolean {
@@ -23,38 +22,29 @@
   });
 
   onInterval(async () => {
-    if (!running) {
-      running = true;
-      try {
-        let gate = await native_gate();
-        let last_no = $logs
-          .map((s) => s[0])
-          .reduce((acc, value) => Math.max(acc, value), 0);
-        try {
-          let new_logs = (await gate.daemon_rpc("get_logs", [last_no])) as [
-            number,
-            string
-          ][];
-          if (new_logs.length > 1000) {
-            new_logs = new_logs.slice(new_logs.length - 1000);
-          }
-          $logs = $logs.concat(new_logs);
-          if ($logs.length > 1000) {
-            $logs = $logs.slice($logs.length / 2); // set $logs to latter half of $logs
-          }
-          if (shouldScrollToBottom(logs_container)) {
-            setTimeout(() => {
-              logs_container.scroll({
-                top: logs_container.scrollHeight,
-                behavior: "smooth",
-              });
-            }, 100);
-          }
-        } catch (e) {}
-      } finally {
-        running = false;
+    let gate = await native_gate();
+    let last_no = $logs
+      .map((s) => s[0])
+      .reduce((acc, value) => Math.max(acc, value), 0);
+    try {
+      let new_logs = (await gate.daemon_rpc("get_logs", [last_no])) as [
+        number,
+        string
+      ][];
+
+      $logs = $logs.concat(new_logs);
+      if ($logs.length > 1000) {
+        $logs = $logs.slice($logs.length / 2); // set $logs to latter half of $logs
       }
-    }
+      if (shouldScrollToBottom(logs_container)) {
+        setTimeout(() => {
+          logs_container.scroll({
+            top: logs_container.scrollHeight,
+            behavior: "smooth",
+          });
+        }, 100);
+      }
+    } catch (e) {}
   }, 1000);
 </script>
 
