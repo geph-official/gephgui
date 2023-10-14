@@ -7,12 +7,11 @@
   import { emojify } from "../lib/utils";
   import CircularProgress from "@smui/circular-progress";
   export let connection: "connected" | "disconnected" | "connecting";
-  export let exit_descriptor: ExitDescriptor | null;
+  export let exit_descriptor: ExitDescriptor;
   import { slide } from "svelte/transition";
   import Flag from "../lib/Flag.svelte";
 
   $: p2p_allowed =
-    exit_descriptor &&
     exit_descriptor.country_code != "us" &&
     exit_descriptor.country_code != "jp" &&
     exit_descriptor.country_code != "de";
