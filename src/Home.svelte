@@ -60,17 +60,25 @@
     console.time("main_monitor_connected");
     const is_connected = is_running && (await gate.is_connected());
     console.timeEnd("main_monitor_connected");
-    if ($pref_selected_exit === null && $pref_userpwd) {
-      const exits = await gate.sync_exits(
-        $pref_userpwd.username,
-        $pref_userpwd.password
+    if ($pref_selected_exit === null) {
+      await runWithSpinner(
+        l10n($curr_lang, "loading-server-list"),
+        0,
+        async () => {
+          if ($pref_userpwd) {
+            const exits = await gate.sync_exits(
+              $pref_userpwd.username,
+              $pref_userpwd.password
+            );
+            if (exits.length > 0) {
+              let least_loaded = exits
+                .filter((e) => e.allowed_levels.includes("free"))
+                .sort((a, b) => a.load - b.load)[0];
+              $pref_selected_exit = least_loaded;
+            }
+          }
+        }
       );
-      if (exits.length > 0) {
-        let least_loaded = exits
-          .filter((e) => e.allowed_levels.includes("free"))
-          .sort((a, b) => a.load - b.load)[0];
-        $pref_selected_exit = least_loaded;
-      }
     }
 
     console.log("main monitor loop IS CONNECTED: ", is_connected);
