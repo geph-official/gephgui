@@ -78,7 +78,7 @@
             }
           }
         }
-      }
+      );
     }
 
     console.log("main monitor loop IS CONNECTED: ", is_connected);
@@ -93,65 +93,70 @@
 </script>
 
 <div class="home">
-  {#if $pref_userpwd}
-    <UserInfo
-      username={$pref_userpwd.username}
-      user_info={$user_info_store && subinfo_deserialize($user_info_store)}
+  {#if $pref_selected_exit}
+    {#if $pref_userpwd}
+      <UserInfo
+        username={$pref_userpwd.username}
+        user_info={$user_info_store && subinfo_deserialize($user_info_store)}
+      />
+    {:else}
+      <h1>NO USERPWD</h1>
+    {/if}
+
+    <ActiveExit
+      connection={$connection_status}
+      exit_descriptor={$pref_selected_exit}
     />
-  {:else}
-    <h1>NO USERPWD</h1>
-  {/if}
 
-  <ActiveExit
-    connection={$connection_status}
-    exit_descriptor={$pref_selected_exit}
-  />
-
-  {#key $pref_userpwd}
-    <BottomButtons
-      running={$connection_status !== "disconnected"}
-      onConnect={async () => {
-        let gate = await native_gate();
-        try {
-          if ($pref_userpwd && $pref_selected_exit) {
-            await gate.start_daemon({
-              username: $pref_userpwd.username,
-              password: $pref_userpwd.password,
-              exit_hostname: $pref_selected_exit.hostname,
-              app_whitelist: $pref_use_app_whitelist
-                ? Object.keys($pref_app_whitelist).filter(
-                    (s) => $pref_app_whitelist[s]
-                  )
-                : [],
-              prc_whitelist: $pref_use_prc_whitelist,
-              proxy_autoconf: $pref_proxy_autoconf,
-              vpn_mode: $pref_global_vpn,
-              listen_all: $pref_listen_all,
-              force_bridges: $pref_routing_mode === "bridges",
-              force_protocol: $pref_protocol === "auto" ? null : $pref_protocol,
-            });
-            $connection_status = "connecting";
-          } else {
-            throw "no userpwd";
+    {#key $pref_userpwd}
+      <BottomButtons
+        running={$connection_status !== "disconnected"}
+        onConnect={async () => {
+          let gate = await native_gate();
+          try {
+            if ($pref_userpwd && $pref_selected_exit) {
+              await gate.start_daemon({
+                username: $pref_userpwd.username,
+                password: $pref_userpwd.password,
+                exit_hostname: $pref_selected_exit.hostname,
+                app_whitelist: $pref_use_app_whitelist
+                  ? Object.keys($pref_app_whitelist).filter(
+                      (s) => $pref_app_whitelist[s]
+                    )
+                  : [],
+                prc_whitelist: $pref_use_prc_whitelist,
+                proxy_autoconf: $pref_proxy_autoconf,
+                vpn_mode: $pref_global_vpn,
+                listen_all: $pref_listen_all,
+                force_bridges: $pref_routing_mode === "bridges",
+                force_protocol:
+                  $pref_protocol === "auto" ? null : $pref_protocol,
+              });
+              $connection_status = "connecting";
+            } else {
+              throw "no userpwd";
+            }
+          } catch (err) {
+            await showErrorModal(err.toString());
           }
-        } catch (err) {
-          await showErrorModal(err.toString());
-        }
-      }}
-      onDisconnect={async () => {
-        let gate = await native_gate();
-        try {
-          await gate.stop_daemon();
-        } catch (err) {
-          await showErrorModal(err.toString());
-        }
-      }}
-      onSelectExit={(exit) => {
-        $pref_selected_exit = exit;
-      }}
-      block_plus={$user_info_store ? $user_info_store.level === "free" : true}
-    />
-  {/key}
+        }}
+        onDisconnect={async () => {
+          let gate = await native_gate();
+          try {
+            await gate.stop_daemon();
+          } catch (err) {
+            await showErrorModal(err.toString());
+          }
+        }}
+        onSelectExit={(exit) => {
+          $pref_selected_exit = exit;
+        }}
+        block_plus={$user_info_store ? $user_info_store.level === "free" : true}
+      />
+    {/key}
+  {:else}
+    initializing...
+  {/if}
 </div>
 
 <style>
