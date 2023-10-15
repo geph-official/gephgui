@@ -25,6 +25,14 @@
 
   let error_string = "";
 
+  const translateError = (err: string) => {
+    if (err.includes("duplicate")) {
+      return l10n($curr_lang, "duplicate-credentials");
+    } else {
+      return err;
+    }
+  };
+
   const show_error = (e: string) => {
     error_string = e;
     setTimeout(() => (error_string = ""), 5000);
@@ -69,7 +77,7 @@
         bind:value={captcha_soln}
       />
       {#if error_string !== ""}
-        <div class="error">{error_string}</div>
+        <div class="error">{translateError(error_string)}</div>
       {/if}
     </div>
   </Content>
@@ -96,7 +104,7 @@
           onRegisterSuccess(username, password);
           open = false;
         } catch (e) {
-          show_error(e.toString());
+          show_error(translateError(e.toString()));
         }
       }}
     >

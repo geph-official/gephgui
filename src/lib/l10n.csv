@@ -145,7 +145,8 @@ dark,Dark,暗色,暗色,تیره
 logging-in,Logging in,登录中,登錄中,ورود به حساب 
 logging-out,Logging out,登出中,登出中,خروج از حساب
 refreshing-user-info,Refreshing user info,正在刷新用户信息,正在刷新用戶信息,به روز رسانی اطلاعات کاربر
-invalid-username-or-password,Invalid username or password,无效的用户名或密码,無效的用戶名或密碼,نام کاربری یا کلمه عبور نادرست است
+invalid-username-or-password,Wrong username or password,用户名或密码错误,用戶名或密碼錯誤,نام کاربری یا کلمه عبور نادرست است
 login-server-overloaded,The login server is currently overloaded. Please try again later.,登录服务器当前超负载。请稍后重试。,登錄服務器當前超負荷。請稍後重試。,سرور ورود در حال حاضر فشارزا است. لطفا بعدا دوباره امتحان کنید.
 no-internet-connection,No Internet connection,无网络连接,無網絡連接,اتصال اینترنت وجود ندارد
 loading-server-list,Loading server list,正在加载服务器列表,正在加載伺服器列表,بارگذاری لیست سرور
+duplicate-credentials,This username is already taken. Please choose another name,此用户名已存在。请选一个新的用户名,此用戶名已存在。 請選一個新的用戶名,این نام کاربری برداشته شده است. لطفا نام دیگری انتخاب کنید
