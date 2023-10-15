@@ -51,7 +51,7 @@
 <div class="wrap">
   <Stats />
   <div class="logs" bind:this={logs_container}>
-    {#each $logs as [tstamp, line] (tstamp)}
+    {#each $logs as [tstamp, line]}
       <div>
         {new Date(tstamp * 1000.0).toISOString().replace(".000Z", "")}
         {line.replace(/\[.*?\s/s, "[").trim()}
