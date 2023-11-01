@@ -138,7 +138,7 @@ listening-ports,Listening ports,监听端口,監聽端口,پورت های فرا
 ,,,,
 show-all-servers,Show all servers,显示所有服务器,顯示所有服務器,نمایش تمام سرورها
 plus-is-great,Plus unlocks full speed on&nbsp;<b>all</b>&nbspservers!,Plus解除<b>所有</b>服务器的限速！,Plus解除<b>所有</b>服務器的限速！,پلاس قابلیت سرعت نامحدود را روی <b>تمام</b> سرور ها برای شما باز می‌کند!
-free-is-bad,Free accounts are limited to <b>125 KB/s</b>. Upgrade to Plus to enjoy unlimited speed!,免费账号仅限于<b>125 KB/s</b>，升级到Plus获得无限速度！,免費帳號僅限於<b>125 KB/s<b>，升級到Plus獲得無限速度！,سرعت حساب های رایگان محدود به <b>125 KB/s</b> می باشد. با ارتقا به پلاس از سرعت نامحدود لذت ببرید!
+free-is-bad,Free accounts are limited to <b>125 KB/s</b>.,免费账号速度非常有限（<b>125 KB/s</b>）,免費帳號速度非常有限（<b>125 KB/s<b>）,سرعت حساب های رایگان محدود به <b>125 KB/s</b> می باشد. با ارتقا به پلاس از سرعت نامحدود لذت ببرید!
 theme,Theme,主题,主題,قالب
 light,Light,亮色,亮色,روشن
 dark,Dark,暗色,暗色,تیره

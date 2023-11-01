@@ -47,7 +47,10 @@
 
   const getAnnouncements = async () => {
     const gate = await native_gate();
-    const resp: string = await gate.binder_rpc("get_announcements", []);
+    const resp: string = (await gate.binder_rpc(
+      "get_announcements",
+      []
+    )) as any;
     console.log("get_announcements returned " + resp);
     const feed: any = extractFromXml(resp, {
       descriptionMaxLen: 100000,
@@ -206,7 +209,7 @@
           {#if tab == "Home"}
             <ViewDashBoard />
           {:else if tab == "Announcements"}
-            <Bullhorn color={$announceHighlight && "red"} />
+            <Bullhorn color={$announceHighlight ? "red" : undefined} />
           {:else if tab == "Logs"}
             <CodeBracesBox />
           {:else if tab == "Settings"}

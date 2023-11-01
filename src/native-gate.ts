@@ -212,8 +212,8 @@ function mock_native_gate(): NativeGate {
         throw "incorrect username";
       }
       return {
-        level: "plus",
-        expires: new Date(),
+        level: "free",
+        expires: null,
       };
     },
 
