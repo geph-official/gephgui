@@ -154,8 +154,6 @@
         block_plus={$user_info_store ? $user_info_store.level === "free" : true}
       />
     {/key}
-  {:else}
-    initializing...
   {/if}
 </div>
 
