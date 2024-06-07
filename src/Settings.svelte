@@ -368,6 +368,17 @@
       </a>
     </div>
 
+    <div class="privacy-eula">
+      <a
+        class="blue-link"
+        href="https://github.com/geph-official/geph4-client/wiki/Policies-and-terms"
+        target="_blank"
+        rel="noopener"
+      >
+        {l10n($curr_lang, "privacy-eula")}
+      </a>
+    </div>
+
     {#await version_info() then nfo}
       <div class="version">v{nfo.version} / {nfo.platform_details}</div>
     {/await}
@@ -386,6 +397,20 @@
 </div>
 
 <style>
+  .privacy-eula {
+    font-size: 80%;
+    font-weight: 500;
+    width: 100%;
+    text-align: center;
+    padding-bottom: 1rem;
+    opacity: 0.8;
+  }
+  a.blue-link:link,
+  a.blue-link:visited {
+    color: blue;
+    text-decoration: none;
+  }
+
   .version {
     font-size: 80%;
     font-weight: 500;
