@@ -52,10 +52,9 @@
           <Flag country={exit.country_code} />
           &nbsp;
           <span class="country-code">{exit.country_code.toUpperCase()}</span>
-          &nbsp;/&nbsp;{l10n(
-            $curr_lang,
-            exit.city_code
-          )}{#if show_all}-{numerify(exit.hostname)}{/if}
+          &nbsp;/&nbsp;{exit.city_code}{#if show_all}-{numerify(
+              exit.hostname
+            )}{/if}
         </div>
         <div class="server-badges">
           <div
