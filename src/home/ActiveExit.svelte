@@ -51,7 +51,7 @@
           {exit_descriptor.country_code.toUpperCase()}
         </span>
         /
-        {l10n($curr_lang, exit_descriptor.city_code)}
+        {exit_descriptor.city_code}
       {:else}
         {l10n($curr_lang, "automatic")}
       {/if}
