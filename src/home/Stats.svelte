@@ -61,18 +61,11 @@
       {has_data ? (send_data / 1_000_000).toFixed(2) : "-"} MB
     </div>
   </div>
-  <div class="brow">
-    <div class="bleft">
-      <SwapVertical size="1.3rem" />
-      <div class="bcaption">{l10n($curr_lang, "latency")}</div>
-    </div>
-    <div class="bright">{has_data ? ping.toFixed(0) : "-"} ms</div>
-  </div>
   <div class="brow" />
   <div class="brow">
     <div class="bleft">
       <IpNetworkOutline size="1.3rem" />
-      <div class="bcaption ">{l10n($curr_lang, "via")}</div>
+      <div class="bcaption">{l10n($curr_lang, "via")}</div>
     </div>
     <div class="bright mono">{has_data ? address : "-"}</div>
   </div>
@@ -80,7 +73,7 @@
   <div class="brow">
     <div class="bleft">
       <Protocol size="1.3rem" />
-      <div class="bcaption ">{l10n($curr_lang, "protocol")}</div>
+      <div class="bcaption">{l10n($curr_lang, "protocol")}</div>
     </div>
     <div class="bright mono">{has_data ? protocol : "-"}</div>
   </div>
