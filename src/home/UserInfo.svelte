@@ -10,15 +10,20 @@
   import GButton from "../lib/GButton.svelte";
   import Button from "@smui/button";
   import { runWithSpinner } from "../lib/modals";
+  import BuyPlus from "./BuyPlus.svelte";
   export let username: string;
   export let user_info: SubscriptionInfo | null = null;
 
   let loading = false;
-
-  $: extend_url = `https://geph.io/billing/login?next=%2Fbilling%2Fdashboard&uname=${encodeURIComponent(
-    username
-  )}&pwd=${encodeURIComponent($pref_userpwd ? $pref_userpwd.password : "")}`;
+  let buy_plus_open = false;
+  function handleBuyPlus() {
+    buy_plus_open = true;
+  }
 </script>
+
+{#if buy_plus_open}
+  <BuyPlus {username} bind:open={buy_plus_open} />
+{/if}
 
 <div class="userinfo">
   {#if user_info}
@@ -26,8 +31,8 @@
       <div class="urow">
         <div class="freebad">{@html l10n($curr_lang, "free-is-bad")}</div>
 
-        <a href={extend_url} target="_blank" rel="noopener">
-          <GButton inverted>{l10n($curr_lang, "buy-plus")}</GButton></a
+        <GButton onClick={handleBuyPlus} inverted
+          >{l10n($curr_lang, "buy-plus")}</GButton
         >
       </div>
     {:else if user_info.level == "plus" && user_info.expires}
@@ -54,11 +59,9 @@
           </small>
         </div>
 
-        <a href={extend_url} target="_blank" rel="noopener">
-          <GButton>
-            {l10n($curr_lang, "extend")}
-          </GButton>
-        </a>
+        <GButton onClick={handleBuyPlus}>
+          {l10n($curr_lang, "extend")}
+        </GButton>
       </div>
     {/if}
   {:else}

@@ -76,6 +76,16 @@
         label={l10n($curr_lang, "captcha")}
         bind:value={captcha_soln}
       />
+      <div class="privacy-eula">
+        <a
+          class="blue-link"
+          href="https://github.com/geph-official/geph4-client/wiki/Policies-and-terms"
+          target="_blank"
+          rel="noopener"
+        >
+          {l10n($curr_lang, "privacy-eula")}
+        </a>
+      </div>
       {#if error_string !== ""}
         <div class="error">{translateError(error_string)}</div>
       {/if}
@@ -114,6 +124,20 @@
 </Dialog>
 
 <style>
+  .privacy-eula {
+    font-size: 80%;
+    font-weight: 500;
+    width: 100%;
+    text-align: right;
+    padding-top: 0.5rem;
+    opacity: 0.8;
+  }
+  a.blue-link:link,
+  a.blue-link:visited {
+    color: blue;
+    text-decoration: none;
+  }
+
   .form {
     display: flex;
     flex-direction: column;
