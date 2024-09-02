@@ -52,8 +52,9 @@
           <Flag country={exit.country_code} />
           &nbsp;
           <span class="country-code">{exit.country_code.toUpperCase()}</span>
-          &nbsp;/&nbsp;{exit.city_code}
-          {#if show_all}&nbsp;/&nbsp;<small>{exit.hostname}</small>{/if}
+          &nbsp;/&nbsp;{exit.city_code.trim()}{#if show_all}&nbsp;/&nbsp;<small
+              >{exit.hostname}</small
+            >{/if}
         </div>
         <div class="server-badges">
           <div
