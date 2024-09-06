@@ -43,7 +43,7 @@ export const user_info_store: Writable<SubscriptionInfoSerializable | null> =
  * Selected exit
  */
 export const pref_selected_exit: Writable<ExitDescriptor | null> =
-  persistentWritable("selected_exit_3", null);
+  persistentWritable("selected_exit_5", null);
 
 /**
  * Selected routing mode
