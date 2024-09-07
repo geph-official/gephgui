@@ -4,32 +4,10 @@
   import memoize from "memoizee";
   export let announces: any[];
 
-  const detectMemoized = memoize(detect);
-
-  const isCurrentLanguage = (line: string) => {
-    if ($curr_lang === "en") {
-      return detectMemoized(line) == "en";
-    } else if ($curr_lang.includes("zh")) {
-      return (
-        detectMemoized(line) == "zh" ||
-        detectMemoized(line) == "ja" ||
-        detectMemoized(line) == "sr"
-      );
-    } else if ($curr_lang.includes("fa")) {
-      return detectMemoized(line) == "fa";
-    } else {
-      return true;
-    }
-  };
-
   const cleanItem = (item: any) => {
     let lala = item.description
       .replace("<p>", '<p dir="auto">')
       .split("<br>")
-      .filter((line) => {
-        console.log("detect", line, detectMemoized(line));
-        return line.length == 0 || isCurrentLanguage(line);
-      })
       .map((line) => line.trim())
       .join("<br>")
       .replace(/(<br>)(<br>)+/g, "<br><br>")
