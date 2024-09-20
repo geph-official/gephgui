@@ -77,6 +77,20 @@
     </div>
     <div class="bright mono">{has_data ? protocol : "-"}</div>
   </div>
+
+  <div class="brow">
+    <div class="bleft">
+      <Protocol size="1.3rem" />
+      <div class="bcaption">{l10n($curr_lang, "ping")}</div>
+    </div>
+    <div class="bright mono">
+      {#if has_data}
+        {Math.round(ping * 1000)}ms
+      {:else}
+        -
+      {/if}
+    </div>
+  </div>
 </div>
 
 <style>
