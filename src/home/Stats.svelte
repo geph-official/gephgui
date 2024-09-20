@@ -81,7 +81,7 @@
   <div class="brow">
     <div class="bleft">
       <Protocol size="1.3rem" />
-      <div class="bcaption">{l10n($curr_lang, "ping")}</div>
+      <div class="bcaption">{l10n($curr_lang, "latency")}</div>
     </div>
     <div class="bright mono">
       {#if has_data}
