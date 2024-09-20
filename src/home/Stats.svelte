@@ -85,7 +85,7 @@
     </div>
     <div class="bright mono">
       {#if has_data}
-        {Math.round(ping)}ms
+        {Math.round(ping)} ms
       {:else}
         -
       {/if}
