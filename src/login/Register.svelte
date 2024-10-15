@@ -18,7 +18,7 @@
   let captcha_id: string = "";
   const load_captcha = async () => {
     let gate = await native_gate();
-    const captcha = await gate.binder_rpc("get_captcha", []);
+    const captcha: any = await gate.binder_rpc("get_captcha", []);
     captcha_id = captcha.captcha_id;
     captcha_data = captcha.png_data;
   };
@@ -53,6 +53,8 @@
         variant="outlined"
         label={l10n($curr_lang, "username")}
         bind:value={username}
+        input$autocorrect="off"
+        input$autocapitalize="none"
       />
       <div class="divider" />
       <Textfield
