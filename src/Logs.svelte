@@ -33,10 +33,11 @@
         string,
       ][];
 
-      $logs = $logs.concat(new_logs);
-      if ($logs.length > 1000) {
-        $logs = $logs.slice($logs.length / 2); // set $logs to latter half of $logs
+      new_logs = $logs.concat(new_logs);
+      while ($logs.length > 1000) {
+        new_logs = new_logs.slice($logs.length / 2); // set $logs to latter half of $logs
       }
+      $logs = new_logs;
       if (shouldScrollToBottom(logs_container)) {
         setTimeout(() => {
           logs_container.scroll({
