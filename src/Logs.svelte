@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { onMount } from "svelte";
+  import { afterUpdate, onMount } from "svelte";
 
   import type { Writable } from "svelte/store";
 
@@ -11,15 +11,8 @@
   const logs: Writable<[number, string][]> = persistentWritable("loggs", []);
   let logs_container: HTMLElement;
 
-  // Function to check if the screen is scrolled to the bottom
-  function shouldScrollToBottom(element: HTMLElement): boolean {
-    return element.scrollHeight - element.scrollTop - element.clientHeight < 5;
-  }
-
-  onMount(() => {
-    logs_container.scroll({
-      top: logs_container.scrollHeight,
-    });
+  afterUpdate(() => {
+    logs_container.scrollTo(0, logs_container.scrollHeight);
   });
 
   onInterval(async () => {
@@ -38,14 +31,6 @@
         new_logs = new_logs.slice($logs.length / 2); // set $logs to latter half of $logs
       }
       $logs = new_logs;
-      if (shouldScrollToBottom(logs_container)) {
-        setTimeout(() => {
-          logs_container.scroll({
-            top: logs_container.scrollHeight,
-            // behavior: "smooth",
-          });
-        }, 100);
-      }
     } catch (e) {}
   }, 1000);
 </script>
