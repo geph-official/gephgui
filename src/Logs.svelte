@@ -1,13 +1,14 @@
 <script lang="ts">
   import { onMount } from "svelte";
 
-  import type { Writable } from "svelte/store";
+  import { writable, type Writable } from "svelte/store";
 
   import Stats from "./home/Stats.svelte";
   import { persistentWritable } from "./lib/prefs";
+  import { fade } from "svelte/transition";
   import { onInterval } from "./lib/utils";
   import { native_gate } from "./native-gate";
-  const logs: Writable<[number, string][]> = persistentWritable("logs", []);
+  const logs: Writable<[number, string][]> = writable([]);
   let logs_container: HTMLElement;
 
   // Function to check if the screen is scrolled to the bottom
@@ -29,7 +30,7 @@
     try {
       let new_logs = (await gate.daemon_rpc("get_logs", [last_no])) as [
         number,
-        string
+        string,
       ][];
 
       $logs = $logs.concat(new_logs);
@@ -40,7 +41,7 @@
         setTimeout(() => {
           logs_container.scroll({
             top: logs_container.scrollHeight,
-            behavior: "smooth",
+            // behavior: "smooth",
           });
         }, 100);
       }
@@ -48,7 +49,7 @@
   }, 1000);
 </script>
 
-<div class="wrap">
+<div class="wrap" transition:fade={{ duration: 150 }}>
   <Stats />
   <div class="logs" bind:this={logs_container}>
     {#each $logs as [tstamp, line]}

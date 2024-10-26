@@ -24,11 +24,18 @@
   {#if user_info}
     {#if user_info.level == "free"}
       <div class="urow">
-        <div class="freebad">{@html l10n($curr_lang, "free-is-bad")}</div>
-
+        <Heart width="1.5rem" height="1.5rem" color="var(--mdc-theme-error)" />
+        <div class="stretch">
+          <b>{l10n($curr_lang, "free")}</b>
+        </div>
         <a href={extend_url} target="_blank" rel="noopener">
           <GButton inverted>{l10n($curr_lang, "buy-plus")}</GButton></a
         >
+      </div>
+      <div class="urow">
+        <div class="freebad">
+          {@html l10n($curr_lang, "free-is-bad")}
+        </div>
       </div>
     {:else if user_info.level == "plus" && user_info.expires}
       {@const remainingDays = Math.max(
@@ -77,12 +84,15 @@
   }
 
   .freebad {
-    background-color: lightpink;
-    padding: 0.6rem;
+    background-color: hsl(351, 100%, 96%);
+    padding: 1rem;
     border-radius: 0.5rem;
-    margin-right: 1rem;
+    margin-top: 2rem;
     flex-grow: 1;
-    text-align: center;
+    color: maroon;
+    font-weight: 500;
+    font-size: 0.9rem;
+    /* text-align: center; */
   }
 
   .red {

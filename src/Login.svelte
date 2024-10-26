@@ -2,7 +2,7 @@
   import Textfield from "@smui/textfield";
   import GButton from "./lib/GButton.svelte";
   import { curr_lang, l10n } from "./lib/l10n";
-  import { pref_userpwd } from "./lib/prefs";
+  import { pref_userpwd, pref_wizard } from "./lib/prefs";
   import { native_gate } from "./native-gate";
   import Register from "./login/Register.svelte";
 
@@ -46,14 +46,16 @@
       input$autocorrect="off"
       input$autocapitalize="none"
     />
-    <br />
+    <div class="spacer" />
     <Textfield
       variant="outlined"
       type="password"
       label={l10n($curr_lang, "password")}
       bind:value={password}
     />
-    <br />
+    <div class="spacer" />
+    <div class="spacer" />
+
     <GButton
       disabled={loading}
       onClick={async () => {
@@ -64,6 +66,7 @@
             loading = true;
             try {
               await (await native_gate()).sync_user_info(username, password);
+
               $pref_userpwd = {
                 username: username,
                 password: password,
@@ -77,7 +80,7 @@
         );
       }}>{l10n($curr_lang, "log-in-blurb")}</GButton
     >
-    <br />
+    <div class="spacer" />
     <GButton inverted disabled={loading} onClick={() => (register_open = true)}
       >{l10n($curr_lang, "register-blurb")}</GButton
     >
@@ -103,5 +106,10 @@
     flex-direction: column;
     align-items: center;
     margin-top: 2rem;
+  }
+
+  .spacer {
+    display: block;
+    height: 0.5rem;
   }
 </style>

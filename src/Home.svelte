@@ -4,8 +4,7 @@
   import ActiveExit from "./home/ActiveExit.svelte";
   import BottomButtons from "./home/BottomButtons.svelte";
 
-  import Stats from "./home/Stats.svelte";
-
+  import { fade } from "svelte/transition";
   import UserInfo from "./home/UserInfo.svelte";
   import { curr_lang, l10n } from "./lib/l10n";
   import { runWithSpinner, showErrorModal } from "./lib/modals";
@@ -22,6 +21,7 @@
     pref_use_app_whitelist,
     pref_protocol,
     user_info_store,
+    pref_wizard,
   } from "./lib/prefs";
   import { onInterval } from "./lib/utils";
   import {
@@ -35,6 +35,14 @@
   const connection_status: Writable<
     "connected" | "connecting" | "disconnected"
   > = persistentWritable("connection_status", "disconnected");
+
+  const last_wizard: Writable<number> = persistentWritable("last_wizard", 0);
+
+  const isWeekSinceLastWizard = (): boolean => {
+    const currentTime = Date.now();
+    const ONE_WEEK_IN_MS = 7 * 24 * 60 * 60 * 1000;
+    return currentTime - $last_wizard >= ONE_WEEK_IN_MS;
+  };
 
   onInterval(async () => {
     let gate = await native_gate();
@@ -84,6 +92,10 @@
     console.log("main monitor loop IS CONNECTED: ", is_connected);
     if (is_connected) {
       $connection_status = "connected";
+      if (isWeekSinceLastWizard() && $user_info_store?.level === "free") {
+        $pref_wizard = true;
+        $last_wizard = Date.now();
+      }
     } else if (is_running) {
       $connection_status = "connecting";
     } else {
@@ -92,7 +104,7 @@
   }, 500);
 </script>
 
-<div class="home">
+<div class="home" transition:fade={{ duration: 150 }}>
   {#if $pref_selected_exit}
     {#if $pref_userpwd}
       <UserInfo

@@ -3,6 +3,7 @@
   import { curr_lang, l10n_date } from "./lib/l10n";
   import memoize from "memoizee";
   export let announces: any[];
+  import { fade } from "svelte/transition";
 
   const cleanItem = (item: any) => {
     let lala = item.description
@@ -18,7 +19,7 @@
   };
 </script>
 
-<div class="outer">
+<div class="outer" transition:fade={{ duration: 150 }}>
   {#each announces as item}
     {#if cleanItem(item).length > 0}
       <div class="announce-card">
@@ -35,7 +36,6 @@
 
 <style>
   .outer {
-    background-color: #eee;
     display: flex;
     flex-direction: column;
     padding-top: 1rem;

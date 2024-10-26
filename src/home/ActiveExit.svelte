@@ -10,11 +10,6 @@
   export let exit_descriptor: ExitDescriptor;
   import { slide } from "svelte/transition";
   import Flag from "../lib/Flag.svelte";
-
-  $: p2p_allowed =
-    exit_descriptor.country_code != "us" &&
-    exit_descriptor.country_code != "jp" &&
-    exit_descriptor.country_code != "de";
 </script>
 
 <div class="wrapper">
@@ -66,20 +61,6 @@
           {l10n($curr_lang, "automatic-blurb")}{/if}
       </div>
     {/key}
-    <div class="badges">
-      {#if exit_descriptor}
-        {#if exit_descriptor.allowed_levels.includes("free")}
-          <div class="badge green">{l10n($curr_lang, "free-server")}</div>
-        {:else}
-          <div class="badge purple">{l10n($curr_lang, "plus-server")}</div>
-        {/if}
-        {#if p2p_allowed}
-          <div class="badge green">{l10n($curr_lang, "p2p-yes")}</div>
-        {:else}
-          <div class="badge red">{l10n($curr_lang, "p2p-no")}</div>
-        {/if}
-      {:else}&nbsp;{/if}
-    </div>
   </div>
 </div>
 

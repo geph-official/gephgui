@@ -10,7 +10,7 @@
 
   import { curr_lang, l10n } from "./lib/l10n";
   import Home from "./Home.svelte";
-  import { persistentWritable, pref_userpwd } from "./lib/prefs";
+  import { persistentWritable, pref_userpwd, pref_wizard } from "./lib/prefs";
   import Settings from "./Settings.svelte";
   import Login from "./Login.svelte";
 
@@ -37,6 +37,7 @@
   import { extractFromXml } from "@extractus/feed-extractor";
   import { errorContent, loadingContent } from "./lib/modals";
   import Logs from "./Logs.svelte";
+  import Wizard from "./Wizard.svelte";
 
   interface Announcement {
     description: string;
@@ -188,6 +189,9 @@
   {#if !$pref_userpwd}
     <Login />
   {:else}
+    {#if $pref_wizard}
+      <Wizard />
+    {/if}
     <div class="big-container">
       {#if active_tab == "Home"}
         <Home />

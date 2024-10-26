@@ -29,6 +29,14 @@ export function persistentWritable<T>(
 }
 
 /**
+ * Whether or not the wizard is active
+ */
+export const pref_wizard: Writable<boolean> = persistentWritable(
+  "wizardd",
+  false
+);
+
+/**
  * The current username and password.
  */
 export const pref_userpwd: Writable<{

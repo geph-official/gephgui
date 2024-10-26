@@ -1,152 +1,102 @@
-label,en,zh-CN,zh-TW,fa
-geph,Geph,迷雾通,迷霧通,Geph
-error,Error,错误,錯誤,خطا
-refresh-user,Refresh info,刷新用户信息,刷新用戶訊息,تازه‌سازی اطلاعات
-logout,Log out,退出,退出,خروج
-extend,Extend,延长,延長,تمدید
-loading,Loading,载入中,載入中,درحال بارگذاری
-get-unlimited-speed,Get unlimited speed,获取无限速度,獲取無限速度,سرعت نامحدود را تجربه کن
-buy-plus,Buy Plus!,购买Plus!,購買Plus!,خرید پلاس!
-remaining-days,Remaining days,剩余天数,剩餘天數,روزهای باقی‌مانده
-disconnected,Disconnected,已断开,已斷開,متصل نیست
-connecting,Connecting,连接中,連接中,درحال اتصال
-connected,Connected,已连接,已連接,متصل شد
-free-server,Free,所有用户,所有用戶,رایگان
-plus-server,Plus,仅限Plus,僅限Plus,پلاس
-p2p-yes,P2P allowed,允许BT,允許P2P,P2P مجاز
-p2p-no,P2P banned,禁止BT,禁止P2P,P2P غیرمجاز
-automatic,Auto,自动,自動,خودکار
-automatic-blurb,Uses best available server,使用最佳可用服务器,使用最佳可用伺服器,به بهترین سرور موجود وصل می‌شود
-change-location,Change location,更改位置,更改位置,تغییر مکان
-connect,Connect,连接,連接,اتصال
-disconnect,Disconnect,断开,斷開,قطع اتصال
-exit-selection,Select exit server,选择出口服务器,選擇出口伺服器,سرور خروجی را انتخاب کنید
-close,Close,关闭,關閉,بستن
-country,Country,国家,國家,کشور
-city,City,城市,城市,شهر
-server-id,ID,服务器 ID,伺服器 ID,شناسه
-allowed,Allowed,允许,允許,مجاز
-plus-only-blurb,Only Plus users are allowed on this server, select another one.,仅Plus用户允许访问此服务器,این سرور مخصوص اعضای پلاس است
-use-automatic,Automatically select server,自动选择服务器,自動選擇伺服器,انتخاب خودکار سرور
-cancel,Cancel,取消,取消,لغو
-download,Download,下载,下載,دانلود
-upload,Upload,上传,上傳,آپلود
-latency,Latency,延迟,延遲,تاخیر
-protocol,Protocol,协议,協議,پروتکل
-via,Via,经由,經由,از طریق
-packet-loss,Packet Loss,丟包,丟包,Packet Loss
-username,Username,用户名,用戶名,نام کاربری
-password,Password,密码,密碼,رمزعبور
-log-in-blurb,Log in with existing account,使用已有帐号登录,使用已有帳號登錄,ورود به حساب کاربری موجود
-register-blurb,Create a new account,创建新帐号,創建新帳號,ایجاد حساب کاربری جدید
-register,Register,注册,註冊,افتتاح حساب
-captcha,Captcha,验证码,驗證碼,اعتبارسنجی
-,,,,
-,,,,
-acc,Accra,阿克拉,阿克拉,آکرا
-ams,Amsterdam,阿姆斯特丹,阿姆斯特丹,آمستردام
-athens,Athens,雅典,雅典,آتن
-bkk,Bangkok,曼谷,曼谷,بانکوک
-beg,Belgrade,贝尔格莱德,貝爾格萊德,بلگراد
-bru,Brussels,布鲁塞尔,布魯塞爾,بروکسل
-bud,Budapest,布达佩斯,布達佩斯,بوداپست
-cmx,Cancun,坎昆,坎昆,کانکون
-cpt,Cape Town,开普敦,開普敦,کیپ‌تاون
-ord,Chicago,芝加哥,芝加哥,شیکاگو
-cph,Copenhagen,哥本哈根,哥本哈根,کوپنهاگن
-dal,Dallas,达拉斯,達拉斯,دالاس
-del,Delhi,德里,德里,دهلی
-den,Denver,丹佛,丹佛,دنور
-dxb,Dubai,迪拜,迪拜,دبی
-fra,Frankfurt,法兰克福,法蘭克福,فرانکفورت
-hel,Helsinki,赫尔辛基,赫爾辛基,هلسینکی
-ist,Istanbul,伊斯坦布尔,伊斯坦布爾,استانبول
-cgk,Jakarta,雅加达,雅加達,جاکارتا
-jnb,Johannesburg,约翰内斯堡,約翰尼斯堡,ژوهانسبورگ
-lom,Lagos,拉各斯,拉各斯,لاگوس
-lca,Larnaca,拉纳卡,拉納卡,لارناکا
-lfw,Lome,洛美,洛美,لومه
-lon,London,伦敦,倫敦,لندن
-lax,Los Angeles,洛杉矶,洛杉磯,لس آنجلس
-mad,Madrid,马德里,馬德里,مادرید
-mnl,Manila,马尼拉,馬尼拉,مانیل
-mil,Milan,米兰,米蘭,میلان
-mtl,Montreal,蒙特利尔,蒙特婁,مونترآل
-mow,Moscow,莫斯科,莫斯科,مسکو
-nbo,Nairobi,内罗毕,內羅畢,نایروبی
-nyc,New York,纽约,紐約,نیویورک
-oslo,Oslo,奥斯陆,奧斯陸,اسلو
-par,Paris,巴黎,巴黎,پاریس
-pdx,Portland,波特兰,波特蘭,پورتلند
-prg,Prague,布拉格,布拉格,پراگ
-prn,Pristina,普里什蒂纳,普里什蒂纳,پریشتینا
-kef,Reykjavik,雷克雅未克,雷克雅維克,ریکیاویک
-rom,Rome,罗马,羅馬,رم
-sfo,San Francisco,旧金山,舊金山,سان فرانسیسکو
-seoul,Seoul,首尔,首爾,سئول
-sgp,Singapore,新加坡,新加坡,سنگاپور
-skp,Skopje,斯科普里,斯科普里,اسکوپیه
-sto,Stockholm,斯德哥尔摩,斯德哥爾摩,استکهلم
-syd,Sydney,悉尼,悉尼,سیدنی
-rmq,Taichung,台中,台中,تایچونگ
-tpe,Taipei,台北,台北,تایپه
-tlv,Tel Aviv,特拉维夫,特拉維夫,تل‌آویو
-tyo,Tokyo,东京,東京,توکیو
-vce,Venice,威尼斯,威尼斯,ونیز
-vie,Vienna,维也纳,維也納,وین
-waw,Warsaw,华沙,華沙,ورشو
-zrh,Zurich,苏黎世,蘇黎世,زوریخ
-,,,,
-general,General,常规,常規,عمومی
-language,Language,语言,語言,زبان
-exclude-apps,Exclude Apps,排除应用,排除應用,برنامه های صرف‌نظر شده
-routing-mode,Routing Mode,路由模式,路由模式,حالت مسیریابی
-force-bridges,Bridges,强制桥接,強制橋接,پل ها
-network,Network,网络,網路,شبکه
-other,Other,其他,其他,دیگر
-debug-pack,Debug pack,调试包,調試包,بسته عیب یابی
-advanced,Advanced,高级,高級,پیشرفته
-auto-proxy,Auto-configure proxy,自动配置代理,自動配置代理,پیکربندی خودکار پروکسی
-auto-proxy-blurb,Makes most browsers use Geph,配置大多数浏览器使用迷雾通,配置大多数瀏覽器使用迷霧通,بیشتر مرورگرها را مجبور میکند که از Geph استفاده کنند
-global-vpn,Network-level VPN,全局VPN,全局VPN,فیلترشکن در سطح شبکه
-listen-all,Listen on all interfaces,监听所有地址,監聽所有地址,گوش‌دادن به همه رابط ها
-listen-all-blurb,Allows other computers to use Geph,允许其他计算机使用迷雾通,允許其他計算機使用迷霧通,اجازه می‌دهد بقیه کامپیوترها از Geph استفاده کنند
-global-vpn-blurb,Force all traffic to use Geph,强制所有流量使用迷雾通,強制所有流量使用迷霧通,همه ترافیک ها را مجبور به استفاده از Geph می کند
-exclude-apps,Exclude apps,排除应用程序,排除應用程式,برنامه های صرف‌نظر شده
-exclude-apps-blurb,Let apps bypass Geph,允许应用程序绕过迷雾通,允許應用程式繞過迷霧通,این برنامه ها از Geph استفاده نکنند
-select-excluded-apps,Select excluded apps,选择要排除的应用程序,選擇要排除的應用程式,انتخاب برنامه های صرف‌نظر شده
-exclude-prc,Exclude PRC traffic,排除中国大陆流量,排除中國大陸流量,صرف‌نظر از ترافیک RPC
-exclude-prc-blurb,Let Chinese traffic bypass Geph,允许中国大陆流量绕过迷雾通,允許中國大陸流量繞過迷霧通,ترافیک چین از Geph عبور نکند
-debug,Debug,调试,除錯,عیب‌یابی
-debug-pack,Export debug pack,导出调试包,導出除錯包,صدور بسته عیب‌یابی
-debug-pack-blurb,Save debugging info for developers,保存调试信息以供开发人员使用,保存除錯資訊以供開發人員使用,ذخیره گزارش‌های عیب‌یابی برای توسعه‌دهندگان
-export,Export,导出,導出,صدور
-account,Account,账户,賬戶,حساب کاربری
-delete,Delete,删除,刪除,حذف
-delete-account,Delete account,刪除账户,刪除賬戶,حذف حساب کاربری
-delete-account-blurb,Permanently delete account,永久删除账户,永久刪除賬戶,حذف دائمی حساب کاربری
-delete-account-are-you-sure,Are you sure that you want to delete your account?,你确定要删除你的账户吗？,你確定要刪除你的賬戶嗎？,آیا مطمئن هستید که می‌خواهید اکانت خود را حذف کنید؟
-about,About,关于,關於,درباره ما
-news,News,通知频道,通知頻道,اخبار
-forum,Forum,用户论坛,用戶論壇,انجمن
-github,GitHub,GitHub,GitHub,گیت‌هاب
-note,Note,注意,注意,یادداشت
-no-update-blurb,Automatic updates are not available for this platform. Please follow our Telegram channel for update notifications:,自动更新不可用于此平台。请关注我们的Telegram频道以获取更新通知：,自動更新不可用於此平台。請關注我們的Telegram頻道以獲取更新通知：,آپدیت های خودکار برای این پلتفرم در دسترس نیست. برای آپدیت های آینده کانال تلگرام ما را دنبال کنید.
-advanced-warning,Advanced settings should only be adjusted by experienced users. Incorrect changes may lead to unexpected network behavior or disruptions.,高级设置应只由有经验的用户调整。不正确的更改可能导致意外的现象或连接中断。,高級設置應只由有經驗的用戶調整。不正確的更改可能導致意外的現象或連接中斷。,تنظیمات پیشرفته باید توسط کاربران باتجربه انجام شود. تنظیمات اشتباه ممکن است باعث بروز اختلال در شبکه شما شود.
-protocol,Protocol,传输协议,傳輸協議,پروتکل
-listening-ports,Listening ports,监听端口,監聽端口,پورت های فراخوانی شده
-,,,,
-show-all-servers,Show all servers,显示所有服务器,顯示所有服務器,نمایش تمام سرورها
-plus-is-great,Plus unlocks full speed on&nbsp;<b>all</b>&nbspservers!,Plus解除<b>所有</b>服务器的限速！,Plus解除<b>所有</b>服務器的限速！,پلاس قابلیت سرعت نامحدود را روی <b>تمام</b> سرور ها برای شما باز می‌کند!
-free-is-bad,Free accounts limited to <b>300 KB/s</b>.,免费账号速度非常有限（<b>300 KB/s</b>）,免費帳號速度非常有限（<b>300 KB/s<b>）,سرعت حساب های رایگان محدود به <b>300 KB/s</b> می باشد. با ارتقا به پلاس از سرعت نامحدود لذت ببرید!
-theme,Theme,主题,主題,قالب
-light,Light,亮色,亮色,روشن
-dark,Dark,暗色,暗色,تیره
-logging-in,Logging in,登录中,登錄中,ورود به حساب 
-logging-out,Logging out,登出中,登出中,خروج از حساب
-refreshing-user-info,Refreshing user info,正在刷新用户信息,正在刷新用戶信息,به روز رسانی اطلاعات کاربر
-invalid-username-or-password,Wrong username or password,用户名或密码错误,用戶名或密碼錯誤,نام کاربری یا کلمه عبور نادرست است
-login-server-overloaded,The login server is currently overloaded. Please try again later.,登录服务器当前超负载。请稍后重试。,登錄服務器當前超負荷。請稍後重試。,سرور ورود در حال حاضر فشارزا است. لطفا بعدا دوباره امتحان کنید.
-no-internet-connection,No Internet connection,无网络连接,無網絡連接,اتصال اینترنت وجود ندارد
-loading-server-list,Loading server list,正在加载服务器列表,正在加載伺服器列表,بارگذاری لیست سرور
-duplicate-credentials,This username is already taken. Please choose another name,此用户名已存在。请选一个新的用户名,此用戶名已存在。 請選一個新的用戶名,این نام کاربری برداشته شده است. لطفا نام دیگری انتخاب کنید
+label,en,zh-CN,zh-TW,fa,ru
+200x-faster-speed,"Get up to <b>200x faster speed</b> and more reliable connections.","获得高达 <b>200 倍更快的速度</b> 和更可靠的连接。","獲得高達 <b>200 倍更快的速度</b> 和更可靠的連接。","سرعتی تا <b>200 برابر سریع‌تر</b> و اتصالات قابل اعتمادتر دریافت کنید","Получите до <b>200 раз быстрее скорость</b> и более надежные соединения."
+about,About,关于,關於,درباره ما,О программе
+access-global-servers,"Gain access to our entire network of global servers, including <b>premium, low-latency locations</b>.","使用所有迷雾通服务器，连接<b>高速、低延迟的地理位置</b>。","使用所有迷霧通服務器，连接<b>高速、低延遲的地理位置</b>。","به کل شبکه سرورهای جهانی ما، از جمله <b>مکان‌های ممتاز با تأخیر کم</b>، دسترسی پیدا کنید","Получите доступ ко всей нашей сети глобальных серверов, включая <b>премиум-локации с низкой задержкой</b>."
+account,Account,账户,賬戶,حساب کاربری,Аккаунт
+advanced,Advanced,高级,高級,پیشرفته,Дополнительно
+advanced-warning,"Advanced settings should only be adjusted by experienced users. Incorrect changes may lead to unexpected network behavior or disruptions.",高级设置应只由有经验的用户调整。不正确的更改可能导致意外的现象或连接中断。,高級設置應只由有經驗的用戶調整。不正確的更改可能導致意外的現象或連接中斷。,تنظیمات پیشرفته باید توسط کاربران باتجربه انجام شود. تنظیمات اشتباه ممکن است باعث بروز اختلال در شبکه شما شود.,"Расширенные настройки должны настраиваться только опытными пользователями. Неправильные изменения могут привести к неожиданному поведению сети или сбоям."
+allowed,Allowed,允许,允許,مجاز,Разрешено
+auto-proxy,Auto-configure proxy,自动配置代理,自動配置代理,پیکربندی خودکار پروکسی,Автонастройка прокси
+auto-proxy-blurb,Makes most browsers use Geph,配置大多数浏览器使用迷雾通,配置大多数瀏覽器使用迷霧通,بیشتر مرورگرها را مجبور میکند که از Geph استفاده کنند,Настраивает большинство браузеров использовать Geph
+automatic,Auto,自动,自動,خودکار,Авто
+automatic-blurb,Uses best available server,使用最佳可用服务器,使用最佳可用伺服器,به بهترین سرور موجود وصل می‌شود,Использует лучший доступный сервер
+buy-plus,Buy Plus,购买 Plus,購買 Plus,خرید پلاس,Купить Plus
+buy-plus-price,Buy Plus (€5/month),购买 Plus（每月 €5）,購買 Plus（每月 €5）,خرید پلاس (€5/ماه),Купить Plus (€5/месяц)
+calls-p2p-gaming,"🎮 Calls, P2P, and gaming","🎮 通话、P2P 和游戏","🎮 通話、P2P 和遊戲","🎮 تماس‌ها، P2P و بازی","🎮 Звонки, P2P и игры"
+cancel,Cancel,取消,取消,لغو,Отмена
+captcha,Captcha,验证码,驗證碼,اعتبارسنجی,Капча
+change-location,Change location,更改位置,更改位置,تغییر مکان,Изменить расположение
+city,City,城市,城市,شهر,Город
+close,Close,关闭,關閉,بستن,Закрыть
+connect,Connect,连接,連接,اتصال,Подключить
+connected,Connected,已连接,已連接,متصل شد,Подключено
+connecting,Connecting,连接中,連接中,درحال اتصال,Подключение
+country,Country,国家,國家,کشور,Страна
+dark,Dark,暗色,暗色,تیره,Тёмная тема
+debug,Debug,调试,除錯,عیب‌یابی,Отладка
+debug-pack,Debug pack,调试包,調試包,بسته عیب یابی,Отладочный пакет
+debug-pack-blurb,Save debugging info for developers,保存调试信息以供开发人员使用,保存除錯資訊以供開發人員使用,ذخیره گزارش‌های عیب‌یابی برای توسعه‌دهندگان,Сохранить отладочную информацию для разработчиков
+delete,Delete,删除,刪除,حذف,Удалить
+delete-account,Delete account,刪除账户,刪除賬戶,حذف حساب کاربری,Удалить аккаунт
+delete-account-are-you-sure,Are you sure that you want to delete your account?,你确定要删除你的账户吗？,你確定要刪除你的賬戶嗎？,آیا مطمئن هستید که می‌خواهید اکانت خود را حذف کنید؟,Вы уверены, что хотите удалить свой аккаунт?
+delete-account-blurb,Permanently delete account,永久删除账户,永久刪除賬戶,حذف دائمی حساب کاربری,Безвозвратно удалить аккаунт
+disconnect,Disconnect,断开,斷開,قطع اتصال,Отключить
+disconnected,Disconnected,已断开,已斷開,متصل نیست,Отключено
+download,Download,下载,下載,دانلود,Скачать
+duplicate-credentials,This username is already taken. Please choose another name,此用户名已存在。请选一个新的用户名,此用戶名已存在。 請選一個新的用戶名,این نام کاربری برداشته شده است. لطفا نام دیگری انتخاب کنید,Это имя пользователя уже занято. Пожалуйста, выберите другое имя.
+error,Error,错误,錯誤,خطا,Ошибка
+exclude-apps,Exclude Apps,排除应用,排除應用,برنامه های صرف‌نظر شده,Исключить приложения
+exclude-apps-blurb,Let apps bypass Geph,允许应用程序绕过迷雾通,允許應用程式繞過迷霧通,این برنامه ها از Geph استفاده نکنند,Позволить приложениям обходить Geph
+exclude-prc,Exclude PRC traffic,排除中国大陆流量,排除中國大陸流量,صرف‌نظر از ترافیک RPC,Исключить трафик КНР
+exclude-prc-blurb,Let Chinese traffic bypass Geph,允许中国大陆流量绕过迷雾通,允許中國大陸流量繞過迷霧通,ترافیک چین از Geph عبور نکند,Позволить китайскому трафику обходить Geph
+exit-selection,Select exit server,选择出口服务器,選擇出口伺服器,سرور خروجی را انتخاب کنید,Выбрать выходной сервер
+export,Export,导出,導出,صدور,Экспорт
+extend,Extend,延长,延長,تمدید,Продлить
+force-bridges,Bridges,强制桥接,強制橋接,پل ها,Мосты
+forum,Forum,用户论坛,用戶論壇,انجمن,Форум
+free,Free account,免费用户,免費用戶,حساب رایگان,Бесплатный аккаунт
+free-is-bad,Free accounts limited to <b>300 KB/s</b> and only basic web browsing.,免费账号速度非常有限（<b>300 KB/s</b>），而且只允许基本网页浏览,免費帳號速度非常有限（<b>300 KB/s</b>）只允許基本網頁瀏覽,سرعت حساب های رایگان محدود به <b>300 KB/s</b> و فقط مرور وب اساسی می باشد. با ارتقا به پلاس از سرعت نامحدود لذت ببرید!,"Скорость бесплатных аккаунтов ограничена до <b>300 КБ/с</b> и доступен только базовый веб-серфинг."
+free-server,Free,所有用户,所有用戶,رایگان,Бесплатно
+general,General,常规,常規,عمومی,Общие
+geph,Geph,迷雾通,迷霧通,Geph,Geph
+get-full-geph-experience,"Get the full Geph experience","享受完整的迷雾通服务","享受完整的迷霧通服務</h1>","<h1>تجربه کامل Geph را دریافت کنید</h1>","Получите полный опыт использования Geph"
+get-unlimited-speed,Get unlimited speed,获取无限速度,獲取無限速度,سرعت نامحدود را تجربه کن,Получите неограниченную скорость
+github,GitHub,GitHub,GitHub,گیت‌هاب,GitHub
+global-vpn,Network-level VPN,全局VPN,全局VPN,فیلترشکن در سطح شبکه,VPN на уровне сети
+global-vpn-blurb,Force all traffic to use Geph,强制所有流量使用迷雾通,強制所有流量使用迷霧通,همه ترافیک ها را مجبور به استفاده از Geph می کند,Заставить весь трафик использовать Geph
+invalid-username-or-password,Wrong username or password,用户名或密码错误,用戶名或密碼錯誤,نام کاربری یا کلمه عبور نادرست است,Неправильное имя пользователя или пароль
+language,Language,语言,語言,زبان,Язык
+latency,Latency,延迟,延遲,تاخیر,Задержка
+light,Light,亮色,亮色,روشن,Светлая тема
+listen-all,Listen on all interfaces,监听所有地址,監聽所有地址,گوش‌دادن به همه رابط ها,Прослушивать все интерфейсы
+listen-all-blurb,Allows other computers to use Geph,允许其他计算机使用迷雾通,允許其他計算機使用迷霧通,اجازه می‌دهد بقیه کامپیوترها از Geph استفاده کنند,Позволяет другим компьютерам использовать Geph
+listening-ports,Listening ports,监听端口,監聽端口,پورت های فراخوانی شده,Порты прослушивания
+loading,Loading,载入中,載入中,درحال بارگذاری,Загрузка
+loading-server-list,Loading server list,正在加载服务器列表,正在加載伺服器列表,بارگذاری لیست سرور,Загрузка списка серверов
+log-in-blurb,Log in with existing account,使用已有帐号登录,使用已有帳號登錄,ورود به حساب کاربری موجود,Войти в существующий аккаунт
+logging-in,Logging in,登录中,登錄中,ورود به حساب,Вход
+logging-out,Logging out,登出中,登出中,خروج از حساب,Выход
+login-server-overloaded,The login server is currently overloaded. Please try again later.,登录服务器当前超负载。请稍后重试。,登錄服務器當前超負荷。請稍後重試。,سرور ورود در حال حاضر فشارزا است. لطفا بعدا دوباره امتحان کنید.,Сервер входа в систему в настоящее время перегружен. Пожалуйста, попробуйте позже.
+logout,Log out,退出,退出,خروج,Выйти
+much-faster-speed,"🚀 Much faster speed","🚀 超快的速度","🚀 超快的速度","🚀 سرعت بسیار بالاتر","🚀 Намного быстрее"
+network,Network,网络,網路,شبکه,Сеть
+news,News,通知频道,通知頻道,اخبار,Новости
+no-internet-connection,No Internet connection,无网络连接,無網絡連接,اتصال اینترنت وجود ندارد,Нет подключения к Интернету
+no-update-blurb,"Automatic updates are not available for this platform. Please follow our Telegram channel for update notifications:",自动更新不可用于此平台。请关注我们的Telegram频道以获取更新通知：,自動更新不可用於此平台。請關注我們的Telegram頻道以獲取更新通知：,آپدیت های خودکار برای این پلتفرم در دسترس نیست. برای آپدیت های آینده کانال تلگرام ما را دنبال کنید.,Автоматические обновления недоступны для этой платформы. Пожалуйста, следите за нашим каналом в Telegram для уведомлений об обновлениях:
+not-now,Not now,暂不,暫不,فعلا نه,Не сейчас
+note,Note,注意,注意,یادداشت,Примечание
+other,Other,其他,其他,دیگر,Другое
+p2p-no,P2P banned,禁止BT,禁止P2P,P2P غیرمجاز,P2P запрещено
+p2p-yes,P2P allowed,允许BT,允許P2P,P2P مجاز,P2P разрешено
+packet-loss,Packet Loss,丟包,丟包,Packet Loss,Потеря пакетов
+password,Password,密码,密碼,رمزعبور,Пароль
+plus-is-great,"Plus unlocks full speed on <b>all</b> servers!",Plus解除<b>所有</b>服务器的限速！,Plus解除<b>所有</b>服務器的限速！,پلاس قابلیت سرعت نامحدود را روی <b>تمام</b> سرور ها برای شما باز می‌کند!,"Plus разблокирует полную скорость на <b>всех</b> серверах!"
+plus-only-blurb,"Only Plus users are allowed on this server, select another one.",仅Plus用户允许访问此服务器,仅Plus用户允许访问此服务器,این سرور مخصوص اعضای پلاس است,"На этот сервер допускаются только пользователи Plus, выберите другой."
+plus-server,Plus,仅限Plus,僅限Plus,پلاس,Plus
+protocol,Protocol,协议,協議,پروتکل,Протокол
+refresh-user,Refresh info,刷新用户信息,刷新用戶訊息,تازه‌سازی اطلاعات,Обновить информацию
+refreshing-user-info,Refreshing user info,正在刷新用户信息,正在刷新用戶信息,به روز رسانی اطلاعات کاربر,Обновление информации пользователя
+register,Register,注册,註冊,افتتاح حساب,Регистрация
+register-blurb,Create a new account,创建新帐号,創建新帳號,ایجاد حساب کاربری جدید,Создать новый аккаунт
+remaining-days,Remaining days,剩余天数,剩餘天數,روزهای باقی‌مانده,Осталось дней
+routing-mode,Routing Mode,路由模式,路由模式,حالت مسیریابی,Режим маршрутизации
+select-excluded-apps,Select excluded apps,选择要排除的应用程序,選擇要排除的應用程式,انتخاب برنامه های صرف‌نظر شده,Выберите исключенные приложения
+server-id,ID,服务器 ID,伺服器 ID,شناسه,ID
+show-all-servers,Show all servers,显示所有服务器,顯示所有服務器,نمایش تمام سرورها,Показать все серверы
+theme,Theme,主题,主題,قالب,Тема
+unlock-all-locations,"🌎 Unlock all locations","🌎 解锁所有位置","🌎 解鎖所有位置","🌎 همه مکان‌ها را باز کنید","🌎 Разблокировать все локации"
+unrestricted-access,"Enjoy <b>unrestricted access</b> to ports other than 80 and 443. Perfect for gaming, P2P, video conferencing, and more.","享受对除 80 和 443 之外端口的 <b>无限制访问</b>。非常适合游戏、P2P、视频会议等。","享受對除 80 和 443 之外端口的 <b>無限制訪問</b>。非常適合遊戲、P2P、視頻會議等。","از <b>دسترسی نامحدود</b> به پورت‌های غیر از 80 و 443 لذت ببرید. مناسب برای بازی، P2P، ویدئو کنفرانس و موارد دیگر","Наслаждайтесь <b>неограниченным доступом</b> к портам, кроме 80 и 443. Идеально для игр, P2P, видеоконференций и многого другого."
+upload,Upload,上传,上傳,آپلود,Загрузить
+use-automatic,Automatically select server,自动选择服务器,自動選擇伺服器,انتخاب خودکار سرور,Автоматически выбрать сервер
+username,Username,用户名,用戶名,نام کاربری,Имя пользователя
+via,Via,经由,經由,از طریق,Через

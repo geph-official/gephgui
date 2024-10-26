@@ -85,7 +85,7 @@
   };
 </script>
 
-<div class="wrap">
+<div class="wrap" transition:fade={{ duration: 150 }}>
   {#key $curr_lang}
     <div class="subtitle">{l10n($curr_lang, "general")}</div>
     <div class="setting">
@@ -96,12 +96,10 @@
       <div class="switch">
         <Select variant="outlined" style="width: 9rem" bind:value={$curr_lang}>
           <Option value="en">English</Option>
-          {#if $pref_eastereggs}
-            <Option value="x-slv-la">Svitannski</Option>
-          {/if}
           <Option value="zh-TW">繁體中文</Option>
           <Option value="zh-CN">简体中文</Option>
           <Option value="fa">فارسی</Option>
+          <Option value="ru">Русский</Option>
         </Select>
       </div>
     </div>
@@ -299,7 +297,7 @@
       </div>
     </div>
 
-    <div class="setting">
+    <!-- <div class="setting">
       <div class="icon">
         <Protocol height="1.5rem" width="1.5rem" />
       </div>
@@ -315,7 +313,7 @@
           <Option value="tls">TLS</Option>
         </Select>
       </div>
-    </div>
+    </div> -->
 
     <div class="divider" />
 
