@@ -92,7 +92,11 @@
     console.log("main monitor loop IS CONNECTED: ", is_connected);
     if (is_connected) {
       $connection_status = "connected";
-      if (isWeekSinceLastWizard() && $user_info_store?.level === "free") {
+      if (
+        isWeekSinceLastWizard() &&
+        $user_info_store?.level === "free" &&
+        !($pref_userpwd && $pref_userpwd.username.includes("public"))
+      ) {
         $pref_wizard = true;
         $last_wizard = Date.now();
       }

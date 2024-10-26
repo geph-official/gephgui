@@ -314,7 +314,7 @@
         </Select>
       </div>
     </div> -->
-
+    <!-- 
     <div class="divider" />
 
     <div class="subtitle">{l10n($curr_lang, "debug")}</div>
@@ -331,7 +331,7 @@
           >{l10n($curr_lang, "export")}</GButton
         >
       </div>
-    </div>
+    </div> -->
 
     <div class="divider" />
     <div class="subtitle">{l10n($curr_lang, "about")}</div>

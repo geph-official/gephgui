@@ -35,7 +35,7 @@ disconnected,Disconnected,已断开,已斷開,متصل نیست,Отключен
 download,Download,下载,下載,دانلود,Скачать
 duplicate-credentials,This username is already taken. Please choose another name,此用户名已存在。请选一个新的用户名,此用戶名已存在。 請選一個新的用戶名,این نام کاربری برداشته شده است. لطفا نام دیگری انتخاب کنید,Это имя пользователя уже занято. Пожалуйста, выберите другое имя.
 error,Error,错误,錯誤,خطا,Ошибка
-exclude-apps,Exclude Apps,排除应用,排除應用,برنامه های صرف‌نظر شده,Исключить приложения
+exclude-apps,Exclude apps,排除应用,排除應用,برنامه های صرف‌نظر شده,Исключить приложения
 exclude-apps-blurb,Let apps bypass Geph,允许应用程序绕过迷雾通,允許應用程式繞過迷霧通,این برنامه ها از Geph استفاده نکنند,Позволить приложениям обходить Geph
 exclude-prc,Exclude PRC traffic,排除中国大陆流量,排除中國大陸流量,صرف‌نظر از ترافیک RPC,Исключить трафик КНР
 exclude-prc-blurb,Let Chinese traffic bypass Geph,允许中国大陆流量绕过迷雾通,允許中國大陸流量繞過迷霧通,ترافیک چین از Geph عبور نکند,Позволить китайскому трафику обходить Geph
