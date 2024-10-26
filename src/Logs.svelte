@@ -28,7 +28,7 @@
 
       new_logs = $logs.concat(new_logs);
       while (new_logs.length > 1000) {
-        new_logs = new_logs.slice($logs.length / 2); // set $logs to latter half of $logs
+        new_logs = new_logs.slice(new_logs.length / 2); // set $logs to latter half of $logs
       }
       $logs = new_logs;
     } catch (e) {}
