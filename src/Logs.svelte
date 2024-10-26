@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onMount } from "svelte";
 
-  import { type Writable } from "svelte/store";
+  import type { Writable } from "svelte/store";
 
   import Stats from "./home/Stats.svelte";
   import { persistentWritable } from "./lib/prefs";
@@ -34,7 +34,7 @@
       ][];
 
       new_logs = $logs.concat(new_logs);
-      while ($logs.length > 1000) {
+      while (new_logs.length > 1000) {
         new_logs = new_logs.slice($logs.length / 2); // set $logs to latter half of $logs
       }
       $logs = new_logs;
