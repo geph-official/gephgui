@@ -23,7 +23,6 @@
     pref_global_vpn,
     pref_lightdark,
     pref_listen_all,
-    pref_protocol,
     pref_proxy_autoconf,
     pref_routing_mode,
     pref_userpwd,

@@ -144,6 +144,7 @@
                 vpn_mode: $pref_global_vpn,
                 listen_all: $pref_listen_all,
                 force_bridges: $pref_routing_mode === "bridges",
+                force_protocol: null,
               });
               $connection_status = "connecting";
             } else {
