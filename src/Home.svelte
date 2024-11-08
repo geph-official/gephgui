@@ -19,7 +19,6 @@
     pref_userpwd,
     pref_listen_all,
     pref_use_app_whitelist,
-    pref_protocol,
     user_info_store,
     pref_wizard,
   } from "./lib/prefs";
@@ -145,8 +144,6 @@
                 vpn_mode: $pref_global_vpn,
                 listen_all: $pref_listen_all,
                 force_bridges: $pref_routing_mode === "bridges",
-                force_protocol:
-                  $pref_protocol === "auto" ? null : $pref_protocol,
               });
               $connection_status = "connecting";
             } else {

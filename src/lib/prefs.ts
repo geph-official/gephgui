@@ -60,14 +60,6 @@ export const pref_routing_mode: Writable<"auto" | "bridges"> =
   persistentWritable("routing_mode", "auto");
 
 /**
- * Selected protocol
- */
-export const pref_protocol: Writable<"auto" | "bridges"> = persistentWritable(
-  "protocol",
-  "auto"
-);
-
-/**
  * Whether to do global vpn stuff
  */
 export const pref_global_vpn: Writable<boolean> = persistentWritable(
