@@ -100,7 +100,11 @@
   <title>{l10n($curr_lang, "geph")}</title>
 </svelte:head>
 
-<main lang={$curr_lang} dir="auto">
+<main lang={$curr_lang} dir="auto" data-theme="skeleton">
+  <button type="button" class="btn variant-filled">
+    <span>(icon)</span>
+    <span>Button</span>
+  </button>
   {#await native_gate() then gate}
     <Dialog
       open={!$autoupdate_warning_shown && !gate.supports_autoupdate}
