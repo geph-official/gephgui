@@ -11,6 +11,8 @@
   },
   "devDependencies": {
     "@rollup/plugin-dsv": "^2.0.3",
+    "@skeletonlabs/skeleton": "^2.10.3",
+    "@skeletonlabs/tw-plugin": "^0.4.0",
     "@smui/button": "^6.1.4",
     "@smui/checkbox": "^6.1.4",
     "@smui/circular-progress": "^6.1.4",
