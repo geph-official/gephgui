@@ -1,5 +1,6 @@
 import { defineConfig } from "vite";
 import { svelte } from "@sveltejs/vite-plugin-svelte";
+import { sveltePreprocess } from "svelte-preprocess";
 import legacy from "@vitejs/plugin-legacy";
 import dsv from "@rollup/plugin-dsv";
 
@@ -7,7 +8,16 @@ import dsv from "@rollup/plugin-dsv";
 export default defineConfig({
   base: "./",
   plugins: [
-    svelte(),
+    svelte({
+      preprocess: sveltePreprocess({
+        typescript: {
+          transpileOnly: true,
+          compilerOptions: {
+            strict: false,
+          },
+        },
+      }),
+    }),
     dsv(),
     legacy({
       targets: ["defaults", ">0.01%"],

@@ -11,7 +11,7 @@
   )}&pwd=${encodeURIComponent($pref_userpwd ? $pref_userpwd.password : "")}`;
 </script>
 
-<div class="outer" transition:fade>
+<div class="outer" transition:fade|global>
   <div class="stretch">
     <img
       class="big-logo"

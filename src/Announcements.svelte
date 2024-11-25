@@ -19,7 +19,7 @@
   };
 </script>
 
-<div class="outer" transition:fade={{ duration: 150 }}>
+<div class="outer" transition:fade|global={{ duration: 150 }}>
   {#each announces as item}
     {#if cleanItem(item).length > 0}
       <div class="announce-card">

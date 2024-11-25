@@ -107,7 +107,7 @@
   }, 500);
 </script>
 
-<div class="home" transition:fade={{ duration: 150 }}>
+<div class="home" transition:fade|global={{ duration: 150 }}>
   {#if $pref_selected_exit}
     {#if $pref_userpwd}
       <UserInfo

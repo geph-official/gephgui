@@ -84,7 +84,7 @@
   };
 </script>
 
-<div class="wrap" transition:fade={{ duration: 150 }}>
+<div class="wrap" transition:fade|global={{ duration: 150 }}>
   {#key $curr_lang}
     <div class="subtitle">{l10n($curr_lang, "general")}</div>
     <div class="setting">
@@ -182,7 +182,7 @@
       {/if}
 
       {#if gate.supports_prc_whitelist && !$pref_global_vpn}
-        <div class="setting" transition:fade|local>
+        <div class="setting" transition:fade>
           <div class="icon">
             <DirectionsFork height="1.5rem" width="1.5rem" />
           </div>
@@ -197,7 +197,7 @@
       {/if}
 
       {#if gate.supports_app_whitelist && !$pref_global_vpn}
-        <div class="setting" transition:fade|local>
+        <div class="setting" transition:fade>
           <div class="icon">
             <DirectionsFork height="1.5rem" width="1.5rem" />
           </div>
@@ -212,7 +212,7 @@
 
         {#if $pref_use_app_whitelist}
           <AppPicker bind:open={app_picker_open} />
-          <div class="setting" transition:fade|local>
+          <div class="setting" transition:fade>
             <div class="icon" style="padding-inline-start: 1rem" />
             <div class="switch">
               <GButton inverted onClick={() => (app_picker_open = true)}
@@ -224,7 +224,7 @@
       {/if}
 
       {#if gate.supports_proxy_conf && !$pref_global_vpn}
-        <div class="setting" transition:fade|local>
+        <div class="setting" transition:fade>
           <div class="icon">
             <Creation height="1.5rem" width="1.5rem" />
           </div>
@@ -247,7 +247,7 @@
       </div>
 
       {#if gate.supports_listen_all}
-        <div class="setting" transition:fade|local>
+        <div class="setting" transition:fade>
           <div class="icon">
             <Lan height="1.5rem" width="1.5rem" />
           </div>

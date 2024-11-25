@@ -35,7 +35,7 @@
   }, 1000);
 </script>
 
-<div class="wrap" transition:fade={{ duration: 150 }}>
+<div class="wrap" transition:fade|global={{ duration: 150 }}>
   <Stats />
   <div class="logs" bind:this={logs_container}>
     {#each $logs as [tstamp, line]}
