@@ -31,26 +31,6 @@ export interface NativeGate {
   daemon_rpc(method: string, args: any[]): Promise<unknown>;
 
   /**
-   * Calls the binder RPC endpoint
-   */
-  binder_rpc(method: string, args: any[]): Promise<unknown>;
-
-  /**
-   * Purges all caches
-   */
-  purge_caches(username: string, password: string): Promise<void>;
-
-  /**
-   * Obtains the current user information
-   */
-  sync_user_info(username: string, password: string): Promise<SubscriptionInfo>;
-
-  /**
-   * Obtains the list of all exits
-   */
-  sync_exits(username: string, password: string): Promise<ExitDescriptor[]>;
-
-  /**
    * Gets the list of apps
    */
   sync_app_list(): Promise<AppDescriptor[]>;
@@ -105,12 +85,12 @@ export interface NativeGate {
  * Exit descriptor
  */
 export interface ExitDescriptor {
-  hostname: string;
-  signing_key: string;
-  country_code: string;
-  city_code: string;
-  allowed_levels: Level[];
+  c2e_listen: string;
+  b2e_listen: string;
+  country: string;
+  city: string;
   load: number;
+  expiry: number;
 }
 
 /**
@@ -127,18 +107,15 @@ export interface AppDescriptor {
  */
 export interface DaemonArgs {
   // core arguments
-  username: string;
-  password: string;
+  secret: string;
 
   // connection stuff
-  exit_hostname: string;
-  force_bridges: boolean;
-  force_protocol: string | null;
+  exit: string;
 
   // platform-specific arguments
   app_whitelist: string[];
   prc_whitelist: boolean;
-  vpn_mode: boolean;
+  global_vpn: boolean;
   listen_all: boolean;
   proxy_autoconf: boolean;
 }
@@ -205,126 +182,13 @@ function mock_native_gate(): NativeGate {
     is_running: async () => {
       return running;
     },
-    sync_user_info: async (username, password) => {
-      await random_sleep();
 
-      if (username !== "bunsim") {
-        throw "incorrect username";
-      }
-      return {
-        level: "free",
-        expires: null,
-      };
-    },
-
-    purge_caches: async (username, password) => {
-      await random_sleep();
-    },
-
-    daemon_rpc: async (method, args) => {
-      if (method === "basic_stats") {
-        return {
-          last_ping: 100.0,
-          last_loss: 0.1,
-          protocol: "sosistab-tls",
-          address: "0.0.0.0:12345",
-          total_recv_bytes: 1000000,
-          total_send_bytes: 1,
-        };
-      } else if (method === "get_logs") {
-        return MockLogs;
+    async daemon_rpc(method, args) {
+      if ((MockDaemonRpc as any)[method]) {
+        return (MockDaemonRpc as any)[method](...args);
       } else {
-        let pts = Array(400).fill(0);
-        for (let i = 0; i < 400; i++) {
-          pts[i] = [1665865337 + i, Math.random() * 50000];
-        }
-        return pts;
+        throw new Error(`Unknown RPC method: ${method}`);
       }
-    },
-
-    binder_rpc: async (method, args) => {
-      if (method === "get_captcha") {
-        return {
-          captcha_id: "lelol",
-          png_data:
-            "iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAAM1BMVEWA2HEdwgUkwwBCxS5RxT1YyE5szGJ/0HiQ1YmZ2JSh2p2v363B5b7R68/b79js9+z///9HPSCbAAAAAXRSTlMAQObYZgAAAOxJREFUOMuFk1cWhCAMRWmhCYT9r3akSRv0fciRXEIKIYQQxuhfMUaSDtbK3AB91YeD5KIC4gp4y+n1QLmBu9iE+g8gMQ5ybAVgst/ECoS4SM+AypuVwuQNZyAHaMoSCi4nIEdw8ewChUmL3YEuvJQAfgTQSJfD8PoBxiRQ9pIFqIAd7X6koQC832GuKZxQC6X6kVSlDNVv7YVuNU67Mv/JnK5v3VTlFuuXmmMDaib6CLAYFAUF7gRIW96Ajlvjlze7dB42YH5blm5Ay+exbwAFP0SYgH0uwDrntFAeDkAfmjJ7X6P3PbwvSDL/AIYAHEpiL5B+AAAAAElFTkSuQmCC",
-        };
-      } else if (method === "register_user") {
-        return true;
-      } else if (method === "get_announcements") {
-        return MockRss;
-      } else {
-        throw "idk";
-      }
-    },
-
-    sync_exits: async (username, password) => {
-      await random_sleep();
-      return [
-        {
-          hostname: "us-hio-03.exits.geph.io",
-          city_code: "pdx",
-          country_code: "us",
-          signing_key:
-            "e0c3af135a4c835c1b7b9df3e01be4b69a1c00e948d12bf4df2c33e08d4cecff",
-          allowed_levels: ["free", "plus"],
-          load: 0.99,
-        },
-        {
-          hostname: "us-hio-04.exits.geph.io",
-          city_code: "pdx",
-          country_code: "us",
-          signing_key:
-            "e0c3af135a4c835c1b7b9df3e01be4b69a1c00e948d12bf4df2c33e08d4cecff",
-          allowed_levels: ["free", "plus"],
-          load: 0.78,
-        },
-        {
-          hostname: "us-hio-04.exits.geph.io",
-          city_code: "pdx",
-          country_code: "us",
-          signing_key:
-            "e0c3af135a4c835c1b7b9df3e01be4b69a1c00e948d12bf4df2c33e08d4cecff",
-          allowed_levels: ["free", "plus"],
-          load: 0.78,
-        },
-        {
-          hostname: "us-hio-03.exits.geph.io",
-          city_code: "pdx",
-          country_code: "us",
-          signing_key:
-            "e0c3af135a4c835c1b7b9df3e01be4b69a1c00e948d12bf4df2c33e08d4cecff",
-          allowed_levels: ["free", "plus"],
-          load: 0.78,
-        },
-        {
-          hostname: "us-hio-05.exits.geph.io",
-          city_code: "pdx",
-          country_code: "us",
-          signing_key:
-            "e0c3af135a4c835c1b7b9df3e01be4b69a1c00e948d12bf4df2c33e08d4cecff",
-          allowed_levels: ["free", "plus"],
-          load: 0.78,
-        },
-        {
-          hostname: "us-hio-06.exits.geph.io",
-          city_code: "pdx",
-          country_code: "us",
-          signing_key:
-            "e0c3af135a4c835c1b7b9df3e01be4b69a1c00e948d12bf4df2c33e08d4cecff",
-          allowed_levels: ["free", "plus"],
-          load: 0.78,
-        },
-        {
-          hostname: "sg-sgp-04.exits.geph.io",
-          city_code: "sgp",
-          country_code: "sg",
-          signing_key:
-            "5b97a2927dc59acec57784a03e620f2c7b595f01e1030d3f7c1aef76d378f83c",
-          allowed_levels: ["plus"],
-          load: 0.1,
-        },
-      ];
     },
 
     sync_app_list: async () => {
@@ -375,10 +239,96 @@ export async function native_gate(): Promise<NativeGate> {
     import.meta.env.MODE === "development" &&
     !window.hasOwnProperty("NATIVE_GATE")
   ) {
-    window["NATIVE_GATE"] = mock_native_gate();
+    (window as any)["NATIVE_GATE"] = mock_native_gate();
   }
   while (!window.hasOwnProperty("NATIVE_GATE")) {
     await new Promise((r) => setTimeout(r, 100));
   }
-  return window["NATIVE_GATE"] as NativeGate;
+  return (window as any)["NATIVE_GATE"] as NativeGate;
 }
+
+let mockRegisterProgress = 0.0;
+
+const MockDaemonRpc = {
+  async start_registration() {
+    mockRegisterProgress = 0.0;
+    (async () => {
+      while (mockRegisterProgress < 1.0) {
+        await new Promise((r) => setTimeout(r, 1000));
+        mockRegisterProgress += 0.01;
+      }
+    })();
+    return 1;
+  },
+
+  async poll_registration(i: number) {
+    return mockRegisterProgress;
+  },
+
+  async check_secret(secret: string) {
+    await random_sleep();
+    return secret === "12345678";
+  },
+
+  async basic_stats() {
+    return {
+      last_ping: 100.0,
+      last_loss: 0.1,
+      protocol: "sosistab-tls",
+      address: "0.0.0.0:12345",
+      total_recv_bytes: 1000000,
+      total_send_bytes: 1,
+    };
+  },
+
+  async stat_num(stat: string) {
+    return 1.0;
+  },
+
+  async recent_logs() {
+    return MockLogs;
+  },
+
+  async exit_list() {
+    await random_sleep();
+    return [
+      {
+        c2e_listen: "0.0.0.0:1",
+        b2e_listen: "0.0.0.0:2",
+        country: "CAN",
+        city: "Montreal",
+        load: 0.3,
+        expiry: 10000000000,
+      },
+      {
+        c2e_listen: "0.0.0.0:1",
+        b2e_listen: "0.0.0.0:2",
+        country: "USA",
+        city: "Miami",
+        load: 0.3,
+        expiry: 10000000000,
+      },
+    ];
+  },
+
+  async conn_info() {
+    if (Math.random() < 0.1) {
+      return { state: "Connecting" };
+    } else {
+      return {
+        state: "Connected",
+        protocol: "sosistab3",
+        bridge: "fake",
+        exit: {
+          c2e_listen: "0.0.0.0:1",
+          b2e_listen: "0.0.0.0:2",
+          country: "CAN",
+          city: "Montreal",
+          load: 0.3,
+          expiry: 10000000000,
+        },
+      };
+    }
+  },
+};
+

@@ -29,20 +29,20 @@ export function persistentWritable<T>(
 }
 
 /**
+ * The current exit constraint
+ */
+export const pref_exit_constraint: Writable<ExitConstraint> =
+  persistentWritable("exit_constraint", "auto");
+
+export type ExitConstraint = "auto" | { city: string; country: string };
+
+/**
  * Whether or not the wizard is active
  */
 export const pref_wizard: Writable<boolean> = persistentWritable(
   "wizardd",
   false
 );
-
-/**
- * The current username and password.
- */
-export const pref_userpwd: Writable<{
-  username: string;
-  password: string;
-} | null> = persistentWritable("userpwd", null);
 
 export const user_info_store: Writable<SubscriptionInfoSerializable | null> =
   persistentWritable("user_info", null);
@@ -56,7 +56,7 @@ export const pref_selected_exit: Writable<ExitDescriptor | null> =
 /**
  * Selected routing mode
  */
-export const pref_routing_mode: Writable<"auto" | "bridges"> =
+export const pref_routing_mode: Writable<"auto" | "bridges" | "direct"> =
   persistentWritable("routing_mode", "auto");
 
 /**
@@ -64,6 +64,21 @@ export const pref_routing_mode: Writable<"auto" | "bridges"> =
  */
 export const pref_global_vpn: Writable<boolean> = persistentWritable(
   "global_vpn",
+  false
+);
+
+export const pref_block_ads: Writable<boolean> = persistentWritable(
+  "block_ads",
+  false
+);
+
+export const pref_block_adult: Writable<boolean> = persistentWritable(
+  "block_adult",
+  false
+);
+
+export const pref_block_gambling: Writable<boolean> = persistentWritable(
+  "block_gambling",
   false
 );
 

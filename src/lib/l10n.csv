@@ -3,6 +3,8 @@ label,en,zh-CN,zh-TW,fa,ru
 about,About,关于,關於,درباره ما,О программе
 access-global-servers,"Gain access to our entire network of global servers, including <b>premium, low-latency locations</b>.","使用所有迷雾通服务器，连接<b>高速、低延迟的地理位置</b>。","使用所有迷霧通服務器，连接<b>高速、低延遲的地理位置</b>。","به کل شبکه سرورهای جهانی ما، از جمله <b>مکان‌های ممتاز با تأخیر کم</b>، دسترسی پیدا کنید","Получите доступ ко всей нашей сети глобальных серверов, включая <b>премиум-локации с низкой задержкой</b>."
 account,Account,账户,賬戶,حساب کاربری,Аккаунт
+ads-and-trackers,Ads and trackers,广告和跟踪器,廣告和追蹤器,تبلیغات و ردیاب‌ها,Реклама и трекеры
+adult-content,Adult content,成人内容,成人內容,محتوای بزرگسالان,Контент для взрослых
 advanced,Advanced,高级,高級,پیشرفته,Дополнительно
 advanced-warning,"Advanced settings should only be adjusted by experienced users. Incorrect changes may lead to unexpected network behavior or disruptions.",高级设置应只由有经验的用户调整。不正确的更改可能导致意外的现象或连接中断。,高級設置應只由有經驗的用戶調整。不正確的更改可能導致意外的現象或連接中斷。,تنظیمات پیشرفته باید توسط کاربران باتجربه انجام شود. تنظیمات اشتباه ممکن است باعث بروز اختلال در شبکه شما شود.,"Расширенные настройки должны настраиваться только опытными пользователями. Неправильные изменения могут привести к неожиданному поведению сети или сбоям."
 allowed,Allowed,允许,允許,مجاز,Разрешено
@@ -21,6 +23,7 @@ close,Close,关闭,關閉,بستن,Закрыть
 connect,Connect,连接,連接,اتصال,Подключить
 connected,Connected,已连接,已連接,متصل شد,Подключено
 connecting,Connecting,连接中,連接中,درحال اتصال,Подключение
+content-filtering,Content filtering,内容屏蔽,內容屏蔽,فیلتر محتوا,Фильтрация контента
 country,Country,国家,國家,کشور,Страна
 dark,Dark,暗色,暗色,تیره,Тёмная тема
 debug,Debug,调试,除錯,عیب‌یابی,Отладка
@@ -47,6 +50,7 @@ forum,Forum,用户论坛,用戶論壇,انجمن,Форум
 free,Free account,免费用户,免費用戶,حساب رایگان,Бесплатный аккаунт
 free-is-bad,Free accounts are limited to <b>300 KB/s</b> and only support basic web browsing.,免费账号速度非常有限（<b>300 KB/s</b>），而且只允许基本网页浏览,免費帳號速度非常有限（<b>300 KB/s</b>），而且只允許基本網頁瀏覽,سرعت حساب های رایگان محدود به <b>300 KB/s</b> و فقط مرور وب اساسی می باشد. با ارتقا به پلاس از سرعت نامحدود لذت ببرید!,"Скорость бесплатных аккаунтов ограничена до <b>300 КБ/с</b> и доступен только базовый веб-серфинг."
 free-server,Free,所有用户,所有用戶,رایگان,Бесплатно
+gambling,Gambling,赌博,賭博,قمار,Азартные игры
 general,General,常规,常規,عمومی,Общие
 geph,Geph,迷雾通,迷霧通,Geph,Geph
 get-full-geph-experience,"Get the full Geph experience","享受完整的迷雾通服务","享受完整的迷霧通服務","تجربه کامل Geph را دریافت کنید","Получите полный опыт использования Geph"
@@ -89,9 +93,10 @@ refreshing-user-info,Refreshing user info,正在刷新用户信息,正在刷新�
 register,Register,注册,註冊,افتتاح حساب,Регистрация
 register-blurb,Create a new account,创建新帐号,創建新帳號,ایجاد حساب کاربری جدید,Создать новый аккаунт
 remaining-days,Remaining days,剩余天数,剩餘天數,روزهای باقی‌مانده,Осталось дней
-routing-mode,Routing Mode,路由模式,路由模式,حالت مسیریابی,Режим маршрутизации
+routing-mode,Routing mode,路由模式,路由模式,حالت مسیریابی,Режим маршрутизации
 select-excluded-apps,Select excluded apps,选择要排除的应用程序,選擇要排除的應用程式,انتخاب برنامه های صرف‌نظر شده,Выберите исключенные приложения
 server-id,ID,服务器 ID,伺服器 ID,شناسه,ID
+settings,Settings,设置,設置,تنظیمات,Настройки
 show-all-servers,Show all servers,显示所有服务器,顯示所有服務器,نمایش تمام سرورها,Показать все серверы
 theme,Theme,主题,主題,قالب,Тема
 unlock-all-locations,"🌎 Unlock all locations","🌎 解锁所有位置","🌎 解鎖所有位置","🌎 همه مکان‌ها را باز کنید","🌎 Разблокировать все локации"
@@ -100,3 +105,10 @@ upload,Upload,上传,上傳,آپلود,Загрузить
 use-automatic,Automatically select server,自动选择服务器,自動選擇伺服器,انتخاب خودکار سرور,Автоматически выбрать сервер
 username,Username,用户名,用戶名,نام کاربری,Имя пользователя
 via,Via,经由,經由,از طریق,Через
+split-tunneling,Split tunneling,分流隧道,分流隧道,تونل بندی جداگانه,Разделённое туннелирование
+login,Log in,登录,登錄,ورود,Войти
+enter-account-secret,Enter your account secret,输入您的帐号密钥,輸入您的帳號密鑰,رمز حساب کاربری خود را وارد کنید,Введите секретный ключ вашего аккаунта
+connection-status,Connection status,连接状态,連接狀態,وضعیت اتصال,Состояние подключения
+best-free-server,Best free server,最佳免费服务器,最佳免費伺服器,بهترین سرور رایگان,Лучший бесплатный сервер
+auto-select,Auto-select least loaded server,自动选择负载最小的服务器,自動選擇負載最小的伺服器,انتخاب خودکار کم بارترین سرور,Автовыбор наименее загруженного сервера
+direct,Direct,直连,直连,مستقیم,Прямой

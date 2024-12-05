@@ -1,0 +1,139 @@
+<script lang="ts">
+  export let secret: string;
+  import { curr_lang, l10n } from "./lib/l10n";
+  import { curr_conn_status } from "./lib/user";
+  import { slide } from "svelte/transition";
+  import { Us } from "svelte-flags";
+  import {
+    pref_app_whitelist,
+    pref_exit_constraint,
+    pref_global_vpn,
+    pref_listen_all,
+    pref_proxy_autoconf,
+    pref_use_prc_whitelist,
+  } from "./lib/prefs";
+  import { native_gate } from "./native-gate";
+  import { ProgressBar } from "@skeletonlabs/skeleton";
+  import ChevronRight from "svelte-material-icons/ChevronRight.svelte";
+  import ServerSelectPopup from "./ServerSelectPopup.svelte";
+
+  let serversOpen = false;
+
+  let connectButtonDisabled = false;
+  const startDaemon = async () => {
+    connectButtonDisabled = true;
+    try {
+      const gate = await native_gate();
+      const whitelistApps = Object.keys($pref_app_whitelist).filter(
+        (key) => $pref_app_whitelist[key]
+      );
+
+      await gate.start_daemon({
+        secret,
+        exit: "auto",
+        app_whitelist: whitelistApps,
+        prc_whitelist: $pref_use_prc_whitelist,
+        listen_all: $pref_listen_all,
+        proxy_autoconf: $pref_proxy_autoconf,
+        global_vpn: $pref_global_vpn,
+      });
+    } finally {
+      connectButtonDisabled = false;
+    }
+  };
+  const stopDaemon = async () => {
+    connectButtonDisabled = true;
+    try {
+      const gate = await native_gate();
+      await gate.stop_daemon();
+    } finally {
+      connectButtonDisabled = false;
+    }
+  };
+
+  const switchServers = async () => {
+    if ($curr_conn_status === "disconnected") serversOpen = true;
+  };
+</script>
+
+<div id="main">
+  <ServerSelectPopup bind:open={serversOpen} />
+  <div class="grow">topp</div>
+  <div class="bottom card flex flex-col gap-3">
+    <!-- svelte-ignore a11y-click-events-have-key-events -->
+    <!-- svelte-ignore a11y-no-static-element-interactions -->
+    <div class="flex flex-row" on:click={() => switchServers()}>
+      <div class="server-name grow">
+        {#if $pref_exit_constraint === "auto"}
+          {l10n($curr_lang, "best-free-server")}<br />
+        {:else}
+          {$pref_exit_constraint.country} / {$pref_exit_constraint.city}<br />
+        {/if}
+        {#if $curr_conn_status !== null && $curr_conn_status !== "disconnected" && $curr_conn_status !== "connecting"}
+          <small>
+            {$curr_conn_status.exit}
+            {#if $curr_conn_status.bridge}{$curr_conn_status.bridge}{:else}{l10n(
+                $curr_lang,
+                "direct"
+              )}{/if}
+          </small>
+        {:else}
+          <small>{l10n($curr_lang, "auto-select")}</small>
+        {/if}
+      </div>
+      <div class="icon">
+        <ChevronRight size="1.5rem" />
+      </div>
+    </div>
+
+    {#if $curr_conn_status === "disconnected"}
+      <button
+        class="btn variant-filled"
+        on:click={() => startDaemon()}
+        disabled={connectButtonDisabled}
+      >
+        {l10n($curr_lang, "connect")}
+      </button>
+    {:else if $curr_conn_status === "connecting"}
+      <button
+        class="btn variant-ghost"
+        on:click={() => stopDaemon()}
+        disabled={connectButtonDisabled}
+      >
+        {l10n($curr_lang, "cancel")}
+      </button>
+
+      <ProgressBar />
+    {:else}
+      <button
+        class="btn variant-ghost"
+        on:click={() => stopDaemon()}
+        disabled={connectButtonDisabled}
+      >
+        {l10n($curr_lang, "disconnect")}
+      </button>
+    {/if}
+  </div>
+</div>
+
+<style>
+  #main {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    padding: 1rem;
+  }
+
+  .bottom {
+    padding: 1rem;
+  }
+
+  .server-name {
+    font-weight: 600;
+    line-height: 1;
+  }
+
+  .server-name small {
+    font-weight: 500;
+  }
+</style>
