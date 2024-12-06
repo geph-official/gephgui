@@ -112,3 +112,4 @@ connection-status,Connection status,连接状态,連接狀態,وضعیت اتص�
 best-free-server,Best free server,最佳免费服务器,最佳免費伺服器,بهترین سرور رایگان,Лучший бесплатный сервер
 auto-select,Auto-select least loaded server,自动选择负载最小的服务器,自動選擇負載最小的伺服器,انتخاب خودکار کم بارترین سرور,Автовыбор наименее загруженного сервера
 direct,Direct,直连,直连,مستقیم,Прямой
+account-secret,Account secret,帐号密钥,帳號密鑰,رمز حساب کاربری,Секретный ключ аккаунта

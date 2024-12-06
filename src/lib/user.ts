@@ -12,7 +12,7 @@ export const curr_valid_secret: Writable<string | null> = persistentWritable(
 );
 
 type ConnStatus =
-  | { bridge: string | null; exit: string }
+  | { bridge: string | null; exit: string; country: string }
   | "disconnected"
   | "connecting"
   | null;
@@ -30,8 +30,9 @@ export const curr_conn_status: Writable<ConnStatus> =
       const info: any = await gate.daemon_rpc("conn_info", []);
       if (await gate.is_connected()) {
         return {
-          bridge: info.bridge,
-          exit: info.exit.c2e_listen,
+          bridge: info.protocol + "://" + info.bridge,
+          exit: info.exit.c2e_listen.split(":")[0],
+          country: "us",
         };
       } else {
         return "connecting";

@@ -1,5 +1,6 @@
 <script lang="ts">
   import { AppBar } from "@skeletonlabs/skeleton";
+  import AccountCircleOutline from "svelte-material-icons/AccountCircleOutline.svelte";
   import CogOutline from "svelte-material-icons/CogOutline.svelte";
   import SettingsPopup from "./SettingsPopup.svelte";
   import { fly } from "svelte/transition";
@@ -8,8 +9,10 @@
   import Login from "./Login.svelte";
   import { curr_valid_secret } from "./lib/user";
   import Main from "./Main.svelte";
+  import AccountPopup from "./AccountPopup.svelte";
 
   let settingsOpen = false;
+  let accountOpen = false;
 </script>
 
 <svelte:head>
@@ -24,12 +27,17 @@
     <b id="logo-text">Geph</b>
     <svelte:fragment slot="trail">
       {#if $curr_valid_secret !== null}
-        <a on:click={() => ($curr_valid_secret = null)}>logout</a>
+        <button
+          on:click={() => {
+            accountOpen = true;
+          }}
+        >
+          <AccountCircleOutline size="1.5rem" />
+        </button>
       {/if}
       <button
         on:click={() => {
-          console.log("clicked");
-          return (settingsOpen = !settingsOpen);
+          settingsOpen = true;
         }}
       >
         <CogOutline size="1.5rem" />
@@ -43,9 +51,8 @@
     <Main secret={$curr_valid_secret} />
   {/if}
 
-  <div id="settings-popup" transition:fly={{ x: 0, y: 200, duration: 300 }}>
-    <SettingsPopup bind:open={settingsOpen} />
-  </div>
+  <SettingsPopup bind:open={settingsOpen} />
+  <AccountPopup bind:open={accountOpen} />
 </main>
 
 <style>

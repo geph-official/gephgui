@@ -1,6 +1,6 @@
-<script lang="ts">
+<script>
   import * as Flags from "country-flag-icons/string/3x2";
-  export let country: string;
+  export let country;
   export let large = false;
 </script>
 

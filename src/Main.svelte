@@ -2,8 +2,7 @@
   export let secret: string;
   import { curr_lang, l10n } from "./lib/l10n";
   import { curr_conn_status } from "./lib/user";
-  import { slide } from "svelte/transition";
-  import { Us } from "svelte-flags";
+
   import {
     pref_app_whitelist,
     pref_exit_constraint,
@@ -16,6 +15,7 @@
   import { ProgressBar } from "@skeletonlabs/skeleton";
   import ChevronRight from "svelte-material-icons/ChevronRight.svelte";
   import ServerSelectPopup from "./ServerSelectPopup.svelte";
+  import Flag from "./lib/Flag.svelte";
 
   let serversOpen = false;
 
@@ -69,17 +69,23 @@
         {:else}
           {$pref_exit_constraint.country} / {$pref_exit_constraint.city}<br />
         {/if}
-        {#if $curr_conn_status !== null && $curr_conn_status !== "disconnected" && $curr_conn_status !== "connecting"}
-          <small>
-            {$curr_conn_status.exit}
-            {#if $curr_conn_status.bridge}{$curr_conn_status.bridge}{:else}{l10n(
-                $curr_lang,
-                "direct"
-              )}{/if}
-          </small>
-        {:else}
-          <small>{l10n($curr_lang, "auto-select")}</small>
-        {/if}
+        <div class="flex flex-row mt-1">
+          {#if $curr_conn_status !== null && $curr_conn_status !== "disconnected" && $curr_conn_status !== "connecting"}
+            <small><Flag country={$curr_conn_status.country} /></small>
+            <small>
+              {$curr_conn_status.exit}
+
+              <span class="font-normal">
+                [{#if $curr_conn_status.bridge}{$curr_conn_status.bridge}{:else}{l10n(
+                    $curr_lang,
+                    "direct"
+                  )}{/if}]
+              </span>
+            </small>
+          {:else}
+            <small>{l10n($curr_lang, "auto-select")}</small>
+          {/if}
+        </div>
       </div>
       <div class="icon">
         <ChevronRight size="1.5rem" />
