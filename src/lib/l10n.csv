@@ -47,7 +47,7 @@ export,Export,导出,導出,صدور,Экспорт
 extend,Extend,延长,延長,تمدید,Продлить
 force-bridges,Bridges,强制桥接,強制橋接,پل ها,Мосты
 forum,Forum,用户论坛,用戶論壇,انجمن,Форум
-free,Free account,免费用户,免費用戶,حساب رایگان,Бесплатный аккаунт
+free-account,Free account,免费用户,免費用戶,حساب رایگان,Бесплатный аккаунт
 free-is-bad,Free accounts are limited to <b>300 KB/s</b> and only support basic web browsing.,免费账号速度非常有限（<b>300 KB/s</b>），而且只允许基本网页浏览,免費帳號速度非常有限（<b>300 KB/s</b>），而且只允許基本網頁瀏覽,سرعت حساب های رایگان محدود به <b>300 KB/s</b> و فقط مرور وب اساسی می باشد. با ارتقا به پلاس از سرعت نامحدود لذت ببرید!,"Скорость бесплатных аккаунтов ограничена до <b>300 КБ/с</b> и доступен только базовый веб-серфинг."
 free-server,Free,所有用户,所有用戶,رایگان,Бесплатно
 gambling,Gambling,赌博,賭博,قمار,Азартные игры
@@ -113,3 +113,8 @@ best-free-server,Best free server,最佳免费服务器,最佳免費伺服器,ب
 auto-select,Auto-select least loaded server,自动选择负载最小的服务器,自動選擇負載最小的伺服器,انتخاب خودکار کم بارترین سرور,Автовыбор наименее загруженного сервера
 direct,Direct,直连,直连,مستقیم,Прямой
 account-secret,Account secret,帐号密钥,帳號密鑰,رمز حساب کاربری,Секретный ключ аккаунта
+plus-expiry,Plus expiry,Plus 到期时间,Plus 到期時間,انقضای Plus,Срок действия Plus
+plus-account,Plus account,Plus 账户,Plus 帳戶,حساب پلاس,Plus аккаунт
+account-status,Account status,账户状态,帳戶狀態,وضعیت حساب,Состояние аккаунта
+account-info,Account info,账户信息,帳戶資訊,اطلاعات حساب,Информация об аккаунте
+account-level,Account level,账户级别,帳戶等級,سطح حساب,Уровень аккаунта

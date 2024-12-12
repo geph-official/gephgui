@@ -312,23 +312,26 @@ const MockDaemonRpc = {
   },
 
   async conn_info() {
-    if (Math.random() < 0.1) {
-      return { state: "Connecting" };
-    } else {
-      return {
-        state: "Connected",
-        protocol: "sosistab3",
-        bridge: "fake",
-        exit: {
-          c2e_listen: "0.0.0.0:1",
-          b2e_listen: "0.0.0.0:2",
-          country: "CAN",
-          city: "Montreal",
-          load: 0.3,
-          expiry: 10000000000,
-        },
-      };
-    }
+    return {
+      state: "Connected",
+      protocol: "sosistab3",
+      bridge: "fake",
+      exit: {
+        c2e_listen: "0.0.0.0:1",
+        b2e_listen: "0.0.0.0:2",
+        country: "CAN",
+        city: "Montreal",
+        load: 0.3,
+        expiry: 10000000000,
+      },
+    };
+  },
+
+  async user_info(secret: string) {
+    await random_sleep();
+    return {
+      level: "plus",
+      expiry: 10000000000,
+    };
   },
 };
-

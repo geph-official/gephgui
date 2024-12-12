@@ -8,7 +8,7 @@
 
   import { fly } from "svelte/transition";
   import { curr_lang, l10n } from "./lib/l10n";
-  import { curr_valid_secret } from "./lib/user";
+  import { curr_account_status, curr_valid_secret } from "./lib/user";
   import { native_gate } from "./native-gate";
 
   let secretShown = false;
@@ -70,6 +70,37 @@
           </button>
         </div>
       </section>
+
+      <section>
+        <h2 class="text-primary-700">{l10n($curr_lang, "account-info")}</h2>
+        <table class="table table-hover">
+          <tbody>
+            {#if $curr_account_status?.level === "plus"}
+              <tr>
+                <td>{l10n($curr_lang, "account-level")}</td>
+                <td>{l10n($curr_lang, "plus-account")}</td>
+              </tr>
+              <tr>
+                <td>{l10n($curr_lang, "plus-expiry")}</td>
+                <td
+                  >{new Date(
+                    $curr_account_status.expiry * 1000
+                  ).toLocaleDateString(undefined, {
+                    year: "numeric",
+                    month: "short",
+                    day: "numeric",
+                  })}</td
+                >
+              </tr>
+            {:else if $curr_account_status?.level === "free"}
+              <tr>
+                <td>{l10n($curr_lang, "account-level")}</td>
+                <td>{l10n($curr_lang, "free-account")}</td>
+              </tr>
+            {/if}
+          </tbody>
+        </table>
+      </section>
     {/if}
     <section>
       <button
@@ -77,8 +108,8 @@
         on:click={async () => {
           const gate = await native_gate();
           await gate.stop_daemon();
-          $curr_valid_secret = null;
-          open = false;
+          localStorage.clear();
+          window.location.reload();
         }}
       >
         {l10n($curr_lang, "logout")}

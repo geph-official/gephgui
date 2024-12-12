@@ -1,4 +1,4 @@
-import { writable, type Writable } from "svelte/store";
+import { get, writable, type Writable } from "svelte/store";
 
 import { persistentWritable } from "./prefs";
 import { native_gate } from "../native-gate";
@@ -10,6 +10,24 @@ export const curr_valid_secret: Writable<string | null> = persistentWritable(
   "secret",
   null
 );
+
+export type AccountStatus =
+  | { level: "plus"; expiry: number }
+  | { level: "free" };
+
+export const curr_account_status: Writable<AccountStatus | null> =
+  selfRefreshingStore<AccountStatus | null>(
+    async () => {
+      const gate = await native_gate();
+      const resp: any = await gate.daemon_rpc("user_info", [
+        get(curr_valid_secret),
+      ]);
+      console.log(resp);
+      return resp;
+    },
+    5000,
+    null
+  );
 
 type ConnStatus =
   | { bridge: string | null; exit: string; country: string }
@@ -29,6 +47,7 @@ export const curr_conn_status: Writable<ConnStatus> =
       }
       const info: any = await gate.daemon_rpc("conn_info", []);
       if (await gate.is_connected()) {
+        console.log(info);
         return {
           bridge: info.protocol + "://" + info.bridge,
           exit: info.exit.c2e_listen.split(":")[0],
@@ -56,25 +75,32 @@ export function selfRefreshingStore<T>(
   const store = writable(initialValue);
   let intervalId: ReturnType<typeof setInterval>;
 
-  // Function to start the refreshing process
-  const start = async () => {
+  let isRefreshing = false;
+  const refresh = async () => {
+    if (isRefreshing) {
+      // Skip if the previous execution is still ongoing
+      console.warn("Skipping refresh: previous execution still in progress");
+      return;
+    }
+
+    isRefreshing = true;
     try {
-      // First update immediately
       const value = await refreshFn();
       store.set(value);
     } catch (error) {
       console.error("Error during refresh:", error);
+    } finally {
+      isRefreshing = false;
     }
+  };
 
-    // Continue updating on an interval
-    intervalId = setInterval(async () => {
-      try {
-        const value = await refreshFn();
-        store.set(value);
-      } catch (error) {
-        console.error("Error during refresh:", error);
-      }
-    }, intervalMs);
+  // Function to start the refreshing process
+  const start = () => {
+    // Perform an immediate refresh
+    refresh();
+
+    // Set up the interval for periodic refresh
+    intervalId = setInterval(refresh, intervalMs);
   };
 
   // Start refreshing when the store is created

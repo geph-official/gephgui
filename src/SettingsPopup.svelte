@@ -105,8 +105,10 @@
     </AppBar>
 
     {#each Object.entries(settings) as [section, contents]}
-      <section>
-        <h2 class="text-primary-700">{l10n($curr_lang, section)}</h2>
+      <section class="m-4">
+        <h2 class="text-primary-700 uppercase font-semibold text-sm mb-2">
+          {l10n($curr_lang, section)}
+        </h2>
         {#each contents as setting}
           <SettingTree {setting} />
         {/each}
@@ -126,12 +128,5 @@
 
   section {
     margin: 1rem;
-  }
-
-  h2 {
-    text-transform: uppercase;
-    font-weight: 600;
-    font-size: 0.9rem;
-    margin-bottom: 0.5rem;
   }
 </style>

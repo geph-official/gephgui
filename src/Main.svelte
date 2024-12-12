@@ -16,6 +16,9 @@
   import ChevronRight from "svelte-material-icons/ChevronRight.svelte";
   import ServerSelectPopup from "./ServerSelectPopup.svelte";
   import Flag from "./lib/Flag.svelte";
+  import AccountExtender from "./AccountExtender.svelte";
+  import NewsFeed from "./NewsFeed.svelte";
+  import Graph from "./Graph.svelte";
 
   let serversOpen = false;
 
@@ -58,11 +61,24 @@
 
 <div id="main">
   <ServerSelectPopup bind:open={serversOpen} />
-  <div class="grow">topp</div>
+  <div class="flex flex-col gap-5">
+    <AccountExtender />
+    <div class="flex flex-row gap-4">
+      <div class="flex-1 card p-2"><Graph /></div>
+      <div class="flex-1 card p-3"><Graph /></div>
+    </div>
+  </div>
+
+  <NewsFeed />
+
   <div class="bottom card flex flex-col gap-3">
     <!-- svelte-ignore a11y-click-events-have-key-events -->
     <!-- svelte-ignore a11y-no-static-element-interactions -->
-    <div class="flex flex-row" on:click={() => switchServers()}>
+    <div
+      class="flex flex-row"
+      class:cursor-pointer={$curr_conn_status === "disconnected"}
+      on:click={() => switchServers()}
+    >
       <div class="server-name grow">
         {#if $pref_exit_constraint === "auto"}
           {l10n($curr_lang, "best-free-server")}<br />
@@ -88,7 +104,9 @@
         </div>
       </div>
       <div class="icon">
-        <ChevronRight size="1.5rem" />
+        {#if $curr_conn_status === "disconnected"}
+          <ChevronRight size="1.5rem" />
+        {/if}
       </div>
     </div>
 
@@ -128,6 +146,7 @@
     flex-direction: column;
     flex-grow: 1;
     padding: 1rem;
+    max-height: calc(100vh - 60px);
   }
 
   .bottom {
