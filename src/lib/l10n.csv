@@ -118,3 +118,7 @@ plus-account,Plus account,Plus 账户,Plus 帳戶,حساب پلاس,Plus акк�
 account-status,Account status,账户状态,帳戶狀態,وضعیت حساب,Состояние аккаунта
 account-info,Account info,账户信息,帳戶資訊,اطلاعات حساب,Информация об аккаунте
 account-level,Account level,账户级别,帳戶等級,سطح حساب,Уровень аккаунта
+register-warning,"In order to protect against spam and automated signups, creating an account may take an extended period of time.","为了防止垃圾邮件和自动注册，创建账户可能需要较长时间。","為了防止垃圾郵件和自動註冊，創建帳戶可能需要較長時間。","برای جلوگیری از هرزنامه و ثبت‌نام‌های خودکار، ایجاد حساب کاربری ممکن است زمان زیادی ببرد.","Для предотвращения спама и автоматических регистраций создание аккаунта может занять длительное время."
+keep-window-open,"Please keep this window open!","请保持此窗口打开！","請保持此窗口打開！","لطفاً این پنجره را باز نگه دارید!","Пожалуйста, держите это окно открытым!"
+skip-wait-login-secret,"If you already have another device with Geph, you can skip this wait by logging in with your account secret instead.","如果您已经有其他设备使用 Geph，可以通过使用您的账户密钥登录来跳过等待。","如果您已經有其他設備使用 Geph，可以通過使用您的帳戶密鑰登錄來跳過等待。","اگر از قبل دستگاه دیگری با Geph دارید، می‌توانید با ورود با رمز حساب کاربری خود این انتظار را رد کنید.","Если у вас уже есть другое устройство с Geph, вы можете пропустить ожидание, войдя с помощью секретного ключа аккаунта."
+dont-have-account-secret,"Don't have an account secret?","没有账户密钥？","沒有帳戶密鑰？","رمز حساب کاربری ندارید؟","Нет секретного ключа аккаунта?"

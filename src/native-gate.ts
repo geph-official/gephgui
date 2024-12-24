@@ -254,15 +254,19 @@ const MockDaemonRpc = {
     mockRegisterProgress = 0.0;
     (async () => {
       while (mockRegisterProgress < 1.0) {
-        await new Promise((r) => setTimeout(r, 1000));
-        mockRegisterProgress += 0.01;
+        await new Promise((r) => setTimeout(r, 100));
+        mockRegisterProgress += 0.05;
       }
     })();
     return 1;
   },
 
   async poll_registration(i: number) {
-    return mockRegisterProgress;
+    if (mockRegisterProgress < 1) {
+      return { progress: mockRegisterProgress, secret: null };
+    } else {
+      return { progress: mockRegisterProgress, secret: "12345678" };
+    }
   },
 
   async check_secret(secret: string) {

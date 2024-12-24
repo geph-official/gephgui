@@ -33,11 +33,6 @@
             store: pref_block_ads,
           },
           {
-            description: "gambling",
-            type: "checkbox",
-            store: pref_block_gambling,
-          },
-          {
             description: "adult-content",
             type: "checkbox",
             store: pref_block_adult,

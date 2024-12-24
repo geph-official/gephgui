@@ -3,6 +3,7 @@
   import { curr_lang, l10n } from "./lib/l10n";
   import { curr_valid_secret } from "./lib/user";
   import { native_gate } from "./native-gate";
+  import RegisterPopup from "./RegisterPopup.svelte";
 
   let inputValue = "";
 
@@ -38,14 +39,21 @@
       loggingIn = false;
     }
   };
+
+  const onRegister = async () => {
+    registerOpen = true;
+  };
+
+  let registerOpen = false;
 </script>
 
 <div id="login">
+  <RegisterPopup bind:open={registerOpen} />
   <div class="middle">
     <h1 class="h1">{l10n($curr_lang, "login")}</h1>
     <input
       id="accnumber"
-      class="input"
+      class="input my-4"
       bind:value={inputValue}
       type="text"
       on:input={handleInput}
@@ -62,6 +70,19 @@
     {#if loggingIn}
       <ProgressBar />
     {/if}
+  </div>
+  <div
+    class="absolute bottom-0 left-0 flex flex-col w-screen bg-surface-100 px-8 pt-3 pb-4"
+  >
+    <small>{l10n($curr_lang, "dont-have-account-secret")}</small>
+    <button
+      type="button"
+      class="btn variant-ghost mt-2 btn-sm"
+      disabled={loggingIn}
+      on:click={() => onRegister()}
+    >
+      {l10n($curr_lang, "register")}
+    </button>
   </div>
 </div>
 
@@ -88,6 +109,5 @@
     margin-top: 20vh;
     display: flex;
     flex-direction: column;
-    gap: 1rem;
   }
 </style>
