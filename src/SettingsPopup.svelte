@@ -60,26 +60,26 @@
         type: "checkbox",
         store: pref_global_vpn,
       },
-      {
-        icon: Router,
-        description: "routing-mode",
-        type: "options",
-        options: [
-          {
-            description: "automatic",
-            value: "auto",
-          },
-          {
-            description: "direct",
-            value: "direct",
-          },
-          {
-            description: "bridges",
-            value: "bridges",
-          },
-        ],
-        store: pref_routing_mode,
-      },
+      // {
+      //   icon: Router,
+      //   description: "routing-mode",
+      //   type: "options",
+      //   options: [
+      //     {
+      //       description: "automatic",
+      //       value: "auto",
+      //     },
+      //     {
+      //       description: "direct",
+      //       value: "direct",
+      //     },
+      //     {
+      //       description: "bridges",
+      //       value: "bridges",
+      //     },
+      //   ],
+      //   store: pref_routing_mode,
+      // },
     ],
   };
 </script>

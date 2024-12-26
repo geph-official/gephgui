@@ -6,6 +6,7 @@
   import { Accordion, AccordionItem } from "@skeletonlabs/skeleton";
   import { native_gate, type ExitDescriptor } from "./native-gate";
   import { pref_exit_constraint } from "./lib/prefs";
+  import Flag from "./lib/Flag.svelte";
   export let open = false;
 
   const loadServers = async () => {
@@ -59,31 +60,24 @@
     {#await loadServers()}
       <ProgressBar />
     {:then servers}
-      <Accordion>
-        {#each getCountries(servers) as country}
-          <AccordionItem>
-            <svelte:fragment slot="lead">(icon)</svelte:fragment>
-            <svelte:fragment slot="summary">{country}</svelte:fragment>
-            <svelte:fragment slot="content">
-              {#each getCitiesByCountry(servers, country) as city}
-                <a
-                  class="flex flex-row gap-3 bg-surface-200 p-2 text-sm rounded-md card card-hover"
-                  on:click={() => {
-                    $pref_exit_constraint = {
-                      city: city,
-                      country: country,
-                    };
-                    open = false;
-                  }}
-                >
-                  <div>{country} / {city}</div>
-                  <div>50%</div>
-                </a>
-              {/each}
-            </svelte:fragment>
-          </AccordionItem>
+      {#each getCountries(servers) as country}
+        {#each getCitiesByCountry(servers, country) as city}
+          <div
+            class="flex flex-row gap-3 bg-surface-200 p-2 text-sm rounded-md m-2 cursor-pointer items-center"
+            on:click={() => {
+              $pref_exit_constraint = {
+                city: city,
+                country: country,
+              };
+              open = false;
+            }}
+          >
+            <div><Flag {country} /></div>
+            <div class="grow"><b class="font-bold">{country}</b> / {city}</div>
+            <div>50%</div>
+          </div>
         {/each}
-      </Accordion>
+      {/each}
     {/await}
   </div>
 {/if}

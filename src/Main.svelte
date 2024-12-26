@@ -5,6 +5,8 @@
 
   import {
     pref_app_whitelist,
+    pref_block_ads,
+    pref_block_adult,
     pref_exit_constraint,
     pref_global_vpn,
     pref_listen_all,
@@ -33,6 +35,12 @@
 
       await gate.start_daemon({
         secret,
+        metadata: {
+          filter: {
+            nsfw: $pref_block_adult,
+            ads: $pref_block_ads,
+          },
+        },
         exit: "auto",
         app_whitelist: whitelistApps,
         prc_whitelist: $pref_use_prc_whitelist,

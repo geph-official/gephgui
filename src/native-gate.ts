@@ -108,13 +108,14 @@ export interface AppDescriptor {
 export interface DaemonArgs {
   // core arguments
   secret: string;
+  metadata: any;
+  app_whitelist: string[];
+  prc_whitelist: boolean;
 
   // connection stuff
   exit: string;
 
   // platform-specific arguments
-  app_whitelist: string[];
-  prc_whitelist: boolean;
   global_vpn: boolean;
   listen_all: boolean;
   proxy_autoconf: boolean;
@@ -299,7 +300,7 @@ const MockDaemonRpc = {
       {
         c2e_listen: "0.0.0.0:1",
         b2e_listen: "0.0.0.0:2",
-        country: "CAN",
+        country: "CA",
         city: "Montreal",
         load: 0.3,
         expiry: 10000000000,
@@ -307,7 +308,7 @@ const MockDaemonRpc = {
       {
         c2e_listen: "0.0.0.0:1",
         b2e_listen: "0.0.0.0:2",
-        country: "USA",
+        country: "US",
         city: "Miami",
         load: 0.3,
         expiry: 10000000000,
@@ -337,5 +338,15 @@ const MockDaemonRpc = {
       level: "plus",
       expiry: 10000000000,
     };
+  },
+
+  async latest_news(lang: string) {
+    return [
+      {
+        title: "Headline 1",
+        date: 100000000,
+        contents: "<b>Boo boo</b>",
+      },
+    ];
   },
 };
