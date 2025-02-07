@@ -1,6 +1,11 @@
 import MockRss from "./native-gate-mock-rss";
 import MockLogs from "./native-gate-mock-logs";
 
+export interface InvoiceInfo {
+  id: string;
+  methods: [string];
+}
+
 /**
  * An object that represents the communication interface with the native side of a Geph frontend.
  */
@@ -34,6 +39,11 @@ export interface NativeGate {
    * Obtains the list of price points
    */
   price_points(): Promise<[number, number][]>;
+
+  /**
+   * Create an invoice using a number of days
+   */
+  create_invoice(days: number): Promise<InvoiceInfo>;
 
   /**
    * Gets the list of apps
@@ -194,6 +204,13 @@ function mock_native_gate(): NativeGate {
         [30, 5],
         [60, 10],
       ];
+    },
+
+    async create_invoice(days: number) {
+      return {
+        id: "foobar",
+        methods: ["credit-card"],
+      };
     },
 
     async daemon_rpc(method, args) {

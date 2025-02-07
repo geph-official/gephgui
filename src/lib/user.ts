@@ -109,3 +109,5 @@ export function selfRefreshingStore<T>(
   // Return the writable store with additional control methods
   return store;
 }
+
+export const paymentsOpen: Writable<boolean> = writable(false);

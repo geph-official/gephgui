@@ -2,7 +2,7 @@
   import { curr_lang, l10n } from "./lib/l10n";
   import CalendarRangeOutline from "svelte-material-icons/CalendarRangeOutline.svelte";
   import Heart from "svelte-material-icons/Heart.svelte";
-  import { curr_account_status } from "./lib/user";
+  import { curr_account_status, paymentsOpen } from "./lib/user";
 </script>
 
 {#if $curr_account_status}
@@ -43,7 +43,10 @@
     </div>
     <div>
       {#if $curr_account_status.level === "plus"}
-        <button class="btn variant-filled-primary btn-sm">
+        <button
+          class="btn variant-filled-primary btn-sm"
+          on:click={() => ($paymentsOpen = true)}
+        >
           {l10n($curr_lang, "extend")}
         </button>
       {:else}
