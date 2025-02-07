@@ -73,7 +73,9 @@
             }}
           >
             <div><Flag {country} /></div>
-            <div class="grow"><b class="font-bold">{country}</b> / {city}</div>
+            <div class="grow -ml-2">
+              <b class="font-bold">{country}</b> / {city}
+            </div>
             <div>50%</div>
           </div>
         {/each}

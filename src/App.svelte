@@ -10,6 +10,7 @@
   import { curr_valid_secret } from "./lib/user";
   import Main from "./Main.svelte";
   import AccountPopup from "./AccountPopup.svelte";
+  import PaymentPopup from "./PaymentPopup.svelte";
 
   let settingsOpen = false;
   let accountOpen = false;
@@ -53,6 +54,7 @@
 
   <SettingsPopup bind:open={settingsOpen} />
   <AccountPopup bind:open={accountOpen} />
+  <PaymentPopup />
 </main>
 
 <style>

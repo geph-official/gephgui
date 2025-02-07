@@ -54,7 +54,9 @@
     </div>
   </div>
 
-  <div class="card p-3 items-center bg-error-50 text-sm">
-    {@html l10n($curr_lang, "free-is-bad")}
-  </div>
+  {#if $curr_account_status.level === "free"}
+    <div class="card p-3 items-center bg-error-50 text-sm">
+      {@html l10n($curr_lang, "free-is-bad")}
+    </div>
+  {/if}
 {/if}

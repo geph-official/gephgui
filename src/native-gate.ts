@@ -31,6 +31,11 @@ export interface NativeGate {
   daemon_rpc(method: string, args: any[]): Promise<unknown>;
 
   /**
+   * Obtains the list of price points
+   */
+  price_points(): Promise<[number, number][]>;
+
+  /**
    * Gets the list of apps
    */
   sync_app_list(): Promise<AppDescriptor[]>;
@@ -182,6 +187,13 @@ function mock_native_gate(): NativeGate {
     },
     is_running: async () => {
       return running;
+    },
+
+    price_points: async () => {
+      return [
+        [30, 5],
+        [60, 10],
+      ];
     },
 
     async daemon_rpc(method, args) {
@@ -345,7 +357,10 @@ const MockDaemonRpc = {
       {
         title: "Headline 1",
         date: 100000000,
-        contents: "<b>Boo boo</b>",
+        thumbnail:
+          "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMCIgaGVpZ2h0PSIxMCIgdmlld0JveD0iMCAwIDEwIDEwIj4KICA8dGV4dCB4PSI1IiB5PSI4IiBmb250LXNpemU9IjEwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkb21pbmFudC1iYXNlbGluZT0iY2VudHJhbCIgZmlsbD0iYmxhY2siPkUhPC90ZXh0Pgo8L3N2Zz4=",
+        contents:
+          "<i>Boo boo</i> foobaria doo doo lalalbubuu kukukuku sjlkdjf sdfaoj sjdf slkafj selkfjlskdjf ksdjf; d",
       },
     ];
   },
