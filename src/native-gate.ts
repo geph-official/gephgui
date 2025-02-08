@@ -46,6 +46,11 @@ export interface NativeGate {
   create_invoice(days: number): Promise<InvoiceInfo>;
 
   /**
+   * Pay an invoice with a given method
+   */
+  pay_invoice(id: string, method: string): Promise<void>;
+
+  /**
    * Gets the list of apps
    */
   sync_app_list(): Promise<AppDescriptor[]>;
@@ -212,6 +217,8 @@ function mock_native_gate(): NativeGate {
         methods: ["credit-card"],
       };
     },
+
+    async pay_invoice(id: string, method: string) {},
 
     async daemon_rpc(method, args) {
       if ((MockDaemonRpc as any)[method]) {

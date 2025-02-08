@@ -12,13 +12,18 @@
   }
 
   let secondPageInvoice: InvoiceInfo | null = null;
+  let createInvoiceInProgress = false;
   let payInProgress = false;
 
   async function handlePayNow(days: number) {
-    payInProgress = true;
-    const gate = await native_gate();
-    const invoice = await gate.create_invoice(days);
-    secondPageInvoice = invoice;
+    createInvoiceInProgress = true;
+    try {
+      const gate = await native_gate();
+      const invoice = await gate.create_invoice(days);
+      secondPageInvoice = invoice;
+    } finally {
+      createInvoiceInProgress = false;
+    }
   }
 
   function handleCancel() {
@@ -77,7 +82,21 @@
       {:else}
         <div transition:slide class="flex-col flex gap-2">
           {#each secondPageInvoice.methods as method}
-            <button class="border-black border rounded-md p-2">
+            <button
+              class="border-black border rounded-md p-2"
+              on:click={async () => {
+                if (secondPageInvoice) {
+                  payInProgress = true;
+                  try {
+                    const gate = await native_gate();
+                    await gate.pay_invoice(secondPageInvoice.id, method);
+                    handleCancel();
+                  } finally {
+                    payInProgress = false;
+                  }
+                }
+              }}
+            >
               {l10n($curr_lang, method)}
             </button>
           {/each}
