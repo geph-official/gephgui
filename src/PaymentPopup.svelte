@@ -3,6 +3,7 @@
   import { curr_lang, l10n } from "./lib/l10n";
   import { native_gate, type InvoiceInfo } from "./native-gate";
   import { paymentsOpen } from "./lib/user";
+  import { ProgressBar } from "@skeletonlabs/skeleton";
 
   // Tracks the currently selected index; starts at 0 to force an option.
   let selectedIndex = 0;
@@ -68,38 +69,46 @@
             {/each}
 
             <!-- Trigger the transition to the second page -->
-            <button
-              class="btn variant-filled my-2"
-              on:click={() => handlePayNow(pricePoints[selectedIndex][0])}
-            >
-              {l10n($curr_lang, "pay-now")}
-            </button>
-            <button class="btn variant-ghost" on:click={handleCancel}>
-              {l10n($curr_lang, "cancel")}
-            </button>
+            {#if createInvoiceInProgress}
+              <ProgressBar />
+            {:else}
+              <button
+                class="btn variant-filled my-2"
+                on:click={() => handlePayNow(pricePoints[selectedIndex][0])}
+              >
+                {l10n($curr_lang, "pay-now")}
+              </button>
+              <button class="btn variant-ghost" on:click={handleCancel}>
+                {l10n($curr_lang, "cancel")}
+              </button>
+            {/if}
           {/await}
         </div>
       {:else}
         <div transition:slide class="flex-col flex gap-2">
-          {#each secondPageInvoice.methods as method}
-            <button
-              class="border-black border rounded-md p-2"
-              on:click={async () => {
-                if (secondPageInvoice) {
-                  payInProgress = true;
-                  try {
-                    const gate = await native_gate();
-                    await gate.pay_invoice(secondPageInvoice.id, method);
-                    handleCancel();
-                  } finally {
-                    payInProgress = false;
+          {#if payInProgress}
+            <ProgressBar />
+          {:else}
+            {#each secondPageInvoice.methods as method}
+              <button
+                class="border-black border rounded-md p-2"
+                on:click={async () => {
+                  if (secondPageInvoice) {
+                    payInProgress = true;
+                    try {
+                      const gate = await native_gate();
+                      await gate.pay_invoice(secondPageInvoice.id, method);
+                      handleCancel();
+                    } finally {
+                      payInProgress = false;
+                    }
                   }
-                }
-              }}
-            >
-              {l10n($curr_lang, method)}
-            </button>
-          {/each}
+                }}
+              >
+                {l10n($curr_lang, method)}
+              </button>
+            {/each}
+          {/if}
 
           <button class="btn variant-ghost" on:click={handleCancel}>
             {l10n($curr_lang, "cancel")}

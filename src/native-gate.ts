@@ -212,13 +212,16 @@ function mock_native_gate(): NativeGate {
     },
 
     async create_invoice(days: number) {
+      await random_sleep();
       return {
         id: "foobar",
         methods: ["credit-card"],
       };
     },
 
-    async pay_invoice(id: string, method: string) {},
+    async pay_invoice(id: string, method: string) {
+      await random_sleep();
+    },
 
     async daemon_rpc(method, args) {
       if ((MockDaemonRpc as any)[method]) {
