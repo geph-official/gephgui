@@ -314,6 +314,11 @@ const MockDaemonRpc = {
     return secret === "12345678";
   },
 
+  async convert_legacy_account(username: string, password: string) {
+    await random_sleep();
+    return "12345678";
+  },
+
   async basic_stats() {
     return {
       last_ping: 100.0,

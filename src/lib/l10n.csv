@@ -126,3 +126,8 @@ features,"Features","功能","功能","ویژگی‌ها","Функции"
 days,days,天,天,روز,Дни
 credit-card,Credit card,信用卡,信用卡,کارت اعتباری,Кредитная карта
 pay-now,Pay now,立即支付,立即支付,همین حالا پرداخت کنید,Оплатить сейчас
+migrate-from-older-versions,"Migrate from older versions","从旧版本迁移","從舊版本遷移","مهاجرت از نسخه‌های قدیمی","Миграция со старых версий"
+i-have-old-username-password,"I have a username/password","旧版用户名/密码","舊版用戶名/密碼","من یک نام کاربری/رمز عبور قدیمی دارم","У меня есть имя пользователя/пароль"
+your-new-user-secret,"Your new user secret is:","您的新的用户密钥为：","您的新的用戶密鑰為：","رمز کاربر جدید شما این است:","Ваш новый секрет пользователя:"
+user-secret-info,"Your user secret is a unique random code that replaces usernames and passwords.","您的用户密钥是取代用户名和密码的唯一随机代码。","您的用戶密鑰是取代用戶名和密碼的唯一隨機代碼。","رمز کاربر شما یک کد تصادفی منحصربه‌فرد است که جایگزین نام کاربری و رمز عبور می‌شود.","Ваш секрет пользователя — это уникальный случайный код, заменяющий логин и пароль."
+convert-account,Convert account,转换账户,轉換帳戶,تبدیل حساب,Преобразовать аккаунт

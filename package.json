@@ -28,6 +28,7 @@
     "@smui/tab-bar": "^6.1.4",
     "@smui/textfield": "^6.1.4",
     "@sveltejs/vite-plugin-svelte": "^2.4.1",
+    "@tailwindcss/forms": "^0.5.10",
     "@tailwindcss/typography": "^0.5.14",
     "@tsconfig/svelte": "^5.0.0",
     "@types/node": "^22.9.4",

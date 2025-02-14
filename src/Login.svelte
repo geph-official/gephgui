@@ -4,16 +4,12 @@
   import { curr_valid_secret } from "./lib/user";
   import { native_gate } from "./native-gate";
   import RegisterPopup from "./RegisterPopup.svelte";
+  import MigrationPopup from "./MigrationPopup.svelte";
+  import { formatNumberWithSpaces } from "./lib/utils";
 
   let inputValue = "";
 
   let loggingIn = false;
-
-  const formatNumberWithSpaces = (value: string): string =>
-    value
-      .replace(/\D+/g, "") // Remove all non-numbers
-      .replace(/(\d{4})/g, "$1 ") // Add a space every 4 digits
-      .trim(); // Remove trailing space
 
   const handleInput = (e: Event) => {
     const target = e.target as HTMLInputElement;
@@ -45,10 +41,15 @@
   };
 
   let registerOpen = false;
+
+  let migrateOpen = false;
 </script>
 
 <div id="login">
   <RegisterPopup bind:open={registerOpen} />
+  {#if migrateOpen}
+    <MigrationPopup bind:open={migrateOpen} />
+  {/if}
   <div class="middle">
     <h1 class="h1">{l10n($curr_lang, "login")}</h1>
     <input
@@ -82,6 +83,14 @@
       on:click={() => onRegister()}
     >
       {l10n($curr_lang, "register")}
+    </button>
+    <button
+      type="button"
+      class="btn variant-ringed mt-2 btn-sm"
+      disabled={loggingIn}
+      on:click={() => (migrateOpen = true)}
+    >
+      {l10n($curr_lang, "migrate-from-older-versions")}
     </button>
   </div>
 </div>

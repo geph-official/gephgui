@@ -21,6 +21,7 @@ const config = {
   plugins: [
     // 4. Append the Skeleton plugin (after other plugins)
     require("@tailwindcss/aspect-ratio"),
+    require("@tailwindcss/forms"),
     skeleton({
       themes: { preset: ["skeleton"] },
     }),

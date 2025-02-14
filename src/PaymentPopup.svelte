@@ -98,7 +98,7 @@
                     try {
                       const gate = await native_gate();
                       await gate.pay_invoice(secondPageInvoice.id, method);
-                      handleCancel();
+                      handleCancel(); 
                     } finally {
                       payInProgress = false;
                     }

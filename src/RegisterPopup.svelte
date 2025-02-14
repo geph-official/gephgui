@@ -6,6 +6,7 @@
   import { native_gate } from "./native-gate";
   import { onDestroy, onMount } from "svelte";
   import { curr_valid_secret } from "./lib/user";
+  import { formatNumberWithSpaces } from "./lib/utils";
   export let open = false;
 
   let registerNum: number | null = null;
@@ -87,7 +88,7 @@
 
       {#if accountSecret}
         <div class="text-center text-2xl">
-          {accountSecret}
+          {formatNumberWithSpaces(accountSecret)}
         </div>
         <div class="text-center mt-2">
           <button class="btn variant-filled btn-sm" on:click={() => onLogin()}>
