@@ -58,13 +58,15 @@
     </p>
 
     {#if accountSecret}
-      <div class="text-center text-2xl">
-        {formatNumberWithSpaces(accountSecret)}
-      </div>
-      <div class="text-center mt-2">
-        <button class="btn variant-filled btn-sm" on:click={() => onLogin()}>
-          {l10n($curr_lang, "login")}
-        </button>
+      <div transition:slide>
+        <div class="text-center text-2xl">
+          {formatNumberWithSpaces(accountSecret)}
+        </div>
+        <div class="text-center mt-2">
+          <button class="btn variant-filled btn-sm" on:click={() => onLogin()}>
+            {l10n($curr_lang, "login")}
+          </button>
+        </div>
       </div>
     {:else if isConverting}
       <ProgressBar />

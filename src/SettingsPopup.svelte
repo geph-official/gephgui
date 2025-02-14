@@ -1,5 +1,6 @@
 <script>
   import { AppBar } from "@skeletonlabs/skeleton";
+  import { getModalStore } from "@skeletonlabs/skeleton";
   import { curr_lang, l10n } from "./lib/l10n";
   import { fly } from "svelte/transition";
   import Close from "svelte-material-icons/Close.svelte";
@@ -17,8 +18,11 @@
     pref_routing_mode,
     pref_use_prc_whitelist,
   } from "./lib/prefs";
+  import { native_gate } from "./native-gate";
 
   export let open = false;
+
+  const modalStore = getModalStore();
 
   const settings = {
     features: [
@@ -109,6 +113,39 @@
         {/each}
       </section>
     {/each}
+
+    <section class="m-4">
+      <h2 class="text-primary-700 uppercase font-semibold text-sm mb-2">
+        {l10n($curr_lang, "debug")}
+      </h2>
+
+      <div class="flex flex-row gap-2">
+        <button
+          class="btn variant-filled btn-sm"
+          on:click={() => {
+            const modal = {
+              type: "prompt",
+              title: "Report a problem",
+              body: "Geph's app log will be attached to this message. Your message will be sent in an encrypted form, and your data will remain secure and private.",
+              valueAttr: {
+                type: "text",
+                minlength: 3,
+                maxlength: 20,
+                required: true,
+                placeholder: "Your email (optional)",
+                rows: 10,
+              },
+              response: async (email) => {
+                const gate = await native_gate();
+                gate.export_debug_pack(email);
+              },
+            };
+            modalStore.trigger(modal);
+          }}>Report a problem</button
+        >
+        <button class="btn variant-filled btn-sm">Show logs</button>
+      </div>
+    </section>
   </div>
 {/if}
 

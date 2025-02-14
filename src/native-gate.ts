@@ -56,9 +56,9 @@ export interface NativeGate {
   sync_app_list(): Promise<AppDescriptor[]>;
 
   /**
-   * Exports debug pack
+   * Exports debug pack with a given email
    */
-  export_debug_pack(): Promise<void>;
+  export_debug_pack(email: string): Promise<void>;
 
   /**
    * Obtains the icon of an app
@@ -250,7 +250,7 @@ function mock_native_gate(): NativeGate {
       return "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAAM1BMVEWA2HEdwgUkwwBCxS5RxT1YyE5szGJ/0HiQ1YmZ2JSh2p2v363B5b7R68/b79js9+z///9HPSCbAAAAAXRSTlMAQObYZgAAAOxJREFUOMuFk1cWhCAMRWmhCYT9r3akSRv0fciRXEIKIYQQxuhfMUaSDtbK3AB91YeD5KIC4gp4y+n1QLmBu9iE+g8gMQ5ybAVgst/ECoS4SM+AypuVwuQNZyAHaMoSCi4nIEdw8ewChUmL3YEuvJQAfgTQSJfD8PoBxiRQ9pIFqIAd7X6koQC832GuKZxQC6X6kVSlDNVv7YVuNU67Mv/JnK5v3VTlFuuXmmMDaib6CLAYFAUF7gRIW96Ajlvjlze7dB42YH5blm5Ay+exbwAFP0SYgH0uwDrntFAeDkAfmjJ7X6P3PbwvSDL/AIYAHEpiL5B+AAAAAElFTkSuQmCC";
     },
 
-    async export_debug_pack() {
+    async export_debug_pack(email) {
       alert("do something:");
     },
 
