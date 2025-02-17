@@ -6,6 +6,7 @@
   import Close from "svelte-material-icons/Close.svelte";
   import Vpn from "svelte-material-icons/Vpn.svelte";
   import AirFilter from "svelte-material-icons/AirFilter.svelte";
+  import Translate from "svelte-material-icons/Translate.svelte";
   import CallSplit from "svelte-material-icons/CallSplit.svelte";
   import Router from "svelte-material-icons/Router.svelte";
 
@@ -19,6 +20,7 @@
     pref_use_prc_whitelist,
   } from "./lib/prefs";
   import { native_gate } from "./native-gate";
+  import SingleSetting from "./settings/SingleSetting.svelte";
 
   export let open = false;
 
@@ -103,6 +105,28 @@
       <b id="logo-text">{l10n($curr_lang, "settings")}</b>
     </AppBar>
 
+    <section class="m-4">
+      <h2 class="text-primary-700 uppercase font-semibold text-sm mb-2">
+        {l10n($curr_lang, "general")}
+      </h2>
+
+      <SingleSetting>
+        <svelte:fragment slot="icon">
+          <Translate size="1.4rem" />
+        </svelte:fragment>
+        <svelte:fragment slot="description">
+          {l10n($curr_lang, "language")}
+        </svelte:fragment>
+        <svelte:fragment slot="switch">
+          <select class="select" bind:value={$curr_lang}>
+            <option value="en">English</option>
+            <option value="zh-CN">简体中文</option>
+            <option value="ru">Русский</option>
+          </select>
+        </svelte:fragment>"
+      </SingleSetting>
+    </section>
+
     {#each Object.entries(settings) as [section, contents]}
       <section class="m-4">
         <h2 class="text-primary-700 uppercase font-semibold text-sm mb-2">
@@ -125,25 +149,27 @@
           on:click={() => {
             const modal = {
               type: "prompt",
-              title: "Report a problem",
-              body: "Geph's app log will be attached to this message. Your message will be sent in an encrypted form, and your data will remain secure and private.",
+              title: l10n($curr_lang, "report-problem"),
+              body: l10n($curr_lang, "attach-log-blurb"),
               valueAttr: {
                 type: "text",
                 minlength: 3,
                 maxlength: 20,
                 required: true,
-                placeholder: "Your email (optional)",
+                placeholder: l10n($curr_lang, "your-email-optional"),
                 rows: 10,
               },
               response: async (email) => {
-                const gate = await native_gate();
-                gate.export_debug_pack(email);
+                if (email) {
+                  const gate = await native_gate();
+                  gate.export_debug_pack(email);
+                }
               },
             };
             modalStore.trigger(modal);
           }}>Report a problem</button
         >
-        <button class="btn variant-filled btn-sm">Show logs</button>
+        <!-- <button class="btn variant-filled btn-sm">Show logs</button> -->
       </div>
     </section>
   </div>

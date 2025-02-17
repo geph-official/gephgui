@@ -183,28 +183,39 @@ export const subinfo_deserialize = (
 
 type Level = "free" | "plus";
 
+function random_fail() {
+  if (Math.random() < 0.5) {
+    throw "random fail";
+  }
+}
+
 function mock_native_gate(): NativeGate {
   let connected = false;
   let running = false;
   return {
     start_daemon: async () => {
+      random_fail();
       running = true;
       await random_sleep();
       setTimeout(() => (connected = true), 1000);
     },
     stop_daemon: async () => {
+      random_fail();
       await random_sleep();
       connected = false;
       running = false;
     },
     is_connected: async () => {
+      random_fail();
       return connected;
     },
     is_running: async () => {
+      random_fail();
       return running;
     },
 
     price_points: async () => {
+      random_fail();
       return [
         [30, 5],
         [60, 10],
@@ -212,6 +223,7 @@ function mock_native_gate(): NativeGate {
     },
 
     async create_invoice(days: number) {
+      random_fail();
       await random_sleep();
       return {
         id: "foobar",
@@ -220,10 +232,12 @@ function mock_native_gate(): NativeGate {
     },
 
     async pay_invoice(id: string, method: string) {
+      random_fail();
       await random_sleep();
     },
 
     async daemon_rpc(method, args) {
+      random_fail();
       if ((MockDaemonRpc as any)[method]) {
         return (MockDaemonRpc as any)[method](...args);
       } else {
@@ -232,6 +246,7 @@ function mock_native_gate(): NativeGate {
     },
 
     sync_app_list: async () => {
+      random_fail();
       await random_sleep();
       return [
         {
@@ -246,6 +261,7 @@ function mock_native_gate(): NativeGate {
     },
 
     get_app_icon_url: async (id) => {
+      random_fail();
       await random_sleep();
       return "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAMAAABEpIrGAAAAM1BMVEWA2HEdwgUkwwBCxS5RxT1YyE5szGJ/0HiQ1YmZ2JSh2p2v363B5b7R68/b79js9+z///9HPSCbAAAAAXRSTlMAQObYZgAAAOxJREFUOMuFk1cWhCAMRWmhCYT9r3akSRv0fciRXEIKIYQQxuhfMUaSDtbK3AB91YeD5KIC4gp4y+n1QLmBu9iE+g8gMQ5ybAVgst/ECoS4SM+AypuVwuQNZyAHaMoSCi4nIEdw8ewChUmL3YEuvJQAfgTQSJfD8PoBxiRQ9pIFqIAd7X6koQC832GuKZxQC6X6kVSlDNVv7YVuNU67Mv/JnK5v3VTlFuuXmmMDaib6CLAYFAUF7gRIW96Ajlvjlze7dB42YH5blm5Ay+exbwAFP0SYgH0uwDrntFAeDkAfmjJ7X6P3PbwvSDL/AIYAHEpiL5B+AAAAAElFTkSuQmCC";
     },
@@ -330,8 +346,8 @@ const MockDaemonRpc = {
     };
   },
 
-  async stat_num(stat: string) {
-    return 1.0;
+  async stat_history(stat: string) {
+    return [1.0, 2.0, 1.0, 2.0, 1.0];
   },
 
   async recent_logs() {
@@ -378,9 +394,12 @@ const MockDaemonRpc = {
 
   async user_info(secret: string) {
     await random_sleep();
+    // return {
+    //   level: "plus",
+    //   expiry: 10000000000,
+    // };
     return {
-      level: "plus",
-      expiry: 10000000000,
+      level: "free",
     };
   },
 

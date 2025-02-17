@@ -1,3 +1,10 @@
+import {
+  getModalStore,
+  type ModalSettings,
+  type ModalStore,
+  type ToastSettings,
+  type ToastStore,
+} from "@skeletonlabs/skeleton";
 import { getContext, onDestroy, setContext } from "svelte";
 import { cubicOut } from "svelte/easing";
 import twemoji from "twemoji";
@@ -30,3 +37,24 @@ export const formatNumberWithSpaces = (value: string): string =>
     .replace(/\D+/g, "") // Remove all non-numbers
     .replace(/(\d{4})/g, "$1 ") // Add a space every 4 digits
     .trim(); // Remove trailing space
+
+export const showErrorModal = async (modalStore: ModalStore, error: string) => {
+  await new Promise<boolean>((resolve) => {
+    const modal: ModalSettings = {
+      type: "alert",
+      title: "Error",
+      body: error,
+      response: (r: boolean) => {
+        resolve(r);
+      },
+    };
+    modalStore.trigger(modal);
+  });
+};
+
+export const showToast = async (toastStore: ToastStore, message: string) => {
+  const t: ToastSettings = {
+    message,
+  };
+  toastStore.trigger(t);
+};

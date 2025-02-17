@@ -1,7 +1,7 @@
 <script lang="ts">
   export let secret: string;
   import { curr_lang, l10n } from "./lib/l10n";
-  import { curr_conn_status } from "./lib/user";
+  import { app_status } from "./lib/user";
 
   import {
     pref_app_whitelist,
@@ -14,17 +14,20 @@
     pref_use_prc_whitelist,
   } from "./lib/prefs";
   import { native_gate } from "./native-gate";
-  import { ProgressBar } from "@skeletonlabs/skeleton";
+  import { ProgressBar, getModalStore } from "@skeletonlabs/skeleton";
   import ChevronRight from "svelte-material-icons/ChevronRight.svelte";
   import ServerSelectPopup from "./ServerSelectPopup.svelte";
   import Flag from "./lib/Flag.svelte";
   import AccountExtender from "./AccountExtender.svelte";
   import NewsFeed from "./NewsFeed.svelte";
   import Graph from "./Graph.svelte";
+  import { showErrorModal } from "./lib/utils";
 
   let serversOpen = false;
 
   let connectButtonDisabled = false;
+  const modalStore = getModalStore();
+
   const startDaemon = async () => {
     connectButtonDisabled = true;
     try {
@@ -48,6 +51,8 @@
         proxy_autoconf: $pref_proxy_autoconf,
         global_vpn: $pref_global_vpn,
       });
+    } catch (e) {
+      showErrorModal(modalStore, l10n($curr_lang, "error") + ": " + e);
     } finally {
       connectButtonDisabled = false;
     }
@@ -57,95 +62,111 @@
     try {
       const gate = await native_gate();
       await gate.stop_daemon();
+    } catch (e) {
+      showErrorModal(modalStore, l10n($curr_lang, "error") + ": " + e);
     } finally {
       connectButtonDisabled = false;
     }
   };
 
   const switchServers = async () => {
-    if ($curr_conn_status === "disconnected") serversOpen = true;
+    if ($app_status?.connection === "disconnected") serversOpen = true;
   };
 </script>
 
 <div id="main">
-  <ServerSelectPopup bind:open={serversOpen} />
-  <div class="flex flex-col gap-5">
-    <AccountExtender />
-    <div class="flex flex-row gap-4">
-      <div class="flex-1 card p-2"><Graph /></div>
-      <div class="flex-1 card p-3"><Graph /></div>
+  {#if $app_status}
+    <ServerSelectPopup bind:open={serversOpen} />
+    <div class="flex flex-col gap-5">
+      <AccountExtender />
+      <div class="flex flex-row gap-4">
+        <div class="flex-1 card p-2">
+          <Graph
+            data={$app_status.stats.total_mbps.map((s) => s / 1000.0)}
+            unit="Gbps"
+            title={l10n($curr_lang, "total-traffic")}
+          />
+        </div>
+        <div class="flex-1 card p-2">
+          <Graph
+            data={$app_status.stats.total_users}
+            unit="users"
+            title={l10n($curr_lang, "total-users")}
+          />
+        </div>
+      </div>
     </div>
-  </div>
 
-  <NewsFeed />
+    <NewsFeed />
 
-  <div class="bottom card flex flex-col gap-3">
-    <!-- svelte-ignore a11y-click-events-have-key-events -->
-    <!-- svelte-ignore a11y-no-static-element-interactions -->
-    <div
-      class="flex flex-row"
-      class:cursor-pointer={$curr_conn_status === "disconnected"}
-      on:click={() => switchServers()}
-    >
-      <div class="server-name grow">
-        {#if $pref_exit_constraint === "auto"}
-          {l10n($curr_lang, "best-free-server")}<br />
-        {:else}
-          {$pref_exit_constraint.country} / {$pref_exit_constraint.city}<br />
-        {/if}
-        <div class="flex flex-row mt-1">
-          {#if $curr_conn_status !== null && $curr_conn_status !== "disconnected" && $curr_conn_status !== "connecting"}
-            <small><Flag country={$curr_conn_status.country} /></small>
-            <small>
-              {$curr_conn_status.exit}
-
-              <span class="font-normal">
-                [{#if $curr_conn_status.bridge}{$curr_conn_status.bridge}{:else}{l10n(
-                    $curr_lang,
-                    "direct"
-                  )}{/if}]
-              </span>
-            </small>
+    <div class="bottom card flex flex-col gap-3">
+      <!-- svelte-ignore a11y-click-events-have-key-events -->
+      <!-- svelte-ignore a11y-no-static-element-interactions -->
+      <div
+        class="flex flex-row"
+        class:cursor-pointer={$app_status.connection === "disconnected"}
+        on:click={() => switchServers()}
+      >
+        <div class="server-name grow">
+          {#if $pref_exit_constraint === "auto"}
+            {l10n($curr_lang, "best-free-server")}<br />
           {:else}
-            <small>{l10n($curr_lang, "auto-select")}</small>
+            {$pref_exit_constraint.country} / {$pref_exit_constraint.city}<br />
+          {/if}
+          <div class="flex flex-row mt-1">
+            {#if $app_status.connection !== null && $app_status.connection !== "disconnected" && $app_status?.connection !== "connecting"}
+              <small><Flag country={$app_status.connection.country} /></small>
+              <small>
+                {$app_status?.connection.exit}
+
+                <span class="font-normal">
+                  [{#if $app_status.connection.bridge}{$app_status.connection
+                      .bridge}{:else}{l10n($curr_lang, "direct")}{/if}]
+                </span>
+              </small>
+            {:else}
+              <small>{l10n($curr_lang, "auto-select")}</small>
+            {/if}
+          </div>
+        </div>
+        <div class="icon">
+          {#if $app_status.connection === "disconnected"}
+            <ChevronRight size="1.5rem" />
           {/if}
         </div>
       </div>
-      <div class="icon">
-        {#if $curr_conn_status === "disconnected"}
-          <ChevronRight size="1.5rem" />
-        {/if}
-      </div>
+
+      {#if $app_status.connection === "disconnected"}
+        <button
+          class="btn variant-filled"
+          on:click={() => startDaemon()}
+          disabled={connectButtonDisabled}
+        >
+          {l10n($curr_lang, "connect")}
+        </button>
+      {:else if $app_status.connection === "connecting"}
+        <button
+          class="btn variant-ghost"
+          on:click={() => stopDaemon()}
+          disabled={connectButtonDisabled}
+        >
+          {l10n($curr_lang, "cancel")}
+        </button>
+
+        <ProgressBar />
+      {:else}
+        <button
+          class="btn variant-ghost"
+          on:click={() => stopDaemon()}
+          disabled={connectButtonDisabled}
+        >
+          {l10n($curr_lang, "disconnect")}
+        </button>
+      {/if}
     </div>
-
-    {#if $curr_conn_status === "disconnected"}
-      <button
-        class="btn variant-filled"
-        on:click={() => startDaemon()}
-        disabled={connectButtonDisabled}
-      >
-        {l10n($curr_lang, "connect")}
-      </button>
-    {:else if $curr_conn_status === "connecting"}
-      <button
-        class="btn variant-ghost"
-        on:click={() => stopDaemon()}
-        disabled={connectButtonDisabled}
-      >
-        {l10n($curr_lang, "cancel")}
-      </button>
-
-      <ProgressBar />
-    {:else}
-      <button
-        class="btn variant-ghost"
-        on:click={() => stopDaemon()}
-        disabled={connectButtonDisabled}
-      >
-        {l10n($curr_lang, "disconnect")}
-      </button>
-    {/if}
-  </div>
+  {:else}
+    <ProgressBar />
+  {/if}
 </div>
 
 <style>

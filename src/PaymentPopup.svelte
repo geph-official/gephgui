@@ -3,7 +3,8 @@
   import { curr_lang, l10n } from "./lib/l10n";
   import { native_gate, type InvoiceInfo } from "./native-gate";
   import { paymentsOpen } from "./lib/user";
-  import { ProgressBar } from "@skeletonlabs/skeleton";
+  import { ProgressBar, getModalStore } from "@skeletonlabs/skeleton";
+  import { showErrorModal } from "./lib/utils";
 
   // Tracks the currently selected index; starts at 0 to force an option.
   let selectedIndex = 0;
@@ -15,6 +16,7 @@
   let secondPageInvoice: InvoiceInfo | null = null;
   let createInvoiceInProgress = false;
   let payInProgress = false;
+  const modalStore = getModalStore();
 
   async function handlePayNow(days: number) {
     createInvoiceInProgress = true;
@@ -22,6 +24,11 @@
       const gate = await native_gate();
       const invoice = await gate.create_invoice(days);
       secondPageInvoice = invoice;
+    } catch (e) {
+      showErrorModal(
+        modalStore,
+        l10n($curr_lang, "err_create_invoice") + ": " + e
+      );
     } finally {
       createInvoiceInProgress = false;
     }
@@ -33,8 +40,17 @@
   }
 
   const getPricePoints = async () => {
-    const gate = await native_gate();
-    return await gate.price_points();
+    try {
+      const gate = await native_gate();
+      return await gate.price_points();
+    } catch (e) {
+      showErrorModal(
+        modalStore,
+        l10n($curr_lang, "err_load_price_points") + ": " + e
+      );
+      handleCancel();
+      throw e;
+    }
   };
 </script>
 
@@ -48,7 +64,9 @@
     >
       {#if !secondPageInvoice}
         <div transition:slide class="flex flex-col">
-          <h1 class="font-bold text-gray-700 text-xs mb-2">Add Plus time</h1>
+          <h1 class="font-bold text-gray-700 text-xs mb-2">
+            {l10n($curr_lang, "add-plus-time")}
+          </h1>
 
           {#await getPricePoints()}
             Loading...
@@ -82,6 +100,8 @@
                 {l10n($curr_lang, "cancel")}
               </button>
             {/if}
+          {:catch e}
+            {e}
           {/await}
         </div>
       {:else}
@@ -98,7 +118,7 @@
                     try {
                       const gate = await native_gate();
                       await gate.pay_invoice(secondPageInvoice.id, method);
-                      handleCancel(); 
+                      handleCancel();
                     } finally {
                       payInProgress = false;
                     }

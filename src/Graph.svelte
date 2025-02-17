@@ -5,6 +5,7 @@
   export let unit = "Mbps";
   export let color = "green";
   export let title = "Total traffic";
+  export let decimals = 2;
 
   import sparkline from "@fnando/sparkline";
   let container;
@@ -12,14 +13,12 @@
   let svgData = null;
 
   const draw = () => {
-    console.log("gonna draw");
     sparkline(container, data);
     const serializer = new XMLSerializer();
     const svgString = serializer.serializeToString(container);
     const base64 = btoa(svgString);
 
     svgData = `data:image/svg+xml;base64,${base64}`;
-    console.log(svgData);
   };
 
   $: container && draw();
@@ -28,7 +27,9 @@
 <div>
   <div class="text-sm -mb-1">{title}</div>
   <div class="font-medium" style="color: {color}">
-    <span class="text-2xl">{data[data.length - 1] || 0}</span>
+    <span class="text-2xl"
+      >{(data[data.length - 1] || 0).toFixed(decimals)}</span
+    >
     {unit}
   </div>
   <svg

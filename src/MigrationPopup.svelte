@@ -49,8 +49,7 @@
 
   <div class="px-5">
     <p class="my-3">
-      Enter the username and password you use with previous versions to obtain
-      your <b>account secret</b>.
+      {@html l10n($curr_lang, "enter-old-username-password-blurb")}
     </p>
 
     <p class="my-3">

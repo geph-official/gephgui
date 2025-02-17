@@ -1,17 +1,25 @@
 label,en,zh-CN,zh-TW,fa,ru
-200x-faster-speed,"Get up to <b>200x faster speed</b> and more reliable connections.","获得高达 <b>200 倍更快的速度</b> 和更可靠的连接。","獲得高達 <b>200 倍更快的速度</b> 和更可靠的連接。","سرعتی تا <b>200 برابر سریع‌تر</b> و اتصالات قابل اعتمادتر دریافت کنید","Получите до <b>200 раз быстрее скорость</b> и более надежные соединения."
+200x-faster-speed,"Get up to 200x faster speed and more reliable connections.","获得高达 200 倍更快的速度 和更可靠的连接。","獲得高達 200 倍更快的速度 和更可靠的連接。","سرعتی تا 200 برابر سریع‌تر و اتصالات قابل اعتمادتر دریافت کنید","Получите до 200 раз быстрее скорость и более надежные соединения."
 about,About,关于,關於,درباره ما,О программе
-access-global-servers,"Gain access to our entire network of global servers, including <b>premium, low-latency locations</b>.","使用所有迷雾通服务器，连接<b>高速、低延迟的地理位置</b>。","使用所有迷霧通服務器，连接<b>高速、低延遲的地理位置</b>。","به کل شبکه سرورهای جهانی ما، از جمله <b>مکان‌های ممتاز با تأخیر کم</b>، دسترسی پیدا کنید","Получите доступ ко всей нашей сети глобальных серверов, включая <b>премиум-локации с низкой задержкой</b>."
+access-global-servers,"Gain access to our entire network of global servers, including premium, low-latency locations.","使用所有迷雾通服务器，连接高速、低延迟的地理位置。","使用所有迷霧通服務器，连接高速、低延遲的地理位置。","به کل شبکه سرورهای جهانی ما، از جمله مکان‌های ممتاز با تأخیر کم، دسترسی پیدا کنید","Получите доступ ко всей нашей сети глобальных серверов, включая премиум-локации с низкой задержкой."
 account,Account,账户,賬戶,حساب کاربری,Аккаунт
+account-info,Account info,账户信息,帳戶資訊,اطلاعات حساب,Информация об аккаунте
+account-level,Account level,账户级别,帳戶等級,سطح حساب,Уровень аккаунта
+account-secret,Account secret,账户密钥,帳戶密鑰,رمز حساب کاربری,Секретный ключ аккаунта
+account-status,Account status,账户状态,帳戶狀態,وضعیت حساب,Состояние аккаунта
+add-plus-time,Add Plus time,购买 Plus 时长,購買 Plus 時長,افزودن زمان پلاس,Добавить время Plus
 ads-and-trackers,Ads and trackers,广告和跟踪器,廣告和追蹤器,تبلیغات و ردیاب‌ها,Реклама и трекеры
 adult-content,Adult content,成人内容,成人內容,محتوای بزرگسالان,Контент для взрослых
 advanced,Advanced,高级,高級,پیشرفته,Дополнительно
-advanced-warning,"Advanced settings should only be adjusted by experienced users. Incorrect changes may lead to unexpected network behavior or disruptions.",高级设置应只由有经验的用户调整。不正确的更改可能导致意外的现象或连接中断。,高級設置應只由有經驗的用戶調整。不正確的更改可能導致意外的現象或連接中斷。,تنظیمات پیشرفته باید توسط کاربران باتجربه انجام شود. تنظیمات اشتباه ممکن است باعث بروز اختلال در شبکه شما شود.,"Расширенные настройки должны настраиваться только опытными пользователями. Неправильные изменения могут привести к неожиданному поведению сети или сбоям."
+advanced-warning,"Advanced settings should only be adjusted by experienced users. Incorrect changes may lead to unexpected network behavior or disruptions.",高级设置应只由有经验的用户调整。不正确的更改可能导致意外的现象或连接中断。,高級設置應只由有經驗的用戶調整。不正確的更改可能導致意外的現象或連接中斷.,تنظیمات پیشرفته باید توسط کاربران باتجربه انجام شود. تنظیمات اشتباه ممکن است باعث بروز اختلال در شبکه شما شود.,"Расширенные настройки должны настраиваться только опытными пользователями. Неправильные изменения могут привести к неожиданному поведению сети или сбоям."
 allowed,Allowed,允许,允許,مجاز,Разрешено
+attach-log-blurb,"Geph's app log will be attached to this message. Your message will be sent in an encrypted form, and your data will remain secure and private.","迷雾通的应用日志会随此消息一并发送。您的消息将以加密的方式发送，您的数据将保持安全和私密。","迷霧通的應用日誌會隨此訊息一併發送。您的訊息將以加密的方式發送，您的數據將保持安全和私密。","گزارش برنامهٔ Geph همراه این پیام ارسال خواهد شد. پیام شما به‌صورت رمزگذاری‌شده فرستاده می‌شود و داده‌هایتان امن و خصوصی می‌ماند.","Журнал приложения Geph будет прикреплен к этому сообщению. Ваше сообщение будет отправлено в зашифрованном виде, и ваши данные останутся в безопасности и конфиденциальности."
 auto-proxy,Auto-configure proxy,自动配置代理,自動配置代理,پیکربندی خودکار پروکسی,Автонастройка прокси
-auto-proxy-blurb,Makes most browsers use Geph,配置大多数浏览器使用迷雾通,配置大多数瀏覽器使用迷霧通,بیشتر مرورگرها را مجبور میکند که از Geph استفاده کنند,Настраивает большинство браузеров использовать Geph
+auto-proxy-blurb,Makes most browsers use Geph,配置大多数浏览器使用迷雾通,配置大多數瀏覽器使用迷霧通,بیشتر مرورگرها را مجبور میکند که از Geph استفاده کنند,Настраивает большинство браузеров использовать Geph
+auto-select,Auto-select least loaded server,自动选择负载最小的服务器,自動選擇負載最小的伺服器,انتخاب خودکار کم بارترین سرور,Автовыбор наименее загруженного сервера
 automatic,Auto,自动,自動,خودکار,Авто
 automatic-blurb,Uses best available server,使用最佳可用服务器,使用最佳可用伺服器,به بهترین سرور موجود وصل می‌شود,Использует лучший доступный сервер
+best-free-server,Best free server,最佳免费服务器,最佳免費伺服器,بهترین سرور رایگان,Лучший бесплатный сервер
 buy-plus,Buy Plus,购买 Plus,購買 Plus,خرید پلاس,Купить Plus
 buy-plus-price,Buy Plus (€5/month),购买 Plus（每月 €5）,購買 Plus（每月 €5）,خرید پلاس (€5/ماه),Купить Plus (€5/месяц)
 calls-p2p-gaming,"🎮 Calls, P2P, and gaming","🎮 通话、P2P 和游戏","🎮 通話、P2P 和遊戲","🎮 تماس‌ها، P2P و بازی","🎮 Звонки, P2P и игры"
@@ -23,9 +31,13 @@ close,Close,关闭,關閉,بستن,Закрыть
 connect,Connect,连接,連接,اتصال,Подключить
 connected,Connected,已连接,已連接,متصل شد,Подключено
 connecting,Connecting,连接中,連接中,درحال اتصال,Подключение
+connection-status,Connection status,连接状态,連接狀態,وضعیت اتصال,Состояние подключения
 content-filtering,Content filtering,内容屏蔽,內容屏蔽,فیلتر محتوا,Фильтрация контента
+convert-account,Convert account,转换账户,轉換帳戶,تبدیل حساب,Преобразовать аккаунт
 country,Country,国家,國家,کشور,Страна
+credit-card,Credit card,信用卡,信用卡,کارت اعتباری,Кредитная карта
 dark,Dark,暗色,暗色,تیره,Тёмная тема
+days,days,天,天,روز,Дни
 debug,Debug,调试,除錯,عیب‌یابی,Отладка
 debug-pack,Debug pack,调试包,調試包,بسته عیب یابی,Отладочный пакет
 debug-pack-blurb,Save debugging info for developers,保存调试信息以供开发人员使用,保存除錯資訊以供開發人員使用,ذخیره گزارش‌های عیب‌یابی برای توسعه‌دهندگان,Сохранить отладочную информацию для разработчиков
@@ -33,10 +45,14 @@ delete,Delete,删除,刪除,حذف,Удалить
 delete-account,Delete account,刪除账户,刪除賬戶,حذف حساب کاربری,Удалить аккаунт
 delete-account-are-you-sure,Are you sure that you want to delete your account?,你确定要删除你的账户吗？,你確定要刪除你的賬戶嗎？,آیا مطمئن هستید که می‌خواهید اکانت خود را حذف کنید؟,Вы уверены, что хотите удалить свой аккаунт?
 delete-account-blurb,Permanently delete account,永久删除账户,永久刪除賬戶,حذف دائمی حساب کاربری,Безвозвратно удалить аккаунт
+direct,Direct,直连,直连,مستقیم,Прямой
 disconnect,Disconnect,断开,斷開,قطع اتصال,Отключить
 disconnected,Disconnected,已断开,已斷開,متصل نیست,Отключено
+dont-have-account-secret,"Don't have an account secret?","没有账户密钥？","沒有帳戶密鑰？","رمز حساب کاربری ندارید؟","Нет секретного ключа аккаунта?"
 download,Download,下载,下載,دانلود,Скачать
 duplicate-credentials,This username is already taken. Please choose another name,此用户名已存在。请选一个新的用户名,此用戶名已存在。 請選一個新的用戶名,این نام کاربری برداشته شده است. لطفا نام دیگری انتخاب کنید,Это имя пользователя уже занято. Пожалуйста, выберите другое имя.
+enter-account-secret,Enter your account secret,输入您的账户密钥,輸入您的帳戶密鑰,رمز حساب کاربری خود را وارد کنید,Введите секретный ключ вашего аккаунта
+enter-old-username-password-blurb,"Enter the username and password you use with previous versions to obtain your account secret.","请输入您在旧版本中使用的用户名和密码，以获取您的 账户密钥。","請輸入您在舊版本中使用的用戶名和密碼，以獲取您的 帳戶密鑰。","نام کاربری و رمز عبوری را که در نسخه‌های قبلی استفاده می‌کردید وارد کنید تا رمز حساب کاربری خود را دریافت کنید.","Введите имя пользователя и пароль, которые вы использовали в предыдущих версиях, чтобы получить ваш секретный ключ аккаунта."
 error,Error,错误,錯誤,خطا,Ошибка
 exclude-apps,Exclude apps,排除应用,排除應用,برنامه های صرف‌نظر شده,Исключить приложения
 exclude-apps-blurb,Let apps bypass Geph,允许应用程序绕过迷雾通,允許應用程式繞過迷霧通,این برنامه ها از Geph استفاده نکنند,Позволить приложениям обходить Geph
@@ -45,10 +61,11 @@ exclude-prc-blurb,Let Chinese traffic bypass Geph,允许中国大陆流量绕过
 exit-selection,Select exit server,选择出口服务器,選擇出口伺服器,سرور خروجی را انتخاب کنید,Выбрать выходной сервер
 export,Export,导出,導出,صدور,Экспорт
 extend,Extend,延长,延長,تمدید,Продлить
+features,"Features","功能","功能","ویژگی‌ها","Функции"
 force-bridges,Bridges,强制桥接,強制橋接,پل ها,Мосты
 forum,Forum,用户论坛,用戶論壇,انجمن,Форум
-free-account,Free account,免费用户,免費用戶,حساب رایگان,Бесплатный аккаунт
-free-is-bad,Free accounts are limited to <b>300 KB/s</b> and only support basic web browsing.,免费账号速度非常有限（<b>300 KB/s</b>），而且只允许基本网页浏览,免費帳號速度非常有限（<b>300 KB/s</b>），而且只允許基本網頁瀏覽,سرعت حساب های رایگان محدود به <b>300 KB/s</b> و فقط مرور وب اساسی می باشد. با ارتقا به پلاس از سرعت نامحدود لذت ببرید!,"Скорость бесплатных аккаунтов ограничена до <b>300 КБ/с</b> и доступен только базовый веб-серфинг."
+free-account,Free trial,免费试用,免費試用,حساب رایگان,Бесплатный аккаунт
+free-is-bad,"Free accounts are limited to 300 KB/s and only support basic web browsing.",免费账号速度非常有限（300 KB/s），而且只允许基本网页浏览,免費帳號速度非常有限（300 KB/s），而且只允許基本網頁瀏覽,سرعت حساب های رایگان محدود به 300 KB/s و فقط مرور وب اساسی می باشد. با ارتقا به پلاس از سرعت نامحدود لذت ببرید!,"Скорость бесплатных аккаунтов ограничена до 300 КБ/с и доступен только базовый веб-серфинг."
 free-server,Free,所有用户,所有用戶,رایگان,Бесплатно
 gambling,Gambling,赌博,賭博,قمار,Азартные игры
 general,General,常规,常規,عمومی,Общие
@@ -58,7 +75,9 @@ get-unlimited-speed,Get unlimited speed,获取无限速度,獲取無限速度,س
 github,GitHub,GitHub,GitHub,گیت‌هاب,GitHub
 global-vpn,Network-level VPN,全局VPN,全局VPN,فیلترشکن در سطح شبکه,VPN на уровне сети
 global-vpn-blurb,Force all traffic to use Geph,强制所有流量使用迷雾通,強制所有流量使用迷霧通,همه ترافیک ها را مجبور به استفاده از Geph می کند,Заставить весь трафик использовать Geph
+i-have-old-username-password,"I have a username/password","旧版用户名/密码","舊版用戶名/密碼","من یک نام کاربری/رمز عبور قدیمی دارم","У меня есть имя пользователя/пароль"
 invalid-username-or-password,Wrong username or password,用户名或密码错误,用戶名或密碼錯誤,نام کاربری یا کلمه عبور نادرست است,Неправильное имя пользователя или пароль
+keep-window-open,"Please keep this window open!","请保持此窗口打开！","請保持此窗口打開！","لطفاً این پنجره را باز نگه دارید!","Пожалуйста, держите это окно открытым!"
 language,Language,语言,語言,زبان,Язык
 latency,Latency,延迟,延遲,تاخیر,Задержка
 light,Light,亮色,亮色,روشن,Светлая тема
@@ -70,8 +89,10 @@ loading-server-list,Loading server list,正在加载服务器列表,正在加載
 log-in-blurb,Log in with existing account,使用已有帐号登录,使用已有帳號登錄,ورود به حساب کاربری موجود,Войти в существующий аккаунт
 logging-in,Logging in,登录中,登錄中,ورود به حساب,Вход
 logging-out,Logging out,登出中,登出中,خروج از حساب,Выход
+login,Log in,登录,登錄,ورود,Войти
 login-server-overloaded,The login server is currently overloaded. Please try again later.,登录服务器当前超负载。请稍后重试。,登錄服務器當前超負荷。請稍後重試。,سرور ورود در حال حاضر فشارزا است. لطفا بعدا دوباره امتحان کنید.,Сервер входа в систему в настоящее время перегружен. Пожалуйста, попробуйте позже.
 logout,Log out,退出,退出,خروج,Выйти
+migrate-from-older-versions,"Migrate from older versions","从旧版本迁移","從舊版本遷移","مهاجرت از نسخه‌های قدیمی","Миграция со старых версий"
 much-faster-speed,"🚀 Much faster speed","🚀 超快的速度","🚀 超快的速度","🚀 سرعت بسیار بالاتر","🚀 Намного быстрее"
 network,Network,网络,網路,شبکه,Сеть
 news,News,通知频道,通知頻道,اخبار,Новости
@@ -84,7 +105,10 @@ p2p-no,P2P banned,禁止BT,禁止P2P,P2P غیرمجاز,P2P запрещено
 p2p-yes,P2P allowed,允许BT,允許P2P,P2P مجاز,P2P разрешено
 packet-loss,Packet Loss,丟包,丟包,Packet Loss,Потеря пакетов
 password,Password,密码,密碼,رمزعبور,Пароль
-plus-is-great,"Plus unlocks full speed on <b>all</b> servers!",Plus解除<b>所有</b>服务器的限速！,Plus解除<b>所有</b>服務器的限速！,پلاس قابلیت سرعت نامحدود را روی <b>تمام</b> سرور ها برای شما باز می‌کند!,"Plus разблокирует полную скорость на <b>всех</b> серверах!"
+pay-now,Pay now,立即支付,立即支付,همین حالا پرداخت کنید,Оплатить сейчас
+plus-account,Plus account,Plus 账户,Plus 帳戶,حساب پلاس,Plus аккаунт
+plus-expiry,Plus expiry,Plus 到期时间,Plus 到期時間,انقضای Plus,Срок действия Plus
+plus-is-great,"Plus unlocks full speed on all servers!",Plus解除所有服务器的限速！,Plus解除所有服務器的限速！,پلاس قابلیت سرعت نامحدود را روی تمام سرور ها برای شما باز می‌کند!,"Plus разблокирует полную скорость на всех серверах!"
 plus-only-blurb,"Only Plus users are allowed on this server, select another one.",仅Plus用户允许访问此服务器,仅Plus用户允许访问此服务器,این سرور مخصوص اعضای پلاس است,"На этот сервер допускаются только пользователи Plus, выберите другой."
 plus-server,Plus,仅限Plus,僅限Plus,پلاس,Plus
 protocol,Protocol,协议,協議,پروتکل,Протокол
@@ -92,42 +116,28 @@ refresh-user,Refresh info,刷新用户信息,刷新用戶訊息,تازه‌سا�
 refreshing-user-info,Refreshing user info,正在刷新用户信息,正在刷新用戶信息,به روز رسانی اطلاعات کاربر,Обновление информации пользователя
 register,Register,注册,註冊,افتتاح حساب,Регистрация
 register-blurb,Create a new account,创建新帐号,創建新帳號,ایجاد حساب کاربری جدید,Создать новый аккаунт
+register-warning,"In order to protect against spam and automated signups, creating an account may take an extended period of time.","为了防止垃圾邮件和自动注册，创建账户可能需要较长时间。","為了防止垃圾郵件和自動註冊，創建帳戶可能需要較長時間。","برای جلوگیری از هرزنامه و ثبت‌نام‌های خودکار، ایجاد حساب کاربری ممکن است زمان زیادی ببرد.","Для предотвращения спама и автоматических регистраций создание аккаунта может занять длительное время."
 remaining-days,Remaining days,剩余天数,剩餘天數,روزهای باقی‌مانده,Осталось дней
+report-problem,"Report a problem","报告问题","回報問題","گزارش مشکل","Сообщить о проблеме"
 routing-mode,Routing mode,路由模式,路由模式,حالت مسیریابی,Режим маршрутизации
 select-excluded-apps,Select excluded apps,选择要排除的应用程序,選擇要排除的應用程式,انتخاب برنامه های صرف‌نظر شده,Выберите исключенные приложения
 server-id,ID,服务器 ID,伺服器 ID,شناسه,ID
 settings,Settings,设置,設置,تنظیمات,Настройки
 show-all-servers,Show all servers,显示所有服务器,顯示所有服務器,نمایش تمام سرورها,Показать все серверы
+skip-wait-login-secret,"If you already have another device with Geph, you can skip this wait by logging in with your account secret instead.","如果您已经有其他设备使用 Geph，可以通过使用您的账户密钥登录来跳过等待。","如果您已經有其他設備使用 Geph，可以通過使用您的帳戶密鑰登錄來跳過等待。","اگر از قبل دستگاه دیگری با Geph دارید، می‌توانید با ورود با رمز حساب کاربری خود این انتظار را رد کنید.","Если у вас уже есть другое устройство с Geph, вы можете пропустить ожидание, войдя с помощью секретного ключа аккаунта."
+split-tunneling,Split tunneling,分流隧道,分流隧道,تونل بندی جداگانه,Разделённое туннелирование
 theme,Theme,主题,主題,قالب,Тема
+total-traffic,Total traffic,总流量,總流量,کل ترافیک,Общий трафик
+total-users,Total users,总用户数,總用戶數,کل کاربران,Всего пользователей
 unlock-all-locations,"🌎 Unlock all locations","🌎 解锁所有位置","🌎 解鎖所有位置","🌎 همه مکان‌ها را باز کنید","🌎 Разблокировать все локации"
-unrestricted-access,"Enjoy <b>unrestricted access</b> to ports other than 80 and 443. Perfect for gaming, P2P, video conferencing, and more.","享受对除 80 和 443 之外端口的 <b>无限制访问</b>。非常适合游戏、P2P、视频会议等。","享受對除 80 和 443 之外端口的 <b>無限制訪問</b>。非常適合遊戲、P2P、視頻會議等。","از <b>دسترسی نامحدود</b> به پورت‌های غیر از 80 و 443 لذت ببرید. مناسب برای بازی، P2P، ویدئو کنفرانس و موارد دیگر","Наслаждайтесь <b>неограниченным доступом</b> к портам, кроме 80 и 443. Идеально для игр, P2P, видеоконференций и многого другого."
+unrestricted-access,"Enjoy unrestricted access to ports other than 80 and 443. Perfect for gaming, P2P, video conferencing, and more.","享受对除 80 和 443 之外端口的 无限制访问。非常适合游戏、P2P、视频会议等。","享受對除 80 和 443 之外端口的 無限制訪問。非常適合遊戲、P2P、視頻會議等。","از دسترسی نامحدود به پورت‌های غیر از 80 و 443 لذت ببرید. مناسب برای بازی، P2P، ویدئو کنفرانس و موارد دیگر","Наслаждайтесь неограниченным доступом к портам, кроме 80 и 443. Идеально для игр, P2P, видеоконференций и многого другого."
 upload,Upload,上传,上傳,آپلود,Загрузить
 use-automatic,Automatically select server,自动选择服务器,自動選擇伺服器,انتخاب خودکار سرور,Автоматически выбрать сервер
+user-secret-info,"Your user secret is a unique random code that replaces usernames and passwords.","您的账户密钥是取代用户名和密码的唯一随机代码。","您的帳戶密鑰是取代用戶名和密碼的唯一隨機代碼。","رمز حساب کاربری شما یک کد تصادفی منحصربه‌فرد است که جایگزین نام کاربری و رمز عبور می‌شود.","Ваш секретный ключ аккаунта — это уникальный случайный код, заменяющий логин и пароль."
 username,Username,用户名,用戶名,نام کاربری,Имя пользователя
 via,Via,经由,經由,از طریق,Через
-split-tunneling,Split tunneling,分流隧道,分流隧道,تونل بندی جداگانه,Разделённое туннелирование
-login,Log in,登录,登錄,ورود,Войти
-enter-account-secret,Enter your account secret,输入您的帐号密钥,輸入您的帳號密鑰,رمز حساب کاربری خود را وارد کنید,Введите секретный ключ вашего аккаунта
-connection-status,Connection status,连接状态,連接狀態,وضعیت اتصال,Состояние подключения
-best-free-server,Best free server,最佳免费服务器,最佳免費伺服器,بهترین سرور رایگان,Лучший бесплатный сервер
-auto-select,Auto-select least loaded server,自动选择负载最小的服务器,自動選擇負載最小的伺服器,انتخاب خودکار کم بارترین سرور,Автовыбор наименее загруженного сервера
-direct,Direct,直连,直连,مستقیم,Прямой
-account-secret,Account secret,帐号密钥,帳號密鑰,رمز حساب کاربری,Секретный ключ аккаунта
-plus-expiry,Plus expiry,Plus 到期时间,Plus 到期時間,انقضای Plus,Срок действия Plus
-plus-account,Plus account,Plus 账户,Plus 帳戶,حساب پلاس,Plus аккаунт
-account-status,Account status,账户状态,帳戶狀態,وضعیت حساب,Состояние аккаунта
-account-info,Account info,账户信息,帳戶資訊,اطلاعات حساب,Информация об аккаунте
-account-level,Account level,账户级别,帳戶等級,سطح حساب,Уровень аккаунта
-register-warning,"In order to protect against spam and automated signups, creating an account may take an extended period of time.","为了防止垃圾邮件和自动注册，创建账户可能需要较长时间。","為了防止垃圾郵件和自動註冊，創建帳戶可能需要較長時間。","برای جلوگیری از هرزنامه و ثبت‌نام‌های خودکار، ایجاد حساب کاربری ممکن است زمان زیادی ببرد.","Для предотвращения спама и автоматических регистраций создание аккаунта может занять длительное время."
-keep-window-open,"Please keep this window open!","请保持此窗口打开！","請保持此窗口打開！","لطفاً این پنجره را باز نگه دارید!","Пожалуйста, держите это окно открытым!"
-skip-wait-login-secret,"If you already have another device with Geph, you can skip this wait by logging in with your account secret instead.","如果您已经有其他设备使用 Geph，可以通过使用您的账户密钥登录来跳过等待。","如果您已經有其他設備使用 Geph，可以通過使用您的帳戶密鑰登錄來跳過等待。","اگر از قبل دستگاه دیگری با Geph دارید، می‌توانید با ورود با رمز حساب کاربری خود این انتظار را رد کنید.","Если у вас уже есть другое устройство с Geph, вы можете пропустить ожидание, войдя с помощью секретного ключа аккаунта."
-dont-have-account-secret,"Don't have an account secret?","没有账户密钥？","沒有帳戶密鑰？","رمز حساب کاربری ندارید؟","Нет секретного ключа аккаунта?"
-features,"Features","功能","功能","ویژگی‌ها","Функции"
-days,days,天,天,روز,Дни
-credit-card,Credit card,信用卡,信用卡,کارت اعتباری,Кредитная карта
-pay-now,Pay now,立即支付,立即支付,همین حالا پرداخت کنید,Оплатить сейчас
-migrate-from-older-versions,"Migrate from older versions","从旧版本迁移","從舊版本遷移","مهاجرت از نسخه‌های قدیمی","Миграция со старых версий"
-i-have-old-username-password,"I have a username/password","旧版用户名/密码","舊版用戶名/密碼","من یک نام کاربری/رمز عبور قدیمی دارم","У меня есть имя пользователя/пароль"
-your-new-user-secret,"Your new user secret is:","您的新的用户密钥为：","您的新的用戶密鑰為：","رمز کاربر جدید شما این است:","Ваш новый секрет пользователя:"
-user-secret-info,"Your user secret is a unique random code that replaces usernames and passwords.","您的用户密钥是取代用户名和密码的唯一随机代码。","您的用戶密鑰是取代用戶名和密碼的唯一隨機代碼。","رمز کاربر شما یک کد تصادفی منحصربه‌فرد است که جایگزین نام کاربری و رمز عبور می‌شود.","Ваш секрет пользователя — это уникальный случайный код, заменяющий логин и пароль."
-convert-account,Convert account,转换账户,轉換帳戶,تبدیل حساب,Преобразовать аккаунт
+your-email-optional,"Your email (optional)","您的邮箱（可选）","您的郵箱（可選）","ایمیل شما (اختیاری)","Ваш email (необязательно)"
+your-new-user-secret,"Your new user secret is:","您的新的账户密钥为：","您的新的帳戶密鑰為：","رمز حساب کاربری جدید شما این است:","Ваш новый секретный ключ аккаунта:"
+err_load_price_points,"Cannot load price points","无法加载价格信息","無法加載價格資訊","خطا در بارگیری نقاط قیمت","Не удается загрузить ценовые точки"
+err_create_invoice,"Cannot create invoice","无法创建订单","無法創建訂單","خطا در ایجاد فاکتور","Не удается создать счет"
+error,Error,错误,錯誤,خطا,Ошибка

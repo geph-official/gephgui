@@ -9,7 +9,7 @@
 
   import { fly } from "svelte/transition";
   import { curr_lang, l10n } from "./lib/l10n";
-  import { curr_account_status, curr_valid_secret } from "./lib/user";
+  import { app_status, curr_valid_secret } from "./lib/user";
   import { native_gate } from "./native-gate";
 
   let secretShown = false;
@@ -81,7 +81,7 @@
           <h2 class="text-primary-700">{l10n($curr_lang, "account-info")}</h2>
           <table class="table table-hover">
             <tbody>
-              {#if $curr_account_status?.level === "plus"}
+              {#if $app_status?.account.level === "plus"}
                 <tr>
                   <td>{l10n($curr_lang, "account-level")}</td>
                   <td>{l10n($curr_lang, "plus-account")}</td>
@@ -90,7 +90,7 @@
                   <td>{l10n($curr_lang, "plus-expiry")}</td>
                   <td
                     >{new Date(
-                      $curr_account_status.expiry * 1000
+                      $app_status?.account.expiry * 1000
                     ).toLocaleDateString(undefined, {
                       year: "numeric",
                       month: "short",
@@ -98,7 +98,7 @@
                     })}</td
                   >
                 </tr>
-              {:else if $curr_account_status?.level === "free"}
+              {:else if $app_status?.account.level === "free"}
                 <tr>
                   <td>{l10n($curr_lang, "account-level")}</td>
                   <td>{l10n($curr_lang, "free-account")}</td>
@@ -110,7 +110,7 @@
       {/if}
       <section>
         <button
-          class="btn variant-ghost-error"
+          class="btn variant-ghost-error btn-sm"
           on:click={async () => {
             loggingOut = true;
             const gate = await native_gate();

@@ -1,5 +1,10 @@
 <script lang="ts">
-  import { AppBar, Modal, initializeStores } from "@skeletonlabs/skeleton";
+  import {
+    AppBar,
+    Modal,
+    Toast,
+    initializeStores,
+  } from "@skeletonlabs/skeleton";
   import AccountCircleOutline from "svelte-material-icons/AccountCircleOutline.svelte";
   import CogOutline from "svelte-material-icons/CogOutline.svelte";
   import SettingsPopup from "./SettingsPopup.svelte";
@@ -24,6 +29,7 @@
 
 <main lang={$curr_lang} dir="auto" data-theme="skeleton" class="bg-surface-50">
   <Modal />
+  <Toast />
   <AppBar>
     <svelte:fragment slot="lead">
       <img src="/gephlogo.png" id="logo" alt="Geph logo" />

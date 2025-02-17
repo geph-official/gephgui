@@ -1,5 +1,4 @@
 import { get, writable, type Writable } from "svelte/store";
-
 import { persistentWritable } from "./prefs";
 import { native_gate } from "../native-gate";
 
@@ -11,103 +10,119 @@ export const curr_valid_secret: Writable<string | null> = persistentWritable(
   null
 );
 
+// Combined app status types
 export type AccountStatus =
   | { level: "plus"; expiry: number }
   | { level: "free" };
 
-export const curr_account_status: Writable<AccountStatus | null> =
-  selfRefreshingStore<AccountStatus | null>(
-    async () => {
-      const gate = await native_gate();
-      const resp: any = await gate.daemon_rpc("user_info", [
-        get(curr_valid_secret),
-      ]);
-      console.log(resp);
-      return resp;
-    },
-    5000,
-    null
-  );
-
-type ConnStatus =
+export type ConnectionStatus =
   | { bridge: string | null; exit: string; country: string }
   | "disconnected"
-  | "connecting"
-  | null;
+  | "connecting";
 
-/**
- * The current connection status
- */
-export const curr_conn_status: Writable<ConnStatus> =
-  selfRefreshingStore<ConnStatus>(
-    async () => {
-      const gate = await native_gate();
-      if (!(await gate.is_running())) {
-        return "disconnected";
-      }
-      const info: any = await gate.daemon_rpc("conn_info", []);
-      if (await gate.is_connected()) {
-        console.log(info);
-        return {
-          bridge: info.protocol + "://" + info.bridge,
-          exit: info.exit.c2e_listen.split(":")[0],
-          country: "us",
-        };
-      } else {
-        return "connecting";
-      }
-    },
-    500,
-    null
-  );
+export type AppStatus = {
+  account: AccountStatus;
+  connection: ConnectionStatus;
+  stats: {
+    total_users: number[];
+    total_mbps: number[];
+  };
+};
 
 /**
  * Creates a self-refreshing store that calls an async function at a given interval.
+ * Instead of using setInterval, we run a background task that refreshes, sleeps, and loops.
  * @param refreshFn - The asynchronous function to refresh the store's value.
  * @param intervalMs - Refresh interval in milliseconds.
  * @param initialValue - The initial value of the store.
  */
-export function selfRefreshingStore<T>(
+function selfRefreshingStore<T>(
   refreshFn: () => Promise<T>,
   intervalMs: number,
   initialValue: T
 ): Writable<T> {
   const store = writable(initialValue);
-  let intervalId: ReturnType<typeof setInterval>;
 
-  let isRefreshing = false;
-  const refresh = async () => {
-    if (isRefreshing) {
-      // Skip if the previous execution is still ongoing
-      console.warn("Skipping refresh: previous execution still in progress");
-      return;
+  async function loop() {
+    while (true) {
+      try {
+        const value = await refreshFn();
+        store.set(value);
+      } catch (error) {
+        console.error("Error during refresh:", error);
+      }
+      // Sleep for intervalMs
+      await new Promise((resolve) => setTimeout(resolve, intervalMs));
     }
+  }
 
-    isRefreshing = true;
-    try {
-      const value = await refreshFn();
-      store.set(value);
-    } catch (error) {
-      console.error("Error during refresh:", error);
-    } finally {
-      isRefreshing = false;
-    }
-  };
+  // Start the background task
+  loop();
 
-  // Function to start the refreshing process
-  const start = () => {
-    // Perform an immediate refresh
-    refresh();
-
-    // Set up the interval for periodic refresh
-    intervalId = setInterval(refresh, intervalMs);
-  };
-
-  // Start refreshing when the store is created
-  start();
-
-  // Return the writable store with additional control methods
   return store;
 }
 
+/**
+ * Single store to track both account status and connection status.
+ * It's null by default or if the secret is null.
+ */
+export const app_status: Writable<AppStatus | null> =
+  selfRefreshingStore<AppStatus | null>(
+    async () => {
+      const secret = get(curr_valid_secret);
+      if (!secret) {
+        // If there's no valid secret, return null
+        return null;
+      }
+
+      const gate = await native_gate();
+
+      // Get status
+      const stats = {
+        total_users: (await gate.daemon_rpc("stat_history", [
+          "total_users",
+        ])) as number[],
+        total_mbps: (await gate.daemon_rpc("stat_history", [
+          "total_users",
+        ])) as number[],
+      };
+
+      // Get account info
+      const userInfo: any = await gate.daemon_rpc("user_info", [secret]);
+      const account: AccountStatus = userInfo;
+
+      // If the daemon isn't running, assume disconnected
+      if (!(await gate.is_running())) {
+        return {
+          account,
+          connection: "disconnected",
+          stats,
+        };
+      }
+
+      // Otherwise get connection info
+      const info: any = await gate.daemon_rpc("conn_info", []);
+      if (await gate.is_connected()) {
+        return {
+          account,
+          connection: {
+            bridge: `${info.protocol}://${info.bridge}`,
+            exit: info.exit.c2e_listen.split(":")[0],
+            country: "us",
+          },
+          stats,
+        };
+      } else {
+        return {
+          account,
+          connection: "connecting",
+          stats,
+        };
+      }
+    },
+    500, // refresh interval in ms
+    null
+  );
+
+// A simple store to open or close a payments modal
 export const paymentsOpen: Writable<boolean> = writable(false);
