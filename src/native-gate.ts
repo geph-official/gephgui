@@ -184,7 +184,7 @@ export const subinfo_deserialize = (
 type Level = "free" | "plus";
 
 function random_fail() {
-  if (Math.random() < 0.5) {
+  if (Math.random() < 0.05) {
     throw "random fail";
   }
 }
