@@ -1,6 +1,7 @@
 <script lang="ts">
   import {
     AppBar,
+    ProgressBar,
     getModalStore,
     type ModalSettings,
   } from "@skeletonlabs/skeleton";
@@ -8,28 +9,59 @@
   import { native_gate } from "./native-gate";
   import Close from "svelte-material-icons/Close.svelte";
   import { fly } from "svelte/transition";
+  import { onMount } from "svelte";
 
   type NewsItem = {
     title: string;
     date: number;
     contents: string;
     thumbnail: string;
+    important: boolean;
   };
+
+  let latestReadDate = 0;
+
+  onMount(() => {
+    if (typeof localStorage !== "undefined") {
+      const stored = localStorage.getItem("latestReadDate");
+      if (stored) {
+        latestReadDate = parseInt(stored) || 0;
+      }
+    }
+  });
 
   const fetchNews = async () => {
     const gate = await native_gate();
-    const resp: any = await gate.daemon_rpc("latest_news", [$curr_lang]);
-    return resp as NewsItem[];
+    const resp: NewsItem[] = (await gate.daemon_rpc("latest_news", [
+      $curr_lang,
+    ])) as any as NewsItem[];
+    resp.forEach((news) => {
+      if (news.date > latestReadDate && news.important) {
+        launchNews(news);
+      }
+    });
+    return resp;
   };
 
   let newsPromise = fetchNews();
   const modalStore = getModalStore();
 
   const launchNews = (item: NewsItem) => {
+    if (typeof localStorage !== "undefined") {
+      const stored = localStorage.getItem("latestReadDate");
+      const currentMax = stored ? parseInt(stored) : 0;
+      if (item.date > currentMax) {
+        localStorage.setItem("latestReadDate", item.date.toString());
+        latestReadDate = item.date;
+      }
+    }
     const modal: ModalSettings = {
       type: "alert",
       title: item.title,
-      body: item.contents,
+      body:
+        "<div class='overflow-y-auto max-h-[200px] text-sm'>" +
+        item.contents +
+        "</div>",
     };
     modalStore.trigger(modal);
   };
@@ -38,11 +70,14 @@
 <div class="my-4 outer grow flex flex-col card p-3">
   <h2 class="text-primary-700 uppercase font-semibold text-sm mb-2">News</h2>
   {#await newsPromise}
-    <p>Loading news...</p>
+    <ProgressBar />
   {:then newsItems}
     {#each newsItems as item}
       <div
-        class="flex flex-row justify-center items-center my-1"
+        class={"flex flex-row justify-center items-center my-1 " +
+          (item.date > latestReadDate
+            ? "unread-news text-primary-800"
+            : "read-news")}
         on:click={() => launchNews(item)}
       >
         <div class="grow text-sm h-9 news-left">
@@ -63,37 +98,6 @@
   {/await}
 </div>
 
-<!-- News Modal -->
-<!-- {#if selectedNews}
-  <div
-    class="fixed inset-0 bg-black bg-opacity-50 z-50"
-    transition:fly={{ y: 20, duration: 300 }}
-  >
-    <div class="bg-surface-50 h-full flex flex-col">
-      <AppBar padding="p-2">
-        <svelte:fragment slot="lead">
-          <button class="p-2" on:click={() => (selectedNews = null)}>
-            <Close size="1.5rem" />
-          </button>
-        </svelte:fragment>
-        <b>{selectedNews.title}</b>
-      </AppBar>
-
-      <div class="w-full p-6">
-        <img
-          class="w-full h-full object-cover"
-          src={selectedNews.thumbnail}
-          alt="thumb"
-        />
-      </div>
-      <div class="m-3">
-        <h1 class="font-bold text-2xl my-3">{selectedNews.title}</h1>
-        {@html selectedNews.contents}
-      </div>
-    </div>
-  </div>
-{/if} -->
-
 <style>
   .outer {
     overflow-y: auto;
@@ -105,5 +109,30 @@
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
+  }
+
+  /* Pulsate animation for unread items */
+  @keyframes pulsate {
+    0% {
+      opacity: 0.5;
+      color: inherit;
+    }
+    50% {
+      opacity: 1;
+      /* color: maroon; */
+    }
+    100% {
+      opacity: 0.5;
+      color: inherit;
+    }
+  }
+
+  .unread-news span {
+    animation: pulsate 2s infinite ease-in-out;
+    font-weight: 500;
+  }
+
+  .unread-news .font-medium {
+    font-weight: 600;
   }
 </style>

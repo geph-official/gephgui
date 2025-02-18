@@ -405,6 +405,7 @@ const MockDaemonRpc = {
   },
 
   async latest_news(lang: string) {
+    await random_sleep();
     return [
       {
         title: "Headline 1",
