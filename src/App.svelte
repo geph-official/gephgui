@@ -16,6 +16,8 @@
   import Main from "./Main.svelte";
   import AccountPopup from "./AccountPopup.svelte";
   import PaymentPopup from "./PaymentPopup.svelte";
+  import { pref_wizard } from "./lib/prefs";
+  import Wizard from "./Wizard.svelte";
 
   let settingsOpen = false;
   let accountOpen = false;

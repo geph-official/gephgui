@@ -1,5 +1,9 @@
 <script lang="ts">
-  import { AppBar } from "@skeletonlabs/skeleton";
+  import {
+    AppBar,
+    getModalStore,
+    type ModalSettings,
+  } from "@skeletonlabs/skeleton";
   import { curr_lang } from "./lib/l10n";
   import { native_gate } from "./native-gate";
   import Close from "svelte-material-icons/Close.svelte";
@@ -19,8 +23,16 @@
   };
 
   let newsPromise = fetchNews();
+  const modalStore = getModalStore();
 
-  let selectedNews: NewsItem | null = null;
+  const launchNews = (item: NewsItem) => {
+    const modal: ModalSettings = {
+      type: "alert",
+      title: item.title,
+      body: item.contents,
+    };
+    modalStore.trigger(modal);
+  };
 </script>
 
 <div class="my-4 outer grow flex flex-col card p-3">
@@ -31,7 +43,7 @@
     {#each newsItems as item}
       <div
         class="flex flex-row justify-center items-center my-1"
-        on:click={() => (selectedNews = item)}
+        on:click={() => launchNews(item)}
       >
         <div class="grow text-sm h-9 news-left">
           <span class="font-medium">{item.title}</span>:
@@ -52,7 +64,7 @@
 </div>
 
 <!-- News Modal -->
-{#if selectedNews}
+<!-- {#if selectedNews}
   <div
     class="fixed inset-0 bg-black bg-opacity-50 z-50"
     transition:fly={{ y: 20, duration: 300 }}
@@ -80,7 +92,7 @@
       </div>
     </div>
   </div>
-{/if}
+{/if} -->
 
 <style>
   .outer {

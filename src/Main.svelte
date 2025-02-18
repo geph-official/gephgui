@@ -7,11 +7,12 @@
     pref_app_whitelist,
     pref_block_ads,
     pref_block_adult,
-    pref_exit_constraint,
+    pref_exit_constraint_derived,
     pref_global_vpn,
     pref_listen_all,
     pref_proxy_autoconf,
     pref_use_prc_whitelist,
+    pref_wizard,
   } from "./lib/prefs";
   import { native_gate } from "./native-gate";
   import { ProgressBar, getModalStore } from "@skeletonlabs/skeleton";
@@ -22,6 +23,8 @@
   import NewsFeed from "./NewsFeed.svelte";
   import Graph from "./Graph.svelte";
   import { showErrorModal } from "./lib/utils";
+  import Wizard from "./Wizard.svelte";
+  import CommunityButtons from "./CommunityButtons.svelte";
 
   let serversOpen = false;
 
@@ -44,7 +47,7 @@
             ads: $pref_block_ads,
           },
         },
-        exit: "auto",
+        exit: $pref_exit_constraint_derived,
         app_whitelist: whitelistApps,
         prc_whitelist: $pref_use_prc_whitelist,
         listen_all: $pref_listen_all,
@@ -70,12 +73,21 @@
   };
 
   const switchServers = async () => {
-    if ($app_status?.connection === "disconnected") serversOpen = true;
+    if ($app_status?.account.level === "free") {
+      $pref_wizard = true;
+    } else {
+      if ($app_status?.connection === "disconnected") serversOpen = true;
+    }
   };
 </script>
 
 <div id="main">
   {#if $app_status}
+    {#if $app_status.account.level === "free"}
+      {#if $pref_wizard}
+        <Wizard />
+      {/if}
+    {/if}
     <ServerSelectPopup bind:open={serversOpen} />
     <div class="flex flex-col gap-5">
       <AccountExtender />
@@ -99,6 +111,8 @@
 
     <NewsFeed />
 
+    <CommunityButtons />
+
     <div class="bottom card flex flex-col gap-3">
       <!-- svelte-ignore a11y-click-events-have-key-events -->
       <!-- svelte-ignore a11y-no-static-element-interactions -->
@@ -108,10 +122,11 @@
         on:click={() => switchServers()}
       >
         <div class="server-name grow">
-          {#if $pref_exit_constraint === "auto"}
-            {l10n($curr_lang, "best-free-server")}<br />
+          {#if $pref_exit_constraint_derived === "auto"}
+            {l10n($curr_lang, "automatic")}<br />
           {:else}
-            {$pref_exit_constraint.country} / {$pref_exit_constraint.city}<br />
+            {$pref_exit_constraint_derived.country} / {$pref_exit_constraint_derived.city}<br
+            />
           {/if}
           <div class="flex flex-row mt-1">
             {#if $app_status.connection !== null && $app_status.connection !== "disconnected" && $app_status?.connection !== "connecting"}

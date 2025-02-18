@@ -3,7 +3,8 @@ import type {
   SubscriptionInfo,
   SubscriptionInfoSerializable,
 } from "../native-gate";
-import { writable, type Writable } from "svelte/store";
+import { derived, writable, type Readable, type Writable } from "svelte/store";
+import { app_status } from "./user";
 
 export function persistentWritable<T>(
   storage_name: string,
@@ -34,14 +35,28 @@ export function persistentWritable<T>(
 export const pref_exit_constraint: Writable<ExitConstraint> =
   persistentWritable("exit_constraint", "auto");
 
+/**
+ * The current exit constraint, taking into account free/plus
+ */
+export const pref_exit_constraint_derived: Readable<ExitConstraint> = derived(
+  [pref_exit_constraint, app_status],
+  ([$pref_exit_constraint, $app_status]) => {
+    if ($app_status?.account.level === "free") {
+      return "auto";
+    } else {
+      return $pref_exit_constraint;
+    }
+  }
+);
+
 export type ExitConstraint = "auto" | { city: string; country: string };
 
 /**
  * Whether or not the wizard is active
  */
 export const pref_wizard: Writable<boolean> = persistentWritable(
-  "wizardd",
-  false
+  "wizarddd",
+  true
 );
 
 export const user_info_store: Writable<SubscriptionInfoSerializable | null> =

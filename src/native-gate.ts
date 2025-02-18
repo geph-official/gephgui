@@ -1,5 +1,6 @@
 import MockRss from "./native-gate-mock-rss";
 import MockLogs from "./native-gate-mock-logs";
+import type { ExitConstraint } from "./lib/prefs";
 
 export interface InvoiceInfo {
   id: string;
@@ -133,7 +134,7 @@ export interface DaemonArgs {
   prc_whitelist: boolean;
 
   // connection stuff
-  exit: string;
+  exit: ExitConstraint;
 
   // platform-specific arguments
   global_vpn: boolean;
@@ -394,13 +395,13 @@ const MockDaemonRpc = {
 
   async user_info(secret: string) {
     await random_sleep();
-    // return {
-    //   level: "plus",
-    //   expiry: 10000000000,
-    // };
     return {
-      level: "free",
+      level: "plus",
+      expiry: 10000000000,
     };
+    // return {
+    //   level: "free",
+    // };
   },
 
   async latest_news(lang: string) {

@@ -17,7 +17,7 @@ attach-log-blurb,"Geph's app log will be attached to this message. Your message 
 auto-proxy,Auto-configure proxy,自动配置代理,自動配置代理,پیکربندی خودکار پروکسی,Автонастройка прокси
 auto-proxy-blurb,Makes most browsers use Geph,配置大多数浏览器使用迷雾通,配置大多數瀏覽器使用迷霧通,بیشتر مرورگرها را مجبور میکند که از Geph استفاده کنند,Настраивает большинство браузеров использовать Geph
 auto-select,Auto-select least loaded server,自动选择负载最小的服务器,自動選擇負載最小的伺服器,انتخاب خودکار کم بارترین سرور,Автовыбор наименее загруженного сервера
-automatic,Auto,自动,自動,خودکار,Авто
+automatic,Automatic,自动,自動,خودکار,Авто
 automatic-blurb,Uses best available server,使用最佳可用服务器,使用最佳可用伺服器,به بهترین سرور موجود وصل می‌شود,Использует лучший доступный сервер
 best-free-server,Best free server,最佳免费服务器,最佳免費伺服器,بهترین سرور رایگان,Лучший бесплатный сервер
 buy-plus,Buy Plus,购买 Plus,購買 Plus,خرید پلاس,Купить Plus
