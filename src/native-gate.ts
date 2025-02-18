@@ -281,7 +281,7 @@ function mock_native_gate(): NativeGate {
       return {
         platform_type: "linux",
         platform_details: "MockLinux Trololol",
-        version: "0.0.0-mock",
+        version: "0.0.0-mockk",
       };
     },
   };
