@@ -19,7 +19,7 @@ const setDark = (value: any) => {
   const darkTheme = {
     brightness: 100,
     contrast: 90,
-    sepia: 0,
+    sepia: 30,
   };
   if (value === "auto") {
     autoDark(darkTheme);

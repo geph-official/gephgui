@@ -8,7 +8,7 @@
   import AirFilter from "svelte-material-icons/AirFilter.svelte";
   import Translate from "svelte-material-icons/Translate.svelte";
   import CallSplit from "svelte-material-icons/CallSplit.svelte";
-  import Router from "svelte-material-icons/Router.svelte";
+  import ThemeLightDark from "svelte-material-icons/ThemeLightDark.svelte";
 
   import SettingTree from "./settings/SettingTree.svelte";
   import {
@@ -17,6 +17,7 @@
     pref_block_gambling,
     pref_global_vpn,
     pref_routing_mode,
+    pref_lightdark,
     pref_use_prc_whitelist,
   } from "./lib/prefs";
   import { native_gate } from "./native-gate";
@@ -122,6 +123,22 @@
             <option value="en">English</option>
             <option value="zh-CN">简体中文</option>
             <option value="ru">Русский</option>
+          </select>
+        </svelte:fragment>"
+      </SingleSetting>
+
+      <SingleSetting>
+        <svelte:fragment slot="icon">
+          <ThemeLightDark size="1.4rem" />
+        </svelte:fragment>
+        <svelte:fragment slot="description">
+          {l10n($curr_lang, "theme")}
+        </svelte:fragment>
+        <svelte:fragment slot="switch">
+          <select class="select" bind:value={$pref_lightdark}>
+            <option value="auto">{l10n($curr_lang, "automatic")}</option>
+            <option value="light">{l10n($curr_lang, "light")}</option>
+            <option value="dark">{l10n($curr_lang, "dark")}</option>
           </select>
         </svelte:fragment>"
       </SingleSetting>

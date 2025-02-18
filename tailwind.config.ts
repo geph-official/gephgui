@@ -23,7 +23,7 @@ const config = {
     require("@tailwindcss/aspect-ratio"),
     require("@tailwindcss/forms"),
     skeleton({
-      themes: { preset: ["skeleton"] },
+      themes: { preset: ["skeleton", "rocket"] },
     }),
   ],
 } satisfies Config;

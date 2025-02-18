@@ -9,15 +9,11 @@
 body {
   padding: 0;
   margin: 0;
-  font-family: "Inter", "Vazirmatn", system-ui, sans-serif;
+  font-family: "Iosevka Aile", "Vazirmatn", system-ui, sans-serif;
 }
 
 a {
   text-decoration: none;
-}
-
-* {
-  font-family: "Inter", "Vazirmatn", system-ui;
 }
 
 pre {
@@ -25,49 +21,20 @@ pre {
   font-size: 90%;
   color: black;
 }
-/* Theme colors. */
-:root {
-  --mdc-typography-font-family: "Inter", "Vazirmatn", system-ui;
-  --mdc-theme-primary: #007bbb;
-  --mdc-theme-secondary: #676778;
-  --mdc-theme-background: #fff;
-  --mdc-theme-surface: #fff;
-  --mdc-theme-error: #b71c1c;
-  --mdc-theme-on-primary: #fff;
-  --mdc-theme-on-secondary: #fff;
-  --mdc-theme-on-surface: #000;
-  --mdc-theme-on-error: #fff;
-  --mdc-theme-text-primary-on-background: rgba(0, 0, 0, 0.87);
-  --mdc-theme-text-secondary-on-background: rgba(0, 0, 0, 0.54);
-  --mdc-theme-text-hint-on-background: rgba(0, 0, 0, 0.38);
-  --mdc-theme-text-disabled-on-background: rgba(0, 0, 0, 0.38);
-  --mdc-theme-text-icon-on-background: rgba(0, 0, 0, 0.38);
-  --mdc-theme-text-primary-on-light: rgba(0, 0, 0, 0.87);
-  --mdc-theme-text-secondary-on-light: rgba(0, 0, 0, 0.54);
-  --mdc-theme-text-hint-on-light: rgba(0, 0, 0, 0.38);
-  --mdc-theme-text-disabled-on-light: rgba(0, 0, 0, 0.38);
-  --mdc-theme-text-icon-on-light: rgba(0, 0, 0, 0.38);
-  --mdc-theme-text-primary-on-dark: white;
-  --mdc-theme-text-secondary-on-dark: rgba(255, 255, 255, 0.7);
-  --mdc-theme-text-hint-on-dark: rgba(255, 255, 255, 0.5);
-  --mdc-theme-text-disabled-on-dark: rgba(255, 255, 255, 0.5);
-  --mdc-theme-text-icon-on-dark: rgba(255, 255, 255, 0.5);
-}
 
-/* Layout grid spacing. */
-:root {
-  --mdc-layout-grid-margin-desktop: 24px;
-  --mdc-layout-grid-gutter-desktop: 24px;
-  --mdc-layout-grid-column-width-desktop: 72px;
-  --mdc-layout-grid-margin-tablet: 16px;
-  --mdc-layout-grid-gutter-tablet: 16px;
-  --mdc-layout-grid-column-width-tablet: 72px;
-  --mdc-layout-grid-margin-phone: 16px;
-  --mdc-layout-grid-gutter-phone: 16px;
-  --mdc-layout-grid-column-width-phone: 72px;
-}
+:root [data-theme="skeleton"] {
+  --color-primary-50: 224 222 248;
+  --color-primary-100: 214 211 246;
+  --color-primary-200: 204 201 244;
+  --color-primary-300: 173 168 237;
+  --color-primary-400: 112 102 223;
+  --color-primary-500: 50 37 209;
+  --color-primary-600: 45 33 188;
+  --color-primary-700: 38 28 157;
+  --color-primary-800: 30 22 125;
+  --color-primary-900: 25 18 102;
+  --on-primary: 255 255 255;
 
-.emoji {
-  height: 1.2em;
-  vertical-align: text-bottom;
+  --theme-rounded-base: 0px;
+  --theme-rounded-container: 0px;
 }

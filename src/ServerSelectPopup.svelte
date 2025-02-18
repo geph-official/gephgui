@@ -87,7 +87,7 @@
         >
           <div class="w-7"><RefreshAuto width="1.3rem" height="1.3rem" /></div>
           <div class="grow">
-            <b class="font-bold">Auto</b>
+            <b class="font-bold">{l10n($curr_lang, "automatic")}</b>
           </div>
         </button>
         {#each getCountries(servers) as country}

@@ -113,11 +113,11 @@
 
     <CommunityButtons />
 
-    <div class="bottom card flex flex-col gap-3">
+    <div class="bottom card flex flex-col">
       <!-- svelte-ignore a11y-click-events-have-key-events -->
       <!-- svelte-ignore a11y-no-static-element-interactions -->
       <div
-        class="flex flex-row"
+        class="flex flex-row mb-3"
         class:cursor-pointer={$app_status.connection === "disconnected"}
         on:click={() => switchServers()}
       >
@@ -159,6 +159,9 @@
         >
           {l10n($curr_lang, "connect")}
         </button>
+        {#if connectButtonDisabled}
+          <ProgressBar />
+        {/if}
       {:else if $app_status.connection === "connecting"}
         <button
           class="btn variant-ghost"
@@ -177,6 +180,9 @@
         >
           {l10n($curr_lang, "disconnect")}
         </button>
+        {#if connectButtonDisabled}
+          <ProgressBar />
+        {/if}
       {/if}
     </div>
   {:else}

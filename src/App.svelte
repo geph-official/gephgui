@@ -29,14 +29,14 @@
   <title>{l10n($curr_lang, "geph")}</title>
 </svelte:head>
 
-<main lang={$curr_lang} dir="auto" data-theme="skeleton" class="bg-surface-50">
+<main lang={$curr_lang} dir="auto" class="bg-surface-50">
   <Modal />
   <Toast />
   <AppBar>
     <svelte:fragment slot="lead">
       <img src="/gephlogo.png" id="logo" alt="Geph logo" />
     </svelte:fragment>
-    <b id="logo-text">Geph</b>
+    <b id="logo-text">{l10n($curr_lang, "geph")}</b>
     <svelte:fragment slot="trail">
       {#if $curr_valid_secret !== null}
         <button
