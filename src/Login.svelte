@@ -115,7 +115,7 @@
     padding: 1rem;
 
     box-sizing: border-box;
-    margin-top: 20vh;
+    margin-top: calc((100vh - 25rem) / 3);
     display: flex;
     flex-direction: column;
   }
