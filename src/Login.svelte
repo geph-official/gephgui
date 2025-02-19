@@ -51,7 +51,7 @@
     <MigrationPopup bind:open={migrateOpen} />
   {/if}
   <div class="middle">
-    <h1 class="h1">{l10n($curr_lang, "login")}</h1>
+    <h1 class="text-3xl">{l10n($curr_lang, "login")}</h1>
     <input
       id="accnumber"
       class="input my-4"
