@@ -27,11 +27,6 @@ export interface NativeGate {
   is_running(): Promise<boolean>;
 
   /**
-   * Obtains whether the *connection* is working
-   */
-  is_connected(): Promise<boolean>;
-
-  /**
    * Calls the daemon RPC endpoint
    */
   daemon_rpc(method: string, args: any[]): Promise<unknown>;
@@ -206,10 +201,7 @@ function mock_native_gate(): NativeGate {
       connected = false;
       running = false;
     },
-    is_connected: async () => {
-      random_fail();
-      return connected;
-    },
+
     is_running: async () => {
       random_fail();
       return running;
