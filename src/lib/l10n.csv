@@ -141,3 +141,4 @@ your-new-user-secret,"Your new user secret is:","您的新的账户密钥为："
 err_load_price_points,"Cannot load price points","无法加载价格信息","無法加載價格資訊","خطا در بارگیری نقاط قیمت","Не удается загрузить ценовые точки"
 err_create_invoice,"Cannot create invoice","无法创建订单","無法創建訂單","خطا در ایجاد فاکتور","Не удается создать счет"
 error,Error,错误,錯誤,خطا,Ошибка
+incorrect-user-secret,"Incorrect user secret","错误的账户密钥","錯誤的帳戶密鑰","رمز حساب کاربری اشتباه است","Неверный секретный ключ аккаунта"

@@ -1,11 +1,11 @@
 <script lang="ts">
-  import { ProgressBar } from "@skeletonlabs/skeleton";
+  import { ProgressBar, getModalStore } from "@skeletonlabs/skeleton";
   import { curr_lang, l10n } from "./lib/l10n";
   import { curr_valid_secret } from "./lib/user";
   import { native_gate } from "./native-gate";
   import RegisterPopup from "./RegisterPopup.svelte";
   import MigrationPopup from "./MigrationPopup.svelte";
-  import { formatNumberWithSpaces } from "./lib/utils";
+  import { formatNumberWithSpaces, showErrorModal } from "./lib/utils";
 
   let inputValue = "";
 
@@ -18,10 +18,12 @@
     inputValue = formattedValue; // Update the store with the formatted value
   };
 
+  const modalStore = getModalStore();
+
   const onLogin = async () => {
     loggingIn = true;
     try {
-      const secret = inputValue.replace(" ", "");
+      const secret = inputValue.replaceAll(" ", "");
       const gate = await native_gate();
       const isValidSecret = (await gate.daemon_rpc("check_secret", [
         secret,
@@ -29,8 +31,13 @@
       if (isValidSecret) {
         $curr_valid_secret = secret;
       } else {
-        alert("Invalid secret");
+        await showErrorModal(
+          modalStore,
+          l10n($curr_lang, "incorrect-user-secret")
+        );
       }
+    } catch (e: any) {
+      await showErrorModal(modalStore, e.toString());
     } finally {
       loggingIn = false;
     }
