@@ -102,6 +102,7 @@ export const app_status: Writable<AppStatus | null> =
 
       // Otherwise get connection info
       const info: any = await gate.daemon_rpc("conn_info", []);
+      console.log("INFO", info);
       if (info.state === "Connected") {
         return {
           account,
