@@ -12,6 +12,10 @@ body {
   font-family: "Iosevka Aile", "Vazirmatn", system-ui, sans-serif;
 }
 
+html {
+  font-size: 4.5vmin;
+}
+
 a {
   text-decoration: none;
 }
