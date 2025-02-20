@@ -91,7 +91,7 @@
     <ServerSelectPopup bind:open={serversOpen} />
     <div class="flex flex-col gap-5">
       <AccountExtender />
-      <div class="flex flex-row gap-4">
+      <!-- <div class="flex flex-row gap-4">
         <div class="flex-1 card p-2">
           <Graph
             data={$app_status.stats.total_mbps.map((s) => s / 1000.0)}
@@ -105,8 +105,8 @@
             unit="users"
             title={l10n($curr_lang, "total-users")}
           />
-        </div>
-      </div>
+        </div> 
+      </div>-->
     </div>
 
     <NewsFeed />
