@@ -38,9 +38,9 @@
   {#each list as exit}
     <div
       class="server"
-      class:disabled={block_plus && !exit.allowed_levels.includes("free")}
+      class:disabled={block_plus && !exit.allowed_levels.includes("Free")}
       on:click={() => {
-        if (block_plus && !exit.allowed_levels.includes("free")) {
+        if (block_plus && !exit.allowed_levels.includes("Free")) {
           console.log("cannot select plus here");
         } else {
           onSelect(exit);
@@ -66,7 +66,7 @@
             <ChartBoxOutline width="1.2rem" height="1rem" />
             {(exit.load * 100).toFixed(0)}%
           </div>
-          {#if exit.allowed_levels.includes("free")}
+          {#if exit.allowed_levels.includes("Free")}
             <div class="badge free">
               <CurrencyUsdOff width="1.2rem" height="1rem" />
               {l10n($curr_lang, "free-server")}

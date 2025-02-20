@@ -73,7 +73,7 @@
   };
 
   const switchServers = async () => {
-    if ($app_status?.account.level === "free") {
+    if ($app_status?.account.level === "Free") {
       $pref_wizard = true;
     } else {
       if ($app_status?.connection === "disconnected") serversOpen = true;
@@ -83,7 +83,7 @@
 
 <div id="main">
   {#if $app_status}
-    {#if $app_status.account.level === "free"}
+    {#if $app_status.account.level === "Free"}
       {#if $pref_wizard}
         <Wizard />
       {/if}

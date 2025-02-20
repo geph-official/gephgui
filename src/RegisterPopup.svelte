@@ -36,7 +36,7 @@
   onMount(() => {
     checkRegisterInterval = setInterval(async () => {
       const gate = await native_gate();
-      if (registerNum) {
+      if (registerNum !== null) {
         const val = await gate.daemon_rpc("poll_registration", [registerNum]);
         console.log(val);
         accountSecret = (val as any).secret;

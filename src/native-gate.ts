@@ -182,7 +182,7 @@ export const subinfo_deserialize = (
   };
 };
 
-type Level = "free" | "plus";
+type Level = "Free" | "Plus";
 
 function random_fail() {
   if (Math.random() < 0.05) {
@@ -315,7 +315,7 @@ const MockDaemonRpc = {
         mockRegisterProgress += 0.05;
       }
     })();
-    return 1;
+    return 0;
   },
 
   async poll_registration(i: number) {
@@ -396,11 +396,11 @@ const MockDaemonRpc = {
   async user_info(secret: string) {
     await random_sleep();
     return {
-      level: "plus",
+      level: "Plus",
       expiry: 10000000000,
     };
     // return {
-    //   level: "free",
+    //   level: "Free",
     // };
   },
 

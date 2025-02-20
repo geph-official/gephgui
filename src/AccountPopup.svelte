@@ -81,7 +81,7 @@
           <h2 class="text-primary-700">{l10n($curr_lang, "account-info")}</h2>
           <table class="table table-hover">
             <tbody>
-              {#if $app_status?.account.level === "plus"}
+              {#if $app_status?.account.level === "Plus"}
                 <tr>
                   <td>{l10n($curr_lang, "account-level")}</td>
                   <td>{l10n($curr_lang, "plus-account")}</td>
@@ -98,7 +98,7 @@
                     })}</td
                   >
                 </tr>
-              {:else if $app_status?.account.level === "free"}
+              {:else if $app_status?.account.level === "Free"}
                 <tr>
                   <td>{l10n($curr_lang, "account-level")}</td>
                   <td>{l10n($curr_lang, "free-account")}</td>

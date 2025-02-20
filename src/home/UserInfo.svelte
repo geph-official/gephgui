@@ -22,11 +22,11 @@
 
 <div class="userinfo">
   {#if user_info}
-    {#if user_info.level == "free"}
+    {#if user_info.level == "Free"}
       <div class="urow">
         <Heart width="1.5rem" height="1.5rem" color="var(--mdc-theme-error)" />
         <div class="stretch">
-          <b>{l10n($curr_lang, "free")}</b>
+          <b>{l10n($curr_lang, "Free")}</b>
         </div>
         <a href={extend_url} target="_blank" rel="noopener">
           <GButton inverted>{l10n($curr_lang, "buy-plus")}</GButton></a
@@ -37,7 +37,7 @@
           {@html l10n($curr_lang, "free-is-bad")}
         </div>
       </div>
-    {:else if user_info.level == "plus" && user_info.expires}
+    {:else if user_info.level == "Plus" && user_info.expires}
       {@const remainingDays = Math.max(
         0,
         (user_info.expires.getTime() - new Date().getTime()) /

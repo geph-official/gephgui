@@ -12,8 +12,8 @@ export const curr_valid_secret: Writable<string | null> = persistentWritable(
 
 // Combined app status types
 export type AccountStatus =
-  | { level: "plus"; expiry: number }
-  | { level: "free" };
+  | { level: "Plus"; expiry: number }
+  | { level: "Free" };
 
 export type ConnectionStatus =
   | { bridge: string | null; exit: string; country: string }

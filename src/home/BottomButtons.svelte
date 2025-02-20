@@ -45,9 +45,9 @@
           r.sort(
             (a, b) =>
               a.allowed_levels
-                .includes("free")
+                .includes("Free")
                 .toString()
-                .localeCompare(b.allowed_levels.includes("free").toString()) *
+                .localeCompare(b.allowed_levels.includes("Free").toString()) *
                 1000 +
               a.country_code.localeCompare(b.country_code) * 100 +
               a.city_code.localeCompare(b.city_code) * 10 +

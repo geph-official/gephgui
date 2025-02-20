@@ -8,7 +8,7 @@
 {#if $app_status?.account}
   <div class="card p-3 flex flex-row items-center variant-ghost-primary">
     <div>
-      {#if $app_status.account.level === "plus"}
+      {#if $app_status.account.level === "Plus"}
         <span class="text-primary-700">
           <CalendarRangeOutline size="1.3rem" />
         </span>
@@ -17,7 +17,7 @@
       {/if}
     </div>
     <div class="grow mx-3 flex flex-col">
-      {#if $app_status.account.level === "plus"}
+      {#if $app_status.account.level === "Plus"}
         <div class="-mb-1">
           {new Date($app_status.account.expiry * 1000).toLocaleDateString(
             undefined,
@@ -42,7 +42,7 @@
       {/if}
     </div>
     <div>
-      {#if $app_status.account.level === "plus"}
+      {#if $app_status.account.level === "Plus"}
         <button
           class="btn variant-filled-primary btn-sm"
           on:click={() => ($paymentsOpen = true)}
@@ -60,7 +60,7 @@
     </div>
   </div>
 
-  {#if $app_status.account.level === "free"}
+  {#if $app_status.account.level === "Free"}
     <div class="card p-3 items-center bg-error-50 text-sm">
       {@html l10n($curr_lang, "free-is-bad")}
     </div>
