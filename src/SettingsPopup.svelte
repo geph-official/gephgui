@@ -7,6 +7,7 @@
   import Vpn from "svelte-material-icons/Vpn.svelte";
   import AirFilter from "svelte-material-icons/AirFilter.svelte";
   import Translate from "svelte-material-icons/Translate.svelte";
+  import Creation from "svelte-material-icons/Creation.svelte";
   import CallSplit from "svelte-material-icons/CallSplit.svelte";
   import ThemeLightDark from "svelte-material-icons/ThemeLightDark.svelte";
 
@@ -19,6 +20,7 @@
     pref_routing_mode,
     pref_lightdark,
     pref_use_prc_whitelist,
+    pref_proxy_autoconf,
   } from "./lib/prefs";
   import { native_gate } from "./native-gate";
   import SingleSetting from "./settings/SingleSetting.svelte";
@@ -27,67 +29,56 @@
 
   const modalStore = getModalStore();
 
-  const settings = {
-    features: [
-      {
-        icon: AirFilter,
-        description: "content-filtering",
-        type: "collapse",
-        inner: [
-          {
-            description: "ads-and-trackers",
-            type: "checkbox",
-            store: pref_block_ads,
-          },
-          {
-            description: "adult-content",
-            type: "checkbox",
-            store: pref_block_adult,
-          },
-        ],
-      },
-      {
-        icon: CallSplit,
-        type: "collapse",
-        description: "split-tunneling",
-        inner: [
-          {
-            description: "exclude-prc",
-            type: "checkbox",
-            store: pref_use_prc_whitelist,
-            blurb: "exclude-prc-blurb",
-          },
-        ],
-      },
-    ],
-    network: [
-      {
-        icon: Vpn,
-        description: "global-vpn",
-        type: "checkbox",
-        store: pref_global_vpn,
-      },
-      // {
-      //   icon: Router,
-      //   description: "routing-mode",
-      //   type: "options",
-      //   options: [
-      //     {
-      //       description: "automatic",
-      //       value: "auto",
-      //     },
-      //     {
-      //       description: "direct",
-      //       value: "direct",
-      //     },
-      //     {
-      //       description: "bridges",
-      //       value: "bridges",
-      //     },
-      //   ],
-      //   store: pref_routing_mode,
-      // },
-    ],
+  const settings = async () => {
+    const gate = await native_gate();
+    return {
+      features: [
+        {
+          icon: AirFilter,
+          description: "content-filtering",
+          type: "collapse",
+          inner: [
+            {
+              description: "ads-and-trackers",
+              type: "checkbox",
+              store: pref_block_ads,
+            },
+            {
+              description: "adult-content",
+              type: "checkbox",
+              store: pref_block_adult,
+            },
+          ],
+        },
+        {
+          icon: CallSplit,
+          type: "collapse",
+          description: "split-tunneling",
+          inner: [
+            {
+              description: "exclude-prc",
+              type: "checkbox",
+              store: pref_use_prc_whitelist,
+              blurb: "exclude-prc-blurb",
+            },
+          ],
+        },
+      ],
+      network: [
+        gate.supports_vpn_conf && {
+          icon: Vpn,
+          description: "global-vpn",
+          type: "checkbox",
+          store: pref_global_vpn,
+        },
+        gate.supports_proxy_conf && {
+          icon: Creation,
+          description: "auto-proxy",
+          type: "checkbox",
+          store: pref_proxy_autoconf,
+        },
+      ].filter(Boolean),
+    };
   };
 </script>
 
