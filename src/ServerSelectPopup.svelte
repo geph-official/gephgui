@@ -120,7 +120,12 @@
                   <b class="font-bold">{country}</b> / {city}
                 </div>
                 <!-- Display least loaded server's load as a percentage -->
-                <div>
+                <div
+                  class="text-green-700 font-medium"
+                  class:text-orange-700={getMinLoad(servers, country, city) >
+                    0.5}
+                  class:text-red-700={getMinLoad(servers, country, city) > 0.8}
+                >
                   {(getMinLoad(servers, country, city) * 100).toFixed(0)}%
                 </div>
               </button>
