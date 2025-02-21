@@ -83,104 +83,106 @@
 </script>
 
 {#if open}
-  <div
-    id="settings"
-    class="bg-surface-50"
-    transition:fly={{ x: 0, y: 200, duration: 300 }}
-  >
-    <AppBar>
-      <svelte:fragment slot="lead">
-        <button on:click={() => (open = false)}>
-          <Close size="1.5rem" />
-        </button>
-      </svelte:fragment>
-      <b id="logo-text">{l10n($curr_lang, "settings")}</b>
-    </AppBar>
-
-    <section class="m-4">
-      <h2 class="text-primary-700 uppercase font-semibold text-sm mb-2">
-        {l10n($curr_lang, "general")}
-      </h2>
-
-      <SingleSetting>
-        <svelte:fragment slot="icon">
-          <Translate size="1.4rem" />
+  {#await settings() then settings}
+    <div
+      id="settings"
+      class="bg-surface-50"
+      transition:fly={{ x: 0, y: 200, duration: 300 }}
+    >
+      <AppBar>
+        <svelte:fragment slot="lead">
+          <button on:click={() => (open = false)}>
+            <Close size="1.5rem" />
+          </button>
         </svelte:fragment>
-        <svelte:fragment slot="description">
-          {l10n($curr_lang, "language")}
-        </svelte:fragment>
-        <svelte:fragment slot="switch">
-          <select class="select" bind:value={$curr_lang}>
-            <option value="en">English</option>
-            <option value="zh-CN">简体中文</option>
-            <option value="ru">Русский</option>
-          </select>
-        </svelte:fragment>"
-      </SingleSetting>
+        <b id="logo-text">{l10n($curr_lang, "settings")}</b>
+      </AppBar>
 
-      <SingleSetting>
-        <svelte:fragment slot="icon">
-          <ThemeLightDark size="1.4rem" />
-        </svelte:fragment>
-        <svelte:fragment slot="description">
-          {l10n($curr_lang, "theme")}
-        </svelte:fragment>
-        <svelte:fragment slot="switch">
-          <select class="select" bind:value={$pref_lightdark}>
-            <option value="auto">{l10n($curr_lang, "automatic")}</option>
-            <option value="light">{l10n($curr_lang, "light")}</option>
-            <option value="dark">{l10n($curr_lang, "dark")}</option>
-          </select>
-        </svelte:fragment>"
-      </SingleSetting>
-    </section>
-
-    {#each Object.entries(settings) as [section, contents]}
       <section class="m-4">
         <h2 class="text-primary-700 uppercase font-semibold text-sm mb-2">
-          {l10n($curr_lang, section)}
+          {l10n($curr_lang, "general")}
         </h2>
-        {#each contents as setting}
-          <SettingTree {setting} />
-        {/each}
+
+        <SingleSetting>
+          <svelte:fragment slot="icon">
+            <Translate size="1.4rem" />
+          </svelte:fragment>
+          <svelte:fragment slot="description">
+            {l10n($curr_lang, "language")}
+          </svelte:fragment>
+          <svelte:fragment slot="switch">
+            <select class="select" bind:value={$curr_lang}>
+              <option value="en">English</option>
+              <option value="zh-CN">简体中文</option>
+              <option value="ru">Русский</option>
+            </select>
+          </svelte:fragment>"
+        </SingleSetting>
+
+        <SingleSetting>
+          <svelte:fragment slot="icon">
+            <ThemeLightDark size="1.4rem" />
+          </svelte:fragment>
+          <svelte:fragment slot="description">
+            {l10n($curr_lang, "theme")}
+          </svelte:fragment>
+          <svelte:fragment slot="switch">
+            <select class="select" bind:value={$pref_lightdark}>
+              <option value="auto">{l10n($curr_lang, "automatic")}</option>
+              <option value="light">{l10n($curr_lang, "light")}</option>
+              <option value="dark">{l10n($curr_lang, "dark")}</option>
+            </select>
+          </svelte:fragment>"
+        </SingleSetting>
       </section>
-    {/each}
 
-    <section class="m-4">
-      <h2 class="text-primary-700 uppercase font-semibold text-sm mb-2">
-        {l10n($curr_lang, "debug")}
-      </h2>
+      {#each Object.entries(settings) as [section, contents]}
+        <section class="m-4">
+          <h2 class="text-primary-700 uppercase font-semibold text-sm mb-2">
+            {l10n($curr_lang, section)}
+          </h2>
+          {#each contents as setting}
+            <SettingTree {setting} />
+          {/each}
+        </section>
+      {/each}
 
-      <div class="flex flex-row gap-2">
-        <button
-          class="btn variant-filled btn-sm"
-          on:click={() => {
-            const modal = {
-              type: "prompt",
-              title: l10n($curr_lang, "report-problem"),
-              body: l10n($curr_lang, "attach-log-blurb"),
-              valueAttr: {
-                type: "text",
-                minlength: 3,
-                maxlength: 20,
-                required: true,
-                placeholder: l10n($curr_lang, "your-email-optional"),
-                rows: 10,
-              },
-              response: async (email) => {
-                if (email) {
-                  const gate = await native_gate();
-                  gate.export_debug_pack(email);
-                }
-              },
-            };
-            modalStore.trigger(modal);
-          }}>Report a problem</button
-        >
-        <!-- <button class="btn variant-filled btn-sm">Show logs</button> -->
-      </div>
-    </section>
-  </div>
+      <section class="m-4">
+        <h2 class="text-primary-700 uppercase font-semibold text-sm mb-2">
+          {l10n($curr_lang, "debug")}
+        </h2>
+
+        <div class="flex flex-row gap-2">
+          <button
+            class="btn variant-filled btn-sm"
+            on:click={() => {
+              const modal = {
+                type: "prompt",
+                title: l10n($curr_lang, "report-problem"),
+                body: l10n($curr_lang, "attach-log-blurb"),
+                valueAttr: {
+                  type: "text",
+                  minlength: 3,
+                  maxlength: 20,
+                  required: true,
+                  placeholder: l10n($curr_lang, "your-email-optional"),
+                  rows: 10,
+                },
+                response: async (email) => {
+                  if (email) {
+                    const gate = await native_gate();
+                    gate.export_debug_pack(email);
+                  }
+                },
+              };
+              modalStore.trigger(modal);
+            }}>Report a problem</button
+          >
+          <!-- <button class="btn variant-filled btn-sm">Show logs</button> -->
+        </div>
+      </section>
+    </div>
+  {/await}
 {/if}
 
 <style>
