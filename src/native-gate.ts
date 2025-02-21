@@ -402,8 +402,7 @@ const MockDaemonRpc = {
       {
         title: "Headline 1",
         date: 100000000,
-        thumbnail:
-          "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMCIgaGVpZ2h0PSIxMCIgdmlld0JveD0iMCAwIDEwIDEwIj4KICA8dGV4dCB4PSI1IiB5PSI4IiBmb250LXNpemU9IjEwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkb21pbmFudC1iYXNlbGluZT0iY2VudHJhbCIgZmlsbD0iYmxhY2siPkUhPC90ZXh0Pgo8L3N2Zz4=",
+
         contents:
           "<i>Boo boo</i> foobaria doo doo lalalbubuu kukukuku sjlkdjf sdfaoj sjdf slkafj selkfjlskdjf ksdjf; dfoobaria doo doo lalalbubuu kukukuku sjlkdjf sdfaoj sjdf slkafj selkfjlskdjf ksdjf; dfoobaria doo doo lalalbubuu kukukuku sjlkdjf sdfaoj sjdf slkafj selkfjlskdjf ksdjf; dfoobaria doo doo lalalbubuu kukukuku sjlkdjf sdfaoj sjdf slkafj selkfjlskdjf ksdjf; dfoobaria doo doo lalalbubuu kukukuku sjlkdjf sdfaoj sjdf slkafj selkfjlskdjf ksdjf; dfoobaria doo doo lalalbubuu kukukuku sjlkdjf sdfaoj sjdf slkafj selkfjlskdjf ksdjf; dfoobaria doo doo lalalbubuu kukukuku sjlkdjf sdfaoj sjdf slkafj selkfjlskdjf ksdjf; dfoobaria doo doo lalalbubuu kukukuku sjlkdjf sdfaoj sjdf slkafj selkfjlskdjf ksdjf; dfoobaria doo doo lalalbubuu kukukuku sjlkdjf sdfaoj sjdf slkafj selkfjlskdjf ksdjf; dfoobaria doo doo lalalbubuu kukukuku sjlkdjf sdfaoj sjdf slkafj selkfjlskdjf ksdjf; dfoobaria doo doo lalalbubuu kukukuku sjlkdjf sdfaoj sjdf slkafj selkfjlskdjf ksdjf; dfoobaria doo doo lalalbubuu kukukuku sjlkdjf sdfaoj sjdf slkafj selkfjlskdjf ksdjf; d",
       },
