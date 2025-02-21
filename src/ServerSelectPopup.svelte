@@ -1,10 +1,5 @@
 <script lang="ts">
-  import {
-    AppBar,
-    ProgressBar,
-    ProgressRadial,
-    getModalStore,
-  } from "@skeletonlabs/skeleton";
+  import { AppBar, ProgressBar, getModalStore } from "@skeletonlabs/skeleton";
   import { fly } from "svelte/transition";
   import Close from "svelte-material-icons/Close.svelte";
   import RefreshAuto from "svelte-material-icons/RefreshAuto.svelte";
@@ -33,11 +28,8 @@
   };
 
   const getCountries = (servers: ExitDescriptor[]): string[] => {
-    const countries = servers.map((server) => server.country); // Extract the country field
-    const uniqueCountries = countries.filter(
-      (country, index, self) => self.indexOf(country) === index // Keep only the first occurrence of each country
-    );
-    return uniqueCountries.sort(); // Sort the array alphabetically
+    const countries = servers.map((server) => server.country);
+    return [...new Set(countries)].sort(); // unique & sorted
   };
 
   const getCitiesByCountry = (
@@ -45,14 +37,25 @@
     country: string
   ): string[] => {
     const cities = servers
-      .filter((server) => server.country === country) // Filter servers by the given country
-      .map((server) => server.city); // Extract the city field
+      .filter((server) => server.country === country)
+      .map((server) => server.city);
+    return [...new Set(cities)].sort(); // unique & sorted
+  };
 
-    const uniqueCities = cities.filter(
-      (city, index, self) => self.indexOf(city) === index // Keep only the first occurrence of each city
+  /**
+   * Returns the load of the least-loaded server for the given country/city,
+   * as a value from 0 to 1.
+   */
+  const getMinLoad = (
+    servers: ExitDescriptor[],
+    country: string,
+    city: string
+  ): number => {
+    const cityServers = servers.filter(
+      (server) => server.country === country && server.city === city
     );
-
-    return uniqueCities.sort(); // Sort the cities alphabetically
+    if (cityServers.length === 0) return 0;
+    return Math.min(...cityServers.map((s) => s.load));
   };
 
   const rowClass =
@@ -78,6 +81,7 @@
       {#await loadServers()}
         <ProgressBar />
       {:then servers}
+        <!-- "Automatic" option -->
         <button
           class={rowClass}
           on:click={() => {
@@ -85,29 +89,42 @@
             open = false;
           }}
         >
-          <div class="w-7"><RefreshAuto width="1.3rem" height="1.3rem" /></div>
+          <div class="w-7">
+            <RefreshAuto width="1.3rem" height="1.3rem" />
+          </div>
           <div class="grow">
             <b class="font-bold">{l10n($curr_lang, "automatic")}</b>
           </div>
         </button>
+
+        <!-- Per country and city -->
         {#each getCountries(servers) as country}
           {#each getCitiesByCountry(servers, country) as city}
-            <button
-              class={rowClass}
-              on:click={() => {
-                $pref_exit_constraint = {
-                  city: city,
-                  country: country,
-                };
-                open = false;
-              }}
-            >
-              <div class="w-7"><Flag {country} /></div>
-              <div class="grow">
-                <b class="font-bold">{country}</b> / {city}
-              </div>
-              <div>50%</div>
-            </button>
+            {#if city}
+              <button
+                class={rowClass}
+                on:click={() => {
+                  $pref_exit_constraint = {
+                    city,
+                    country,
+                  };
+                  open = false;
+                }}
+              >
+                <!-- Flag icon -->
+                <div class="w-7">
+                  <Flag {country} />
+                </div>
+                <!-- Country / City name -->
+                <div class="grow">
+                  <b class="font-bold">{country}</b> / {city}
+                </div>
+                <!-- Display least loaded server's load as a percentage -->
+                <div>
+                  {(getMinLoad(servers, country, city) * 100).toFixed(0)}%
+                </div>
+              </button>
+            {/if}
           {/each}
         {/each}
       {/await}

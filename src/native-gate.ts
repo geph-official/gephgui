@@ -377,7 +377,7 @@ const MockDaemonRpc = {
       exit: {
         c2e_listen: "0.0.0.0:1",
         b2e_listen: "0.0.0.0:2",
-        country: "CAN",
+        country: "CA",
         city: "Montreal",
         load: 0.3,
         expiry: 10000000000,

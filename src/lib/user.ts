@@ -107,9 +107,9 @@ export const app_status: Writable<AppStatus | null> =
         return {
           account,
           connection: {
-            bridge: `${info.protocol}://${info.bridge}`,
+            bridge: `${info.protocol} ${info.bridge}`,
             exit: info.exit.c2e_listen.split(":")[0],
-            country: "us",
+            country: info.exit.country,
           },
           stats,
         };
