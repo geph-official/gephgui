@@ -3,6 +3,7 @@
     AppBar,
     ProgressBar,
     getModalStore,
+    getToastStore,
     type ModalSettings,
   } from "@skeletonlabs/skeleton";
   import { curr_lang } from "./lib/l10n";
@@ -10,6 +11,7 @@
   import Close from "svelte-material-icons/Close.svelte";
   import { fly } from "svelte/transition";
   import { onMount } from "svelte";
+  import { showToast } from "./lib/utils";
 
   type NewsItem = {
     title: string;
@@ -30,20 +32,27 @@
     }
   });
 
+  const toastStore = getToastStore();
+
   const fetchNews = async () => {
-    const gate = await native_gate();
-    const resp: NewsItem[] = (await gate.daemon_rpc("latest_news", [
-      $curr_lang,
-    ])) as any as NewsItem[];
-    resp.forEach((news) => {
-      if (news.date > latestReadDate && news.important) {
-        launchNews(news);
+    for (;;) {
+      try {
+        const gate = await native_gate();
+        const resp: NewsItem[] = (await gate.daemon_rpc("latest_news", [
+          $curr_lang,
+        ])) as any as NewsItem[];
+        resp.forEach((news) => {
+          if (news.date > latestReadDate && news.important) {
+            launchNews(news);
+          }
+        });
+        return resp;
+      } catch (e: any) {
+        showToast(toastStore, e.toString());
       }
-    });
-    return resp;
+    }
   };
 
-  let newsPromise = fetchNews();
   const modalStore = getModalStore();
 
   const launchNews = (item: NewsItem) => {
@@ -69,33 +78,33 @@
 
 <div class="my-4 outer grow flex flex-col card p-3">
   <h2 class="text-primary-700 uppercase font-semibold text-sm mb-2">News</h2>
-  {#await newsPromise}
-    <ProgressBar />
-  {:then newsItems}
-    {#each newsItems as item}
-      <div
-        class={"flex flex-row justify-center items-center my-1 " +
-          (item.date > latestReadDate
-            ? "unread-news text-primary-800"
-            : "read-news")}
-        on:click={() => launchNews(item)}
-      >
-        <div class="grow text-sm h-9 news-left">
-          <span class="font-medium">{item.title}</span>:
-          <span>{@html item.contents}</span>
+  {#key $curr_lang}
+    {#await fetchNews()}
+      <ProgressBar />
+    {:then newsItems}
+      {#each newsItems as item}
+        <div
+          class={"flex flex-row justify-center items-center my-1 " +
+            (item.date > latestReadDate
+              ? "unread-news text-primary-800"
+              : "read-news")}
+          on:click={() => launchNews(item)}
+        >
+          <div class="grow text-sm h-9 news-left">
+            <span class="font-medium">{item.title}</span>:
+            <span>{@html item.contents}</span>
+          </div>
+          <!-- <div class="rounded bg-gray-300 ml-2">
+        <img
+          class="w-10 h-10 block max-w-none"
+          src={item.thumbnail}
+          alt="thumb"
+        />
+      </div> -->
         </div>
-        <!-- <div class="rounded bg-gray-300 ml-2">
-          <img
-            class="w-10 h-10 block max-w-none"
-            src={item.thumbnail}
-            alt="thumb"
-          />
-        </div> -->
-      </div>
-    {/each}
-  {:catch error}
-    <p>Error loading news: {error.message}</p>
-  {/await}
+      {/each}
+    {/await}
+  {/key}
 </div>
 
 <style>
