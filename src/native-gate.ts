@@ -39,7 +39,7 @@ export interface NativeGate {
   /**
    * Create an invoice using a number of days
    */
-  create_invoice(days: number): Promise<InvoiceInfo>;
+  create_invoice(secret: string, days: number): Promise<InvoiceInfo>;
 
   /**
    * Pay an invoice with a given method
@@ -215,7 +215,7 @@ function mock_native_gate(): NativeGate {
       ];
     },
 
-    async create_invoice(days: number) {
+    async create_invoice(secret: string, days: number) {
       random_fail();
       await random_sleep();
       return {

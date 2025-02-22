@@ -2,7 +2,7 @@
   import { slide, fade } from "svelte/transition";
   import { curr_lang, l10n } from "./lib/l10n";
   import { native_gate, type InvoiceInfo } from "./native-gate";
-  import { paymentsOpen } from "./lib/user";
+  import { curr_valid_secret, paymentsOpen } from "./lib/user";
   import { ProgressBar, getModalStore } from "@skeletonlabs/skeleton";
   import { showErrorModal } from "./lib/utils";
 
@@ -22,7 +22,7 @@
     createInvoiceInProgress = true;
     try {
       const gate = await native_gate();
-      const invoice = await gate.create_invoice(days);
+      const invoice = await gate.create_invoice($curr_valid_secret || "", days);
       secondPageInvoice = invoice;
     } catch (e) {
       showErrorModal(
