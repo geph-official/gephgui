@@ -6,7 +6,7 @@
     getToastStore,
     type ModalSettings,
   } from "@skeletonlabs/skeleton";
-  import { curr_lang } from "./lib/l10n";
+  import { curr_lang, l10n } from "./lib/l10n";
   import { native_gate } from "./native-gate";
   import Close from "svelte-material-icons/Close.svelte";
   import { fly } from "svelte/transition";
@@ -85,7 +85,9 @@
 </script>
 
 <div class="my-4 outer grow flex flex-col card p-3">
-  <h2 class="text-primary-700 uppercase font-semibold text-sm mb-2">News</h2>
+  <h2 class="text-primary-700 uppercase font-semibold text-sm mb-2">
+    {l10n($curr_lang, "news")}
+  </h2>
   {#key $curr_lang}
     {#await fetchNews()}
       <ProgressBar />
@@ -99,7 +101,7 @@
           on:click={() => launchNews(item)}
         >
           <div class="grow text-sm h-10 news-left news-content">
-            <span class="font-medium">{item.title}</span>:
+            <span class="font-bold">{item.title}</span>:
             <span>{@html stripParagraphs(item.contents)}</span>
           </div>
           <!-- <div class="rounded bg-gray-300 ml-2">
@@ -152,12 +154,8 @@
     }
   }
 
-  .unread-news span {
+  .unread-news .news-content {
     animation: pulsate 2s infinite ease-in-out;
     font-weight: 500;
-  }
-
-  .unread-news .font-medium {
-    font-weight: 600;
   }
 </style>
