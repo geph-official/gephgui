@@ -15,7 +15,7 @@
 
   type NewsItem = {
     title: string;
-    date: number;
+    date_unix: number;
     contents: string;
     thumbnail: string;
     important: boolean;
@@ -42,7 +42,7 @@
           $curr_lang,
         ])) as any as NewsItem[];
         resp.forEach((news) => {
-          if (news.date > latestReadDate && news.important) {
+          if (news.date_unix > latestReadDate && news.important) {
             launchNews(news);
           }
         });
@@ -59,9 +59,9 @@
     if (typeof localStorage !== "undefined") {
       const stored = localStorage.getItem("latestReadDate");
       const currentMax = stored ? parseInt(stored) : 0;
-      if (item.date > currentMax) {
-        localStorage.setItem("latestReadDate", item.date.toString());
-        latestReadDate = item.date;
+      if (item.date_unix > currentMax) {
+        localStorage.setItem("latestReadDate", item.date_unix.toString());
+        latestReadDate = item.date_unix;
       }
     }
     const modal: ModalSettings = {
@@ -95,7 +95,7 @@
       {#each newsItems as item}
         <div
           class={"flex flex-row justify-center items-center my-1 " +
-            (item.date > latestReadDate
+            (item.date_unix > latestReadDate
               ? "unread-news text-primary-800"
               : "read-news")}
           on:click={() => launchNews(item)}
