@@ -114,8 +114,6 @@
     <CommunityButtons />
 
     <div class="bottom card flex flex-col">
-      <!-- svelte-ignore a11y-click-events-have-key-events -->
-      <!-- svelte-ignore a11y-no-static-element-interactions -->
       <div
         class="flex flex-row mb-3"
         class:cursor-pointer={$app_status.connection === "disconnected"}

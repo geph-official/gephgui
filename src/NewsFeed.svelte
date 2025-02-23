@@ -68,11 +68,19 @@
       type: "alert",
       title: item.title,
       body:
-        "<div class='overflow-y-auto max-h-[200px] text-sm'>" +
+        "<div class='overflow-y-auto max-h-[200px] text-sm news-content'>" +
         item.contents +
         "</div>",
     };
     modalStore.trigger(modal);
+  };
+
+  const stripParagraphs = (s: string) => {
+    return s
+      .replaceAll("<p>", "")
+      .replaceAll("</p>", " ")
+      .replaceAll("<br>", " ")
+      .replaceAll("<br/>", " ");
   };
 </script>
 
@@ -90,9 +98,9 @@
               : "read-news")}
           on:click={() => launchNews(item)}
         >
-          <div class="grow text-sm h-9 news-left">
+          <div class="grow text-sm h-10 news-left news-content">
             <span class="font-medium">{item.title}</span>:
-            <span>{@html item.contents}</span>
+            <span>{@html stripParagraphs(item.contents)}</span>
           </div>
           <!-- <div class="rounded bg-gray-300 ml-2">
         <img
@@ -118,6 +126,14 @@
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
+  }
+
+  :global(.news-content p) {
+    margin-bottom: 1rem;
+  }
+
+  :global(.news-content a) {
+    color: rgb(var(--color-primary-600));
   }
 
   /* Pulsate animation for unread items */

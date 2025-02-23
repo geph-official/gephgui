@@ -1,5 +1,6 @@
 import { join } from "path";
 import type { Config } from "tailwindcss";
+import { customTheme } from "./custom-theme";
 
 // 1. Import the Skeleton plugin
 import { skeleton } from "@skeletonlabs/tw-plugin";
@@ -23,7 +24,9 @@ const config = {
     require("@tailwindcss/aspect-ratio"),
     require("@tailwindcss/forms"),
     skeleton({
-      themes: { preset: ["skeleton", "rocket"] },
+      themes: {
+        custom: [customTheme],
+      },
     }),
   ],
 } satisfies Config;

@@ -29,7 +29,7 @@
   <title>{l10n($curr_lang, "geph")}</title>
 </svelte:head>
 
-<main lang={$curr_lang} dir="auto" class="bg-surface-50">
+<main lang={$curr_lang} dir="auto">
   <Modal />
   <Toast />
   <AppBar>

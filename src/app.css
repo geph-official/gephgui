@@ -1,6 +1,7 @@
 @import "tailwindcss/base";
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
+@import url(inter-font/inter.css);
 
 /* html {
   font-size: 15px;
@@ -9,7 +10,10 @@
 body {
   padding: 0;
   margin: 0;
-  font-family: "Iosevka Aile", "Vazirmatn", system-ui, sans-serif;
+  font-family: "InterVariable", "Vazirmatn", "Noto Sans CJK SC", system-ui,
+    sans-serif;
+  font-feature-settings: "liga" 1, "calt" 1, "ss02" 1, "ss01" 1, "ss07" 1,
+    "tnum" 1;
 }
 
 html {
@@ -24,21 +28,4 @@ pre {
   font-family: "Roboto Mono", Consolas, monospace;
   font-size: 90%;
   color: black;
-}
-
-:root [data-theme="skeleton"] {
-  --color-primary-50: 224 222 248;
-  --color-primary-100: 214 211 246;
-  --color-primary-200: 204 201 244;
-  --color-primary-300: 173 168 237;
-  --color-primary-400: 112 102 223;
-  --color-primary-500: 50 37 209;
-  --color-primary-600: 45 33 188;
-  --color-primary-700: 38 28 157;
-  --color-primary-800: 30 22 125;
-  --color-primary-900: 25 18 102;
-  --on-primary: 255 255 255;
-
-  --theme-rounded-base: 0px;
-  --theme-rounded-container: 0px;
 }
