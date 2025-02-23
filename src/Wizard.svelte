@@ -6,14 +6,14 @@
   import { paymentsOpen } from "./lib/user";
 </script>
 
-<div class="fixed inset-0 h-full z-0 bg-surface-50" transition:fade>
+<div class="fixed inset-0 h-full z-[1000] bg-surface-50" transition:fade>
   <div class="flex flex-col gap-3 mt-10">
     <img
       class="big-logo"
       src="gephlogo-rocket.png"
       alt="geph logo with rocket ship"
     />
-    <h1>{l10n($curr_lang, "get-full-geph-experience")}</h1>
+    <h1 class="my-3">{l10n($curr_lang, "get-full-geph-experience")}</h1>
 
     <div class="card mx-4 p-3">
       <span class="card-heading">{l10n($curr_lang, "much-faster-speed")}</span>
@@ -29,12 +29,12 @@
         {@html l10n($curr_lang, "access-global-servers")}
       </p>
     </div>
-    <div class="card mx-4 p-3">
+    <!-- <div class="card mx-4 p-3">
       <span class="card-heading">{l10n($curr_lang, "calls-p2p-gaming")}</span>
       <p>
         {@html l10n($curr_lang, "unrestricted-access")}
       </p>
-    </div>
+    </div> -->
 
     <div class="bottom">
       <button
