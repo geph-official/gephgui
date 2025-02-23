@@ -69,14 +69,14 @@
     />
     <button
       type="button"
-      class="btn variant-filled"
+      class="btn variant-ghost-primary"
       disabled={loggingIn}
       on:click={() => onLogin()}
     >
       {l10n($curr_lang, "login")}
     </button>
     {#if loggingIn}
-      <ProgressBar />
+      <ProgressBar meter="bg-primary-600" />
     {/if}
   </div>
   <div

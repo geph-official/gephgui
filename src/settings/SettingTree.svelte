@@ -24,7 +24,12 @@
   </svelte:fragment>
   <svelte:fragment slot="switch">
     {#if setting.type === "checkbox"}
-      <SlideToggle name={setting.description} size="sm" bind:checked={$store} />
+      <SlideToggle
+        name={setting.description}
+        size="sm"
+        active="bg-primary-500"
+        bind:checked={$store}
+      />
     {/if}
   </svelte:fragment>
   <svelte:fragment slot="collapse">

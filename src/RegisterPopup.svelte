@@ -99,6 +99,7 @@
         <ProgressBar
           value={registerProgress ? registerProgress : undefined}
           max={1}
+          meter="bg-primary-600"
         />
         <div class="flex flex-row text-sm">
           {#if registerProgress}
