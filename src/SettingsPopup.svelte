@@ -176,7 +176,7 @@
                 },
               };
               modalStore.trigger(modal);
-            }}>Report a problem</button
+            }}>{l10n($curr_lang, "report-problem")}</button
           >
           <!-- <button class="btn variant-filled btn-sm">Show logs</button> -->
         </div>

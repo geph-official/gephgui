@@ -142,3 +142,4 @@ err_load_price_points,"Cannot load price points","无法加载价格信息","無
 err_create_invoice,"Cannot create invoice","无法创建订单","無法創建訂單","خطا در ایجاد فاکتور","Не удается создать счет"
 error,Error,错误,錯誤,خطا,Ошибка
 incorrect-user-secret,"Incorrect user secret","错误的账户密钥","錯誤的帳戶密鑰","رمز حساب کاربری اشتباه است","Неверный секретный ключ аккаунта"
+report-problem,"Report a problem","报告问题","回報問題","گزارش مشکل","Сообщить о проблеме"

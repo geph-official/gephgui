@@ -59,9 +59,7 @@
     class="fixed w-full h-full bg-black bg-opacity-50 backdrop-blur-sm p-4 flex-col"
     transition:fade
   >
-    <div
-      class="bg-surface-50 p-4 rounded-md shadow-lg relative overflow-hidden"
-    >
+    <div class="bg-surface-50 p-4 shadow-lg relative overflow-hidden">
       {#if !secondPageInvoice}
         <div transition:slide class="flex flex-col">
           <h1 class="font-bold text-gray-700 text-xs mb-2">
@@ -73,8 +71,8 @@
           {:then pricePoints}
             {#each pricePoints as [days, price], i}
               <button
-                class={`border-black border rounded-md p-2 px-2 text-sm flex-row flex gap-2 items-center mb-2 cursor-pointer ${
-                  i === selectedIndex ? "bg-green-100" : ""
+                class={`border-black border p-2 px-2 text-sm flex-row flex gap-2 items-center mb-2 cursor-pointer ${
+                  i === selectedIndex ? "bg-primary-200" : ""
                 }`}
                 on:click={() => handleSelect(i)}
               >
@@ -93,6 +91,7 @@
               <button
                 class="btn variant-filled my-2"
                 on:click={() => handlePayNow(pricePoints[selectedIndex][0])}
+                disabled={createInvoiceInProgress}
               >
                 {l10n($curr_lang, "pay-now")}
               </button>
@@ -111,7 +110,7 @@
           {:else}
             {#each secondPageInvoice.methods as method}
               <button
-                class="border-black border rounded-md p-2"
+                class="border-black border p-2"
                 on:click={async () => {
                   if (secondPageInvoice) {
                     payInProgress = true;
