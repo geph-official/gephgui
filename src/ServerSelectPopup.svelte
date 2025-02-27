@@ -65,7 +65,7 @@
 {#if open}
   <div
     id="popup"
-    class="bg-surface-50"
+    class="bg-surface-50 z-[100]"
     transition:fly={{ x: 0, y: 200, duration: 300 }}
   >
     <AppBar>

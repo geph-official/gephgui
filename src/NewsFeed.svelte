@@ -12,6 +12,7 @@
   import { fly } from "svelte/transition";
   import { onMount } from "svelte";
   import { showToast } from "./lib/utils";
+  import { app_status } from "./lib/user";
 
   type NewsItem = {
     title: string;
@@ -32,25 +33,8 @@
     }
   });
 
-  const toastStore = getToastStore();
-
   const fetchNews = async () => {
-    for (;;) {
-      try {
-        const gate = await native_gate();
-        const resp: NewsItem[] = (await gate.daemon_rpc("latest_news", [
-          $curr_lang,
-        ])) as any as NewsItem[];
-        resp.forEach((news) => {
-          if (news.date_unix > latestReadDate && news.important) {
-            launchNews(news);
-          }
-        });
-        return resp;
-      } catch (e: any) {
-        showToast(toastStore, e.toString());
-      }
-    }
+    return $app_status?.news;
   };
 
   const modalStore = getModalStore();
@@ -88,10 +72,10 @@
   <h2 class="text-primary-700 uppercase font-semibold text-sm mb-2">
     {l10n($curr_lang, "news")}
   </h2>
-  {#key $curr_lang}
-    {#await fetchNews()}
-      <ProgressBar />
-    {:then newsItems}
+  {#await fetchNews()}
+    <ProgressBar />
+  {:then newsItems}
+    {#if newsItems}
       {#each newsItems as item}
         <div
           class={"flex flex-row justify-center items-center my-1 " +
@@ -113,8 +97,8 @@
       </div> -->
         </div>
       {/each}
-    {/await}
-  {/key}
+    {/if}
+  {/await}
 </div>
 
 <style>

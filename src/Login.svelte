@@ -65,6 +65,11 @@
       bind:value={inputValue}
       type="text"
       on:input={handleInput}
+      on:keydown={(e) => {
+        if (e.key === "Enter") {
+          onLogin();
+        }
+      }}
       placeholder={l10n($curr_lang, "enter-account-secret")}
     />
     <button

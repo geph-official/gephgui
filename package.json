@@ -41,7 +41,8 @@
     "tailwindcss": "^3.4.9",
     "tslib": "^2.4.0",
     "typescript": "^5.0.0",
-    "vite": "^4.0.0"
+    "vite": "^4.0.0",
+    "vite-plugin-node-polyfills": "^0.23.0"
   },
   "dependencies": {
     "@fnando/sparkline": "^0.3.10",
@@ -57,6 +58,7 @@
     "detect-nearest-browser-locale": "^19.0.0",
     "knuth-shuffle": "^1.0.8",
     "knuth-shuffle-seeded": "^1.0.6",
+    "lru-cache": "^11.0.2",
     "memoizee": "^0.4.15",
     "openmoji": "^14.0.0",
     "stream-browserify": "^3.0.0",

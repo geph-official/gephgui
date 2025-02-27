@@ -138,7 +138,12 @@
                 </span>
               </small>
             {:else}
-              <small>{l10n($curr_lang, "auto-select")}</small>
+              <small>
+                {#if $pref_exit_constraint_derived !== "auto"}
+                  <Flag country={$pref_exit_constraint_derived.country} />
+                {/if}
+              </small>
+              <small> {l10n($curr_lang, "auto-select")}</small>
             {/if}
           </div>
         </div>
