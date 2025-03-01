@@ -9,23 +9,8 @@
   import { pref_exit_constraint } from "./lib/prefs";
   import Flag from "./lib/Flag.svelte";
   import { showErrorModal } from "./lib/utils";
+  import { app_status } from "./lib/user";
   export let open = false;
-
-  const modalStore = getModalStore();
-
-  const loadServers = async () => {
-    try {
-      const gate = await native_gate();
-      const exitList: ExitDescriptor[] = (await gate.daemon_rpc(
-        "exit_list",
-        []
-      )) as any;
-      return exitList;
-    } catch (e) {
-      showErrorModal(modalStore, l10n($curr_lang, "error") + ": " + e);
-      throw e;
-    }
-  };
 
   const getCountries = (servers: ExitDescriptor[]): string[] => {
     const countries = servers.map((server) => server.country);
@@ -78,9 +63,7 @@
     </AppBar>
 
     <div class="flex flex-col gap-2 p-2 pt-5">
-      {#await loadServers()}
-        <ProgressBar />
-      {:then servers}
+      {#if $app_status}
         <!-- "Automatic" option -->
         <button
           class={rowClass}
@@ -98,8 +81,8 @@
         </button>
 
         <!-- Per country and city -->
-        {#each getCountries(servers) as country}
-          {#each getCitiesByCountry(servers, country) as city}
+        {#each getCountries($app_status.exits) as country}
+          {#each getCitiesByCountry($app_status.exits, country) as city}
             {#if city}
               <button
                 class={rowClass}
@@ -122,17 +105,26 @@
                 <!-- Display least loaded server's load as a percentage -->
                 <div
                   class="text-green-700 font-medium"
-                  class:text-orange-700={getMinLoad(servers, country, city) >
-                    0.5}
-                  class:text-red-700={getMinLoad(servers, country, city) > 0.8}
+                  class:text-orange-700={getMinLoad(
+                    $app_status.exits,
+                    country,
+                    city
+                  ) > 0.5}
+                  class:text-red-700={getMinLoad(
+                    $app_status.exits,
+                    country,
+                    city
+                  ) > 0.8}
                 >
-                  {(getMinLoad(servers, country, city) * 100).toFixed(0)}%
+                  {(getMinLoad($app_status.exits, country, city) * 100).toFixed(
+                    0
+                  )}%
                 </div>
               </button>
             {/if}
           {/each}
         {/each}
-      {/await}
+      {/if}
     </div>
   </div>
 {/if}

@@ -29,33 +29,32 @@ export type NewsItem = {
   important: boolean;
 };
 
-/**
- * Create an LRU cache keyed by language.
- * We'll store up to 5 languages, each with a 1-hour TTL.
- */
 const newsCache = new LRUCache<string, NewsItem[]>({
   max: 5,
   ttl: 60 * 60 * 1000, // 1 hour
-  ignoreFetchAbort: true,
-  allowStaleOnFetchAbort: true,
   fetchMethod: async (lang, oldValue, { signal }) => {
-    try {
-      const gate = await native_gate();
-      const resp = (await gate.daemon_rpc("latest_news", [lang])) as NewsItem[];
-      return resp;
-    } catch (error) {
-      console.error("Failed fetching news:", error);
-      return oldValue || [];
-    }
+    const gate = await native_gate();
+    const resp = (await gate.daemon_rpc("latest_news", [lang])) as NewsItem[];
+    return resp;
   },
 });
 
-/**
- * Fetches news from the daemon, using the language-specific cache key.
- */
 async function fetchNews(lang: string): Promise<NewsItem[]> {
   return newsCache.fetch(lang) as any;
 }
+
+const serverListCache = new LRUCache<string, ExitDescriptor[]>({
+  max: 1,
+  ttl: 5 * 60 * 1000,
+  fetchMethod: async (dummy, oldValue, { signal }) => {
+    const gate = await native_gate();
+    const exitList: ExitDescriptor[] = (await gate.daemon_rpc(
+      "exit_list",
+      []
+    )) as any;
+    return exitList;
+  },
+});
 
 // Combined app status types
 export type AccountStatus =
@@ -75,9 +74,9 @@ export type AppStatus = {
     total_mbps: number[];
   };
   news: NewsItem[];
+  exits: ExitDescriptor[];
 };
 
-// For typed caching, we define the shape of our stats object
 interface Stats {
   total_users: number[];
   total_mbps: number[];
@@ -188,20 +187,21 @@ export const app_status: Writable<AppStatus | null> =
       // fetch language from store
       const lang = get(curr_lang);
 
-      // fetch stats
-      const stats = (await statsCache.fetch("stats")) as any;
-      // fetch account
-      const account = (await accountStatusCache.fetch(secret)) as any;
-      // fetch connection
-      const connection = await fetchConnectionStatus();
-      // fetch news, keyed by language
-      const news = await fetchNews(lang);
+      // Run all fetch operations in parallel
+      const [stats, account, connection, news, exits] = await Promise.all([
+        statsCache.fetch("stats"),
+        accountStatusCache.fetch(secret),
+        fetchConnectionStatus(),
+        fetchNews(lang),
+        serverListCache.fetch("exits"),
+      ]);
 
       return {
         account,
         connection,
         stats,
         news,
+        exits,
       };
     },
     500, // refresh interval in ms
