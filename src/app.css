@@ -10,9 +10,9 @@
 body {
   padding: 0;
   margin: 0;
-  font-family: "InterVariable", "Vazirmatn", "Noto Sans CJK SC",
+  font-family: "Iosevka Aile", "Vazirmatn", "Noto Sans CJK SC",
     "Source Han Sans SC", system-ui, sans-serif;
-  font-feature-settings: "liga" 1, "calt" 1, "ss02" 1, "ss01" 1;
+  /* font-feature-settings: "liga" 1, "calt" 1, "ss02" 1, "ss01" 1; */
   letter-spacing: -1%;
 }
 

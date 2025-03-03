@@ -1,18 +1,16 @@
 <script lang="ts">
   import {
-    AppBar,
     ProgressBar,
     getModalStore,
-    getToastStore,
     type ModalSettings,
   } from "@skeletonlabs/skeleton";
   import { curr_lang, l10n } from "./lib/l10n";
-  import { native_gate } from "./native-gate";
-  import Close from "svelte-material-icons/Close.svelte";
-  import { fly } from "svelte/transition";
+
   import { onMount } from "svelte";
-  import { showToast } from "./lib/utils";
+
   import { app_status } from "./lib/user";
+
+  import CalendarRangeOutline from "svelte-material-icons/CalendarRangeOutline.svelte";
 
   type NewsItem = {
     title: string;
@@ -78,23 +76,43 @@
     {#if newsItems}
       {#each newsItems as item}
         <div
-          class={"flex flex-row justify-center items-center my-1 " +
+          class={"flex flex-row justify-center items-center mb-2 " +
             (item.date_unix > latestReadDate
               ? "unread-news text-primary-800"
               : "read-news")}
           on:click={() => launchNews(item)}
         >
-          <div class="grow text-sm h-10 news-left news-content">
-            <span class="font-bold">{item.title}</span>:
-            <span>{@html stripParagraphs(item.contents)}</span>
+          <div class="grow text-sm h-11 news-left news-content">
+            <div class="font-bold">{item.title}</div>
+            <div class="text-xs flex flex-row gap-1">
+              <div class="flex flex-row items-center gap-1">
+                <CalendarRangeOutline />
+                {new Date(item.date_unix * 1000).toLocaleDateString(
+                  $curr_lang,
+                  {
+                    year: "numeric",
+                    month: "short",
+                    day: "numeric",
+                  }
+                )}
+              </div>
+
+              {#if item.important}
+                <div>
+                  <span class="chip variant-ghost-warning p-1 px-2"
+                    >Important</span
+                  >
+                </div>
+              {/if}
+            </div>
           </div>
-          <!-- <div class="rounded bg-gray-300 ml-2">
-        <img
-          class="w-10 h-10 block max-w-none"
-          src={item.thumbnail}
-          alt="thumb"
-        />
-      </div> -->
+          <div class="rounded bg-gray-300 ml-2">
+            <img
+              class="w-11 h-11 block max-w-none"
+              src={item.thumbnail}
+              alt="thumb"
+            />
+          </div>
         </div>
       {/each}
     {/if}
@@ -104,14 +122,6 @@
 <style>
   .outer {
     overflow-y: auto;
-  }
-
-  .news-left {
-    display: -webkit-box;
-
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
   }
 
   :global(.news-content p) {
