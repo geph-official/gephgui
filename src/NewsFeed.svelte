@@ -31,10 +31,6 @@
     }
   });
 
-  const fetchNews = async () => {
-    return $app_status?.news;
-  };
-
   const modalStore = getModalStore();
 
   const launchNews = (item: NewsItem) => {
@@ -70,57 +66,51 @@
   <h2 class="text-primary-700 uppercase font-semibold text-sm mb-2">
     {l10n($curr_lang, "news")}
   </h2>
-  {#await fetchNews()}
-    <ProgressBar />
-  {:then newsItems}
-    {#if newsItems}
-      {#each newsItems as item}
-        <button
-          class={"flex flex-row text-left justify-center items-center mb-2 border-surface-400 p-2 px-2 border " +
-            (item.date_unix > latestReadDate
-              ? "unread-news text-primary-800"
-              : "read-news")}
-          on:click={() => launchNews(item)}
-        >
-          <div class="grow news-left news-content text-sm">
-            <div class="font-bold">{item.title}</div>
-            <div class="text-xs flex flex-row gap-2">
-              <div class="flex flex-row items-center gap-[0.1rem]">
-                <CalendarRangeOutline width="0.9rem" height="0.9rem" />
-                {new Date(item.date_unix * 1000).toLocaleDateString(
-                  $curr_lang,
-                  {
-                    year: "numeric",
-                    month: "short",
-                    day: "numeric",
-                  }
-                )}
-              </div>
 
-              {#if item.important}
-                <div>
-                  <span
-                    class="chip variant-ghost-warning p-[0.2rem] px-[0.3rem] text-xs"
-                  >
-                    {l10n($curr_lang, "important")}
-                  </span>
-                </div>
-              {/if}
+  {#if $app_status?.news}
+    {#each $app_status.news as item}
+      <button
+        class={"flex flex-row text-left justify-center items-center mb-2 border-surface-400 p-2 px-2 border " +
+          (item.date_unix > latestReadDate
+            ? "unread-news text-primary-800"
+            : "read-news")}
+        on:click={() => launchNews(item)}
+      >
+        <div class="grow news-left news-content text-sm">
+          <div class="font-bold">{item.title}</div>
+          <div class="text-xs flex flex-row gap-2">
+            <div class="flex flex-row items-center gap-[0.1rem]">
+              <CalendarRangeOutline width="0.9rem" height="0.9rem" />
+              {new Date(item.date_unix * 1000).toLocaleDateString($curr_lang, {
+                year: "numeric",
+                month: "short",
+                day: "numeric",
+              })}
             </div>
+
+            {#if item.important}
+              <div>
+                <span
+                  class="chip variant-ghost-warning p-[0.2rem] px-[0.3rem] text-xs"
+                >
+                  {l10n($curr_lang, "important")}
+                </span>
+              </div>
+            {/if}
           </div>
-          {#if item.thumbnail}
-            <div class="rounded bg-gray-300 ml-2">
-              <img
-                class="w-11 h-11 block max-w-none"
-                src={item.thumbnail}
-                alt="thumb"
-              />
-            </div>
-          {/if}
-        </button>
-      {/each}
-    {/if}
-  {/await}
+        </div>
+        {#if item.thumbnail}
+          <div class="rounded bg-gray-300 ml-2">
+            <img
+              class="w-11 h-11 block max-w-none"
+              src={item.thumbnail}
+              alt="thumb"
+            />
+          </div>
+        {/if}
+      </button>
+    {/each}
+  {/if}
 </div>
 
 <style>
