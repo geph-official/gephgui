@@ -10,17 +10,17 @@
     <div>
       {#if $app_status.account.level === "Plus"}
         <span class="text-primary-700">
-          <CalendarRangeOutline size="1.3rem" />
+          <CalendarRangeOutline size="1.4rem" />
         </span>
       {:else}
-        <span class="text-error-700"><Heart size="1.3rem" /></span>
+        <span class="text-error-700"><Heart size="1.4rem" /></span>
       {/if}
     </div>
     <div class="grow mx-3 flex flex-col">
       {#if $app_status.account.level === "Plus"}
-        <div class="-mb-1">
+        <div>
           {new Date($app_status.account.expiry * 1000).toLocaleDateString(
-            undefined,
+            $curr_lang,
             {
               year: "numeric",
               month: "short",
@@ -44,14 +44,14 @@
     <div>
       {#if $app_status.account.level === "Plus"}
         <button
-          class="btn variant-filled-primary btn-sm"
+          class="btn variant-filled-primary"
           on:click={() => ($paymentsOpen = true)}
         >
           {l10n($curr_lang, "extend")}
         </button>
       {:else}
         <button
-          class="btn variant-ghost-primary btn-sm"
+          class="btn variant-ghost-primary"
           on:click={() => ($paymentsOpen = true)}
         >
           {l10n($curr_lang, "buy-plus")}
