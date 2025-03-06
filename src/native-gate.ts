@@ -398,14 +398,18 @@ const MockDaemonRpc = {
 
   async latest_news(lang: string) {
     await random_sleep();
-    return [
-      {
+    return Array(10)
+      .fill({
         title: "Headline 1",
         date_unix: 100000000,
         important: true,
         contents:
           "<i>Boo boo</i> foobaria doo doo lalalbubuu kukukuku sjlkdjf sdfaoj sjdf slkafj selkfjlskdjf ksdjf; dfoobaria doo doo lalalbubuu kukukuku <a href='#blank'>sjlkdjf</a> sdfaoj sjdf slkafj selkfjlskdjf ksdjf; dfoobaria doo doo lalalbubuu kukukuku sjlkdjf sdfaoj sjdf slkafj selkfjlskdjf ksdjf; dfoobaria doo doo lalalbubuu kukukuku sjlkdjf sdfaoj sjdf slkafj selkfjlskdjf ksdjf; dfoobaria doo doo lalalbubuu kukukuku sjlkdjf sdfaoj sjdf slkafj selkfjlskdjf ksdjf; dfoobaria doo doo lalalbubuu kukukuku sjlkdjf sdfaoj sjdf slkafj selkfjlskdjf ksdjf; dfoobaria doo doo lalalbubuu kukukuku sjlkdjf sdfaoj sjdf slkafj selkfjlskdjf ksdjf; dfoobaria doo doo lalalbubuu kukukuku sjlkdjf sdfaoj sjdf slkafj selkfjlskdjf ksdjf; dfoobaria doo doo lalalbubuu kukukuku sjlkdjf sdfaoj sjdf slkafj selkfjlskdjf ksdjf; dfoobaria doo doo lalalbubuu kukukuku sjlkdjf sdfaoj sjdf slkafj selkfjlskdjf ksdjf; dfoobaria doo doo lalalbubuu kukukuku sjlkdjf sdfaoj sjdf slkafj selkfjlskdjf ksdjf; dfoobaria doo doo lalalbubuu kukukuku sjlkdjf sdfaoj sjdf slkafj selkfjlskdjf ksdjf; d",
-      },
-    ];
+      })
+      .map((item, index) => ({
+        ...item,
+        title: `Headline ${index + 1}`,
+        date_unix: 100000000 + index * 86400, // Increment date by one day for each item
+      }));
   },
 };

@@ -82,8 +82,8 @@
   };
 </script>
 
-{#if open}
-  {#await settings() then settings}
+{#await settings() then settings}
+  {#if open}
     <div
       id="settings"
       class="bg-surface-50"
@@ -182,8 +182,8 @@
         </div>
       </section>
     </div>
-  {/await}
-{/if}
+  {/if}
+{/await}
 
 <style>
   #settings {

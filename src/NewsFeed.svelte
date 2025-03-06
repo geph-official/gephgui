@@ -75,18 +75,18 @@
   {:then newsItems}
     {#if newsItems}
       {#each newsItems as item}
-        <div
-          class={"flex flex-row justify-center items-center mb-2 " +
+        <button
+          class={"flex flex-row text-left justify-center items-center mb-2 border-surface-400 p-2 px-2 border " +
             (item.date_unix > latestReadDate
               ? "unread-news text-primary-800"
               : "read-news")}
           on:click={() => launchNews(item)}
         >
-          <div class="grow text-sm h-11 news-left news-content">
+          <div class="grow news-left news-content text-sm">
             <div class="font-bold">{item.title}</div>
-            <div class="text-xs flex flex-row gap-1">
-              <div class="flex flex-row items-center gap-1">
-                <CalendarRangeOutline />
+            <div class="text-xs flex flex-row gap-2">
+              <div class="flex flex-row items-center gap-[0.1rem]">
+                <CalendarRangeOutline width="0.9rem" height="0.9rem" />
                 {new Date(item.date_unix * 1000).toLocaleDateString(
                   $curr_lang,
                   {
@@ -99,21 +99,25 @@
 
               {#if item.important}
                 <div>
-                  <span class="chip variant-ghost-warning p-1 px-2"
-                    >Important</span
+                  <span
+                    class="chip variant-ghost-warning p-[0.2rem] px-[0.3rem] text-xs"
                   >
+                    {l10n($curr_lang, "important")}
+                  </span>
                 </div>
               {/if}
             </div>
           </div>
-          <div class="rounded bg-gray-300 ml-2">
-            <img
-              class="w-11 h-11 block max-w-none"
-              src={item.thumbnail}
-              alt="thumb"
-            />
-          </div>
-        </div>
+          {#if item.thumbnail}
+            <div class="rounded bg-gray-300 ml-2">
+              <img
+                class="w-11 h-11 block max-w-none"
+                src={item.thumbnail}
+                alt="thumb"
+              />
+            </div>
+          {/if}
+        </button>
       {/each}
     {/if}
   {/await}
