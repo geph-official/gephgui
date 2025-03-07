@@ -16,6 +16,7 @@ import {
   type ExitDescriptor,
 } from "../native-gate";
 import { LRUCache } from "lru-cache";
+import { curr_lang } from "./l10n";
 
 /**
  * The current valid secret
@@ -24,13 +25,6 @@ export const curr_valid_secret: Writable<string | null> = persistentWritable(
   "secret",
   null
 );
-
-/****************
- * Language
- ****************/
-// We'll assume you have or will create a store for the current language.
-// For now, default to "en" if none is specified.
-export const curr_lang: Writable<string> = persistentWritable("lang", "en");
 
 /****************
  * News
@@ -202,6 +196,7 @@ export const app_status: Writable<AppStatus | null> =
       const lang = get(curr_lang);
 
       // Run all fetch operations in parallel
+      console.log("lang", lang);
       const [stats, account, connection, news, exits] = await Promise.all([
         statsCache.fetch("stats"),
         accountStatusCache.fetch(secret),

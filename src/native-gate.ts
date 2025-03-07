@@ -427,7 +427,7 @@ const MockDaemonRpc = {
       })
       .map((item, index) => ({
         ...item,
-        title: `Headline ${index + 1}`,
+        title: `Headline ${index + 1} ` + lang,
         date_unix: 100000000 + index * 86400, // Increment date by one day for each item
       }));
   },
