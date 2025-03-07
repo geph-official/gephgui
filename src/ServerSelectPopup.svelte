@@ -13,9 +13,11 @@
   export let open = false;
 
   const modalStore = getModalStore();
+  let closing = false;
 
   const reconnectDaemon = async () => {
     try {
+      closing = true;
       const gate = await native_gate();
       const args = await startDaemonArgs();
       if (args && $app_status?.connection !== "disconnected") {
@@ -28,6 +30,7 @@
       );
     } finally {
       open = false;
+      closing = false;
     }
   };
 
@@ -82,7 +85,9 @@
     </AppBar>
 
     <div class="flex flex-col gap-2 p-2 pt-5">
-      {#if $app_status}
+      {#if closing}
+        <ProgressBar />
+      {:else if $app_status}
         <!-- "Automatic" option -->
         <button
           class={rowClass}
