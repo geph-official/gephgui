@@ -1,6 +1,12 @@
 import MockRss from "./native-gate-mock-rss";
 import MockLogs from "./native-gate-mock-logs";
-import type { ExitConstraint } from "./lib/prefs";
+import {
+  pref_app_whitelist,
+  pref_block_adult,
+  type ExitConstraint,
+} from "./lib/prefs";
+import { curr_valid_secret } from "./lib/user";
+import { get } from "svelte/store";
 
 export interface InvoiceInfo {
   id: string;
@@ -15,6 +21,11 @@ export interface NativeGate {
    * Starts the daemon. Only resolves when the daemon is confirmed to be running.
    */
   start_daemon(daemon_args: DaemonArgs): Promise<void>;
+
+  /**
+   * Restarts the daemon. May fail if the daemon is not in a state ready to restart.
+   */
+  restart_daemon(daemon_args: DaemonArgs): Promise<void>;
 
   /**
    * Stops the daemon. Only resolves when the daemon is confirmed to have stopped running.
@@ -194,6 +205,14 @@ function mock_native_gate(): NativeGate {
       running = true;
       await random_sleep();
       setTimeout(() => (connected = true), 1000);
+    },
+    restart_daemon: async () => {
+      random_fail();
+      random_fail();
+      random_fail();
+      random_fail();
+      running = true;
+      await random_sleep();
     },
     stop_daemon: async () => {
       random_fail();

@@ -1,6 +1,20 @@
 import { get, writable, type Writable } from "svelte/store";
-import { persistentWritable } from "./prefs";
-import { native_gate } from "../native-gate";
+import {
+  persistentWritable,
+  pref_app_whitelist,
+  pref_block_ads,
+  pref_block_adult,
+  pref_exit_constraint_derived,
+  pref_global_vpn,
+  pref_listen_all,
+  pref_proxy_autoconf,
+  pref_use_prc_whitelist,
+} from "./prefs";
+import {
+  native_gate,
+  type DaemonArgs,
+  type ExitDescriptor,
+} from "../native-gate";
 import { LRUCache } from "lru-cache";
 
 /**
@@ -207,6 +221,32 @@ export const app_status: Writable<AppStatus | null> =
     500, // refresh interval in ms
     null
   );
+
+export const startDaemonArgs = async (): Promise<DaemonArgs | null> => {
+  const secret = get(curr_valid_secret);
+  if (!secret) {
+    return null;
+  }
+  const whitelistApps = Object.keys(get(pref_app_whitelist)).filter(
+    (key) => get(pref_app_whitelist)[key]
+  );
+
+  return {
+    secret,
+    metadata: {
+      filter: {
+        nsfw: get(pref_block_adult),
+        ads: get(pref_block_ads),
+      },
+    },
+    exit: get(pref_exit_constraint_derived),
+    app_whitelist: whitelistApps,
+    prc_whitelist: get(pref_use_prc_whitelist),
+    listen_all: get(pref_listen_all),
+    proxy_autoconf: get(pref_proxy_autoconf),
+    global_vpn: get(pref_global_vpn),
+  };
+};
 
 // A simple store to open or close a payments modal
 export const paymentsOpen: Writable<boolean> = writable(false);

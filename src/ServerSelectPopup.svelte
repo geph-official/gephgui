@@ -9,8 +9,18 @@
   import { pref_exit_constraint } from "./lib/prefs";
   import Flag from "./lib/Flag.svelte";
   import { showErrorModal } from "./lib/utils";
-  import { app_status } from "./lib/user";
+  import { app_status, startDaemonArgs } from "./lib/user";
   export let open = false;
+
+  const reconnectDaemon = async () => {
+    if ($app_status?.connection !== "disconnected") {
+      const gate = await native_gate();
+      const args = await startDaemonArgs();
+      if (args) {
+        await gate.restart_daemon(args);
+      }
+    }
+  };
 
   const getCountries = (servers: ExitDescriptor[]): string[] => {
     const countries = servers.map((server) => server.country);
@@ -86,11 +96,12 @@
             {#if city}
               <button
                 class={rowClass}
-                on:click={() => {
+                on:click={async () => {
                   $pref_exit_constraint = {
                     city,
                     country,
                   };
+                  await reconnectDaemon();
                   open = false;
                 }}
               >

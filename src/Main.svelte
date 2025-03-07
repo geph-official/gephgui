@@ -1,7 +1,7 @@
 <script lang="ts">
   export let secret: string;
   import { curr_lang, l10n } from "./lib/l10n";
-  import { app_status } from "./lib/user";
+  import { app_status, startDaemonArgs } from "./lib/user";
 
   import {
     pref_app_whitelist,
@@ -31,36 +31,21 @@
   let connectButtonDisabled = false;
   const modalStore = getModalStore();
 
-  const startDaemon = async () => {
+  const handleStartDaemon = async () => {
     connectButtonDisabled = true;
     try {
-      const gate = await native_gate();
-      const whitelistApps = Object.keys($pref_app_whitelist).filter(
-        (key) => $pref_app_whitelist[key]
-      );
-
-      await gate.start_daemon({
-        secret,
-        metadata: {
-          filter: {
-            nsfw: $pref_block_adult,
-            ads: $pref_block_ads,
-          },
-        },
-        exit: $pref_exit_constraint_derived,
-        app_whitelist: whitelistApps,
-        prc_whitelist: $pref_use_prc_whitelist,
-        listen_all: $pref_listen_all,
-        proxy_autoconf: $pref_proxy_autoconf,
-        global_vpn: $pref_global_vpn,
-      });
+      const args = await startDaemonArgs();
+      if (args) {
+        const gate = await native_gate();
+        await gate.start_daemon(args);
+      }
     } catch (e) {
       showErrorModal(modalStore, l10n($curr_lang, "error") + ": " + e);
     } finally {
       connectButtonDisabled = false;
     }
   };
-  const stopDaemon = async () => {
+  const handleStopDaemon = async () => {
     connectButtonDisabled = true;
     try {
       const gate = await native_gate();
@@ -115,8 +100,7 @@
 
     <div class="bottom card flex flex-col">
       <div
-        class="flex flex-row mb-3"
-        class:cursor-pointer={$app_status.connection === "disconnected"}
+        class="flex flex-row mb-3 cursor-pointer"
         on:click={() => switchServers()}
       >
         <div class="server-name grow">
@@ -148,16 +132,14 @@
           </div>
         </div>
         <div class="icon">
-          {#if $app_status.connection === "disconnected"}
-            <ChevronRight size="1.5rem" />
-          {/if}
+          <ChevronRight size="1.5rem" />
         </div>
       </div>
 
       {#if $app_status.connection === "disconnected"}
         <button
           class="btn variant-filled"
-          on:click={() => startDaemon()}
+          on:click={() => handleStartDaemon()}
           disabled={connectButtonDisabled}
         >
           {l10n($curr_lang, "connect")}
@@ -168,7 +150,7 @@
       {:else if $app_status.connection === "connecting"}
         <button
           class="btn variant-ghost"
-          on:click={() => stopDaemon()}
+          on:click={() => handleStopDaemon()}
           disabled={connectButtonDisabled}
         >
           {l10n($curr_lang, "cancel")}
@@ -178,7 +160,7 @@
       {:else}
         <button
           class="btn variant-ghost"
-          on:click={() => stopDaemon()}
+          on:click={() => handleStopDaemon()}
           disabled={connectButtonDisabled}
         >
           {l10n($curr_lang, "disconnect")}
