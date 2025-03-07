@@ -53,7 +53,7 @@
     $app_status?.connection === "disconnected"
       ? "disconnected"
       : $app_status?.connection === "connecting"
-        ? "reconnecting"
+        ? "connecting"
         : "connected";
 </script>
 
