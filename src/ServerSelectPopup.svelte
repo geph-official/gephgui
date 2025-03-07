@@ -16,18 +16,18 @@
 
   const reconnectDaemon = async () => {
     try {
-      if ($app_status?.connection !== "disconnected") {
-        const gate = await native_gate();
-        const args = await startDaemonArgs();
-        if (args) {
-          await gate.restart_daemon(args);
-        }
+      const gate = await native_gate();
+      const args = await startDaemonArgs();
+      if (args && $app_status?.connection !== "disconnected") {
+        await gate.restart_daemon(args);
       }
     } catch (e) {
       showErrorModal(
         modalStore,
-        l10n($curr_lang, "cant-reconnect-now" + ": " + e)
+        l10n($curr_lang, "cant-reconnect-now") + ":<br>" + e
       );
+    } finally {
+      open = false;
     }
   };
 
@@ -88,7 +88,7 @@
           class={rowClass}
           on:click={() => {
             $pref_exit_constraint = "auto";
-            open = false;
+            reconnectDaemon();
           }}
         >
           <div class="w-7">
@@ -111,7 +111,6 @@
                     country,
                   };
                   await reconnectDaemon();
-                  open = false;
                 }}
               >
                 <!-- Flag icon -->
