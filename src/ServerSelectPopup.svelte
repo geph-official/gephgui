@@ -12,13 +12,22 @@
   import { app_status, startDaemonArgs } from "./lib/user";
   export let open = false;
 
+  const modalStore = getModalStore();
+
   const reconnectDaemon = async () => {
-    if ($app_status?.connection !== "disconnected") {
-      const gate = await native_gate();
-      const args = await startDaemonArgs();
-      if (args) {
-        await gate.restart_daemon(args);
+    try {
+      if ($app_status?.connection !== "disconnected") {
+        const gate = await native_gate();
+        const args = await startDaemonArgs();
+        if (args) {
+          await gate.restart_daemon(args);
+        }
       }
+    } catch (e) {
+      showErrorModal(
+        modalStore,
+        l10n($curr_lang, "cant-reconnect-now" + ": " + e)
+      );
     }
   };
 

@@ -144,3 +144,4 @@ error,Error,错误,錯誤,خطا,Ошибка
 incorrect-user-secret,"Incorrect user secret","错误的账户密钥","錯誤的帳戶密鑰","رمز حساب کاربری اشتباه است","Неверный секретный ключ аккаунта"
 report-problem,"Report a problem","报告问题","回報問題","گزارش مشکل","Сообщить о проблеме"
 important,Important,重要,重要,مهم,Важно
+cant-reconnect-now,"Can't reconnect at this time; new server will take effect on next connect","无法立即重新连接；新服务器将在下次连接时生效","無法立即重新連接；新伺服器將在下次連接時生效","در حال حاضر امکان اتصال مجدد وجود ندارد؛ سرور جدید در اتصال بعدی اعمال خواهد شد","Невозможно переподключиться сейчас; новый сервер вступит в силу при следующем подключении"
