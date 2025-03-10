@@ -24,8 +24,10 @@
   } from "./lib/prefs";
   import { native_gate } from "./native-gate";
   import SingleSetting from "./settings/SingleSetting.svelte";
+  import ShowLogsPopup from "./ShowLogsPopup.svelte";
 
   export let open = false;
+  let showLogsOpen = false;
 
   const modalStore = getModalStore();
 
@@ -178,12 +180,19 @@
               modalStore.trigger(modal);
             }}>{l10n($curr_lang, "report-problem")}</button
           >
-          <!-- <button class="btn variant-filled btn-sm">Show logs</button> -->
+          <button
+            class="btn variant-ghost btn-sm"
+            on:click={() => {
+              showLogsOpen = true;
+            }}>{l10n($curr_lang, "debug-logs")}</button
+          >
         </div>
       </section>
     </div>
   {/if}
 {/await}
+
+<ShowLogsPopup bind:open={showLogsOpen} />
 
 <style>
   #settings {

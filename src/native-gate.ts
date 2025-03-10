@@ -73,6 +73,11 @@ export interface NativeGate {
   get_app_icon_url(id: string): Promise<string>;
 
   /**
+   * Gets the complete debug logs as a string
+   */
+  get_debug_pack(): Promise<string>;
+
+  /**
    * Whether this platform supports listening on all interfaces
    */
   supports_listen_all: boolean;
@@ -280,6 +285,12 @@ function mock_native_gate(): NativeGate {
 
     async export_debug_pack(email) {
       alert("do something:");
+    },
+
+    async get_debug_pack() {
+      random_fail();
+      await random_sleep();
+      return MockLogs.map(([timestamp, message]) => `[${new Date(timestamp * 1000).toISOString()}] ${message}`).join('\n');
     },
 
     supports_listen_all: true,
