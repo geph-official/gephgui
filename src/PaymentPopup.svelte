@@ -118,6 +118,8 @@
                       const gate = await native_gate();
                       await gate.pay_invoice(secondPageInvoice.id, method);
                       handleCancel();
+                    } catch (e) {
+                      showErrorModal(modalStore, "" + e);
                     } finally {
                       payInProgress = false;
                     }
