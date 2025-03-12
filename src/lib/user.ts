@@ -124,6 +124,42 @@ function selfRefreshingStore<T>(
 }
 
 /**
+ * Creates a persistent self-refreshing store that calls an async function at a given interval
+ * and persists its value to localStorage.
+ * @param storageName - The name of the localStorage key.
+ * @param refreshFn - The asynchronous function to refresh the store's value.
+ * @param intervalMs - Refresh interval in milliseconds.
+ * @param initialValue - The initial value of the store.
+ */
+function persistentSelfRefreshingStore<T>(
+  storageName: string,
+  refreshFn: () => Promise<T>,
+  intervalMs: number,
+  initialValue: T
+): Writable<T> {
+  // Create a persistent store
+  const store = persistentWritable<T>(storageName, initialValue);
+  
+  async function loop() {
+    while (true) {
+      try {
+        const value = await refreshFn();
+        store.set(value);
+      } catch (error) {
+        console.error("Error during refresh:", error);
+      }
+      // Sleep for intervalMs
+      await new Promise((resolve) => setTimeout(resolve, intervalMs));
+    }
+  }
+
+  // Start the background task
+  loop();
+
+  return store;
+}
+
+/**
  * Stats cache: 10 minutes.
  */
 const statsCache = new LRUCache<string, Stats>({
@@ -183,9 +219,11 @@ async function fetchConnectionStatus(): Promise<ConnectionStatus> {
 /**
  * Single store to track account, connection, stats, and news.
  * Returns null if the secret is missing.
+ * Persists to localStorage so that on startup it still has the previous version.
  */
 export const app_status: Writable<AppStatus | null> =
-  selfRefreshingStore<AppStatus | null>(
+  persistentSelfRefreshingStore<AppStatus | null>(
+    "app_status",  // localStorage key
     async () => {
       const secret = get(curr_valid_secret);
       if (!secret) {
