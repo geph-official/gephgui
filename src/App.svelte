@@ -34,9 +34,9 @@
   <Toast />
   <AppBar>
     <svelte:fragment slot="lead">
-      <img src="/gephlogo.png" id="logo" alt="Geph logo" />
+      <img src="gephlogo.png" id="logo" alt="Geph logo" />
     </svelte:fragment>
-    <b id="logo-text">{l10n($curr_lang, "geph")}</b>
+    <!-- <b id="logo-text">{l10n($curr_lang, "geph")}</b> -->
     <svelte:fragment slot="trail">
       {#if $curr_valid_secret !== null}
         <button

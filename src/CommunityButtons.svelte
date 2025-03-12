@@ -11,7 +11,7 @@
     target="_blank"
     rel="noopener"
   >
-    <img src="/twitter.png" class={imgClass} alt="twitter" />
+    <img src="twitter.png" class={imgClass} alt="twitter" />
   </a>
   <a
     class={buttonClass}
@@ -19,7 +19,7 @@
     target="_blank"
     rel="noopener"
   >
-    <img src="/telegram.svg" class={imgClass} alt="telegram" />
+    <img src="telegram.svg" class={imgClass} alt="telegram" />
   </a>
   <a
     class={buttonClass}
@@ -27,6 +27,6 @@
     target="_blank"
     rel="noopener"
   >
-    <img src="/github.svg" class={imgClass} alt="github" />
+    <img src="github.svg" class={imgClass} alt="github" />
   </a>
 </div>
