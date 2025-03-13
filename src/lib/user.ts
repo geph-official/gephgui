@@ -77,18 +77,10 @@ export type ConnectionStatus =
 export type AppStatus = {
   account: AccountStatus;
   connection: ConnectionStatus;
-  stats: {
-    total_users: number[];
-    total_mbps: number[];
-  };
+
   news: NewsItem[];
   exits: ExitDescriptor[];
 };
-
-interface Stats {
-  total_users: number[];
-  total_mbps: number[];
-}
 
 /**
  * Creates a self-refreshing store that calls an async function at a given interval.
@@ -160,27 +152,6 @@ function persistentSelfRefreshingStore<T>(
 }
 
 /**
- * Stats cache: 10 minutes.
- */
-const statsCache = new LRUCache<string, Stats>({
-  max: 1,
-  ttl: 10 * 60 * 1000,
-  ignoreFetchAbort: true,
-  allowStaleOnFetchAbort: true,
-  fetchMethod: async (_) => {
-    const gate = await native_gate();
-    return {
-      total_users: (await gate.daemon_rpc("stat_history", [
-        "total_users",
-      ])) as number[],
-      total_mbps: (await gate.daemon_rpc("stat_history", [
-        "total_mbps",
-      ])) as number[],
-    };
-  },
-});
-
-/**
  * Account status cache: 1 minute, keyed by secret.
  */
 const accountStatusCache = new LRUCache<string, AccountStatus>({
@@ -248,8 +219,7 @@ export const app_status: Writable<AppStatus | null> =
 
       // Run all fetch operations in parallel
       console.log("lang", lang);
-      const [stats, account, connection, news, exits] = await Promise.all([
-        statsCache.fetch("stats"),
+      const [account, connection, news, exits] = await Promise.all([
         accountStatusCache.fetch(secret),
         fetchConnectionStatus(),
         fetchNews(lang),
@@ -259,7 +229,7 @@ export const app_status: Writable<AppStatus | null> =
       return {
         account,
         connection,
-        stats,
+
         news,
         exits,
       };
