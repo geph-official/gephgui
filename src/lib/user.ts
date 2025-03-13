@@ -1,4 +1,4 @@
-import { get, writable, type Writable } from "svelte/store";
+import { get, writable, type Readable, type Writable } from "svelte/store";
 import {
   persistentWritable,
   pref_app_whitelist,
@@ -139,7 +139,7 @@ function persistentSelfRefreshingStore<T>(
 ): Writable<T> {
   // Create a persistent store
   const store = persistentWritable<T>(storageName, initialValue);
-  
+
   async function loop() {
     while (true) {
       try {
@@ -216,6 +216,19 @@ async function fetchConnectionStatus(): Promise<ConnectionStatus> {
   }
 }
 
+export const traffic_history: Readable<number[]> = selfRefreshingStore(
+  async () => {
+    const gate = await native_gate();
+    const v: number[] = (await gate.daemon_rpc("stat_history", [
+      "traffic",
+    ])) as any;
+    console.log(v);
+    return v;
+  },
+  1000,
+  []
+);
+
 /**
  * Single store to track account, connection, stats, and news.
  * Returns null if the secret is missing.
@@ -223,7 +236,7 @@ async function fetchConnectionStatus(): Promise<ConnectionStatus> {
  */
 export const app_status: Writable<AppStatus | null> =
   persistentSelfRefreshingStore<AppStatus | null>(
-    "app_status",  // localStorage key
+    "app_status", // localStorage key
     async () => {
       const secret = get(curr_valid_secret);
       if (!secret) {

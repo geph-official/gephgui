@@ -1,7 +1,7 @@
 <script lang="ts">
   export let secret: string;
   import { curr_lang, l10n } from "./lib/l10n";
-  import { app_status } from "./lib/user";
+  import { app_status, traffic_history } from "./lib/user";
 
   import {
     pref_app_whitelist,
@@ -21,6 +21,7 @@
   import Wizard from "./Wizard.svelte";
   import CommunityButtons from "./CommunityButtons.svelte";
   import ConnectionControl from "./ConnectionControl.svelte";
+  import Graph from "./Graph.svelte";
 
   let serversOpen = false;
 </script>
@@ -40,6 +41,13 @@
     <NewsFeed />
 
     <CommunityButtons />
+
+    <div class="card">
+      <Graph
+        data={$traffic_history.map((s) => s / 1000 / 1000)}
+        title={l10n($curr_lang, "total-traffic")}
+      />
+    </div>
 
     <ConnectionControl bind:serversOpen />
   {:else}

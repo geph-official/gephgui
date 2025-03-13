@@ -36,28 +36,30 @@
   })();
 </script>
 
-{#key color}
-  <div>
-    <div class="text-sm -mb-1">{title}</div>
-    <div class="font-medium" style="color: {color}">
-      <span class="text-2xl"
-        >{(data[data.length - 1] || 0).toFixed(decimals)}</span
-      >
-      {unit}
+{#key data}
+  {#key color}
+    <div>
+      <div class="text-xs -mb-1 ml-2 mt-2">{title}</div>
+      <div class="ml-2" style="color: {color}">
+        <span class="text-xl"
+          >{(data[data.length - 1] || 0).toFixed(decimals)}</span
+        >
+        {unit}
+      </div>
+      <svg
+        bind:this={container}
+        class="hidden"
+        width="200"
+        height="20"
+        stroke-width="1"
+        stroke-opacity="1"
+        stroke={color}
+        fill={color}
+        fill-opacity="0.1"
+      ></svg>
+      {#if svgData}
+        <img src={svgData} class="w-full h-full" alt="" />
+      {/if}
     </div>
-    <svg
-      bind:this={container}
-      class="hidden"
-      width="100"
-      height="70"
-      stroke-width="1"
-      stroke-opacity="1"
-      stroke={color}
-      fill={color}
-      fill-opacity="0.1"
-    ></svg>
-    {#if svgData}
-      <img src={svgData} class="w-full h-full" alt="" />
-    {/if}
-  </div>
+  {/key}
 {/key}
