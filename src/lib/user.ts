@@ -193,7 +193,9 @@ export const traffic_history: Readable<number[]> = selfRefreshingStore(
     const v: number[] = (await gate.daemon_rpc("stat_history", [
       "traffic",
     ])) as any;
-    console.log(v);
+    if (v.length > 0) {
+      v.pop();
+    }
     return v;
   },
   1000,
