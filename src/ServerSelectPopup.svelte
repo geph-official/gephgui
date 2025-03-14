@@ -65,11 +65,11 @@
   };
 
   const rowClass =
-    "flex flex-row bg-surface-200 p-2 text-sm rounded-md mx-2 cursor-pointer items-center text-left block";
+    "flex flex-row bg-surface-200 p-2 text-sm rounded-md cursor-pointer items-center text-left block";
 </script>
 
-<Popup 
-  {open} 
+<Popup
+  {open}
   title={l10n($curr_lang, "exit-selection")}
   onClose={() => (open = false)}
 >

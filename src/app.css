@@ -1,7 +1,7 @@
 @import "tailwindcss/base";
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
-@import url(iosevka-aile-font/stylesheet.css);
+@import url(inter-font/inter.css);
 
 /* html {
   font-size: 15px;
@@ -10,10 +10,10 @@
 body {
   padding: 0;
   margin: 0;
-  font-family: "Iosevka Aile", "Vazirmatn", "Noto Sans CJK SC",
+  font-family: "InterVariable", "Vazirmatn", "Noto Sans CJK SC",
     "Source Han Sans SC", system-ui, sans-serif;
-  /* font-feature-settings: "liga" 1, "calt" 1, "tnum" 1; */
-  /* letter-spacing: -1%; */
+  font-feature-settings: "liga" 1, "calt" 1, "tnum" 1;
+  letter-spacing: -1%;
 }
 
 a {
