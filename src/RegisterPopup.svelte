@@ -1,12 +1,12 @@
 <script lang="ts">
-  import { AppBar, ProgressBar } from "@skeletonlabs/skeleton";
-  import Close from "svelte-material-icons/Close.svelte";
-  import { fly } from "svelte/transition";
+  import { ProgressBar } from "@skeletonlabs/skeleton";
   import { curr_lang, l10n } from "./lib/l10n";
   import { native_gate } from "./native-gate";
   import { onDestroy, onMount } from "svelte";
   import { curr_valid_secret } from "./lib/user";
   import { formatNumberWithSpaces } from "./lib/utils";
+  import Popup from "./lib/Popup.svelte";
+  
   export let open = false;
 
   let registerNum: number | null = null;
@@ -64,58 +64,47 @@
   };
 </script>
 
-{#if open}
-  <div
-    class="bg-surface-50 absolute top-0 left-0 w-full h-full z-50"
-    transition:fly={{ x: 0, y: 200, duration: 300 }}
-  >
-    <AppBar>
-      <svelte:fragment slot="lead">
-        <button on:click={() => (open = false)}>
-          <Close size="1.5rem" />
-        </button>
-      </svelte:fragment>
-      <b id="logo-text">{l10n($curr_lang, "register")}</b>
-    </AppBar>
-    <div class="px-5">
-      <p class="my-3">
-        {l10n($curr_lang, "register-warning")}
-      </p>
+<Popup 
+  {open} 
+  title={l10n($curr_lang, "register")}
+  onClose={() => (open = false)}
+>
+  <p class="my-3">
+    {l10n($curr_lang, "register-warning")}
+  </p>
 
-      <p class="my-3">
-        <b>{l10n($curr_lang, "keep-window-open")}</b>
-      </p>
+  <p class="my-3">
+    <b>{l10n($curr_lang, "keep-window-open")}</b>
+  </p>
 
-      {#if accountSecret}
-        <div class="text-center text-2xl">
-          {formatNumberWithSpaces(accountSecret)}
-        </div>
-        <div class="text-center mt-2">
-          <button class="btn variant-filled btn-sm" on:click={() => onLogin()}>
-            {l10n($curr_lang, "login")}
-          </button>
-        </div>
-      {:else}
-        <ProgressBar
-          value={registerProgress ? registerProgress : undefined}
-          max={1}
-          meter="bg-primary-600"
-        />
-        <div class="flex flex-row text-sm">
-          {#if registerProgress}
-            <div class="grow">{(registerProgress * 100).toFixed(1)}%</div>
-            {#if registerSpeed}
-              <div>
-                {((1.0 - registerProgress) / registerSpeed).toFixed(1)}s
-              </div>
-            {/if}
-          {/if}
-        </div>
-
-        <p class="my-3">
-          {l10n($curr_lang, "skip-wait-login-secret")}
-        </p>
+  {#if accountSecret}
+    <div class="text-center text-2xl">
+      {formatNumberWithSpaces(accountSecret)}
+    </div>
+    <div class="text-center mt-2">
+      <button class="btn variant-filled btn-sm" on:click={() => onLogin()}>
+        {l10n($curr_lang, "login")}
+      </button>
+    </div>
+  {:else}
+    <ProgressBar
+      value={registerProgress ? registerProgress : undefined}
+      max={1}
+      meter="bg-primary-600"
+    />
+    <div class="flex flex-row text-sm">
+      {#if registerProgress}
+        <div class="grow">{(registerProgress * 100).toFixed(1)}%</div>
+        {#if registerSpeed}
+          <div>
+            {((1.0 - registerProgress) / registerSpeed).toFixed(1)}s
+          </div>
+        {/if}
       {/if}
     </div>
-  </div>
-{/if}
+
+    <p class="my-3">
+      {l10n($curr_lang, "skip-wait-login-secret")}
+    </p>
+  {/if}
+</Popup>

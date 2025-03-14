@@ -1,11 +1,12 @@
 <script lang="ts">
-  import { AppBar, ProgressBar } from "@skeletonlabs/skeleton";
-  import Close from "svelte-material-icons/Close.svelte";
-  import { fly, slide } from "svelte/transition";
+  import { ProgressBar } from "@skeletonlabs/skeleton";
+  import { slide } from "svelte/transition";
   import { curr_lang, l10n } from "./lib/l10n";
   import { native_gate } from "./native-gate";
   import { curr_valid_secret } from "./lib/user";
   import { formatNumberWithSpaces } from "./lib/utils";
+  import Popup from "./lib/Popup.svelte";
+  
   export let open = false;
 
   let username = "";
@@ -34,59 +35,49 @@
   };
 </script>
 
-<div
-  class="bg-surface-50 absolute top-0 left-0 w-full h-full z-50"
-  transition:fly={{ x: 0, y: 200, duration: 300 }}
+<Popup 
+  {open} 
+  title={l10n($curr_lang, "migrate-from-older-versions")}
+  onClose={() => (open = false)}
 >
-  <AppBar>
-    <svelte:fragment slot="lead">
-      <button on:click={() => (open = false)}>
-        <Close size="1.5rem" />
-      </button>
-    </svelte:fragment>
-    <b id="logo-text">{l10n($curr_lang, "migrate-from-older-versions")}</b>
-  </AppBar>
+  <p class="my-3">
+    {@html l10n($curr_lang, "enter-old-username-password-blurb")}
+  </p>
 
-  <div class="px-5">
-    <p class="my-3">
-      {@html l10n($curr_lang, "enter-old-username-password-blurb")}
-    </p>
+  <p class="my-3">
+    {l10n($curr_lang, "user-secret-info")}
+  </p>
 
-    <p class="my-3">
-      {l10n($curr_lang, "user-secret-info")}
-    </p>
-
-    {#if accountSecret}
-      <div transition:slide>
-        <div class="text-center text-2xl">
-          {formatNumberWithSpaces(accountSecret)}
-        </div>
-        <div class="text-center mt-2">
-          <button class="btn variant-filled btn-sm" on:click={() => onLogin()}>
-            {l10n($curr_lang, "login")}
-          </button>
-        </div>
+  {#if accountSecret}
+    <div transition:slide>
+      <div class="text-center text-2xl">
+        {formatNumberWithSpaces(accountSecret)}
       </div>
-    {:else if isConverting}
-      <ProgressBar />
-    {:else}
-      <div class="flex flex-col gap-3" transition:slide>
-        <input
-          class="input"
-          type="text"
-          placeholder={l10n($curr_lang, "username")}
-          bind:value={username}
-        />
-        <input
-          class="input"
-          type="password"
-          placeholder={l10n($curr_lang, "password")}
-          bind:value={password}
-        />
-        <button class="btn variant-filled" on:click={onConvert}>
-          {l10n($curr_lang, "convert-account")}
+      <div class="text-center mt-2">
+        <button class="btn variant-filled btn-sm" on:click={() => onLogin()}>
+          {l10n($curr_lang, "login")}
         </button>
       </div>
-    {/if}
-  </div>
-</div>
+    </div>
+  {:else if isConverting}
+    <ProgressBar />
+  {:else}
+    <div class="flex flex-col gap-3" transition:slide>
+      <input
+        class="input"
+        type="text"
+        placeholder={l10n($curr_lang, "username")}
+        bind:value={username}
+      />
+      <input
+        class="input"
+        type="password"
+        placeholder={l10n($curr_lang, "password")}
+        bind:value={password}
+      />
+      <button class="btn variant-filled" on:click={onConvert}>
+        {l10n($curr_lang, "convert-account")}
+      </button>
+    </div>
+  {/if}
+</Popup>

@@ -8,7 +8,7 @@ export type Natlang = "en" | "zh-CN" | "zh-TW" | "fa" | "ru";
 
 // The current language.
 export const curr_lang: Writable<Natlang> = persistentWritable(
-  "language-new-5",
+  "language-new-6",
   detectNearestBrowserLocale(["en", "zh-CN", "zh-TW", "fa", "ru"])
 );
 

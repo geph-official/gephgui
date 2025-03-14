@@ -42,7 +42,7 @@ export const showErrorModal = async (modalStore: ModalStore, error: string) => {
   await new Promise<boolean>((resolve) => {
     const modal: ModalSettings = {
       type: "alert",
-      title: "Error",
+      // title: "Error",
       body: error,
       response: (r: boolean) => {
         resolve(r);

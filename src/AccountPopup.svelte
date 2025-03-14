@@ -1,16 +1,15 @@
 <script lang="ts">
-  import { AppBar, ProgressBar } from "@skeletonlabs/skeleton";
-  import Close from "svelte-material-icons/Close.svelte";
+  import { ProgressBar } from "@skeletonlabs/skeleton";
   import EyeOutline from "svelte-material-icons/EyeOutline.svelte";
   import EyeOffOutline from "svelte-material-icons/EyeOffOutline.svelte";
   import ContentCopy from "svelte-material-icons/ContentCopy.svelte";
   export let open = false;
   let loggingOut = false;
 
-  import { fly } from "svelte/transition";
   import { curr_lang, l10n } from "./lib/l10n";
   import { app_status, curr_valid_secret } from "./lib/user";
   import { native_gate } from "./native-gate";
+  import Popup from "./lib/Popup.svelte";
 
   let secretShown = false;
 
@@ -30,113 +29,94 @@
   }
 </script>
 
-{#if open}
-  <div
-    id="popup"
-    class="bg-surface-50"
-    transition:fly={{ x: 0, y: 200, duration: 300 }}
-  >
-    {#if loggingOut}
-      <div class="m-5">
-        <ProgressBar />
-      </div>
-    {:else}
-      <AppBar>
-        <svelte:fragment slot="lead">
-          <button on:click={() => (open = false)}>
-            <Close size="1.5rem" />
-          </button>
-        </svelte:fragment>
-        <b id="logo-text">{l10n($curr_lang, "account")}</b>
-      </AppBar>
-
-      {#if $curr_valid_secret}
-        <section>
-          <h2 class="text-primary-700">{l10n($curr_lang, "account-secret")}</h2>
-          <div class="flex flex-row">
-            <div class="grow">
-              {#if secretShown}
-                {$curr_valid_secret.match(/.{1,4}/g)?.join(" ")}
-              {:else}
-                {$curr_valid_secret
-                  .replace(/\d/g, "•")
-                  .match(/.{1,4}/g)
-                  ?.join(" ")}
-              {/if}
-            </div>
-            <button on:click={() => (secretShown = !secretShown)} class="mr-2">
-              {#if secretShown}
-                <EyeOffOutline size="1.5rem" />
-              {:else}
-                <EyeOutline size="1.5rem" />
-              {/if}
-            </button>
-            <button on:click={() => copyToClipboard($curr_valid_secret || "")}>
-              <ContentCopy size="1.5rem" />
-            </button>
-          </div>
-        </section>
-
-        <section>
-          <h2 class="text-primary-700">{l10n($curr_lang, "account-info")}</h2>
-          <table class="table table-hover">
-            <tbody>
-              {#if $app_status?.account.level === "Plus"}
-                <tr>
-                  <td>{l10n($curr_lang, "account-level")}</td>
-                  <td>{l10n($curr_lang, "plus-account")}</td>
-                </tr>
-                <tr>
-                  <td>{l10n($curr_lang, "plus-expiry")}</td>
-                  <td
-                    >{new Date(
-                      $app_status?.account.expiry * 1000
-                    ).toLocaleDateString(undefined, {
-                      year: "numeric",
-                      month: "short",
-                      day: "numeric",
-                    })}</td
-                  >
-                </tr>
-              {:else if $app_status?.account.level === "Free"}
-                <tr>
-                  <td>{l10n($curr_lang, "account-level")}</td>
-                  <td>{l10n($curr_lang, "free-account")}</td>
-                </tr>
-              {/if}
-            </tbody>
-          </table>
-        </section>
-      {/if}
+<Popup 
+  {open} 
+  title={l10n($curr_lang, "account")}
+  onClose={() => (open = false)}
+>
+  {#if loggingOut}
+    <div class="my-5">
+      <ProgressBar />
+    </div>
+  {:else}
+    {#if $curr_valid_secret}
       <section>
-        <button
-          class="btn variant-ghost-error btn-sm"
-          on:click={async () => {
-            loggingOut = true;
-            const gate = await native_gate();
-            await gate.stop_daemon();
-            localStorage.clear();
-            window.location.reload();
-          }}
-        >
-          {l10n($curr_lang, "logout")}
-        </button>
+        <h2 class="text-primary-700">{l10n($curr_lang, "account-secret")}</h2>
+        <div class="flex flex-row">
+          <div class="grow">
+            {#if secretShown}
+              {$curr_valid_secret.match(/.{1,4}/g)?.join(" ")}
+            {:else}
+              {$curr_valid_secret
+                .replace(/\d/g, "•")
+                .match(/.{1,4}/g)
+                ?.join(" ")}
+            {/if}
+          </div>
+          <button on:click={() => (secretShown = !secretShown)} class="mr-2">
+            {#if secretShown}
+              <EyeOffOutline size="1.5rem" />
+            {:else}
+              <EyeOutline size="1.5rem" />
+            {/if}
+          </button>
+          <button on:click={() => copyToClipboard($curr_valid_secret || "")}>
+            <ContentCopy size="1.5rem" />
+          </button>
+        </div>
+      </section>
+
+      <section>
+        <h2 class="text-primary-700">{l10n($curr_lang, "account-info")}</h2>
+        <table class="table table-hover">
+          <tbody>
+            {#if $app_status?.account.level === "Plus"}
+              <tr>
+                <td>{l10n($curr_lang, "account-level")}</td>
+                <td>{l10n($curr_lang, "plus-account")}</td>
+              </tr>
+              <tr>
+                <td>{l10n($curr_lang, "plus-expiry")}</td>
+                <td
+                  >{new Date(
+                    $app_status?.account.expiry * 1000
+                  ).toLocaleDateString(undefined, {
+                    year: "numeric",
+                    month: "short",
+                    day: "numeric",
+                  })}</td
+                >
+              </tr>
+            {:else if $app_status?.account.level === "Free"}
+              <tr>
+                <td>{l10n($curr_lang, "account-level")}</td>
+                <td>{l10n($curr_lang, "free-account")}</td>
+              </tr>
+            {/if}
+          </tbody>
+        </table>
       </section>
     {/if}
-  </div>
-{/if}
+    <section>
+      <button
+        class="btn variant-ghost-error btn-sm"
+        on:click={async () => {
+          loggingOut = true;
+          const gate = await native_gate();
+          await gate.stop_daemon();
+          localStorage.clear();
+          window.location.reload();
+        }}
+      >
+        {l10n($curr_lang, "logout")}
+      </button>
+    </section>
+  {/if}
+</Popup>
 
 <style>
-  #popup {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-  }
-
   section {
-    margin: 1rem;
+    margin-bottom: 1rem;
   }
 
   h2 {

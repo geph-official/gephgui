@@ -150,3 +150,10 @@ debug-logs,Debug logs,调试日志,調試日誌,گزارش‌های عیب‌ی�
 logs-copied,Debug logs copied,调试日志已复制,調試日誌已複製,گزارش‌های عیب‌یابی کپی شد,Отладочные логи скопированы
 wechat,WeChat,微信,微信,وی‌چت,WeChat
 alipay,Alipay,支付宝,支付寶,علی‌پی,Alipay
+redeem-voucher,Redeem voucher,兑换礼品卡,兌換礼品卡,بازخرید کد تخفیف,Использовать ваучер
+enter-voucher-code,Enter voucher code,输入礼品卡代码,輸入礼品卡代碼,کد تخفیف را وارد کنید,Введите код ваучера
+redeem,Redeem,兑换,兌換,بازخرید,Активировать
+back,Back,返回,返回,بازگشت,Назад
+voucher-code,Voucher code,礼品卡代码,礼品卡代碼,کد تخفیف,Код ваучера
+voucher-invalid,"Invalid voucher code","无效的礼品卡代码","無效的禮品卡代碼","کد تخفیف نامعتبر","Недействительный код ваучера"
+voucher-success,"Voucher redeemed","礼品卡兑换成功","禮品卡兌換成功","کد تخفیف با موفقیت بازخرید شد","Ваучер успешно активирован"
