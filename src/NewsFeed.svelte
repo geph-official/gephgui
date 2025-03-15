@@ -21,7 +21,7 @@
     if (typeof localStorage !== "undefined") {
       const stored = localStorage.getItem("latestReadDate");
       if (stored) {
-        latestReadDate = parseInt(stored) || 0;
+        latestReadDate = Math.max(latestReadDate, parseInt(stored) || 0);
       }
     }
   });
@@ -46,6 +46,34 @@
       .replaceAll("<br>", " ")
       .replaceAll("<br/>", " ");
   };
+
+  const formatDate = (timestamp: number) => {
+    const now = new Date();
+    const date = new Date(timestamp * 1000);
+    const diffMs = now.getTime() - date.getTime();
+    const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+
+    if (diffDays < 7) {
+      return {
+        text:
+          diffDays === 0
+            ? l10n($curr_lang, "today")
+            : diffDays === 1
+              ? l10n($curr_lang, "yesterday")
+              : `${diffDays} ${l10n($curr_lang, "days-ago")}`,
+        isRecent: diffDays < 3,
+      };
+    } else {
+      return {
+        text: date.toLocaleDateString($curr_lang, {
+          year: "numeric",
+          month: "short",
+          day: "numeric",
+        }),
+        isRecent: false,
+      };
+    }
+  };
 </script>
 
 <div class="my-4 outer grow flex flex-col card p-3">
@@ -55,32 +83,27 @@
   <div class="flex flex-col overflow-y-auto">
     {#if $app_status?.news}
       {#each $app_status.news as item}
+        {@const dateInfo = formatDate(item.date_unix)}
         <button
-          class={"flex rounded-lg flex-row text-left justify-center items-center mb-3 border-surface-400 p-3 py-2 border " +
+          class={"flex flex-row text-left justify-center items-center mb-3 py-2  " +
             (item.date_unix > latestReadDate
               ? "unread-news text-primary-800"
               : "read-news")}
           on:click={() => launchNews(item)}
         >
-          <div class="grow news-left news-content text-sm">
-            <div class="font-bold">{item.title}</div>
-            <div class="text-xs flex flex-row gap-2">
-              <div class="flex flex-row items-center gap-[0.1rem]">
-                <CalendarRangeOutline width="0.9rem" height="0.9rem" />
-                {new Date(item.date_unix * 1000).toLocaleDateString(
-                  $curr_lang,
-                  {
-                    year: "numeric",
-                    month: "short",
-                    day: "numeric",
-                  }
-                )}
+          <div class="grow news-left news-content">
+            <div class="text-lg font-medium">{item.title}</div>
+            <div class="text-sm flex flex-row gap-2">
+              <div
+                class={"flex flex-row items-center gap-[0.1rem] font-semibold " +
+                  (dateInfo.isRecent ? "text-green-700" : "opacity-[0.7]")}
+              >
+                {dateInfo.text}
               </div>
-
               {#if item.important}
                 <div>
                   <span
-                    class="chip variant-ghost-warning p-[0.2rem] px-[0.3rem] text-xs"
+                    class="chip variant-ghost-warning p-[0.2rem] px-[0.3rem] text-xs font-medium"
                   >
                     {l10n($curr_lang, "important")}
                   </span>
@@ -149,5 +172,9 @@
   .unread-news .news-content {
     animation: pulsate 2s infinite ease-in-out;
     font-weight: 500;
+  }
+
+  .read-news {
+    opacity: 0.8;
   }
 </style>

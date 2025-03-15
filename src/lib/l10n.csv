@@ -157,3 +157,6 @@ back,Back,返回,返回,بازگشت,Назад
 voucher-code,Voucher code,礼品卡代码,礼品卡代碼,کد تخفیف,Код ваучера
 voucher-invalid,"Invalid voucher code","无效的礼品卡代码","無效的禮品卡代碼","کد تخفیف نامعتبر","Недействительный код ваучера"
 voucher-success,"Voucher redeemed","礼品卡兑换成功","禮品卡兌換成功","کد تخفیف با موفقیت بازخرید شد","Ваучер успешно активирован"
+today,Today,今天,今天,امروز,Сегодня
+yesterday,Yesterday,昨天,昨天,دیروز,Вчера
+days-ago,days ago,天前,天前,روز پیش,дней назад
