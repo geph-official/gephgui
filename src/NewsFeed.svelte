@@ -85,14 +85,14 @@
       {#each $app_status.news as item}
         {@const dateInfo = formatDate(item.date_unix)}
         <button
-          class={"flex flex-row text-left justify-center items-center mb-3 py-2  " +
+          class={"flex flex-row text-left justify-between items-center mb-3 py-2  " +
             (item.date_unix > latestReadDate
               ? "unread-news text-primary-800"
               : "read-news")}
           on:click={() => launchNews(item)}
         >
-          <div class="grow news-left news-content">
-            <div class="text-lg font-medium">{item.title}</div>
+          <div class=" news-left news-content">
+            <div class="font-medium">{item.title}</div>
             <div class="text-sm flex flex-row gap-2">
               <div
                 class={"flex flex-row items-center gap-[0.1rem] font-semibold " +
@@ -111,15 +111,14 @@
               {/if}
             </div>
           </div>
-          {#if item.thumbnail}
-            <div class="rounded bg-gray-300 ml-2">
-              <img
-                class="w-11 h-11 block max-w-none"
-                src={item.thumbnail}
-                alt="thumb"
-              />
-            </div>
-          {/if}
+
+          <div class="rounded bg-gray-300">
+            <img
+              class="w-11 h-11 block max-w-none"
+              src={item.thumbnail}
+              alt="thumb"
+            />
+          </div>
         </button>
       {/each}
     {/if}
