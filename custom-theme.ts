@@ -6,19 +6,19 @@ export const customTheme: CustomThemeConfig = {
     // =~= Theme Properties =~=
     "--theme-font-family-base": `system-ui`,
     "--theme-font-family-heading": `system-ui`,
-    "--theme-font-color-base": "0 0 0",
-    "--theme-font-color-dark": "255 255 255",
+    "--theme-font-color-base": "7 54 66",
+    "--theme-font-color-dark": "253 246 227",
     "--theme-rounded-base": "8px",
     "--theme-rounded-container": "8px",
     "--theme-border-base": "1px",
     // =~= Theme On-X Colors =~=
-    "--on-primary": "255 255 255",
-    "--on-secondary": "255 255 255",
-    "--on-tertiary": "0 0 0",
-    "--on-success": "0 0 0",
-    "--on-warning": "0 0 0",
-    "--on-error": "255 255 255",
-    "--on-surface": "255 255 255",
+    "--on-primary": "253 246 227",
+    "--on-secondary": "253 246 227",
+    "--on-tertiary": "7 54 66",
+    "--on-success": "7 54 66",
+    "--on-warning": "7 54 66",
+    "--on-error": "253 246 227",
+    "--on-surface": "253 246 227",
     // =~= Theme Colors  =~=
     // primary | #6bc8c8
     "--color-primary-50": "217 243 243", // #d9f3f3
