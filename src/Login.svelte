@@ -64,6 +64,7 @@
       class="input my-4"
       bind:value={inputValue}
       type="text"
+      inputmode="numeric"
       on:input={handleInput}
       on:keydown={(e) => {
         if (e.key === "Enter") {
