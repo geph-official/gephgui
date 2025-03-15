@@ -1,16 +1,9 @@
 <script lang="ts">
-  import {
-    ProgressBar,
-    getModalStore,
-    type ModalSettings,
-  } from "@skeletonlabs/skeleton";
   import { curr_lang, l10n } from "./lib/l10n";
-
   import { onMount } from "svelte";
-
   import { app_status } from "./lib/user";
-
   import CalendarRangeOutline from "svelte-material-icons/CalendarRangeOutline.svelte";
+  import Popup from "./lib/Popup.svelte";
 
   type NewsItem = {
     title: string;
@@ -21,6 +14,8 @@
   };
 
   let latestReadDate = 0;
+  let popupOpen = false;
+  let currentNewsItem: NewsItem | null = null;
 
   onMount(() => {
     if (typeof localStorage !== "undefined") {
@@ -31,8 +26,6 @@
     }
   });
 
-  const modalStore = getModalStore();
-
   const launchNews = (item: NewsItem) => {
     if (typeof localStorage !== "undefined") {
       const stored = localStorage.getItem("latestReadDate");
@@ -42,15 +35,8 @@
         latestReadDate = item.date_unix;
       }
     }
-    const modal: ModalSettings = {
-      type: "alert",
-      title: item.title,
-      body:
-        "<div class='overflow-y-auto max-h-[200px] text-sm news-content'>" +
-        item.contents +
-        "</div>",
-    };
-    modalStore.trigger(modal);
+    currentNewsItem = item;
+    popupOpen = true;
   };
 
   const stripParagraphs = (s: string) => {
@@ -116,6 +102,20 @@
     {/if}
   </div>
 </div>
+
+<!-- News Popup -->
+<Popup
+  open={popupOpen}
+  title={currentNewsItem?.title || ""}
+  fullScreen={false}
+  onClose={() => (popupOpen = false)}
+>
+  {#if currentNewsItem}
+    <div class="news-content text-sm overflow-y-auto">
+      {@html currentNewsItem.contents}
+    </div>
+  {/if}
+</Popup>
 
 <style>
   .outer {

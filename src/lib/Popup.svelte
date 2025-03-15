@@ -31,7 +31,11 @@
         <b id="logo-text">{title}</b>
       </AppBar>
 
-      <div class="p-4 h-[calc(100%-3.5rem)] overflow-auto">
+      <div
+        class="p-4 h-[calc(100%-3.5rem)] overflow-auto {!fullScreen
+          ? 'max-h-[70vh]'
+          : ''}"
+      >
         <slot />
       </div>
     </div>
