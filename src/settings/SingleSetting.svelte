@@ -1,5 +1,6 @@
 <script lang="ts">
   export let collapse = false;
+  export let disabled = false;
   import ChevronDown from "svelte-material-icons/ChevronDown.svelte";
   import ChevronUp from "svelte-material-icons/ChevronUp.svelte";
 
@@ -10,11 +11,8 @@
 <div
   class="setting"
   class:clicky={collapse}
-  on:click={() => {
-    if (collapse) {
-      open = !open;
-    }
-  }}
+  class:disabled={disabled}
+  on:click
 >
   <div class="icon"><slot name="icon" /></div>
   <div class="desc"><slot name="description" /></div>
@@ -43,6 +41,12 @@
   .clicky {
     cursor: pointer;
   }
+  
+  .disabled {
+    opacity: 0.7;
+    cursor: pointer;
+  }
+  
   .setting {
     display: flex;
     align-items: center;
@@ -70,7 +74,6 @@
 
   .inner {
     margin-top: -0.8rem;
-
     margin-bottom: 0.5rem;
   }
 </style>

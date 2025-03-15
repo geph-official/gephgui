@@ -23,30 +23,44 @@
   import SingleSetting from "./settings/SingleSetting.svelte";
   import ShowLogsPopup from "./ShowLogsPopup.svelte";
   import Popup from "./lib/Popup.svelte";
+  import { app_status, paymentsOpen } from "./lib/user";
+  import { pref_wizard } from "./lib/prefs";
 
   export let open = false;
   let showLogsOpen = false;
 
   const modalStore = getModalStore();
 
+  // Function to open the wizard/upgrade popup for Free tier users
+  const handleFreeTierFeature = () => {
+    open = false;
+    $pref_wizard = true;
+  };
+
   const settings = async () => {
     const gate = await native_gate();
+    const isPlusUser = $app_status?.account.level === "Plus";
+    
     return {
       features: [
         {
           icon: AirFilter,
           description: "content-filtering",
           type: "collapse",
+          disabled: !isPlusUser,
+          onClickDisabled: handleFreeTierFeature,
           inner: [
             {
               description: "ads-and-trackers",
               type: "checkbox",
               store: pref_block_ads,
+              disabled: !isPlusUser,
             },
             {
               description: "adult-content",
               type: "checkbox",
               store: pref_block_adult,
+              disabled: !isPlusUser,
             },
           ],
         },
@@ -54,12 +68,15 @@
           icon: CallSplit,
           type: "collapse",
           description: "split-tunneling",
+          disabled: !isPlusUser,
+          onClickDisabled: handleFreeTierFeature,
           inner: [
             {
               description: "exclude-prc",
               type: "checkbox",
               store: pref_use_prc_whitelist,
               blurb: "exclude-prc-blurb",
+              disabled: !isPlusUser,
             },
           ],
         },
