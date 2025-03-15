@@ -14,13 +14,13 @@
     class="fixed top-0 left-0 w-full h-full {!fullScreen
       ? 'bg-black bg-opacity-50 backdrop-blur-sm p-4'
       : ''} flex items-center justify-center z-50"
-    transition:fade
+    transition:fade|global
   >
     <div
       class="bg-surface-50 overflow-hidden shadow-lg {fullScreen
         ? 'w-full h-full'
         : 'rounded-lg max-w-2xl w-full'}"
-      transition:fly={{ y: 50, duration: 300 }}
+      transition:fly|global={{ y: 50, duration: 300 }}
     >
       <AppBar>
         <svelte:fragment slot="lead">

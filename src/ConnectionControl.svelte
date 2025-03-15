@@ -58,7 +58,7 @@
 </script>
 
 {#if $app_status}
-  <div class="bottom card flex flex-col">
+  <div class="bottom card flex flex-col rounded-t-none">
     <button
       class="flex flex-row mb-4 text-left"
       on:click={() => switchServers()}

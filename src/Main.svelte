@@ -42,7 +42,7 @@
 
     <CommunityButtons />
 
-    <div class="card">
+    <div class="card rounded-b-none">
       <Graph
         data={$traffic_history.map((s) => s / 1000 / 1000)}
         title={l10n($curr_lang, "total-traffic")}

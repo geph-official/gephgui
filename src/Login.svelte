@@ -119,7 +119,6 @@
   #accnumber {
     height: 2.5rem;
     padding: 0.3rem;
-    border-radius: 0;
   }
 
   .middle {

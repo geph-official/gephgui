@@ -70,7 +70,7 @@
     {#if $app_status?.news}
       {#each $app_status.news as item}
         <button
-          class={"flex flex-row text-left justify-center items-center mb-3 border-surface-400 p-3 py-2 border " +
+          class={"flex rounded-lg flex-row text-left justify-center items-center mb-3 border-surface-400 p-3 py-2 border " +
             (item.date_unix > latestReadDate
               ? "unread-news text-primary-800"
               : "read-news")}

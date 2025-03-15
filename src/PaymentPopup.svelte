@@ -117,7 +117,7 @@
       {:then pricePoints}
         {#each pricePoints as [days, price], i}
           <button
-            class={`border-black border p-3 px-2 flex-row flex gap-2 items-center mb-2 cursor-pointer ${
+            class={`border-black rounded-lg border p-3 px-2 flex-row flex gap-2 items-center mb-2 cursor-pointer ${
               i === selectedIndex ? "bg-primary-200" : ""
             }`}
             on:click={() => handleSelect(i)}
@@ -164,7 +164,7 @@
       {:else}
         {#each secondPageInvoice.methods as method}
           <button
-            class="border-black border p-2"
+            class="border-black border p-2 rounded-lg"
             on:click={async () => {
               if (secondPageInvoice) {
                 payInProgress = true;
