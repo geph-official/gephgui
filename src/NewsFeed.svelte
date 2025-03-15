@@ -112,13 +112,9 @@
             </div>
           </div>
 
-          <div class="rounded bg-gray-300">
-            <img
-              class="w-11 h-11 block max-w-none"
-              src={item.thumbnail}
-              alt="thumb"
-            />
-          </div>
+          <!-- <div class="rounded bg-gray-300">
+            <img class="w-11 h-11 block" src={item.thumbnail} alt="thumb" />
+          </div> -->
         </button>
       {/each}
     {/if}
