@@ -12,7 +12,7 @@
 {#if open}
   <div
     class="fixed top-0 left-0 !m-0 w-full h-full {!fullScreen
-      ? 'bg-black bg-opacity-50 backdrop-blur-sm p-4'
+      ? 'bg-surface-500 bg-opacity-50 backdrop-blur-sm p-4'
       : ''} flex items-center justify-center z-50"
     transition:fade|global
     on:click={onClose}

@@ -1,6 +1,7 @@
 <script lang="ts">
+  import { ProgressBar } from "@skeletonlabs/skeleton";
   import Popup from "./lib/Popup.svelte";
-  import { curr_lang } from "./lib/l10n";
+  import { curr_lang, l10n } from "./lib/l10n";
   import { curr_valid_secret } from "./lib/user";
   import { native_gate } from "./native-gate";
 
@@ -15,20 +16,69 @@
       $curr_valid_secret,
     ])) as VoucherInfo | null;
   };
+
+  let applyingVoucher = false;
+
+  const applyVoucher = async (voucher: string) => {
+    applyingVoucher = true;
+    try {
+      const gate = await native_gate();
+      await gate.daemon_rpc("redeem_voucher", [$curr_valid_secret, voucher]);
+      popupOpen = false;
+      applied = true;
+    } finally {
+      applyingVoucher = false;
+    }
+  };
+
+  // Helper function to get explanation text with fallback to "en"
+  const getExplanation = (voucher: VoucherInfo | null) => {
+    if (!voucher) return "";
+    return (
+      voucher.explanation[$curr_lang] ||
+      voucher.explanation["en"] ||
+      Object.values(voucher.explanation)[0] ||
+      ""
+    );
+  };
+
+  let popupOpen = false;
+  let applied = false;
 </script>
 
 {#await fetchVoucher() then voucher}
-  <button class="btn btn-sm variant-ghost-success -my-2 attention-button">
-    Free Plus!
-  </button>
+  {#if voucher}
+    {#if !applied}
+      <button
+        class="btn btn-sm variant-ghost-warning -my-2 attention-button"
+        on:click={() => (popupOpen = true)}
+      >
+        {l10n($curr_lang, "free-plus")}
+      </button>
+    {/if}
 
-  <Popup open={true} fullScreen={false} title="Free Geph Plus!">
-    <div class="flex flex-col gap-2">
-      <div>{voucher?.explanation[$curr_lang]}</div>
-      <button class="btn variant-ghost-primary">Apply voucher</button>
-      <button class="btn variant-ghost">Use later</button>
-    </div>
-  </Popup>
+    <Popup
+      bind:open={popupOpen}
+      fullScreen={false}
+      title={l10n($curr_lang, "free-plus")}
+    >
+      <div class="flex flex-col gap-2">
+        <div>{getExplanation(voucher)}</div>
+        {#if applyingVoucher}
+          <ProgressBar />
+        {:else}
+          <button
+            class="btn variant-ghost-primary"
+            on:click={() => applyVoucher(voucher?.code)}
+            >{l10n($curr_lang, "apply-voucher")}</button
+          >
+          <button class="btn variant-ghost" on:click={() => (popupOpen = false)}
+            >{l10n($curr_lang, "use-later")}</button
+          >
+        {/if}
+      </div>
+    </Popup>
+  {/if}
 {/await}
 
 <style>
