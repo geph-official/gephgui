@@ -63,10 +63,10 @@
     redeemInProgress = true;
     try {
       const gate = await native_gate();
-      const daysAdded = await gate.redeem_voucher(
+      const daysAdded = await gate.daemon_rpc("redeem_voucher", [
         $curr_valid_secret || "",
-        voucherCode
-      );
+        voucherCode,
+      ]);
 
       if (daysAdded === 0) {
         // Voucher is invalid

@@ -58,12 +58,6 @@ export interface NativeGate {
   pay_invoice(id: string, method: string): Promise<void>;
 
   /**
-   * Redeems a voucher code and returns the number of days added
-   * Returns 0 if the voucher is invalid
-   */
-  redeem_voucher(secret: string, voucher_code: string): Promise<number>;
-
-  /**
    * Gets the list of apps
    */
   sync_app_list(): Promise<AppDescriptor[]>;
@@ -259,18 +253,6 @@ function mock_native_gate(): NativeGate {
       await random_sleep();
     },
 
-    async redeem_voucher(secret: string, voucher_code: string) {
-      random_fail();
-      await random_sleep();
-      // For testing: if voucher contains "invalid", return 0
-      // otherwise return a random number of days between 1 and 90
-      if (voucher_code.toLowerCase().includes("invalid")) {
-        return 0;
-      } else {
-        return Math.floor(Math.random() * 90) + 1;
-      }
-    },
-
     async daemon_rpc(method, args) {
       random_fail();
       if ((MockDaemonRpc as any)[method]) {
@@ -308,10 +290,7 @@ function mock_native_gate(): NativeGate {
     async get_debug_pack() {
       random_fail();
       await random_sleep();
-      return MockLogs.map(
-        ([timestamp, message]) =>
-          `[${new Date(timestamp * 1000).toISOString()}] ${message}`
-      ).join("\n");
+      return "hello\nworld";
     },
 
     supports_listen_all: true,
@@ -462,5 +441,26 @@ const MockDaemonRpc = {
         title: `Headline ${index + 1} ` + lang,
         date_unix: 10000000000 + index * 86400, // Increment date by one day for each item
       }));
+  },
+
+  async get_free_voucher(secret: string) {
+    return {
+      code: "helloworldfree",
+      explanation: {
+        en: "Enjoy 24 hours of Plus to celebrate Geph 5.0!",
+      },
+    };
+  },
+
+  async redeem_voucher(secret: string, voucher_code: string) {
+    random_fail();
+    await random_sleep();
+    // For testing: if voucher contains "invalid", return 0
+    // otherwise return a random number of days between 1 and 90
+    if (voucher_code.toLowerCase().includes("invalid")) {
+      return 0;
+    } else {
+      return Math.floor(Math.random() * 90) + 1;
+    }
   },
 };
