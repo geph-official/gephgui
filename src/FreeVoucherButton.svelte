@@ -2,7 +2,7 @@
   import { ProgressBar } from "@skeletonlabs/skeleton";
   import Popup from "./lib/Popup.svelte";
   import { curr_lang, l10n } from "./lib/l10n";
-  import { curr_valid_secret } from "./lib/user";
+  import { clearAccountCache, curr_valid_secret } from "./lib/user";
   import { native_gate } from "./native-gate";
 
   type VoucherInfo = {
@@ -26,6 +26,7 @@
       await gate.daemon_rpc("redeem_voucher", [$curr_valid_secret, voucher]);
       popupOpen = false;
       applied = true;
+      clearAccountCache();
     } finally {
       applyingVoucher = false;
     }
