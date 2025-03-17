@@ -3,7 +3,12 @@
   import { curr_lang, l10n } from "./lib/l10n";
   import CalendarRangeOutline from "svelte-material-icons/CalendarRangeOutline.svelte";
   import Heart from "svelte-material-icons/Heart.svelte";
-  import { app_status, paymentsOpen, account_refreshing } from "./lib/user";
+  import {
+    app_status,
+    paymentsOpen,
+    account_refreshing,
+    clearAccountCache,
+  } from "./lib/user";
 </script>
 
 {#if $app_status?.account}

@@ -116,7 +116,7 @@
   {#if currentScreen === "main"}
     <div class="flex flex-col">
       {#await getPricePoints()}
-        Loading...
+        <ProgressBar />
       {:then pricePoints}
         {#each pricePoints as [days, price], i}
           <button
@@ -128,7 +128,9 @@
             <div>{days} {l10n($curr_lang, "days")}</div>
             <div class="grow text-right">
               <span class="font-semibold">€{price.toFixed(2)}</span>
-              <span>/ {days} days</span>
+              <span class="font-semibold opacity-[0.6] ml-2"
+                >€{(price / days).toFixed(2)}/d</span
+              >
             </div>
           </button>
         {/each}
