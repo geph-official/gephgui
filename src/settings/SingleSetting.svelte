@@ -4,16 +4,11 @@
   import ChevronDown from "svelte-material-icons/ChevronDown.svelte";
   import ChevronUp from "svelte-material-icons/ChevronUp.svelte";
 
-  let open = false;
+  export let open = false;
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
-<div
-  class="setting"
-  class:clicky={collapse}
-  class:disabled={disabled}
-  on:click
->
+<div class="setting" class:clicky={collapse} class:disabled on:click>
   <div class="icon"><slot name="icon" /></div>
   <div class="desc"><slot name="description" /></div>
   {#if !collapse}
@@ -41,12 +36,12 @@
   .clicky {
     cursor: pointer;
   }
-  
+
   .disabled {
     opacity: 0.7;
     cursor: pointer;
   }
-  
+
   .setting {
     display: flex;
     align-items: center;

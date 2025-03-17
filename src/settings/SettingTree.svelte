@@ -5,18 +5,23 @@
   import { get } from "svelte/store";
   export let setting;
   const store = setting.store;
-  
+
+  let open = false;
+
   function handleClick() {
     if (setting.disabled && setting.onClickDisabled) {
       setting.onClickDisabled();
+    } else {
+      open = !open;
     }
   }
 </script>
 
-<SingleSetting 
-  collapse={setting.type === "collapse"} 
+<SingleSetting
+  collapse={setting.type === "collapse"}
   disabled={setting.disabled}
   on:click={handleClick}
+  {open}
 >
   <svelte:fragment slot="icon">
     {#if setting.icon}
@@ -25,10 +30,10 @@
   </svelte:fragment>
 
   <svelte:fragment slot="description">
-    <div class="main">
+    <div class="main flex flex-row items-center gap-1">
       {l10n($curr_lang, setting.description)}
       {#if setting.disabled}
-        <span class="plus-badge">PLUS</span>
+        <span class="badge variant-ghost-warning">PLUS</span>
       {/if}
     </div>
     {#if setting.blurb}
@@ -51,7 +56,12 @@
   <svelte:fragment slot="collapse">
     {#if setting.type === "collapse"}
       {#each setting.inner as innerSetting}
-        <svelte:self setting={{...innerSetting, disabled: setting.disabled || innerSetting.disabled}} />
+        <svelte:self
+          setting={{
+            ...innerSetting,
+            // disabled: setting.disabled || innerSetting.disabled,
+          }}
+        />
       {/each}
     {/if}
   </svelte:fragment>
@@ -63,16 +73,5 @@
     margin-top: -0.4rem;
     font-weight: 500;
     opacity: 0.8;
-  }
-  
-  .plus-badge {
-    font-size: 0.7rem;
-    font-weight: bold;
-    background-color: var(--color-primary-500);
-    color: white;
-    padding: 0.1rem 0.3rem;
-    border-radius: 0.2rem;
-    margin-left: 0.5rem;
-    vertical-align: middle;
   }
 </style>
