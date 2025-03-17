@@ -19,7 +19,7 @@
   let selectedIndex = 0;
 
   // Track which screen to show
-  type Screen = "main" | "payment" | "voucher";
+  type Screen = "main" | "payment" | "voucher" | "completion";
   let currentScreen: Screen = "main";
 
   function handleSelect(index: number) {
@@ -50,12 +50,12 @@
     }
   }
 
-  function handleCancel() {
+  function handleClose() {
+    clearAccountCache();
     $paymentsOpen = false;
     secondPageInvoice = null;
     currentScreen = "main";
     voucherCode = "";
-    clearAccountCache();
   }
 
   // Function for redeeming voucher
@@ -81,7 +81,7 @@
           modalStore,
           `${l10n($curr_lang, "voucher-success")} (+${daysAdded} ${l10n($curr_lang, "days")})`
         );
-        handleCancel();
+        currentScreen = "completion";
       }
     } catch (e) {
       showErrorModal(
@@ -102,7 +102,7 @@
         modalStore,
         l10n($curr_lang, "err_load_price_points") + ": " + e
       );
-      handleCancel();
+      handleClose();
       throw e;
     }
   };
@@ -110,10 +110,8 @@
 
 <Popup
   open={$paymentsOpen}
-  title={currentScreen === "voucher"
-    ? l10n($curr_lang, "redeem-voucher")
-    : l10n($curr_lang, "add-plus-time")}
-  onClose={handleCancel}
+  title={l10n($curr_lang, "add-plus-time")}
+  onClose={handleClose}
 >
   {#if currentScreen === "main"}
     <div class="flex flex-col">
@@ -122,8 +120,8 @@
       {:then pricePoints}
         {#each pricePoints as [days, price], i}
           <button
-            class={`border-black rounded-lg border p-3 px-2 flex-row flex gap-2 items-center mb-2 cursor-pointer ${
-              i === selectedIndex ? "bg-primary-200" : ""
+            class={`btn variant-outline rounded-lg border p-3 flex-row flex gap-2 items-center mb-2 cursor-pointer ${
+              i === selectedIndex ? "variant-ghost-primary" : ""
             }`}
             on:click={() => handleSelect(i)}
           >
@@ -169,14 +167,14 @@
       {:else}
         {#each secondPageInvoice.methods as method}
           <button
-            class="border-black border p-2 rounded-lg"
+            class="btn variant-filled border p-2 rounded-lg"
             on:click={async () => {
               if (secondPageInvoice) {
                 payInProgress = true;
                 try {
                   const gate = await native_gate();
                   await gate.pay_invoice(secondPageInvoice.id, method);
-                  handleCancel();
+                  currentScreen = "completion";
                 } catch (e) {
                   showErrorModal(modalStore, "" + e);
                 } finally {
@@ -189,10 +187,6 @@
           </button>
         {/each}
       {/if}
-
-      <button class="btn variant-ghost" on:click={handleCancel}>
-        {l10n($curr_lang, "cancel")}
-      </button>
     </div>
   {:else if currentScreen === "voucher"}
     <div class="flex-col flex gap-2">
@@ -229,6 +223,15 @@
           {l10n($curr_lang, "back")}
         </button>
       {/if}
+    </div>
+  {:else if currentScreen === "completion"}
+    <div class="flex-col flex gap-4 items-center text-center text-lg">
+      <p>
+        {@html l10n($curr_lang, "payment-processed-refresh")}
+      </p>
+      <button class="btn variant-filled w-full" on:click={handleClose}>
+        {l10n($curr_lang, "refresh-account-info")}
+      </button>
     </div>
   {/if}
 </Popup>

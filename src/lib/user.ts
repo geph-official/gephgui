@@ -157,15 +157,25 @@ function persistentSelfRefreshingStore<T>(
 const accountStatusCache = new LRUCache<string, AccountStatus>({
   max: 100,
   ttl: 5 * 60 * 1000,
-  ignoreFetchAbort: true,
-  allowStaleOnFetchAbort: true,
+
   fetchMethod: async (secret, oldValue, { signal }) => {
-    const gate = await native_gate();
-    return (await gate.daemon_rpc("user_info", [secret])) as AccountStatus;
+    account_refreshing.set(true);
+    try {
+      const gate = await native_gate();
+      return (await gate.daemon_rpc("user_info", [secret])) as AccountStatus;
+    } finally {
+      account_refreshing.set(false);
+    }
   },
 });
 
-export const clearAccountCache = () => accountStatusCache.clear();
+export const clearAccountCache = () => {
+  console.log("clearing account cache!");
+  accountStatusCache.clear();
+  account_refreshing.set(true);
+};
+
+export const account_refreshing = writable(false);
 
 /**
  * Fetches the connection status from the daemon.
