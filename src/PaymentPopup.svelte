@@ -2,7 +2,11 @@
   import { slide } from "svelte/transition";
   import { curr_lang, l10n } from "./lib/l10n";
   import { native_gate, type InvoiceInfo } from "./native-gate";
-  import { curr_valid_secret, paymentsOpen } from "./lib/user";
+  import {
+    clearAccountCache,
+    curr_valid_secret,
+    paymentsOpen,
+  } from "./lib/user";
   import {
     ProgressBar,
     getModalStore,
@@ -51,6 +55,7 @@
     secondPageInvoice = null;
     currentScreen = "main";
     voucherCode = "";
+    clearAccountCache();
   }
 
   // Function for redeeming voucher

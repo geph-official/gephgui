@@ -152,11 +152,11 @@ function persistentSelfRefreshingStore<T>(
 }
 
 /**
- * Account status cache: 1 minute, keyed by secret.
+ * Account status cache: 5 minutes, keyed by secret.
  */
 const accountStatusCache = new LRUCache<string, AccountStatus>({
   max: 100,
-  ttl: 1 * 60 * 1000,
+  ttl: 5 * 60 * 1000,
   ignoreFetchAbort: true,
   allowStaleOnFetchAbort: true,
   fetchMethod: async (secret, oldValue, { signal }) => {
@@ -164,6 +164,8 @@ const accountStatusCache = new LRUCache<string, AccountStatus>({
     return (await gate.daemon_rpc("user_info", [secret])) as AccountStatus;
   },
 });
+
+export const clearAccountCache = () => accountStatusCache.clear();
 
 /**
  * Fetches the connection status from the daemon.
