@@ -6,7 +6,7 @@
   import { curr_valid_secret } from "./lib/user";
   import { formatNumberWithSpaces } from "./lib/utils";
   import Popup from "./lib/Popup.svelte";
-  
+
   export let open = false;
 
   let registerNum: number | null = null;
@@ -64,8 +64,8 @@
   };
 </script>
 
-<Popup 
-  {open} 
+<Popup
+  {open}
   title={l10n($curr_lang, "register")}
   onClose={() => (open = false)}
 >
@@ -73,13 +73,15 @@
     {l10n($curr_lang, "register-warning")}
   </p>
 
-  <p class="my-3">
+  <p class="my-3 text-error-700">
     <b>{l10n($curr_lang, "keep-window-open")}</b>
   </p>
 
   {#if accountSecret}
-    <div class="text-center text-2xl">
-      {formatNumberWithSpaces(accountSecret)}
+    <div class="w-full flex items-center justify-center">
+      <div class="text-center text-3xl w-[20rem]">
+        {formatNumberWithSpaces(accountSecret)}
+      </div>
     </div>
     <div class="text-center mt-2">
       <button class="btn variant-filled btn-sm" on:click={() => onLogin()}>
@@ -106,5 +108,12 @@
     <p class="my-3">
       {l10n($curr_lang, "skip-wait-login-secret")}
     </p>
+
+    <button
+      class="btn w-full variant-ghost-primary"
+      on:click={() => (open = false)}
+    >
+      {l10n($curr_lang, "login")}
+    </button>
   {/if}
 </Popup>

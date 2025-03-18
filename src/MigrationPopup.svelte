@@ -59,8 +59,10 @@
 
   {#if accountSecret}
     <div transition:slide>
-      <div class="text-center text-2xl">
-        {formatNumberWithSpaces(accountSecret)}
+      <div class="w-full flex items-center justify-center">
+        <div class="text-center text-3xl w-[20rem]">
+          {formatNumberWithSpaces(accountSecret)}
+        </div>
       </div>
       <div class="text-center mt-2">
         <button class="btn variant-filled btn-sm" on:click={() => onLogin()}>

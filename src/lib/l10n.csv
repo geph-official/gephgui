@@ -116,7 +116,7 @@ refresh-user,Refresh info,刷新用户信息,刷新用戶訊息,تازه‌سا�
 refreshing-user-info,Refreshing user info,正在刷新用户信息,正在刷新用戶信息,به روز رسانی اطلاعات کاربر,Обновление информации пользователя
 register,Register,注册,註冊,افتتاح حساب,Регистрация
 register-blurb,Create a new account,创建新帐号,創建新帳號,ایجاد حساب کاربری جدید,Создать новый аккаунт
-register-warning,"In order to protect against spam and automated signups, creating an account may take an extended period of time.","为了防止垃圾邮件和自动注册，创建账户可能需要较长时间。","為了防止垃圾郵件和自動註冊，創建帳戶可能需要較長時間。","برای جلوگیری از هرزنامه و ثبت‌نام‌های خودکار، ایجاد حساب کاربری ممکن است زمان زیادی ببرد.","Для предотвращения спама и автоматических регистраций создание аккаунта может занять длительное время."
+register-warning,"In order to protect against spam and automated signups, creating an account may take an extended period of time.","为了防止批量自动注册，创建账户可能需要较长时间。","為了減少批量自動註冊，創建帳戶可能需要較長時間。","برای جلوگیری از هرزنامه و ثبت‌نام‌های خودکار، ایجاد حساب کاربری ممکن است زمان زیادی ببرد.","Для предотвращения спама и автоматических регистраций создание аккаунта может занять длительное время."
 remaining-days,Remaining days,剩余天数,剩餘天數,روزهای باقی‌مانده,Осталось дней
 report-problem,"Report a problem","报告问题","回報問題","گزارش مشکل","Сообщить о проблеме"
 routing-mode,Routing mode,路由模式,路由模式,حالت مسیریابی,Режим маршрутизации
@@ -124,7 +124,7 @@ select-excluded-apps,Select excluded apps,选择要排除的应用程序,選擇�
 server-id,ID,服务器 ID,伺服器 ID,شناسه,ID
 settings,Settings,设置,設置,تنظیمات,Настройки
 show-all-servers,Show all servers,显示所有服务器,顯示所有服務器,نمایش تمام سرورها,Показать все серверы
-skip-wait-login-secret,"If you already have another device with Geph, you can skip this wait by logging in with your account secret instead.","如果您已经有其他设备使用 Geph，可以通过使用您的账户密钥登录来跳过等待。","如果您已經有其他設備使用 Geph，可以通過使用您的帳戶密鑰登錄來跳過等待。","اگر از قبل دستگاه دیگری با Geph دارید، می‌توانید با ورود با رمز حساب کاربری خود این انتظار را رد کنید.","Если у вас уже есть другое устройство с Geph, вы можете пропустить ожидание, войдя с помощью секретного ключа аккаунта."
+skip-wait-login-secret,"If you already have another device with Geph, you can skip this wait by logging in with your account secret instead:","如果您已经有其他设备使用迷雾通，可以通过使用您的账户密钥登录来跳过等待：","如果您已經有其他設備使用迷雾通，可以通過使用您的帳戶密鑰登錄來跳過等待：","اگر از قبل دستگاه دیگری با Geph دارید، می‌توانید با ورود با رمز حساب کاربری خود این انتظار را رد کنید.","Если у вас уже есть другое устройство с Geph, вы можете пропустить ожидание, войдя с помощью секретного ключа аккаунта."
 split-tunneling,Split tunneling,分流隧道,分流隧道,تونل بندی جداگانه,Разделённое туннелирование
 theme,Theme,主题,主題,قالب,Тема
 total-traffic,Total traffic,总流量,總流量,کل ترافیک,Общий трафик

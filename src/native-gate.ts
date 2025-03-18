@@ -344,7 +344,10 @@ const MockDaemonRpc = {
     if (mockRegisterProgress < 1) {
       return { progress: mockRegisterProgress, secret: null };
     } else {
-      return { progress: mockRegisterProgress, secret: "12345678" };
+      return {
+        progress: mockRegisterProgress,
+        secret: "123456781234567812345678",
+      };
     }
   },
 
