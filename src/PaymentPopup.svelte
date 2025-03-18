@@ -199,6 +199,7 @@
         <input
           id="voucher-code"
           type="text"
+          autocapitalize="characters"
           bind:value={voucherCode}
           class="input p-2 border border-black w-full"
           placeholder={l10n($curr_lang, "enter-voucher-code")}
