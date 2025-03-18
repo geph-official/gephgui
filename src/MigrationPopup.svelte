@@ -78,6 +78,7 @@
         class="input"
         type="text"
         placeholder={l10n($curr_lang, "username")}
+        autocapitalize="none"
         bind:value={username}
       />
       <input
