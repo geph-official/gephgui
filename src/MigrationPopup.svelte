@@ -6,11 +6,15 @@
   import { curr_valid_secret } from "./lib/user";
   import { formatNumberWithSpaces } from "./lib/utils";
   import Popup from "./lib/Popup.svelte";
-  
-  export let open = false;
+  import { onMount } from "svelte";
 
-  let username = "";
-  let password = "";
+  export let open = false;
+  // Accept initial values for username and password
+  export let initialUsername = "";
+  export let initialPassword = "";
+
+  let username = initialUsername;
+  let password = initialPassword;
 
   let accountSecret: string | null = null;
 
@@ -32,11 +36,16 @@
   const onLogin = () => {
     $curr_valid_secret = accountSecret;
     open = false;
+
+    // After successful migration, we can remove the legacy credentials
+    if (localStorage.getItem("userpwd")) {
+      localStorage.removeItem("userpwd");
+    }
   };
 </script>
 
-<Popup 
-  {open} 
+<Popup
+  {open}
   title={l10n($curr_lang, "migrate-from-older-versions")}
   onClose={() => (open = false)}
 >

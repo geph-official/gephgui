@@ -6,6 +6,7 @@
   import RegisterPopup from "./RegisterPopup.svelte";
   import MigrationPopup from "./MigrationPopup.svelte";
   import { formatNumberWithSpaces, showErrorModal } from "./lib/utils";
+  import { onMount } from "svelte";
 
   let inputValue = "";
 
@@ -50,12 +51,41 @@
   let registerOpen = false;
 
   let migrateOpen = false;
+
+  // Legacy user credentials for migration
+  let legacyUsername = "";
+  let legacyPassword = "";
+
+  // Check for legacy credentials on component mount
+  onMount(() => {
+    // Check if the legacy userpwd key exists in localStorage
+    const legacyCredentials = localStorage.getItem("userpwd");
+    if (legacyCredentials) {
+      try {
+        // Parse the JSON object containing username and password
+        const credentials = JSON.parse(legacyCredentials);
+        if (credentials.username && credentials.password) {
+          // Store the legacy credentials to pass to MigrationPopup
+          legacyUsername = credentials.username;
+          legacyPassword = credentials.password;
+          // Open the migration popup automatically
+          migrateOpen = true;
+        }
+      } catch (e) {
+        console.error("Failed to parse legacy credentials:", e);
+      }
+    }
+  });
 </script>
 
 <div id="login">
   <RegisterPopup bind:open={registerOpen} />
   {#if migrateOpen}
-    <MigrationPopup bind:open={migrateOpen} />
+    <MigrationPopup
+      bind:open={migrateOpen}
+      initialUsername={legacyUsername}
+      initialPassword={legacyPassword}
+    />
   {/if}
   <div class="middle">
     <h1 class="text-3xl">{l10n($curr_lang, "login")}</h1>
