@@ -63,11 +63,7 @@
   }
 </script>
 
-<Popup
-  bind:open
-  title={l10n($curr_lang, "select-excluded-apps")}
-  fullScreen={false}
->
+<Popup bind:open title={l10n($curr_lang, "select-excluded-apps")}>
   <div class="flex flex-col w-full overflow-hidden">
     <div
       class="bg-surface-200 p-3 rounded-lg border-l-4 border-primary-500 mb-4"
@@ -93,7 +89,7 @@
             type="text"
             bind:value={searchQuery}
             placeholder={l10n($curr_lang, "search-apps")}
-            class="w-full py-2 px-2 pl-10 rounded-lg bg-surface-300 border border-surface-400 text-primary-900"
+            class="w-full input pl-10"
           />
         </div>
 

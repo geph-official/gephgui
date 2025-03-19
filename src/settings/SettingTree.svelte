@@ -11,11 +11,11 @@
   function handleClick() {
     if (setting.disabled && setting.onClickDisabled) {
       setting.onClickDisabled();
-    } else {
+    } else if (setting.type === "collapse") {
       open = !open;
     }
   }
-  
+
   function handleToggle(event) {
     if (setting.onToggle) {
       setting.onToggle(event.target.checked);
