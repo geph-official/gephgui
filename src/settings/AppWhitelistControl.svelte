@@ -63,7 +63,11 @@
   }
 </script>
 
-<Popup bind:open title={l10n($curr_lang, "select-excluded-apps")}>
+<Popup
+  bind:open
+  title={l10n($curr_lang, "select-excluded-apps")}
+  fullScreen={false}
+>
   <div class="flex flex-col w-full overflow-hidden">
     <div
       class="bg-surface-200 p-3 rounded-lg border-l-4 border-primary-500 mb-4"
