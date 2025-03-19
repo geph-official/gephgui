@@ -15,6 +15,12 @@
       open = !open;
     }
   }
+  
+  function handleToggle(event) {
+    if (setting.onToggle) {
+      setting.onToggle(event.target.checked);
+    }
+  }
 </script>
 
 <SingleSetting
@@ -50,6 +56,7 @@
         active="bg-primary-500"
         bind:checked={$store}
         disabled={setting.disabled}
+        on:change={handleToggle}
       />
     {/if}
   </svelte:fragment>

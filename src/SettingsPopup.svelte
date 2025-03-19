@@ -7,6 +7,7 @@
   import Creation from "svelte-material-icons/Creation.svelte";
   import CallSplit from "svelte-material-icons/CallSplit.svelte";
   import ThemeLightDark from "svelte-material-icons/ThemeLightDark.svelte";
+  import Apps from "svelte-material-icons/Apps.svelte";
 
   import SettingTree from "./settings/SettingTree.svelte";
   import {
@@ -17,17 +18,22 @@
     pref_routing_mode,
     pref_lightdark,
     pref_use_prc_whitelist,
+    pref_use_app_whitelist,
     pref_proxy_autoconf,
   } from "./lib/prefs";
   import { native_gate } from "./native-gate";
   import SingleSetting from "./settings/SingleSetting.svelte";
   import ShowLogsPopup from "./ShowLogsPopup.svelte";
   import Popup from "./lib/Popup.svelte";
-  import { app_status, paymentsOpen } from "./lib/user";
+  import { app_status, paymentsOpen, startDaemonArgs } from "./lib/user";
   import { pref_wizard } from "./lib/prefs";
+  import AppWhitelistControl from "./settings/AppWhitelistControl.svelte";
+  import { writable } from "svelte/store";
 
   export let open = false;
   let showLogsOpen = false;
+  let showAppWhitelist = false;
+  let isRestartingDaemon = writable(false);
 
   const modalStore = getModalStore();
 
@@ -36,6 +42,44 @@
     open = false;
     $pref_wizard = true;
   };
+  
+  // Function to restart the daemon when split tunneling settings change
+  async function restartDaemonIfRunning() {
+    if (!$app_status || $app_status.connection === "disconnected") {
+      return; // No need to restart if not connected
+    }
+    
+    $isRestartingDaemon = true;
+    try {
+      const args = await startDaemonArgs();
+      if (args) {
+        const gate = await native_gate();
+        await gate.restart_daemon(args);
+      }
+    } catch (e) {
+      console.error("Failed to restart daemon:", e);
+      // Show error in UI
+      const modal = {
+        type: "alert",
+        title: l10n($curr_lang, "error"),
+        body: "Failed to apply changes: " + e.toString(),
+      };
+      modalStore.trigger(modal);
+    } finally {
+      $isRestartingDaemon = false;
+    }
+  }
+  
+  // Set up watchers for settings that require daemon restart
+  function handleAppWhitelistToggle(value) {
+    pref_use_app_whitelist.set(value);
+    restartDaemonIfRunning();
+  }
+  
+  function handlePrcWhitelistToggle(value) {
+    pref_use_prc_whitelist.set(value);
+    restartDaemonIfRunning();
+  }
 
   const settings = async () => {
     const gate = await native_gate();
@@ -77,8 +121,17 @@
               store: pref_use_prc_whitelist,
               blurb: "exclude-prc-blurb",
               disabled: !isPlusUser,
+              onToggle: handlePrcWhitelistToggle,
             },
-          ],
+            gate.supports_app_whitelist && {
+              description: "app-whitelist",
+              type: "checkbox",
+              store: pref_use_app_whitelist,
+              blurb: "app-whitelist-blurb",
+              disabled: !isPlusUser,
+              onToggle: handleAppWhitelistToggle,
+            },
+          ].filter(Boolean),
         },
       ],
       network: [
@@ -137,9 +190,9 @@
         </svelte:fragment>
         <svelte:fragment slot="switch">
           <select class="select" bind:value={$pref_lightdark}>
-            <option value="auto">{l10n($curr_lang, "automatic")}</option>
-            <option value="light">{l10n($curr_lang, "light")}</option>
-            <option value="dark">{l10n($curr_lang, "dark")}</option>
+            <option value="auto">Automatic</option>
+            <option value="light">Light</option>
+            <option value="dark">Dark</option>
           </select>
         </svelte:fragment>"
       </SingleSetting>
@@ -153,6 +206,35 @@
         {#each contents as setting}
           <SettingTree {setting} />
         {/each}
+        
+        {#if section === "features" && $pref_use_app_whitelist && $app_status?.account.level === "Plus"}
+          <div class="app-whitelist-section">
+            <SingleSetting>
+              <svelte:fragment slot="icon">
+                <Apps size="1.4rem" />
+              </svelte:fragment>
+              <svelte:fragment slot="description">
+                <div class="main flex flex-row items-center gap-1">
+                  {l10n($curr_lang, "select-excluded-apps") || "Select excluded apps"}
+                  {#if $isRestartingDaemon}
+                    <span class="badge variant-ghost-warning">Applying changes...</span>
+                  {/if}
+                </div>
+                <small>
+                  {l10n($curr_lang, "select-excluded-apps-blurb") || "Choose which apps will not use Geph"}
+                </small>
+              </svelte:fragment>
+              <svelte:fragment slot="switch">
+                <button 
+                  class="btn btn-sm variant-filled-primary"
+                  on:click={() => showAppWhitelist = true}
+                >
+                  {l10n($curr_lang, "select")}
+                </button>
+              </svelte:fragment>
+            </SingleSetting>
+          </div>
+        {/if}
       </section>
     {/each}
 
@@ -199,9 +281,21 @@
 </Popup>
 
 <ShowLogsPopup bind:open={showLogsOpen} />
+<AppWhitelistControl bind:open={showAppWhitelist} />
 
 <style>
   section {
     margin-bottom: 1rem;
+  }
+  
+  .app-whitelist-section {
+    margin-top: 1rem;
+  }
+  
+  small {
+    display: block;
+    margin-top: -0.4rem;
+    font-weight: 500;
+    opacity: 0.8;
   }
 </style>

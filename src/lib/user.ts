@@ -8,6 +8,7 @@ import {
   pref_global_vpn,
   pref_listen_all,
   pref_proxy_autoconf,
+  pref_use_app_whitelist,
   pref_use_prc_whitelist,
 } from "./prefs";
 import {
@@ -257,9 +258,14 @@ export const startDaemonArgs = async (): Promise<DaemonArgs | null> => {
   if (!secret) {
     return null;
   }
-  const whitelistApps = Object.keys(get(pref_app_whitelist)).filter(
-    (key) => get(pref_app_whitelist)[key]
-  );
+
+  // Get the app whitelist only if enabled
+  const useAppWhitelist = get(pref_use_app_whitelist);
+  const whitelistApps = useAppWhitelist
+    ? Object.keys(get(pref_app_whitelist)).filter(
+        (key) => get(pref_app_whitelist)[key]
+      )
+    : [];
 
   return {
     secret,
