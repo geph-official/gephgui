@@ -13,6 +13,7 @@ adult-content,Adult content,成人内容,成人內容,محتوای بزرگسا�
 advanced,Advanced,高级,高級,پیشرفته,Дополнительно
 advanced-warning,"Advanced settings should only be adjusted by experienced users. Incorrect changes may lead to unexpected network behavior or disruptions.",高级设置应只由有经验的用户调整。不正确的更改可能导致意外的现象或连接中断。,高級設置應只由有經驗的用戶調整。不正確的更改可能導致意外的現象或連接中斷.,تنظیمات پیشرفته باید توسط کاربران باتجربه انجام شود. تنظیمات اشتباه ممکن است باعث بروز اختلال در شبکه شما شود.,"Расширенные настройки должны настраиваться только опытными пользователями. Неправильные изменения могут привести к неожиданному поведению сети или сбоям."
 allowed,Allowed,允许,允許,مجاز,Разрешено
+apple-pay,Apple Pay,Apple Pay,Apple Pay,Apple Pay,Apple Pay
 attach-log-blurb,"Geph's app log will be attached to this message. Your message will be sent in an encrypted form, and your data will remain secure and private.","迷雾通的应用日志会随此消息一并发送。您的消息将以加密的方式发送，您的数据将保持安全和私密。","迷霧通的應用日誌會隨此訊息一併發送。您的訊息將以加密的方式發送，您的數據將保持安全和私密。","گزارش برنامهٔ Geph همراه این پیام ارسال خواهد شد. پیام شما به‌صورت رمزگذاری‌شده فرستاده می‌شود و داده‌هایتان امن و خصوصی می‌ماند.","Журнал приложения Geph будет прикреплен к этому сообщению. Ваше сообщение будет отправлено в зашифрованном виде, и ваши данные останутся в безопасности и конфиденциальности."
 auto-proxy,Auto-configure proxy,自动配置代理,自動配置代理,پیکربندی خودکار پروکسی,Автонастройка прокси
 auto-proxy-blurb,Makes most browsers use Geph,配置大多数浏览器使用迷雾通,配置大多數瀏覽器使用迷霧通,بیشتر مرورگرها را مجبور میکند که از Geph استفاده کنند,Настраивает большинство браузеров использовать Geph
