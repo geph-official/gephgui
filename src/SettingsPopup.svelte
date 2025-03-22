@@ -29,6 +29,7 @@
   import { pref_wizard } from "./lib/prefs";
   import AppWhitelistControl from "./settings/AppWhitelistControl.svelte";
   import { writable } from "svelte/store";
+  import VersionDisplay from "./settings/VersionDisplay.svelte";
 
   export let open = false;
   let showLogsOpen = false;
@@ -243,6 +244,8 @@
         >
       </div>
     </section>
+
+    <VersionDisplay />
   {/await}
 </Popup>
 
