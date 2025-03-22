@@ -52,7 +52,7 @@ dont-have-account-secret,"Don't have an account secret?","没有账户密钥？"
 download,Download,下载,下載,دانلود,Скачать
 duplicate-credentials,This username is already taken. Please choose another name,此用户名已存在。请选一个新的用户名,此用戶名已存在。 請選一個新的用戶名,این نام کاربری برداشته شده است. لطفا نام دیگری انتخاب کنید,Это имя пользователя уже занято. Пожалуйста, выберите другое имя.
 enter-account-secret,Enter your account secret,输入您的账户密钥,輸入您的帳戶密鑰,رمز حساب کاربری خود را وارد کنید,Введите секретный ключ вашего аккаунта
-enter-old-username-password-blurb,"Enter the username and password you use with previous versions to obtain your account secret.","请输入您在旧版本中使用的用户名和密码，以获取您的 账户密钥。","請輸入您在舊版本中使用的用戶名和密碼，以獲取您的 帳戶密鑰。","نام کاربری و رمز عبوری را که در نسخه‌های قبلی استفاده می‌کردید وارد کنید تا رمز حساب کاربری خود را دریافت کنید.","Введите имя пользователя и пароль, которые вы использовали в предыдущих версиях, чтобы получить ваш секретный ключ аккаунта."
+enter-old-username-password-blurb,"Enter the username and password you use with previous versions to obtain your account secret.","请输入您在旧版本中使用的用户名和密码，以获取您的账户密钥。","請輸入您在舊版本中使用的用戶名和密碼，以獲取您的 帳戶密鑰。","نام کاربری و رمز عبوری را که در نسخه‌های قبلی استفاده می‌کردید وارد کنید تا رمز حساب کاربری خود را دریافت کنید.","Введите имя пользователя и пароль, которые вы использовали в предыдущих версиях, чтобы получить ваш секретный ключ аккаунта."
 error,Error,错误,錯誤,خطا,Ошибка
 exclude-apps,Exclude apps,排除应用,排除應用,برنامه های صرف‌نظر شده,Исключить приложения
 exclude-apps-blurb,Let apps bypass Geph,允许应用程序绕过迷雾通,允許應用程式繞過迷霧通,این برنامه ها از Geph استفاده نکنند,Позволить приложениям обходить Geph
@@ -133,7 +133,7 @@ unlock-all-locations,"🌎 Unlock all locations","🌎 解锁所有位置","🌎
 unrestricted-access,"Enjoy unrestricted access to ports other than 80 and 443. Perfect for gaming, P2P, video conferencing, and more.","享受对除 80 和 443 之外端口的 无限制访问。非常适合游戏、P2P、视频会议等。","享受對除 80 和 443 之外端口的 無限制訪問。非常適合遊戲、P2P、視頻會議等。","از دسترسی نامحدود به پورت‌های غیر از 80 و 443 لذت ببرید. مناسب برای بازی، P2P، ویدئو کنفرانس و موارد دیگر","Наслаждайтесь неограниченным доступом к портам, кроме 80 и 443. Идеально для игр, P2P, видеоконференций и многого другого."
 upload,Upload,上传,上傳,آپلود,Загрузить
 use-automatic,Automatically select server,自动选择服务器,自動選擇伺服器,انتخاب خودکار سرور,Автоматически выбрать сервер
-user-secret-info,"Your user secret is a unique random code that replaces usernames and passwords.","您的账户密钥是取代用户名和密码的唯一随机代码。","您的帳戶密鑰是取代用戶名和密碼的唯一隨機代碼。","رمز حساب کاربری شما یک کد تصادفی منحصربه‌فرد است که جایگزین نام کاربری و رمز عبور می‌شود.","Ваш секретный ключ аккаунта — это уникальный случайный код, заменяющий логин и пароль."
+user-secret-info,"Your user secret is a unique random code that <b>replaces your username and password</b>.","您的账户密钥是一个随机数字，<b>取代旧版本中的用户名和密码</b>。","您的帳戶金鑰是一個隨機數字，<b>取代舊版本中的使用者名稱和密碼</b>。","رمز حساب کاربری شما یک کد تصادفی منحصربه‌فرد است که جایگزین نام کاربری و رمز عبور می‌شود.","Ваш секретный ключ аккаунта — это уникальный случайный код, заменяющий логин и пароль."
 username,Username,用户名,用戶名,نام کاربری,Имя пользователя
 via,Via,经由,經由,از طریق,Через
 your-email-optional,"Your email (optional)","您的邮箱（可选）","您的郵箱（可選）","ایمیل شما (اختیاری)","Ваш email (необязательно)"

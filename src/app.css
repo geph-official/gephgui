@@ -12,7 +12,7 @@ body {
   margin: 0;
   font-family: "InterVariable", "Vazirmatn", "Noto Sans CJK SC",
     "Source Han Sans SC", system-ui, sans-serif;
-  font-feature-settings: "liga" 1, "calt" 1, "tnum" 1;
+  font-feature-settings: "liga" 1, "calt" 1, "tnum" 1, "cv10" 1, "ss07" 1;
   letter-spacing: -1%;
 }
 

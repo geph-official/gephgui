@@ -54,7 +54,7 @@
   </p>
 
   <p class="my-3">
-    {l10n($curr_lang, "user-secret-info")}
+    {@html l10n($curr_lang, "user-secret-info")}
   </p>
 
   {#if accountSecret}

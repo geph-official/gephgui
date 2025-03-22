@@ -1,19 +1,8 @@
 <script lang="ts">
-  export let secret: string;
   import { curr_lang, l10n } from "./lib/l10n";
   import { app_status, traffic_history } from "./lib/user";
 
-  import {
-    pref_app_whitelist,
-    pref_block_ads,
-    pref_block_adult,
-    pref_exit_constraint_derived,
-    pref_global_vpn,
-    pref_listen_all,
-    pref_proxy_autoconf,
-    pref_use_prc_whitelist,
-    pref_wizard,
-  } from "./lib/prefs";
+  import { pref_wizard } from "./lib/prefs";
   import { ProgressBar } from "@skeletonlabs/skeleton";
   import ServerSelectPopup from "./ServerSelectPopup.svelte";
   import AccountExtender from "./AccountExtender.svelte";

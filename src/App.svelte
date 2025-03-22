@@ -40,7 +40,7 @@
     <!-- <b id="logo-text">{l10n($curr_lang, "geph")}</b> -->
     <svelte:fragment slot="trail">
       {#if $curr_valid_secret !== null}
-       <FreeVoucherButton />
+        <FreeVoucherButton />
 
         <button
           on:click={() => {
@@ -63,7 +63,7 @@
   {#if $curr_valid_secret === null}
     <Login />
   {:else}
-    <Main secret={$curr_valid_secret} />
+    <Main />
   {/if}
 
   <SettingsPopup bind:open={settingsOpen} />
