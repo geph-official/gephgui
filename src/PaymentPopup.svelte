@@ -65,7 +65,7 @@
     setTimeout(() => {
       handleClose();
       refreshInProgress = false;
-    }, 5000);
+    }, 10000);
   }
 
   // Function for redeeming voucher
