@@ -58,6 +58,16 @@
     voucherCode = "";
   }
 
+  let refreshInProgress = false;
+
+  function handleRefreshWithDelay() {
+    refreshInProgress = true;
+    setTimeout(() => {
+      handleClose();
+      refreshInProgress = false;
+    }, 5000);
+  }
+
   // Function for redeeming voucher
   async function redeemVoucher() {
     if (!voucherCode.trim()) {
@@ -227,14 +237,19 @@
         </button>
       {/if}
     </div>
-  {:else if currentScreen === "completion"}
-    <div class="flex-col flex gap-4 items-center text-center text-lg">
-      <p>
-        {@html l10n($curr_lang, "payment-processed-refresh")}
-      </p>
-      <button class="btn variant-filled w-full" on:click={handleClose}>
+{:else if currentScreen === "completion"}
+  <div class="flex-col flex gap-4 items-center text-center text-lg">
+    <p>
+      {@html l10n($curr_lang, "payment-processed-refresh")}
+    </p>
+
+    {#if refreshInProgress}
+      <ProgressBar />
+    {:else}
+      <button class="btn variant-filled w-full" on:click={handleRefreshWithDelay}>
         {l10n($curr_lang, "refresh-account-info")}
       </button>
-    </div>
-  {/if}
+    {/if}
+  </div>
+{/if}
 </Popup>
