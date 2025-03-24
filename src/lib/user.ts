@@ -67,8 +67,8 @@ const serverListCache = new LRUCache<string, ExitDescriptor[]>({
 
 // Combined app status types
 export type AccountStatus =
-  | { level: "Plus"; expiry: number }
-  | { level: "Free" };
+  | { level: "Plus"; expiry: number; user_id: number }
+  | { level: "Free"; user_id: number };
 
 export type ConnectionStatus =
   | { bridge: string | null; exit: string; country: string }
@@ -263,8 +263,8 @@ export const startDaemonArgs = async (): Promise<DaemonArgs | null> => {
   const useAppWhitelist = get(pref_use_app_whitelist);
   const whitelistApps = useAppWhitelist
     ? Object.keys(get(pref_app_whitelist)).filter(
-        (key) => get(pref_app_whitelist)[key]
-      )
+      (key) => get(pref_app_whitelist)[key]
+    )
     : [];
 
   return {
