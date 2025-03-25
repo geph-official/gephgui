@@ -67,8 +67,8 @@ const serverListCache = new LRUCache<string, ExitDescriptor[]>({
 
 // Combined app status types
 export type AccountStatus =
-  | { level: "Plus"; expiry: number; recurring: boolean }
-  | { level: "Free" };
+  | { level: "Plus"; expiry: number; user_id: number; recurring: boolean }
+  | { level: "Free"; user_id: number };
 
 export type ConnectionStatus =
   | { bridge: string | null; exit: string; country: string }
