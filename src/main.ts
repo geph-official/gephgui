@@ -18,7 +18,7 @@ const app = new App({
 const setDark = (value: any) => {
   const darkTheme = {
     brightness: 150,
-    contrast: 90,
+    contrast: 80,
     sepia: 0,
   };
   if (value === "auto") {
