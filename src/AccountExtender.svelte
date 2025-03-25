@@ -3,6 +3,7 @@
   import { curr_lang, l10n } from "./lib/l10n";
   import CalendarRangeOutline from "svelte-material-icons/CalendarRangeOutline.svelte";
   import Heart from "svelte-material-icons/Heart.svelte";
+  import Repeat from "svelte-material-icons/Repeat.svelte";
   import {
     app_status,
     paymentsOpen,
@@ -21,46 +22,67 @@
 
     <div>
       {#if $app_status.account.level === "Plus"}
-        <span class="text-primary-700">
-          <CalendarRangeOutline size="1.4rem" />
-        </span>
+        {#if $app_status.account.recurring}
+          <span class="text-primary-700">
+            <Repeat size="1.4rem" />
+          </span>
+        {:else}
+          <span class="text-primary-700">
+            <CalendarRangeOutline size="1.4rem" />
+          </span>
+        {/if}
       {:else}
         <span class="text-error-700"><Heart size="1.4rem" /></span>
       {/if}
     </div>
     <div class="grow mx-3 flex flex-col">
       {#if $app_status.account.level === "Plus"}
-        <div>
-          {new Date($app_status.account.expiry * 1000).toLocaleDateString(
-            $curr_lang,
-            {
-              year: "numeric",
-              month: "short",
-              day: "numeric",
-            }
-          )}
-        </div>
-        <div class="text-sm">
-          {l10n($curr_lang, "remaining-days")}:
-          <b>
-            {Math.floor(
-              ($app_status.account.expiry - Math.floor(Date.now() / 1000)) /
-                86400
+        {#if $app_status.account.recurring}
+          <div class="font-bold">
+            {l10n($curr_lang, "recurring-subscription")}
+          </div>
+        {:else}
+          <div>
+            {new Date($app_status.account.expiry * 1000).toLocaleDateString(
+              $curr_lang,
+              {
+                year: "numeric",
+                month: "short",
+                day: "numeric",
+              }
             )}
-          </b>
-        </div>
+          </div>
+          <div class="text-sm">
+            {l10n($curr_lang, "remaining-days")}:
+            <b>
+              {Math.floor(
+                ($app_status.account.expiry - Math.floor(Date.now() / 1000)) /
+                  86400
+              )}
+            </b>
+          </div>
+        {/if}
       {:else}
         <b>{l10n($curr_lang, "free-account")}</b>
       {/if}
     </div>
     <div>
       {#if $app_status.account.level === "Plus"}
-        <button
-          class="btn variant-filled-primary"
-          on:click={() => ($paymentsOpen = true)}
-        >
-          {l10n($curr_lang, "extend")}
-        </button>
+        {#if $app_status.account.recurring}
+          <button
+            class="btn variant-filled-primary"
+            on:click={() => window.open("https://geph.io/en/portal/login")}
+          >
+            {l10n($curr_lang, "manage")}
+          </button>
+        {:else}
+          <button
+            class="btn variant-filled-primary"
+            on:click={() => ($paymentsOpen = true)}
+          >
+            {l10n($curr_lang, "extend")}
+          </button>
+        {/if}
       {:else}
         <button
           class="btn variant-ghost-primary"

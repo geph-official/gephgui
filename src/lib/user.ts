@@ -67,7 +67,7 @@ const serverListCache = new LRUCache<string, ExitDescriptor[]>({
 
 // Combined app status types
 export type AccountStatus =
-  | { level: "Plus"; expiry: number }
+  | { level: "Plus"; expiry: number; recurring: boolean }
   | { level: "Free" };
 
 export type ConnectionStatus =
@@ -242,11 +242,11 @@ export const app_status: Writable<AppStatus | null> =
       ]);
 
       return {
-        account,
-        connection,
+        account: account as any,
+        connection: connection as any,
 
-        news,
-        exits,
+        news: news as any,
+        exits: exits as any,
       };
     },
     500, // refresh interval in ms

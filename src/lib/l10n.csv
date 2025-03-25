@@ -182,3 +182,6 @@ excluded-apps,"Excluded apps:","排除的应用：","排除的應用：","برن
 no-apps-found,"No apps found","未找到应用","未找到應用","هیچ برنامه‌ای یافت نشد","Приложения не найдены"
 select-excluded-apps-blurb,"Select which apps should bypass Geph","选择哪些应用应绕过迷雾通","選擇哪些應用應繞過迷霧通","انتخاب کنید کدام برنامه‌ها باید از Geph عبور کنند","Выберите, какие приложения должны обходить Geph"
 select,"Select","选择","選擇","انتخاب","Выбрать"
+recurring-subscription,Recurring subscription,自动续费 Plus,自動續費 Plus,اشتراک دوره‌ای,Периодическая подписка
+renewal,Renewal,续订,續訂,تمدید,Продление
+manage,Manage,管理,管理,مدیریت,Управление

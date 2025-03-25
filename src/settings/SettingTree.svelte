@@ -23,56 +23,58 @@
   }
 </script>
 
-<SingleSetting
-  collapse={setting.type === "collapse"}
-  disabled={setting.disabled}
-  on:click={handleClick}
-  {open}
->
-  <svelte:fragment slot="icon">
-    {#if setting.icon}
-      <svelte:component this={setting.icon} size="1.4rem" />
-    {/if}
-  </svelte:fragment>
-
-  <svelte:fragment slot="description">
-    <div class="main flex flex-row items-center gap-1">
-      {l10n($curr_lang, setting.description)}
-      {#if setting.disabled}
-        <span class="badge variant-ghost-warning">PLUS</span>
+{#if setting.type === "collapse" && setting.inner.length === 0}{:else}
+  <SingleSetting
+    collapse={setting.type === "collapse"}
+    disabled={setting.disabled}
+    on:click={handleClick}
+    {open}
+  >
+    <svelte:fragment slot="icon">
+      {#if setting.icon}
+        <svelte:component this={setting.icon} size="1.4rem" />
       {/if}
-    </div>
-    {#if setting.blurb}
-      <small>
-        {l10n($curr_lang, setting.blurb)}
-      </small>
-    {/if}
-  </svelte:fragment>
-  <svelte:fragment slot="switch">
-    {#if setting.type === "checkbox"}
-      <SlideToggle
-        name={setting.description}
-        size="sm"
-        active="bg-primary-500"
-        bind:checked={$store}
-        disabled={setting.disabled}
-        on:change={handleToggle}
-      />
-    {/if}
-  </svelte:fragment>
-  <svelte:fragment slot="collapse">
-    {#if setting.type === "collapse"}
-      {#each setting.inner as innerSetting}
-        <svelte:self
-          setting={{
-            ...innerSetting,
-            // disabled: setting.disabled || innerSetting.disabled,
-          }}
+    </svelte:fragment>
+
+    <svelte:fragment slot="description">
+      <div class="main flex flex-row items-center gap-1">
+        {l10n($curr_lang, setting.description)}
+        {#if setting.disabled}
+          <span class="badge variant-ghost-warning">PLUS</span>
+        {/if}
+      </div>
+      {#if setting.blurb}
+        <small>
+          {l10n($curr_lang, setting.blurb)}
+        </small>
+      {/if}
+    </svelte:fragment>
+    <svelte:fragment slot="switch">
+      {#if setting.type === "checkbox"}
+        <SlideToggle
+          name={setting.description}
+          size="sm"
+          active="bg-primary-500"
+          bind:checked={$store}
+          disabled={setting.disabled}
+          on:change={handleToggle}
         />
-      {/each}
-    {/if}
-  </svelte:fragment>
-</SingleSetting>
+      {/if}
+    </svelte:fragment>
+    <svelte:fragment slot="collapse">
+      {#if setting.type === "collapse"}
+        {#each setting.inner as innerSetting}
+          <svelte:self
+            setting={{
+              ...innerSetting,
+              // disabled: setting.disabled || innerSetting.disabled,
+            }}
+          />
+        {/each}
+      {/if}
+    </svelte:fragment>
+  </SingleSetting>
+{/if}
 
 <style>
   small {

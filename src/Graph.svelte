@@ -49,8 +49,8 @@
       <svg
         bind:this={container}
         class="hidden"
-        width="200"
-        height="20"
+        width="400"
+        height="40"
         stroke-width="1"
         stroke-opacity="1"
         stroke={color}

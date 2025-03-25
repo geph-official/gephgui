@@ -423,6 +423,7 @@ const MockDaemonRpc = {
     return {
       level: "Plus",
       expiry: 10000000000,
+      recurring: true,
     };
     // return {
     //   level: "Free",
