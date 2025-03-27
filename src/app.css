@@ -20,7 +20,8 @@ body {
 .input:focus,
 .textarea:focus,
 .select:focus,
-.input-group:focus {
+.input-group:focus,
+[type="text"]:focus {
   --tw-border-opacity: 1;
   border-color: rgb(
     var(--color-primary-500) / var(--tw-border-opacity)
