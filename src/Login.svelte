@@ -91,7 +91,7 @@
     <h1 class="text-3xl">{l10n($curr_lang, "login")}</h1>
     <input
       id="accnumber"
-      class="input my-4"
+      class="input my-4 tnum"
       bind:value={inputValue}
       type="text"
       inputmode="numeric"

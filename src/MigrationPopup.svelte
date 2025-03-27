@@ -59,7 +59,7 @@
 
   {#if accountSecret}
     <div transition:slide>
-      <div class="w-full flex items-center justify-center">
+      <div class="w-full flex items-center justify-center tnum">
         <div class="text-center text-3xl w-[20rem]">
           {formatNumberWithSpaces(accountSecret)}
         </div>
