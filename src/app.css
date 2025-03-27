@@ -17,34 +17,6 @@ body {
   letter-spacing: -1%;
 }
 
-[type="text"]:focus,
-input:where(:not([type])):focus,
-[type="email"]:focus,
-[type="url"]:focus,
-[type="password"]:focus,
-[type="number"]:focus,
-[type="date"]:focus,
-[type="datetime-local"]:focus,
-[type="month"]:focus,
-[type="search"]:focus,
-[type="tel"]:focus,
-[type="time"]:focus,
-[type="week"]:focus,
-[multiple]:focus,
-textarea:focus,
-select:focus {
-  outline: unset !important;
-  outline-offset: unset !important;
-  --tw-ring-inset: unset !important;
-  --tw-ring-offset-width: unset !important;
-  --tw-ring-offset-color: unset !important;
-  --tw-ring-color: unset !important;
-  --tw-ring-offset-shadow: unset !important;
-  --tw-ring-shadow: unset !important;
-  box-shadow: unset !important;
-  border-color: unset !important;
-}
-
 .tnum {
   font-feature-settings: "tnum" 1;
 }
