@@ -1,4 +1,3 @@
-import "svelte-material-ui/bare.css";
 import "./inter-font/inter.css";
 import "./vazirmatn-font/vazirmatn.css";
 import "./app.css";
