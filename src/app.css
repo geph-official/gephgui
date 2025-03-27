@@ -17,6 +17,14 @@ body {
   letter-spacing: -1%;
 }
 
+.input:focus,
+.textarea:focus,
+.select:focus,
+.input-group:focus {
+  --tw-border-opacity: 1;
+  border-color: rgb(var(--color-primary-500) / var(--tw-border-opacity));
+}
+
 .tnum {
   font-feature-settings: "tnum" 1;
 }
