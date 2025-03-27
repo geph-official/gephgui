@@ -6,6 +6,7 @@
   import Translate from "svelte-material-icons/Translate.svelte";
   import Creation from "svelte-material-icons/Creation.svelte";
   import CallSplit from "svelte-material-icons/CallSplit.svelte";
+  import NetworkOutline from "svelte-material-icons/NetworkOutline.svelte";
   import ThemeLightDark from "svelte-material-icons/ThemeLightDark.svelte";
   import Apps from "svelte-material-icons/Apps.svelte";
 
@@ -210,6 +211,28 @@
         {l10n($curr_lang, "debug")}
       </h2>
 
+      {#await native_gate() then gate}
+        {#if gate.supports_proxy_conf}
+          <SingleSetting>
+            <svelte:fragment slot="icon">
+              <NetworkOutline size="1.4rem" />
+            </svelte:fragment>
+            <svelte:fragment slot="description">
+              <div class="flex flex-col text-sm">
+                <div>SOCKS5 proxy</div>
+                <div>HTTP proxy</div>
+              </div>
+            </svelte:fragment>
+            <svelte:fragment slot="switch">
+              <div class="flex flex-col text-sm tnum">
+                <b><span class="opacity-50">localhost:</span>9909</b>
+                <b><span class="opacity-50">localhost:</span>9910</b>
+              </div>
+            </svelte:fragment>"
+          </SingleSetting>
+        {/if}
+      {/await}
+
       <div class="flex flex-row gap-2">
         <button
           class="btn variant-filled btn-sm"
@@ -222,7 +245,7 @@
                 type: "text",
                 minlength: 3,
                 maxlength: 20,
-                required: true,
+                required: false,
                 placeholder: l10n($curr_lang, "your-email-optional"),
                 rows: 10,
               },

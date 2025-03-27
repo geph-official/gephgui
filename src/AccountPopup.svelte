@@ -29,8 +29,8 @@
   }
 </script>
 
-<Popup 
-  {open} 
+<Popup
+  {open}
   title={l10n($curr_lang, "account")}
   onClose={() => (open = false)}
 >
@@ -42,7 +42,7 @@
     {#if $curr_valid_secret}
       <section>
         <h2 class="text-primary-700">{l10n($curr_lang, "account-secret")}</h2>
-        <div class="flex flex-row">
+        <div class="flex flex-row tnum">
           <div class="grow">
             {#if secretShown}
               {$curr_valid_secret.match(/.{1,4}/g)?.join(" ")}
@@ -77,7 +77,7 @@
               </tr>
               <tr>
                 <td>{l10n($curr_lang, "plus-expiry")}</td>
-                <td
+                <td class="tnum"
                   >{new Date(
                     $app_status?.account.expiry * 1000
                   ).toLocaleDateString(undefined, {

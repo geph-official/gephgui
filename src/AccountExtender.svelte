@@ -14,7 +14,7 @@
 
 {#if $app_status?.account}
   <div
-    class="card p-3 flex flex-row items-center variant-ghost-primary sheen-container"
+    class="card p-3 flex flex-row items-center variant-ghost-primary sheen-container tnum"
   >
     {#if $account_refreshing}
       <div class="sheen-effect" transition:fade></div>

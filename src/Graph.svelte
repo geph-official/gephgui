@@ -29,16 +29,16 @@
       ($pref_lightdark === "auto" && window?.DarkReader?.isEnabled()) ||
       $pref_lightdark === "dark"
     ) {
-      return "white";
+      return "#fdf6e3";
     } else {
-      return "black";
+      return "#073642";
     }
   })();
 </script>
 
 {#key data}
   {#key color}
-    <div>
+    <div class="tnum">
       <div class="text-xs -mb-1 ml-2 mt-2">{title}</div>
       <div class="ml-2" style="color: {color}">
         <span class="text-xl"

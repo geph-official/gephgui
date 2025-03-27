@@ -93,7 +93,7 @@
         >
           <div class=" news-left news-content">
             <div class="font-medium">{item.title}</div>
-            <div class="text-sm flex flex-row gap-2">
+            <div class="text-sm flex flex-row gap-2 tnum">
               <div
                 class={"flex flex-row items-center gap-[0.1rem] font-semibold " +
                   (dateInfo.isRecent ? "text-green-700" : "opacity-[0.7]")}
