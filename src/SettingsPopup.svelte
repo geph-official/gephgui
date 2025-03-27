@@ -62,7 +62,7 @@
           icon: AirFilter,
           description: "content-filtering",
           type: "collapse",
-          disabled: !isPlusUser,
+
           onClickDisabled: handleFreeTierFeature,
           inner: [
             {
@@ -70,12 +70,14 @@
               type: "checkbox",
               store: pref_block_ads,
               disabled: !isPlusUser,
+              onClickDisabled: handleFreeTierFeature,
             },
             {
               description: "adult-content",
               type: "checkbox",
               store: pref_block_adult,
               disabled: !isPlusUser,
+              onClickDisabled: handleFreeTierFeature,
             },
           ],
         },
@@ -83,8 +85,7 @@
           icon: CallSplit,
           type: "collapse",
           description: "split-tunneling",
-          disabled: !isPlusUser,
-          onClickDisabled: handleFreeTierFeature,
+
           inner: [
             {
               description: "exclude-prc",
@@ -93,6 +94,7 @@
               blurb: "exclude-prc-blurb",
               disabled: !isPlusUser,
               onToggle: handlePrcWhitelistToggle,
+              onClickDisabled: handleFreeTierFeature,
             },
             gate.supports_app_whitelist && {
               description: "app-whitelist",
@@ -101,6 +103,7 @@
               blurb: "app-whitelist-blurb",
               disabled: !isPlusUser,
               onToggle: handleAppWhitelistToggle,
+              onClickDisabled: handleFreeTierFeature,
             },
           ].filter(Boolean),
         },
@@ -170,40 +173,44 @@
     </section>
 
     {#each Object.entries(settings) as [section, contents]}
-      <section>
-        <h2 class="text-primary-700 uppercase font-semibold text-sm mb-2">
-          {l10n($curr_lang, section)}
-        </h2>
-        {#each contents as setting}
-          <SettingTree {setting} />
-        {/each}
+      {#await native_gate() then gate}
+        {#if !gate.supports_proxy_conf && section === "network"}{:else}
+          <section>
+            <h2 class="text-primary-700 uppercase font-semibold text-sm mb-2">
+              {l10n($curr_lang, section)}
+            </h2>
+            {#each contents as setting}
+              <SettingTree {setting} />
+            {/each}
 
-        {#if section === "features" && $pref_use_app_whitelist && $app_status?.account.level === "Plus"}
-          <div class="app-whitelist-section">
-            <SingleSetting>
-              <svelte:fragment slot="icon">
-                <Apps size="1.4rem" />
-              </svelte:fragment>
-              <svelte:fragment slot="description">
-                <div class="main flex flex-row items-center gap-1">
-                  {l10n($curr_lang, "select-excluded-apps")}
-                </div>
-                <small>
-                  {l10n($curr_lang, "select-excluded-apps-blurb")}
-                </small>
-              </svelte:fragment>
-              <svelte:fragment slot="switch">
-                <button
-                  class="btn btn-sm variant-filled-primary"
-                  on:click={() => (showAppWhitelist = true)}
-                >
-                  {l10n($curr_lang, "select")}
-                </button>
-              </svelte:fragment>
-            </SingleSetting>
-          </div>
+            {#if section === "features" && $pref_use_app_whitelist && $app_status?.account.level === "Plus"}
+              <div class="app-whitelist-section">
+                <SingleSetting>
+                  <svelte:fragment slot="icon">
+                    <Apps size="1.4rem" />
+                  </svelte:fragment>
+                  <svelte:fragment slot="description">
+                    <div class="main flex flex-row items-center gap-1">
+                      {l10n($curr_lang, "select-excluded-apps")}
+                    </div>
+                    <small>
+                      {l10n($curr_lang, "select-excluded-apps-blurb")}
+                    </small>
+                  </svelte:fragment>
+                  <svelte:fragment slot="switch">
+                    <button
+                      class="btn btn-sm variant-filled-primary"
+                      on:click={() => (showAppWhitelist = true)}
+                    >
+                      {l10n($curr_lang, "select")}
+                    </button>
+                  </svelte:fragment>
+                </SingleSetting>
+              </div>
+            {/if}
+          </section>
         {/if}
-      </section>
+      {/await}
     {/each}
 
     <section>
