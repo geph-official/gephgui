@@ -23,6 +23,14 @@
   </a>
   <a
     class={buttonClass}
+    href="https://community.geph.io"
+    target="_blank"
+    rel="noopener"
+  >
+    <img src="forum.png" class={imgClass} alt="github" />
+  </a>
+  <a
+    class={buttonClass}
     href="https://github.com/geph-official"
     target="_blank"
     rel="noopener"
