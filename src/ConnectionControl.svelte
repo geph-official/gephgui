@@ -100,7 +100,7 @@
 
     {#if $app_status.connection === "disconnected"}
       <button
-        class="btn variant-filled"
+        class="btn variant-filled mb-1"
         on:click={() => handleStartDaemon()}
         disabled={connectButtonDisabled}
       >
@@ -111,7 +111,7 @@
       {/if}
     {:else if $app_status.connection === "connecting"}
       <button
-        class="btn variant-ghost"
+        class="btn variant-ghost mb-1"
         on:click={() => handleStopDaemon()}
         disabled={connectButtonDisabled}
       >
@@ -121,7 +121,7 @@
       <ProgressBar />
     {:else}
       <button
-        class="btn variant-ghost"
+        class="btn variant-ghost mb-1"
         on:click={() => handleStopDaemon()}
         disabled={connectButtonDisabled}
       >

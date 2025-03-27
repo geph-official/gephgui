@@ -105,7 +105,7 @@
     />
     <button
       type="button"
-      class="btn variant-ghost-primary"
+      class="btn variant-ghost-primary mb-1"
       disabled={loggingIn}
       on:click={() => onLogin()}
     >
