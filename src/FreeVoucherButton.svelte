@@ -64,7 +64,7 @@
       title={l10n($curr_lang, "free-plus")}
     >
       <div class="flex flex-col gap-2">
-        <div>{getExplanation(voucher)}</div>
+        <div class="mb-5">{@html getExplanation(voucher)}</div>
         {#if applyingVoucher}
           <ProgressBar />
         {:else}
