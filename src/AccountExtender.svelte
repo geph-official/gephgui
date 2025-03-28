@@ -9,6 +9,7 @@
     paymentsOpen,
     account_refreshing,
     clearAccountCache,
+    curr_valid_secret,
   } from "./lib/user";
 </script>
 
@@ -71,7 +72,10 @@
         {#if $app_status.account.recurring}
           <button
             class="btn variant-filled-primary"
-            on:click={() => window.open("https://geph.io/en/portal/login")}
+            on:click={() =>
+              window.open(
+                `https://geph.io/billing/login_secret?secret=${$curr_valid_secret}`
+              )}
           >
             {l10n($curr_lang, "manage")}
           </button>

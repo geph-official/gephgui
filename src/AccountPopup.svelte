@@ -97,7 +97,17 @@
         </table>
       </section>
     {/if}
-    <section>
+    <section class="flex flex-row gap-2">
+      <button
+        class="btn variant-ghost-primary btn-sm"
+        on:click={async () => {
+          window.open(
+            `https://geph.io/billing/login_secret?secret=${$curr_valid_secret}`
+          );
+        }}
+      >
+        {l10n($curr_lang, "manage-account")}
+      </button>
       <button
         class="btn variant-ghost-error btn-sm"
         on:click={async () => {
