@@ -261,7 +261,11 @@
               response: async (email) => {
                 const gate = await native_gate();
                 try {
-                  await gate.export_debug_pack(email || "");
+                  const pack = await gate.get_debug_pack();
+                  await gate.daemon_rpc("export_debug_pack", [
+                    email || "",
+                    pack,
+                  ]);
                   showToast(
                     toastStore,
                     l10n($curr_lang, "successfully-submitted")
