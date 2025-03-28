@@ -31,7 +31,7 @@
   import AppWhitelistControl from "./settings/AppWhitelistControl.svelte";
   import { writable } from "svelte/store";
   import VersionDisplay from "./settings/VersionDisplay.svelte";
-  import { showToast } from "./lib/utils";
+  import { showToast, showErrorToast } from "./lib/utils";
 
   export let open = false;
   let showLogsOpen = false;
@@ -267,7 +267,7 @@
                     l10n($curr_lang, "successfully-submitted")
                   );
                 } catch (e) {
-                  showToast(toastStore, "fail: " + e);
+                  showErrorToast(toastStore, "Error: " + e);
                 }
               },
             };

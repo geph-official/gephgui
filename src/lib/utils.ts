@@ -60,3 +60,15 @@ export const showToast = async (toastStore: ToastStore, message: string) => {
   };
   toastStore.trigger(t);
 };
+
+export const showErrorToast = async (
+  toastStore: ToastStore,
+  message: string
+) => {
+  const t: ToastSettings = {
+    message,
+    background: "variant-ghost-error",
+    hideDismiss: true,
+  };
+  toastStore.trigger(t);
+};
