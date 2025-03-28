@@ -1,10 +1,10 @@
 <script lang="ts">
-  import { ProgressBar } from "@skeletonlabs/skeleton";
+  import { ProgressBar, getModalStore } from "@skeletonlabs/skeleton";
   import { slide } from "svelte/transition";
   import { curr_lang, l10n } from "./lib/l10n";
   import { native_gate } from "./native-gate";
   import { curr_valid_secret } from "./lib/user";
-  import { formatNumberWithSpaces } from "./lib/utils";
+  import { formatNumberWithSpaces, showErrorModal } from "./lib/utils";
   import Popup from "./lib/Popup.svelte";
   import { onMount } from "svelte";
 
@@ -19,6 +19,8 @@
   let accountSecret: string | null = null;
 
   let isConverting = false;
+
+  const modalStore = getModalStore();
   const onConvert = async () => {
     isConverting = true;
     accountSecret = null;
@@ -28,6 +30,8 @@
         username,
         password,
       ])) as string;
+    } catch (e) {
+      showErrorModal(modalStore, `${e}`);
     } finally {
       isConverting = false;
     }
