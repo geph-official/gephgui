@@ -128,7 +128,7 @@ show-all-servers,Show all servers,显示所有服务器,顯示所有服務器,ن
 skip-wait-login-secret,"If you already have another device with Geph, you can skip this wait by logging in with your account secret instead:","如果您已经有其他设备使用迷雾通，可以通过使用您的账户密钥登录来跳过等待：","如果您已經有其他設備使用迷雾通，可以通過使用您的帳戶密鑰登錄來跳過等待：","اگر از قبل دستگاه دیگری با Geph دارید، می‌توانید با ورود با رمز حساب کاربری خود این انتظار را رد کنید.","Если у вас уже есть другое устройство с Geph, вы можете пропустить ожидание, войдя с помощью секретного ключа аккаунта."
 split-tunneling,Split tunneling,分流隧道,分流隧道,تونل بندی جداگانه,Разделённое туннелирование
 theme,Theme,主题,主題,قالب,Тема
-total-traffic,Total traffic,总流量,總流量,کل ترافیک,Общий трафик
+total-traffic,Current traffic,当前速率,當前速率,کل ترافیک,Общий трафик
 total-users,Total users,总用户数,總用戶數,کل کاربران,Всего пользователей
 unlock-all-locations,"🌎 Unlock all locations","🌎 解锁所有位置","🌎 解鎖所有位置","🌎 همه مکان‌ها را باز کنید","🌎 Разблокировать все локации"
 unrestricted-access,"Enjoy unrestricted access to ports other than 80 and 443. Perfect for gaming, P2P, video conferencing, and more.","享受对除 80 和 443 之外端口的 无限制访问。非常适合游戏、P2P、视频会议等。","享受對除 80 和 443 之外端口的 無限制訪問。非常適合遊戲、P2P、視頻會議等。","از دسترسی نامحدود به پورت‌های غیر از 80 و 443 لذت ببرید. مناسب برای بازی، P2P، ویدئو کنفرانس و موارد دیگر","Наслаждайтесь неограниченным доступом к портам, кроме 80 и 443. Идеально для игр, P2P, видеоконференций и многого другого."
@@ -185,3 +185,4 @@ select,"Select","选择","選擇","انتخاب","Выбрать"
 recurring-subscription,Recurring subscription,自动续费 Plus,自動續費 Plus,اشتراک دوره‌ای,Периодическая подписка
 renewal,Renewal,续订,續訂,تمدید,Продление
 manage,Manage,管理,管理,مدیریت,Управление
+successfully-submitted,"Successfully submitted","提交成功","提交成功","با موفقیت ارسال شد","Успешно отправлено"

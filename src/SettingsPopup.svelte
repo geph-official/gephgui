@@ -1,5 +1,5 @@
 <script>
-  import { getModalStore } from "@skeletonlabs/skeleton";
+  import { getModalStore, getToastStore } from "@skeletonlabs/skeleton";
   import { curr_lang, l10n } from "./lib/l10n";
   import Vpn from "svelte-material-icons/Vpn.svelte";
   import AirFilter from "svelte-material-icons/AirFilter.svelte";
@@ -31,12 +31,14 @@
   import AppWhitelistControl from "./settings/AppWhitelistControl.svelte";
   import { writable } from "svelte/store";
   import VersionDisplay from "./settings/VersionDisplay.svelte";
+  import { showToast } from "./lib/utils";
 
   export let open = false;
   let showLogsOpen = false;
   let showAppWhitelist = false;
 
   const modalStore = getModalStore();
+  const toastStore = getToastStore();
 
   // Function to open the wizard/upgrade popup for Free tier users
   const handleFreeTierFeature = () => {
@@ -251,21 +253,29 @@
               valueAttr: {
                 type: "text",
                 minlength: 3,
-                maxlength: 20,
+                maxlength: 200,
                 required: false,
                 placeholder: l10n($curr_lang, "your-email-optional"),
                 rows: 10,
               },
               response: async (email) => {
-                if (email) {
-                  const gate = await native_gate();
-                  gate.export_debug_pack(email);
+                const gate = await native_gate();
+                try {
+                  await gate.export_debug_pack(email || "");
+                  showToast(
+                    toastStore,
+                    l10n($curr_lang, "successfully-submitted")
+                  );
+                } catch (e) {
+                  showToast(toastStore, "fail: " + e);
                 }
               },
             };
             modalStore.trigger(modal);
-          }}>{l10n($curr_lang, "report-problem")}</button
+          }}
         >
+          {l10n($curr_lang, "report-problem")}
+        </button>
         <button
           class="btn variant-ghost btn-sm"
           on:click={() => {

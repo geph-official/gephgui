@@ -55,6 +55,8 @@ export const showErrorModal = async (modalStore: ModalStore, error: string) => {
 export const showToast = async (toastStore: ToastStore, message: string) => {
   const t: ToastSettings = {
     message,
+    background: "variant-ghost-primary",
+    hideDismiss: true,
   };
   toastStore.trigger(t);
 };
