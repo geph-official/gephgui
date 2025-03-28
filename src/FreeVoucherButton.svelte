@@ -64,7 +64,7 @@
       title={l10n($curr_lang, "free-plus")}
     >
       <div class="flex flex-col gap-2">
-        <div class="mb-5">{@html getExplanation(voucher)}</div>
+        <div class="mb-5 explanation">{@html getExplanation(voucher)}</div>
         {#if applyingVoucher}
           <ProgressBar />
         {:else}
@@ -83,6 +83,10 @@
 {/await}
 
 <style>
+  :global(.explanation a) {
+    color: rgb(var(--color-primary-700));
+  }
+
   .attention-button {
     animation:
       pulsate 1.5s ease-in-out infinite,

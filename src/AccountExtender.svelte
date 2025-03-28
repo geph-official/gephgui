@@ -8,7 +8,6 @@
     app_status,
     paymentsOpen,
     account_refreshing,
-    clearAccountCache,
     curr_valid_secret,
   } from "./lib/user";
 </script>
@@ -56,7 +55,7 @@
           <div class="text-sm">
             {l10n($curr_lang, "remaining-days")}:
             <b>
-              {Math.floor(
+              {Math.ceil(
                 ($app_status.account.expiry - Math.floor(Date.now() / 1000)) /
                   86400
               )}
