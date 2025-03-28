@@ -85,6 +85,7 @@
 <style>
   :global(.explanation a) {
     color: rgb(var(--color-primary-700));
+    font-weight: 600;
   }
 
   .attention-button {
