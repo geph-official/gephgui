@@ -86,6 +86,11 @@
         type="password"
         placeholder={l10n($curr_lang, "password")}
         bind:value={password}
+        on:keydown={(e) => {
+          if (e.key === "Enter") {
+            onConvert();
+          }
+        }}
       />
       <button class="btn variant-filled" on:click={onConvert}>
         {l10n($curr_lang, "convert-account")}
