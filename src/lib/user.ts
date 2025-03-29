@@ -77,7 +77,6 @@ export type ConnectionStatus =
 
 export type AppStatus = {
   account: AccountStatus;
-  connection: ConnectionStatus;
 
   news: NewsItem[];
   exits: ExitDescriptor[];
@@ -200,6 +199,17 @@ async function fetchConnectionStatus(): Promise<ConnectionStatus> {
   }
 }
 
+/**
+ * Separate connectionStatus store with no caching, using persistentSelfRefreshingStore
+ */
+export const conn_status: Writable<ConnectionStatus> =
+  persistentSelfRefreshingStore(
+    "connection_status", // localStorage key
+    fetchConnectionStatus,
+    500, // refresh interval in ms
+    "disconnected" // initial value
+  );
+
 export const traffic_history: Readable<number[]> = selfRefreshingStore(
   async () => {
     const gate = await native_gate();
@@ -216,9 +226,10 @@ export const traffic_history: Readable<number[]> = selfRefreshingStore(
 );
 
 /**
- * Single store to track account, connection, stats, and news.
+ * Single store to track account, stats, and news.
  * Returns null if the secret is missing.
  * Persists to localStorage so that on startup it still has the previous version.
+ * Note: connectionStatus has been moved to a separate store
  */
 export const app_status: Writable<AppStatus | null> =
   persistentSelfRefreshingStore<AppStatus | null>(
@@ -234,22 +245,19 @@ export const app_status: Writable<AppStatus | null> =
 
       // Run all fetch operations in parallel
       console.log("lang", lang);
-      const [account, connection, news, exits] = await Promise.all([
+      const [account, news, exits] = await Promise.all([
         accountStatusCache.fetch(secret),
-        fetchConnectionStatus(),
         fetchNews(lang),
         serverListCache.fetch("exits"),
       ]);
 
       return {
         account: account as any,
-        connection: connection as any,
-
         news: news as any,
         exits: exits as any,
       };
     },
-    500, // refresh interval in ms
+    2000, // refresh interval in ms
     null
   );
 

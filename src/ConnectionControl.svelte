@@ -1,6 +1,6 @@
 <script lang="ts">
   import { curr_lang, l10n } from "./lib/l10n";
-  import { app_status, startDaemonArgs } from "./lib/user";
+  import { app_status, conn_status, startDaemonArgs } from "./lib/user";
   import { pref_exit_constraint_derived, pref_wizard } from "./lib/prefs";
   import { native_gate } from "./native-gate";
   import { ProgressBar, getModalStore } from "@skeletonlabs/skeleton";
@@ -50,9 +50,9 @@
   };
 
   $: connectionStatus =
-    $app_status?.connection === "disconnected"
+    $conn_status === "disconnected"
       ? "disconnected"
-      : $app_status?.connection === "connecting"
+      : $conn_status === "connecting"
         ? "connecting"
         : "connected";
 </script>
@@ -73,14 +73,16 @@
           {/if}
         </div>
         <div class="flex flex-row mt-1">
-          {#if $app_status.connection !== null && $app_status.connection !== "disconnected" && $app_status?.connection !== "connecting"}
-            <small><Flag country={$app_status.connection.country} /></small>
+          {#if $conn_status !== "disconnected" && $conn_status !== "connecting"}
+            <small><Flag country={$conn_status.country} /></small>
             <small>
-              {$app_status?.connection.exit}
+              {$conn_status.exit}
 
               <span class="font-normal">
-                [{#if $app_status.connection.bridge}{$app_status.connection
-                    .bridge}{:else}{l10n($curr_lang, "direct")}{/if}]
+                [{#if $conn_status.bridge}{$conn_status.bridge}{:else}{l10n(
+                    $curr_lang,
+                    "direct"
+                  )}{/if}]
               </span>
             </small>
           {:else}
@@ -98,7 +100,7 @@
       </div>
     </button>
 
-    {#if $app_status.connection === "disconnected"}
+    {#if $conn_status === "disconnected"}
       <button
         class="btn variant-filled mb-1"
         on:click={() => handleStartDaemon()}
@@ -109,7 +111,7 @@
       {#if connectButtonDisabled}
         <ProgressBar />
       {/if}
-    {:else if $app_status.connection === "connecting"}
+    {:else if $conn_status === "connecting"}
       <button
         class="btn variant-ghost mb-1"
         on:click={() => handleStopDaemon()}
