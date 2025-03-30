@@ -29,6 +29,8 @@
     "data-theme",
     $pref_lightdark === "light" ? "light-theme" : "dark-theme"
   );
+
+  $: document.body.setAttribute("lang", $curr_lang);
 </script>
 
 <svelte:head>
