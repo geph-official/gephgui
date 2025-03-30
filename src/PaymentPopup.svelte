@@ -178,7 +178,7 @@
                 currentScreen = "completion";
               }}
             >
-              Other (crypto, buy vouchers, etc)
+              {l10n($curr_lang, "other-payment-methods")}
             </button>
           </div>
         {/if}
