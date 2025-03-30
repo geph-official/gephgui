@@ -6,7 +6,7 @@
   import { pref_exit_constraint } from "./lib/prefs";
   import Flag from "./lib/Flag.svelte";
   import { showErrorModal } from "./lib/utils";
-  import { app_status, startDaemonArgs } from "./lib/user";
+  import { app_status, conn_status, startDaemonArgs } from "./lib/user";
   import Popup from "./lib/Popup.svelte";
 
   export let open = false;
@@ -19,7 +19,7 @@
       closing = true;
       const gate = await native_gate();
       const args = await startDaemonArgs();
-      if (args && $app_status?.connection !== "disconnected") {
+      if (args && $conn_status !== "disconnected") {
         await gate.restart_daemon(args);
       }
     } catch (e) {
