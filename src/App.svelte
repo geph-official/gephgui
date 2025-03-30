@@ -16,7 +16,7 @@
   import Main from "./Main.svelte";
   import AccountPopup from "./AccountPopup.svelte";
   import PaymentPopup from "./PaymentPopup.svelte";
-  import { pref_wizard } from "./lib/prefs";
+  import { pref_lightdark, pref_wizard } from "./lib/prefs";
   import Wizard from "./Wizard.svelte";
   import FreeVoucherButton from "./FreeVoucherButton.svelte";
 
@@ -24,6 +24,11 @@
   let accountOpen = false;
 
   initializeStores();
+
+  $: document.body.setAttribute(
+    "data-theme",
+    $pref_lightdark === "light" ? "light-theme" : "dark-theme"
+  );
 </script>
 
 <svelte:head>

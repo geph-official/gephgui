@@ -162,7 +162,7 @@
         </svelte:fragment>
         <svelte:fragment slot="switch">
           <select class="select" bind:value={$pref_lightdark}>
-            <option value="auto">{l10n($curr_lang, "automatic")}</option>
+            <!-- <option value="auto">{l10n($curr_lang, "automatic")}</option> -->
             <option value="light">{l10n($curr_lang, "light")}</option>
             <option value="dark">{l10n($curr_lang, "dark")}</option>
           </select>

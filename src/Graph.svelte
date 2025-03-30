@@ -25,10 +25,7 @@
   $: container && draw();
 
   $: color = (() => {
-    if (
-      ($pref_lightdark === "auto" && window?.DarkReader?.isEnabled()) ||
-      $pref_lightdark === "dark"
-    ) {
+    if ($pref_lightdark === "dark") {
       return "#fdf6e3";
     } else {
       return "#073642";

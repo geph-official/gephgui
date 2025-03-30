@@ -143,5 +143,7 @@ export const pref_eastereggs: Writable<boolean> = writable(false);
 /**
  * Dark mode: forced on, forced off, or auto
  */
-export const pref_lightdark: Writable<"light" | "dark" | "auto"> =
-  persistentWritable("lightdark", "auto");
+export const pref_lightdark: Writable<"light" | "dark"> = persistentWritable(
+  "lightdark2",
+  "light"
+);

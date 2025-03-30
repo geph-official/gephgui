@@ -14,23 +14,6 @@ const app = new App({
   target: document.getElementById("app") as any,
 });
 
-const setDark = (value: any) => {
-  const darkTheme = {
-    brightness: 150,
-    contrast: 80,
-    sepia: 0,
-  };
-  if (value === "auto") {
-    autoDark(darkTheme);
-  } else if (value === "dark") {
-    enableDark(darkTheme);
-  } else if (value === "light") {
-    disableDark();
-  }
-};
-
-pref_lightdark.subscribe(setDark);
-
 // // HACK to get rid of ugly hover and focus indicators, especially on mobile
 // window.addEventListener("load", (_) => {
 //   try {

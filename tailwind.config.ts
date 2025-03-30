@@ -1,6 +1,7 @@
 import { join } from "path";
 import type { Config } from "tailwindcss";
-import { customTheme } from "./custom-theme";
+import { lightTheme } from "./light-theme";
+import { darkTheme } from "./dark-theme";
 
 // 1. Import the Skeleton plugin
 import { skeleton } from "@skeletonlabs/tw-plugin";
@@ -25,7 +26,7 @@ const config = {
     require("@tailwindcss/forms"),
     skeleton({
       themes: {
-        custom: [customTheme],
+        custom: [lightTheme, darkTheme],
       },
     }),
   ],
