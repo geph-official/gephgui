@@ -172,40 +172,42 @@
 
     {#each Object.entries(settings) as [section, contents]}
       {#await native_gate() then gate}
-        <section>
-          <h2 class="text-primary-700 uppercase font-semibold text-sm mb-2">
-            {l10n($curr_lang, section)}
-          </h2>
-          {#each contents as setting}
-            <SettingTree {setting} />
-          {/each}
+        {#if !gate.supports_proxy_conf && section === "network"}{:else}
+          <section>
+            <h2 class="text-primary-700 uppercase font-semibold text-sm mb-2">
+              {l10n($curr_lang, section)}
+            </h2>
+            {#each contents as setting}
+              <SettingTree {setting} />
+            {/each}
 
-          {#if section === "features" && $pref_use_app_whitelist && $app_status?.account.level === "Plus"}
-            <div class="app-whitelist-section">
-              <SingleSetting>
-                <svelte:fragment slot="icon">
-                  <Apps size="1.4rem" />
-                </svelte:fragment>
-                <svelte:fragment slot="description">
-                  <div class="main flex flex-row items-center gap-1">
-                    {l10n($curr_lang, "select-excluded-apps")}
-                  </div>
-                  <small>
-                    {l10n($curr_lang, "select-excluded-apps-blurb")}
-                  </small>
-                </svelte:fragment>
-                <svelte:fragment slot="switch">
-                  <button
-                    class="btn btn-sm variant-filled-primary"
-                    on:click={() => (showAppWhitelist = true)}
-                  >
-                    {l10n($curr_lang, "select")}
-                  </button>
-                </svelte:fragment>
-              </SingleSetting>
-            </div>
-          {/if}
-        </section>
+            {#if section === "features" && $pref_use_app_whitelist && $app_status?.account.level === "Plus"}
+              <div class="app-whitelist-section">
+                <SingleSetting>
+                  <svelte:fragment slot="icon">
+                    <Apps size="1.4rem" />
+                  </svelte:fragment>
+                  <svelte:fragment slot="description">
+                    <div class="main flex flex-row items-center gap-1">
+                      {l10n($curr_lang, "select-excluded-apps")}
+                    </div>
+                    <small>
+                      {l10n($curr_lang, "select-excluded-apps-blurb")}
+                    </small>
+                  </svelte:fragment>
+                  <svelte:fragment slot="switch">
+                    <button
+                      class="btn btn-sm variant-filled-primary"
+                      on:click={() => (showAppWhitelist = true)}
+                    >
+                      {l10n($curr_lang, "select")}
+                    </button>
+                  </svelte:fragment>
+                </SingleSetting>
+              </div>
+            {/if}
+          </section>
+        {/if}
       {/await}
     {/each}
 
@@ -214,27 +216,23 @@
         {l10n($curr_lang, "debug")}
       </h2>
 
-      {#await native_gate() then gate}
-        {#if gate.supports_proxy_conf}
-          <SingleSetting>
-            <svelte:fragment slot="icon">
-              <NetworkOutline size="1.4rem" />
-            </svelte:fragment>
-            <svelte:fragment slot="description">
-              <div class="flex flex-col text-sm">
-                <div>SOCKS5 proxy</div>
-                <div>HTTP proxy</div>
-              </div>
-            </svelte:fragment>
-            <svelte:fragment slot="switch">
-              <div class="flex flex-col text-sm tnum">
-                <b><span class="opacity-50">localhost:</span>9909</b>
-                <b><span class="opacity-50">localhost:</span>9910</b>
-              </div>
-            </svelte:fragment>"
-          </SingleSetting>
-        {/if}
-      {/await}
+      <SingleSetting>
+        <svelte:fragment slot="icon">
+          <NetworkOutline size="1.4rem" />
+        </svelte:fragment>
+        <svelte:fragment slot="description">
+          <div class="flex flex-col text-sm">
+            <div>SOCKS5 proxy</div>
+            <div>HTTP proxy</div>
+          </div>
+        </svelte:fragment>
+        <svelte:fragment slot="switch">
+          <div class="flex flex-col text-sm tnum">
+            <b><span class="opacity-50">localhost:</span>9909</b>
+            <b><span class="opacity-50">localhost:</span>9910</b>
+          </div>
+        </svelte:fragment>"
+      </SingleSetting>
 
       <div class="flex flex-row gap-2">
         <button
