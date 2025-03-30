@@ -172,42 +172,40 @@
 
     {#each Object.entries(settings) as [section, contents]}
       {#await native_gate() then gate}
-        {#if !gate.supports_proxy_conf && section === "network"}{:else}
-          <section>
-            <h2 class="text-primary-700 uppercase font-semibold text-sm mb-2">
-              {l10n($curr_lang, section)}
-            </h2>
-            {#each contents as setting}
-              <SettingTree {setting} />
-            {/each}
+        <section>
+          <h2 class="text-primary-700 uppercase font-semibold text-sm mb-2">
+            {l10n($curr_lang, section)}
+          </h2>
+          {#each contents as setting}
+            <SettingTree {setting} />
+          {/each}
 
-            {#if section === "features" && $pref_use_app_whitelist && $app_status?.account.level === "Plus"}
-              <div class="app-whitelist-section">
-                <SingleSetting>
-                  <svelte:fragment slot="icon">
-                    <Apps size="1.4rem" />
-                  </svelte:fragment>
-                  <svelte:fragment slot="description">
-                    <div class="main flex flex-row items-center gap-1">
-                      {l10n($curr_lang, "select-excluded-apps")}
-                    </div>
-                    <small>
-                      {l10n($curr_lang, "select-excluded-apps-blurb")}
-                    </small>
-                  </svelte:fragment>
-                  <svelte:fragment slot="switch">
-                    <button
-                      class="btn btn-sm variant-filled-primary"
-                      on:click={() => (showAppWhitelist = true)}
-                    >
-                      {l10n($curr_lang, "select")}
-                    </button>
-                  </svelte:fragment>
-                </SingleSetting>
-              </div>
-            {/if}
-          </section>
-        {/if}
+          {#if section === "features" && $pref_use_app_whitelist && $app_status?.account.level === "Plus"}
+            <div class="app-whitelist-section">
+              <SingleSetting>
+                <svelte:fragment slot="icon">
+                  <Apps size="1.4rem" />
+                </svelte:fragment>
+                <svelte:fragment slot="description">
+                  <div class="main flex flex-row items-center gap-1">
+                    {l10n($curr_lang, "select-excluded-apps")}
+                  </div>
+                  <small>
+                    {l10n($curr_lang, "select-excluded-apps-blurb")}
+                  </small>
+                </svelte:fragment>
+                <svelte:fragment slot="switch">
+                  <button
+                    class="btn btn-sm variant-filled-primary"
+                    on:click={() => (showAppWhitelist = true)}
+                  >
+                    {l10n($curr_lang, "select")}
+                  </button>
+                </svelte:fragment>
+              </SingleSetting>
+            </div>
+          {/if}
+        </section>
       {/await}
     {/each}
 
