@@ -166,6 +166,20 @@
             >
               {l10n($curr_lang, "redeem-voucher")}
             </button>
+
+            <div class="opacity-50 text-center">&mdash;&mdash;&mdash;</div>
+
+            <button
+              class="btn btn-sm variant-ghost"
+              on:click={() => {
+                window.open(
+                  `https://geph.io/billing/login_secret?secret=${$curr_valid_secret}`
+                );
+                currentScreen = "completion";
+              }}
+            >
+              Other (crypto, buy vouchers, etc)
+            </button>
           </div>
         {/if}
       {:catch e}
@@ -237,19 +251,22 @@
         </button>
       {/if}
     </div>
-{:else if currentScreen === "completion"}
-  <div class="flex-col flex gap-4 items-center text-center text-lg">
-    <p>
-      {@html l10n($curr_lang, "payment-processed-refresh")}
-    </p>
+  {:else if currentScreen === "completion"}
+    <div class="flex-col flex gap-4 items-center text-center text-lg">
+      <p>
+        {@html l10n($curr_lang, "payment-processed-refresh")}
+      </p>
 
-    {#if refreshInProgress}
-      <ProgressBar />
-    {:else}
-      <button class="btn variant-filled w-full" on:click={handleRefreshWithDelay}>
-        {l10n($curr_lang, "refresh-account-info")}
-      </button>
-    {/if}
-  </div>
-{/if}
+      {#if refreshInProgress}
+        <ProgressBar />
+      {:else}
+        <button
+          class="btn variant-filled w-full"
+          on:click={handleRefreshWithDelay}
+        >
+          {l10n($curr_lang, "refresh-account-info")}
+        </button>
+      {/if}
+    </div>
+  {/if}
 </Popup>
