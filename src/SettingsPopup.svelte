@@ -181,7 +181,7 @@
               <SettingTree {setting} />
             {/each}
 
-            {#if section === "features" && $pref_use_app_whitelist && $app_status?.account.level === "Plus"}
+            {#if section === "features" && $pref_use_app_whitelist}
               <div class="app-whitelist-section">
                 <SingleSetting>
                   <svelte:fragment slot="icon">
