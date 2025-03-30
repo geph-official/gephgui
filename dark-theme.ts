@@ -15,7 +15,7 @@ export const darkTheme: CustomThemeConfig = {
 		  Below, we’ll choose base0 for normal text, and keep the old “dark” color
 		  as a fallback where you need a darker text on a light background.
 		*/
-    "--theme-font-color-base": "253 246 227", // #839496
+    "--theme-font-color-base": "238 232 213", // #839496
     "--theme-font-color-dark": "7 54 66", // #073642
 
     "--theme-rounded-base": "8px",
@@ -30,12 +30,12 @@ export const darkTheme: CustomThemeConfig = {
 		  inversion of your light theme’s on-colors.
 		*/
     "--on-primary": "7 54 66", // #073642
-    "--on-secondary": "253 246 227", // #fdf6e3
+    "--on-secondary": "238 232 213", // #fdf6e3
     "--on-tertiary": "7 54 66",
-    "--on-success": "253 246 227",
+    "--on-success": "238 232 213",
     "--on-warning": "7 54 66",
     "--on-error": "7 54 66",
-    "--on-surface": "253 246 227", // text on top of a dark surface
+    "--on-surface": "238 232 213", // text on top of a dark surface
 
     // =~= Theme Colors  =~=253 246
     // Keeping the same brand palettes for primary / secondary / tertiary / success / etc.
