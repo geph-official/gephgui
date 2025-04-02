@@ -190,7 +190,10 @@ async function fetchConnectionStatus(): Promise<ConnectionStatus> {
 
   if (info.state === "Connected") {
     return {
-      bridge: `${info.protocol} ${info.bridge.split(":")[0]}`,
+      bridge: `${info.protocol
+        .replace("sosistab", "sos")
+        .replace("plain", "pln")
+        .replace("client-exit", "c-e")} ${info.bridge.split(":")[0]}`,
       exit: info.exit.c2e_listen.split(":")[0],
       country: info.exit.country,
     };
