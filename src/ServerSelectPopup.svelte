@@ -117,13 +117,13 @@
               </div>
               <!-- Display least loaded server's load as a percentage -->
               <div
-                class="text-green-700 font-medium"
-                class:text-orange-700={getMinLoad(
+                class="variant-ghost-primary px-1 rounded font-medium"
+                class:variant-ghost-warning={getMinLoad(
                   $app_status.exits,
                   country,
                   city
                 ) > 0.5}
-                class:text-red-700={getMinLoad(
+                class:variant-ghost-error={getMinLoad(
                   $app_status.exits,
                   country,
                   city
