@@ -12,19 +12,26 @@ ads-and-trackers,Ads and trackers,广告和跟踪器,廣告和追蹤器,تبلی
 adult-content,Adult content,成人内容,成人內容,محتوای بزرگسالان,Контент для взрослых
 advanced,Advanced,高级,高級,پیشرفته,Дополнительно
 advanced-warning,"Advanced settings should only be adjusted by experienced users. Incorrect changes may lead to unexpected network behavior or disruptions.",高级设置应只由有经验的用户调整。不正确的更改可能导致意外的现象或连接中断。,高級設置應只由有經驗的用戶調整。不正確的更改可能導致意外的現象或連接中斷.,تنظیمات پیشرفته باید توسط کاربران باتجربه انجام شود. تنظیمات اشتباه ممکن است باعث بروز اختلال در شبکه شما شود.,"Расширенные настройки должны настраиваться только опытными пользователями. Неправильные изменения могут привести к неожиданному поведению сети или сбоям."
+alipay,Alipay,支付宝,支付寶,علی‌پی,Alipay
 allowed,Allowed,允许,允許,مجاز,Разрешено
+app-whitelist,App selection,应用选择,應用選擇,انتخاب برنامه,Выбор приложений
+app-whitelist-blurb,Select specific apps to use with Geph,选择使用迷雾通的特定应用,選擇使用迷霧通的特定應用,برنامه‌های خاصی را برای استفاده با Geph انتخاب کنید,Выберите определенные приложения для использования с Geph
+app-whitelist-not-supported,App selection not supported on this platform,此平台不支持应用选择,此平台不支持應用選擇,انتخاب برنامه در این پلتفرم پشتیبانی نمی‌شود,Выбор приложений не поддерживается на этой платформе
 apple-pay,In-App Purchase,应用内购买,應用內購買,خرید درون برنامه‌ای,Встроенная покупка
+apply-voucher,Apply now,马上使用,馬上使用,اعمال کد تخفیف,Применить ваучер
 attach-log-blurb,"Geph's app log will be attached to this message. Your message will be sent in an encrypted form, and your data will remain secure and private.","迷雾通的应用日志会随此消息一并发送。您的消息将以加密的方式发送，您的数据将保持安全和私密。","迷霧通的應用日誌會隨此訊息一併發送。您的訊息將以加密的方式發送，您的數據將保持安全和私密。","گزارش برنامهٔ Geph همراه این پیام ارسال خواهد شد. پیام شما به‌صورت رمزگذاری‌شده فرستاده می‌شود و داده‌هایتان امن و خصوصی می‌ماند.","Журнал приложения Geph будет прикреплен к этому сообщению. Ваше сообщение будет отправлено в зашифрованном виде, и ваши данные останутся в безопасности и конфиденциальности."
 auto-proxy,Auto-configure proxy,自动配置代理,自動配置代理,پیکربندی خودکار پروکسی,Автонастройка прокси
 auto-proxy-blurb,Makes most browsers use Geph,配置大多数浏览器使用迷雾通,配置大多數瀏覽器使用迷霧通,بیشتر مرورگرها را مجبور میکند که از Geph استفاده کنند,Настраивает большинство браузеров использовать Geph
 auto-select,Auto-select least loaded server,自动选择负载最小的服务器,自動選擇負載最小的伺服器,انتخاب خودکار کم بارترین سرور,Автовыбор наименее загруженного сервера
 automatic,Automatic,自动选择,自動選擇,خودکار,Авто
 automatic-blurb,Uses best available server,使用最佳可用服务器,使用最佳可用伺服器,به بهترین سرور موجود وصل می‌شود,Использует лучший доступный сервер
+back,Back,返回,返回,بازگشت,Назад
 best-free-server,Best free server,最佳免费服务器,最佳免費伺服器,بهترین سرور رایگان,Лучший бесплатный сервер
 buy-plus,Buy Plus,购买 Plus,購買 Plus,خرید پلاس,Купить Plus
 buy-plus-price,Buy Plus (€5/month),购买 Plus（每月 €5）,購買 Plus（每月 €5）,خرید پلاس (€5/ماه),Купить Plus (€5/месяц)
 calls-p2p-gaming,"🎮 Calls, P2P, and gaming","🎮 通话、P2P 和游戏","🎮 通話、P2P 和遊戲","🎮 تماس‌ها، P2P و بازی","🎮 Звонки, P2P и игры"
 cancel,Cancel,取消,取消,لغو,Отмена
+cant-reconnect-now,"Can't reconnect at this time; new server will take effect on next connect","无法立即重新连接；新服务器将在下次连接时生效","無法立即重新連接；新伺服器將在下次連接時生效","در حال حاضر امکان اتصال مجدد وجود ندارد؛ سرور جدید در اتصال بعدی اعمال خواهد شد","Невозможно переподключиться сейчас; новый сервер вступит в силу при следующем подключении"
 captcha,Captcha,验证码,驗證碼,اعتبارسنجی,Капча
 change-location,Change location,更改位置,更改位置,تغییر مکان,Изменить расположение
 city,City,城市,城市,شهر,Город
@@ -35,11 +42,15 @@ connecting,Connecting,连接中,連接中,درحال اتصال,Подключе
 connection-status,Connection status,连接状态,連接狀態,وضعیت اتصال,Состояние подключения
 content-filtering,Content filtering,内容屏蔽,內容屏蔽,فیلتر محتوا,Фильтрация контента
 convert-account,Convert account,转换账户,轉換帳戶,تبدیل حساب,Преобразовать аккаунт
+copy,Copy,复制,複製,کپی,Копировать
 country,Country,国家,國家,کشور,Страна
 credit-card,Credit card,信用卡,信用卡,کارت اعتباری,Кредитная карта
+crypto,Cryptocurrency,加密货币,加密貨幣,ارز دیجیتال,Криптовалюта
 dark,Dark,暗色,暗色,تیره,Тёмная тема
 days,days,天,天,روز,Дни
+days-ago,days ago,天前,天前,روز پیش,дней назад
 debug,Debug,调试,除錯,عیب‌یابی,Отладка
+debug-logs,Debug logs,调试日志,調試日誌,گزارش‌های عیب‌یابی,Отладочные логи
 debug-pack,Debug pack,调试包,調試包,بسته عیب یابی,Отладочный пакет
 debug-pack-blurb,Save debugging info for developers,保存调试信息以供开发人员使用,保存除錯資訊以供開發人員使用,ذخیره گزارش‌های عیب‌یابی برای توسعه‌دهندگان,Сохранить отладочную информацию для разработчиков
 delete,Delete,删除,刪除,حذف,Удалить
@@ -54,11 +65,16 @@ download,Download,下载,下載,دانلود,Скачать
 duplicate-credentials,This username is already taken. Please choose another name,此用户名已存在。请选一个新的用户名,此用戶名已存在。 請選一個新的用戶名,این نام کاربری برداشته شده است. لطفا نام دیگری انتخاب کنید,Это имя пользователя уже занято. Пожалуйста, выберите другое имя.
 enter-account-secret,Enter your account secret,输入您的账户密钥,輸入您的帳戶密鑰,رمز حساب کاربری خود را وارد کنید,Введите секретный ключ вашего аккаунта
 enter-old-username-password-blurb,"Enter the username and password you use with previous versions to obtain your account secret.","请输入您在旧版本中使用的用户名和密码，以获取您的账户密钥。","請輸入您在舊版本中使用的用戶名和密碼，以獲取您的 帳戶密鑰。","نام کاربری و رمز عبوری را که در نسخه‌های قبلی استفاده می‌کردید وارد کنید تا رمز حساب کاربری خود را دریافت کنید.","Введите имя пользователя и пароль, которые вы использовали в предыдущих версиях, чтобы получить ваш секретный ключ аккаунта."
+enter-voucher-code,Enter voucher code,输入礼品卡代码,輸入礼品卡代碼,کد تخفیف را وارد کنید,Введите код ваучера
+err_create_invoice,"Cannot create invoice","无法创建订单","無法創建訂單","خطا در ایجاد فاکتور","Не удается создать счет"
+err_load_price_points,"Cannot load price points","无法加载价格信息","無法加載價格資訊","خطا در بارگیری نقاط قیمت","Не удается загрузить ценовые точки"
+error,Error,错误,錯誤,خطا,Ошибка
 error,Error,错误,錯誤,خطا,Ошибка
 exclude-apps,Exclude apps,排除应用,排除應用,برنامه های صرف‌نظر شده,Исключить приложения
 exclude-apps-blurb,Let apps bypass Geph,允许应用程序绕过迷雾通,允許應用程式繞過迷霧通,این برنامه ها از Geph استفاده نکنند,Позволить приложениям обходить Geph
 exclude-prc,Exclude PRC traffic,排除中国大陆流量,排除中國大陸流量,صرف‌نظر از ترافیک RPC,Исключить трафик КНР
 exclude-prc-blurb,Let Chinese traffic bypass Geph,允许中国大陆流量绕过迷雾通,允許中國大陸流量繞過迷霧通,ترافیک چین از Geph عبور نکند,Позволить китайскому трафику обходить Geph
+excluded-apps,"Excluded apps:","排除的应用：","排除的應用：","برنامه‌های مستثنی:","Исключенные приложения:"
 exit-selection,Select exit server,选择出口服务器,選擇出口伺服器,سرور خروجی را انتخاب کنید,Выбрать выходной сервер
 export,Export,导出,導出,صدور,Экспорт
 extend,Extend,延长,延長,تمدید,Продлить
@@ -67,6 +83,7 @@ force-bridges,Bridges,强制桥接,強制橋接,پل ها,Мосты
 forum,Forum,用户论坛,用戶論壇,انجمن,Форум
 free-account,Free trial,免费试用,免費試用,حساب رایگان,Бесплатный аккаунт
 free-is-bad,"Free accounts are limited to 300 KB/s and only support basic web browsing.",免费账号速度非常有限（300 KB/s），而且只允许基本网页浏览,免費帳號速度非常有限（300 KB/s），而且只允許基本網頁瀏覽,سرعت حساب های رایگان محدود به 300 KB/s و فقط مرور وب اساسی می باشد. با ارتقا به پلاس از سرعت نامحدود لذت ببرید!,"Скорость бесплатных аккаунтов ограничена до 300 КБ/с и доступен только базовый веб-серфинг."
+free-plus,"Free Plus!","免费领取 Plus!","免費領取 Plus!","پلاس رایگان!","Бесплатный Plus!"
 free-server,Free,所有用户,所有用戶,رایگان,Бесплатно
 gambling,Gambling,赌博,賭博,قمار,Азартные игры
 general,General,常规,常規,عمومی,Общие
@@ -77,6 +94,8 @@ github,GitHub,GitHub,GitHub,گیت‌هاب,GitHub
 global-vpn,Network-level VPN,全局VPN,全局VPN,فیلترشکن در سطح شبکه,VPN на уровне сети
 global-vpn-blurb,Force all traffic to use Geph,强制所有流量使用迷雾通,強制所有流量使用迷霧通,همه ترافیک ها را مجبور به استفاده از Geph می کند,Заставить весь трафик использовать Geph
 i-have-old-username-password,"I have a username/password","旧版用户名/密码","舊版用戶名/密碼","من یک نام کاربری/رمز عبور قدیمی دارم","У меня есть имя пользователя/пароль"
+important,Important,重要,重要,مهم,Важно
+incorrect-user-secret,"Incorrect user secret","错误的账户密钥","錯誤的帳戶密鑰","رمز حساب کاربری اشتباه است","Неверный секретный ключ аккаунта"
 invalid-username-or-password,Wrong username or password,用户名或密码错误,用戶名或密碼錯誤,نام کاربری یا کلمه عبور نادرست است,Неправильное имя пользователя или пароль
 keep-window-open,"Please keep this window open!","请保持此窗口打开！","請保持此窗口打開！","لطفاً این پنجره را باز نگه دارید!","Пожалуйста, держите это окно открытым!"
 language,Language,语言,語言,زبان,Язык
@@ -86,6 +105,8 @@ listen-all,Listen on all interfaces,监听所有地址,監聽所有地址,گوش
 listen-all-blurb,Allows other computers to use Geph,允许其他计算机使用迷雾通,允許其他計算機使用迷霧通,اجازه می‌دهد بقیه کامپیوترها از Geph استفاده کنند,Позволяет другим компьютерам использовать Geph
 listening-ports,Listening ports,监听端口,監聽端口,پورت های فراخوانی شده,Порты прослушивания
 loading,Loading,载入中,載入中,درحال بارگذاری,Загрузка
+loading-apps,"Loading apps...","正在加载应用...","正在加載應用...","در حال بارگیری برنامه‌ها...","Загрузка приложений..."
+loading-apps,Loading app list...,加载应用列表...,加載應用列表...,بارگیری فهرست برنامه‌ها...,Загрузка списка приложений...
 loading-server-list,Loading server list,正在加载服务器列表,正在加載伺服器列表,بارگذاری لیست سرور,Загрузка списка серверов
 log-in-blurb,Log in with existing account,使用已有帐号登录,使用已有帳號登錄,ورود به حساب کاربری موجود,Войти в существующий аккаунт
 logging-in,Logging in,登录中,登錄中,ورود به حساب,Вход
@@ -93,98 +114,78 @@ logging-out,Logging out,登出中,登出中,خروج از حساب,Выход
 login,Log in,登录,登錄,ورود,Войти
 login-server-overloaded,The login server is currently overloaded. Please try again later.,登录服务器当前超负载。请稍后重试。,登錄服務器當前超負荷。請稍後重試。,سرور ورود در حال حاضر فشارزا است. لطفا بعدا دوباره امتحان کنید.,Сервер входа в систему в настоящее время перегружен. Пожалуйста, попробуйте позже.
 logout,Log out,退出,退出,خروج,Выйти
+logs-copied,Debug logs copied,调试日志已复制,調試日誌已複製,گزارش‌های عیب‌یابی کپی شد,Отладочные логи скопированы
+manage,Manage,管理,管理,مدیریت,Управление
+manage-account,Manage account,管理账户,管理帳戶,مدیریت حساب کاربری,Управление аккаунтом
 migrate-from-older-versions,"Migrate from older versions","从旧版本迁移","從舊版本遷移","مهاجرت از نسخه‌های قدیمی","Миграция со старых версий"
 much-faster-speed,"🚀 Much faster speed","🚀 超快的速度","🚀 超快的速度","🚀 سرعت بسیار بالاتر","🚀 Намного быстрее"
 network,Network,网络,網路,شبکه,Сеть
 news,News,通知频道,通知頻道,اخبار,Новости
+no-apps-found,"No apps found","未找到应用","未找到應用","هیچ برنامه‌ای یافت نشد","Приложения не найдены"
+no-apps-found,No apps found,未找到应用,未找到應用,هیچ برنامه‌ای یافت نشد,Приложения не найдены
 no-internet-connection,No Internet connection,无网络连接,無網絡連接,اتصال اینترنت وجود ندارد,Нет подключения к Интернету
 no-update-blurb,"Automatic updates are not available for this platform. Please follow our Telegram channel for update notifications:",自动更新不可用于此平台。请关注我们的Telegram频道以获取更新通知：,自動更新不可用於此平台。請關注我們的Telegram頻道以獲取更新通知：,آپدیت های خودکار برای این پلتفرم در دسترس نیست. برای آپدیت های آینده کانال تلگرام ما را دنبال کنید.,Автоматические обновления недоступны для этой платформы. Пожалуйста, следите за нашим каналом в Telegram для уведомлений об обновлениях:
 not-now,Not now,暂不,暫不,فعلا نه,Не сейчас
 note,Note,注意,注意,یادداشت,Примечание
 other,Other,其他,其他,دیگر,Другое
+other-payment-methods,"Other (crypto, buy vouchers, etc)","其他（加密货币、购买礼品卡等）","其他（加密貨幣、購買禮品卡等）","سایر (ارز دیجیتال، خرید کد تخفیف و غیره)","Другое (крипто, купить ваучеры и т.д.)"
 p2p-no,P2P banned,禁止BT,禁止P2P,P2P غیرمجاز,P2P запрещено
 p2p-yes,P2P allowed,允许BT,允許P2P,P2P مجاز,P2P разрешено
 packet-loss,Packet Loss,丟包,丟包,Packet Loss,Потеря пакетов
 password,Password,密码,密碼,رمزعبور,Пароль
 pay-now,Pay now,立即支付,立即支付,همین حالا پرداخت کنید,Оплатить сейчас
+payment-processed-refresh,"Once your payment is processed, refresh to view your updated account status:","支付处理完成后，<br>请刷新以查看更新的账户状态：","支付處理完成後，<br>請刷新以查看更新的帳戶狀態：","پس از پردازش پرداخت شما، برای مشاهده وضعیت به‌روز شده حساب کاربری خود، صفحه را تازه‌سازی کنید:","После обработки вашего платежа обновите страницу, чтобы увидеть обновленный статус вашего аккаунта:"
 plus-account,Plus account,Plus 账户,Plus 帳戶,حساب پلاس,Plus аккаунт
 plus-expiry,Plus expiry,Plus 到期时间,Plus 到期時間,انقضای Plus,Срок действия Plus
 plus-is-great,"Plus unlocks full speed on all servers!",Plus解除所有服务器的限速！,Plus解除所有服務器的限速！,پلاس قابلیت سرعت نامحدود را روی تمام سرور ها برای شما باز می‌کند!,"Plus разблокирует полную скорость на всех серверах!"
 plus-only-blurb,"Only Plus users are allowed on this server, select another one.",仅Plus用户允许访问此服务器,仅Plus用户允许访问此服务器,این سرور مخصوص اعضای پلاس است,"На этот сервер допускаются только пользователи Plus, выберите другой."
 plus-server,Plus,仅限Plus,僅限Plus,پلاس,Plus
 protocol,Protocol,协议,協議,پروتکل,Протокол
+recurring-subscription,Recurring subscription,自动续费 Plus,自動續費 Plus,اشتراک دوره‌ای,Периодическая подписка
+redeem,Redeem,兑换,兌換,بازخرید,Активировать
+redeem-voucher,Redeem voucher,兑换礼品卡,兌換礼品卡,بازخرید کد تخفیف,Использовать ваучер
+refresh-account-info,"Refresh account info","刷新账户信息","刷新帳戶資訊","به‌روزرسانی اطلاعات حساب","Обновить информацию об аккаунте"
 refresh-user,Refresh info,刷新用户信息,刷新用戶訊息,تازه‌سازی اطلاعات,Обновить информацию
 refreshing-user-info,Refreshing user info,正在刷新用户信息,正在刷新用戶信息,به روز رسانی اطلاعات کاربر,Обновление информации пользователя
 register,Register,注册,註冊,افتتاح حساب,Регистрация
 register-blurb,Create a new account,创建新帐号,創建新帳號,ایجاد حساب کاربری جدید,Создать новый аккаунт
 register-warning,"In order to protect against spam and automated signups, creating an account may take an extended period of time.","为了防止批量自动注册，创建账户可能需要较长时间。","為了減少批量自動註冊，創建帳戶可能需要較長時間。","برای جلوگیری از هرزنامه و ثبت‌نام‌های خودکار، ایجاد حساب کاربری ممکن است زمان زیادی ببرد.","Для предотвращения спама и автоматических регистраций создание аккаунта может занять длительное время."
 remaining-days,Remaining days,剩余天数,剩餘天數,روزهای باقی‌مانده,Осталось дней
+renewal,Renewal,续订,續訂,تمدید,Продление
+report-problem,"Report a problem","报告问题","回報問題","گزارش مشکل","Сообщить о проблеме"
 report-problem,"Report a problem","报告问题","回報問題","گزارش مشکل","Сообщить о проблеме"
 routing-mode,Routing mode,路由模式,路由模式,حالت مسیریابی,Режим маршрутизации
+search-apps,"Search apps...","搜索应用...","搜索應用...","جستجوی برنامه‌ها...","Поиск приложений..."
+search-apps,Search apps...,搜索应用...,搜索應用...,جستجوی برنامه‌ها...,Поиск приложений...
+select,"Select","选择","選擇","انتخاب","Выбрать"
+select-apps,Select apps,选择应用,選擇應用,انتخاب برنامه‌ها,Выберите приложения
+select-apps-blurb,Choose which apps will use Geph,选择哪些应用将使用迷雾通,選擇哪些應用將使用迷霧通,انتخاب کنید کدام برنامه‌ها از Geph استفاده کنند,Выберите приложения, которые будут использовать Geph
 select-excluded-apps,Select excluded apps,选择要排除的应用程序,選擇要排除的應用程式,انتخاب برنامه های صرف‌نظر شده,Выберите исключенные приложения
+select-excluded-apps-blurb,"Select which apps should bypass Geph","选择哪些应用应绕过迷雾通","選擇哪些應用應繞過迷霧通","انتخاب کنید کدام برنامه‌ها باید از Geph عبور کنند","Выберите, какие приложения должны обходить Geph"
+select-excluded-apps-description,"Select apps that will NOT use Geph. All other apps will be routed through Geph.","选择不使用迷雾通的应用。其他所有应用将通过迷雾通路由。","選擇不使用迷霧通的應用。其他所有應用將通過迷霧通路由。","برنامه‌هایی را انتخاب کنید که از Geph استفاده نخواهند کرد. همه برنامه‌های دیگر از طریق Geph مسیریابی خواهند شد.","Выберите приложения, которые НЕ будут использовать Geph. Все остальные приложения будут направлены через Geph."
+selected-apps,Selected apps,已选择的应用,已選擇的應用,برنامه‌های انتخاب شده,Выбранные приложения
 server-id,ID,服务器 ID,伺服器 ID,شناسه,ID
 settings,Settings,设置,設置,تنظیمات,Настройки
 show-all-servers,Show all servers,显示所有服务器,顯示所有服務器,نمایش تمام سرورها,Показать все серверы
 skip-wait-login-secret,"If you already have another device with Geph, you can skip this wait by logging in with your account secret instead:","如果您已经有其他设备使用迷雾通，可以通过使用您的账户密钥登录来跳过等待：","如果您已經有其他設備使用迷雾通，可以通過使用您的帳戶密鑰登錄來跳過等待：","اگر از قبل دستگاه دیگری با Geph دارید، می‌توانید با ورود با رمز حساب کاربری خود این انتظار را رد کنید.","Если у вас уже есть другое устройство с Geph, вы можете пропустить ожидание, войдя с помощью секретного ключа аккаунта."
 split-tunneling,Split tunneling,分流隧道,分流隧道,تونل بندی جداگانه,Разделённое туннелирование
+successfully-submitted,"Successfully submitted","提交成功","提交成功","با موفقیت ارسال شد","Успешно отправлено"
 theme,Theme,主题,主題,قالب,Тема
+today,Today,今天,今天,امروز,Сегодня
 total-traffic,Current traffic,当前速率,當前速率,کل ترافیک,Общий трафик
 total-users,Total users,总用户数,總用戶數,کل کاربران,Всего пользователей
 unlock-all-locations,"🌎 Unlock all locations","🌎 解锁所有位置","🌎 解鎖所有位置","🌎 همه مکان‌ها را باز کنید","🌎 Разблокировать все локации"
 unrestricted-access,"Enjoy unrestricted access to ports other than 80 and 443. Perfect for gaming, P2P, video conferencing, and more.","享受对除 80 和 443 之外端口的 无限制访问。非常适合游戏、P2P、视频会议等。","享受對除 80 和 443 之外端口的 無限制訪問。非常適合遊戲、P2P、視頻會議等。","از دسترسی نامحدود به پورت‌های غیر از 80 و 443 لذت ببرید. مناسب برای بازی، P2P، ویدئو کنفرانس و موارد دیگر","Наслаждайтесь неограниченным доступом к портам, кроме 80 и 443. Идеально для игр, P2P, видеоконференций и многого другого."
 upload,Upload,上传,上傳,آپلود,Загрузить
 use-automatic,Automatically select server,自动选择服务器,自動選擇伺服器,انتخاب خودکار سرور,Автоматически выбрать сервер
+use-later,Use later,稍后使用,稍後使用,استفاده در آینده,Использовать позже
 user-secret-info,"Your user secret is a unique random code that <b>replaces your username and password</b>.","您的账户密钥是一个随机数字，<b>取代旧版本中的用户名和密码</b>。","您的帳戶金鑰是一個隨機數字，<b>取代舊版本中的使用者名稱和密碼</b>。","رمز حساب کاربری شما یک کد تصادفی منحصربه‌فرد است که جایگزین نام کاربری و رمز عبور می‌شود.","Ваш секретный ключ аккаунта — это уникальный случайный код, заменяющий логин и пароль."
 username,Username,用户名,用戶名,نام کاربری,Имя пользователя
 via,Via,经由,經由,از طریق,Через
-your-email-optional,"Your email (optional)","您的邮箱（可选）","您的郵箱（可選）","ایمیل شما (اختیاری)","Ваш email (необязательно)"
-your-new-user-secret,"Your new user secret is:","您的新的账户密钥为：","您的新的帳戶密鑰為：","رمز حساب کاربری جدید شما این است:","Ваш новый секретный ключ аккаунта:"
-err_load_price_points,"Cannot load price points","无法加载价格信息","無法加載價格資訊","خطا در بارگیری نقاط قیمت","Не удается загрузить ценовые точки"
-err_create_invoice,"Cannot create invoice","无法创建订单","無法創建訂單","خطا در ایجاد فاکتور","Не удается создать счет"
-error,Error,错误,錯誤,خطا,Ошибка
-incorrect-user-secret,"Incorrect user secret","错误的账户密钥","錯誤的帳戶密鑰","رمز حساب کاربری اشتباه است","Неверный секретный ключ аккаунта"
-report-problem,"Report a problem","报告问题","回報問題","گزارش مشکل","Сообщить о проблеме"
-important,Important,重要,重要,مهم,Важно
-cant-reconnect-now,"Can't reconnect at this time; new server will take effect on next connect","无法立即重新连接；新服务器将在下次连接时生效","無法立即重新連接；新伺服器將在下次連接時生效","در حال حاضر امکان اتصال مجدد وجود ندارد؛ سرور جدید در اتصال بعدی اعمال خواهد شد","Невозможно переподключиться сейчас; новый сервер вступит в силу при следующем подключении"
-copy,Copy,复制,複製,کپی,Копировать
-debug-logs,Debug logs,调试日志,調試日誌,گزارش‌های عیب‌یابی,Отладочные логи
-logs-copied,Debug logs copied,调试日志已复制,調試日誌已複製,گزارش‌های عیب‌یابی کپی شد,Отладочные логи скопированы
-wechat,WeChat,微信,微信,وی‌چت,WeChat
-alipay,Alipay,支付宝,支付寶,علی‌پی,Alipay
-redeem-voucher,Redeem voucher,兑换礼品卡,兌換礼品卡,بازخرید کد تخفیف,Использовать ваучер
-enter-voucher-code,Enter voucher code,输入礼品卡代码,輸入礼品卡代碼,کد تخفیف را وارد کنید,Введите код ваучера
-redeem,Redeem,兑换,兌換,بازخرید,Активировать
-back,Back,返回,返回,بازگشت,Назад
 voucher-code,Voucher code,礼品卡代码,礼品卡代碼,کد تخفیف,Код ваучера
 voucher-invalid,"Invalid voucher code","无效的礼品卡代码","無效的禮品卡代碼","کد تخفیف نامعتبر","Недействительный код ваучера"
 voucher-success,"Voucher redeemed","礼品卡兑换成功","禮品卡兌換成功","کد تخفیف با موفقیت بازخرید شد","Ваучер успешно активирован"
-today,Today,今天,今天,امروز,Сегодня
+wechat,WeChat,微信,微信,وی‌چت,WeChat
 yesterday,Yesterday,昨天,昨天,دیروز,Вчера
-days-ago,days ago,天前,天前,روز پیش,дней назад
-apply-voucher,Apply now,马上使用,馬上使用,اعمال کد تخفیف,Применить ваучер
-use-later,Use later,稍后使用,稍後使用,استفاده در آینده,Использовать позже
-free-plus,"Free Plus!","免费领取 Plus!","免費領取 Plus!","پلاس رایگان!","Бесплатный Plus!"
-payment-processed-refresh,"Once your payment is processed, refresh to view your updated account status:","支付处理完成后，<br>请刷新以查看更新的账户状态：","支付處理完成後，<br>請刷新以查看更新的帳戶狀態：","پس از پردازش پرداخت شما، برای مشاهده وضعیت به‌روز شده حساب کاربری خود، صفحه را تازه‌سازی کنید:","После обработки вашего платежа обновите страницу, чтобы увидеть обновленный статус вашего аккаунта:"
-refresh-account-info,"Refresh account info","刷新账户信息","刷新帳戶資訊","به‌روزرسانی اطلاعات حساب","Обновить информацию об аккаунте"
-app-whitelist,App selection,应用选择,應用選擇,انتخاب برنامه,Выбор приложений
-app-whitelist-blurb,Select specific apps to use with Geph,选择使用迷雾通的特定应用,選擇使用迷霧通的特定應用,برنامه‌های خاصی را برای استفاده با Geph انتخاب کنید,Выберите определенные приложения для использования с Geph
-select-apps,Select apps,选择应用,選擇應用,انتخاب برنامه‌ها,Выберите приложения
-select-apps-blurb,Choose which apps will use Geph,选择哪些应用将使用迷雾通,選擇哪些應用將使用迷霧通,انتخاب کنید کدام برنامه‌ها از Geph استفاده کنند,Выберите приложения, которые будут использовать Geph
-loading-apps,Loading app list...,加载应用列表...,加載應用列表...,بارگیری فهرست برنامه‌ها...,Загрузка списка приложений...
-app-whitelist-not-supported,App selection not supported on this platform,此平台不支持应用选择,此平台不支持應用選擇,انتخاب برنامه در این پلتفرم پشتیبانی نمی‌شود,Выбор приложений не поддерживается на этой платформе
-search-apps,Search apps...,搜索应用...,搜索應用...,جستجوی برنامه‌ها...,Поиск приложений...
-selected-apps,Selected apps,已选择的应用,已選擇的應用,برنامه‌های انتخاب شده,Выбранные приложения
-no-apps-found,No apps found,未找到应用,未找到應用,هیچ برنامه‌ای یافت نشد,Приложения не найдены
-select-excluded-apps-description,"Select apps that will NOT use Geph. All other apps will be routed through Geph.","选择不使用迷雾通的应用。其他所有应用将通过迷雾通路由。","選擇不使用迷霧通的應用。其他所有應用將通過迷霧通路由。","برنامه‌هایی را انتخاب کنید که از Geph استفاده نخواهند کرد. همه برنامه‌های دیگر از طریق Geph مسیریابی خواهند شد.","Выберите приложения, которые НЕ будут использовать Geph. Все остальные приложения будут направлены через Geph."
-loading-apps,"Loading apps...","正在加载应用...","正在加載應用...","در حال بارگیری برنامه‌ها...","Загрузка приложений..."
-search-apps,"Search apps...","搜索应用...","搜索應用...","جستجوی برنامه‌ها...","Поиск приложений..."
-excluded-apps,"Excluded apps:","排除的应用：","排除的應用：","برنامه‌های مستثنی:","Исключенные приложения:"
-no-apps-found,"No apps found","未找到应用","未找到應用","هیچ برنامه‌ای یافت نشد","Приложения не найдены"
-select-excluded-apps-blurb,"Select which apps should bypass Geph","选择哪些应用应绕过迷雾通","選擇哪些應用應繞過迷霧通","انتخاب کنید کدام برنامه‌ها باید از Geph عبور کنند","Выберите, какие приложения должны обходить Geph"
-select,"Select","选择","選擇","انتخاب","Выбрать"
-recurring-subscription,Recurring subscription,自动续费 Plus,自動續費 Plus,اشتراک دوره‌ای,Периодическая подписка
-renewal,Renewal,续订,續訂,تمدید,Продление
-manage,Manage,管理,管理,مدیریت,Управление
-successfully-submitted,"Successfully submitted","提交成功","提交成功","با موفقیت ارسال شد","Успешно отправлено"
-manage-account,Manage account,管理账户,管理帳戶,مدیریت حساب کاربری,Управление аккаунтом
-other-payment-methods,"Other (crypto, buy vouchers, etc)","其他（加密货币、购买礼品卡等）","其他（加密貨幣、購買禮品卡等）","سایر (ارز دیجیتال، خرید کد تخفیف و غیره)","Другое (крипто, купить ваучеры и т.д.)"
+your-email-optional,"Your email (optional)","您的邮箱（可选）","您的郵箱（可選）","ایمیل شما (اختیاری)","Ваш email (необязательно)"
+your-new-user-secret,"Your new user secret is:","您的新的账户密钥为：","您的新的帳戶密鑰為：","رمز حساب کاربری جدید شما این است:","Ваш новый секретный ключ аккаунта:"
