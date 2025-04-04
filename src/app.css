@@ -3,9 +3,9 @@
 @import "tailwindcss/utilities";
 @import url(inter-font/inter.css);
 
-/* html {
-  font-size: 15px;
-} */
+html {
+  font-size: 3.5vmin;
+}
 
 body {
   padding: 0;

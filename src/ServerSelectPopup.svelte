@@ -65,7 +65,7 @@
   };
 
   const rowClass =
-    "flex flex-row bg-surface-200 p-2 rounded-md cursor-pointer items-center text-left block text-sm";
+    "flex flex-row variant-ghost p-2 rounded-md cursor-pointer items-center text-left block text-sm";
 </script>
 
 <Popup
@@ -117,7 +117,12 @@
               </div>
               <!-- Display least loaded server's load as a percentage -->
               <div
-                class="variant-ghost px-[0.4rem] py-[0.1rem] rounded font-medium tnum text-xs"
+                class="px-[0.4rem] py-[0.1rem] rounded font-medium tnum text-xs"
+                class:variant-ghost-success={getMinLoad(
+                  $app_status.exits,
+                  country,
+                  city
+                ) <= 0.5}
                 class:variant-ghost-warning={getMinLoad(
                   $app_status.exits,
                   country,
