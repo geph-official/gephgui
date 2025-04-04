@@ -78,13 +78,16 @@
   </p>
 
   {#if accountSecret}
-    <div class="w-full flex items-center justify-center tnum">
+    <div class="w-full flex items-center justify-center tnum my-8">
       <div class="text-center text-3xl w-[20rem]">
         {formatNumberWithSpaces(accountSecret)}
       </div>
     </div>
     <div class="text-center mt-2">
-      <button class="btn variant-filled btn-sm" on:click={() => onLogin()}>
+      <button
+        class="btn variant-ghost-primary w-full"
+        on:click={() => onLogin()}
+      >
         {l10n($curr_lang, "login")}
       </button>
     </div>
@@ -109,11 +112,8 @@
       {l10n($curr_lang, "skip-wait-login-secret")}
     </p>
 
-    <button
-      class="btn w-full variant-ghost-primary"
-      on:click={() => (open = false)}
-    >
-      {l10n($curr_lang, "login")}
+    <button class="btn w-full variant-ghost" on:click={() => (open = false)}>
+      {l10n($curr_lang, "back")}
     </button>
   {/if}
 </Popup>

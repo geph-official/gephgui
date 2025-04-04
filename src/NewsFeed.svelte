@@ -1,9 +1,12 @@
 <script lang="ts">
   import { curr_lang, l10n } from "./lib/l10n";
   import { onMount } from "svelte";
-  import { app_status } from "./lib/user";
-  import CalendarRangeOutline from "svelte-material-icons/CalendarRangeOutline.svelte";
+  import { persistentSelfRefreshingStore } from "./lib/user";
+
   import Popup from "./lib/Popup.svelte";
+  import { native_gate } from "./native-gate";
+  import { ProgressBar } from "@skeletonlabs/skeleton";
+  import { slide } from "svelte/transition";
 
   type NewsItem = {
     title: string;
@@ -12,6 +15,29 @@
     thumbnail: string;
     important: boolean;
   };
+
+  let newsLoadingSlow = false;
+
+  $: all_news = persistentSelfRefreshingStore(
+    "news_" + $curr_lang,
+    async () => {
+      const loadingLol = setTimeout(() => {
+        newsLoadingSlow = true;
+      }, 500);
+      try {
+        const gate = await native_gate();
+        const resp = (await gate.daemon_rpc("latest_news", [
+          $curr_lang,
+        ])) as NewsItem[];
+        return resp;
+      } finally {
+        clearTimeout(loadingLol);
+        newsLoadingSlow = false;
+      }
+    },
+    60 * 60 * 1000,
+    null
+  );
 
   let latestReadDate = 0;
   let popupOpen = false;
@@ -37,14 +63,6 @@
     }
     currentNewsItem = item;
     popupOpen = true;
-  };
-
-  const stripParagraphs = (s: string) => {
-    return s
-      .replaceAll("<p>", "")
-      .replaceAll("</p>", " ")
-      .replaceAll("<br>", " ")
-      .replaceAll("<br/>", " ");
   };
 
   const formatDate = (timestamp: number) => {
@@ -80,9 +98,12 @@
   <h2 class="text-primary-700 uppercase font-semibold text-sm mb-2">
     {l10n($curr_lang, "news")}
   </h2>
+  {#if newsLoadingSlow}
+    <div transition:slide><ProgressBar /></div>
+  {/if}
   <div class="flex flex-col overflow-y-auto">
-    {#if $app_status?.news}
-      {#each $app_status.news as item}
+    {#if $all_news}
+      {#each $all_news as item}
         {@const dateInfo = formatDate(item.date_unix)}
         <button
           class={"flex flex-row text-left justify-between items-center mb-3 py-2  " +

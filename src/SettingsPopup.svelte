@@ -7,6 +7,7 @@
   import Creation from "svelte-material-icons/Creation.svelte";
   import CallSplit from "svelte-material-icons/CallSplit.svelte";
   import NetworkOutline from "svelte-material-icons/NetworkOutline.svelte";
+  import Lan from "svelte-material-icons/Lan.svelte";
   import ThemeLightDark from "svelte-material-icons/ThemeLightDark.svelte";
   import Apps from "svelte-material-icons/Apps.svelte";
 
@@ -21,6 +22,7 @@
     pref_use_prc_whitelist,
     pref_use_app_whitelist,
     pref_proxy_autoconf,
+    pref_listen_all,
   } from "./lib/prefs";
   import { native_gate } from "./native-gate";
   import SingleSetting from "./settings/SingleSetting.svelte";
@@ -31,6 +33,7 @@
   import AppWhitelistControl from "./settings/AppWhitelistControl.svelte";
   import { writable } from "svelte/store";
   import VersionDisplay from "./settings/VersionDisplay.svelte";
+
   import { showToast, showErrorToast } from "./lib/utils";
 
   export let open = false;
@@ -48,10 +51,6 @@
 
   function handleAppWhitelistToggle(value) {
     pref_use_app_whitelist.set(value);
-  }
-
-  function handlePrcWhitelistToggle(value) {
-    pref_use_prc_whitelist.set(value);
   }
 
   const settings = async () => {
@@ -118,6 +117,12 @@
           description: "auto-proxy",
           type: "checkbox",
           store: pref_proxy_autoconf,
+        },
+        {
+          icon: Lan,
+          description: "listen-all",
+          type: "checkbox",
+          store: pref_listen_all,
         },
       ].filter(Boolean),
     };
@@ -228,8 +233,16 @@
         </svelte:fragment>
         <svelte:fragment slot="switch">
           <div class="flex flex-col text-sm tnum">
-            <b><span class="opacity-50">localhost:</span>9909</b>
-            <b><span class="opacity-50">localhost:</span>9910</b>
+            <b
+              ><span class="opacity-50"
+                >{#if $pref_listen_all}0.0.0.0{:else}localhost{/if}:</span
+              >9909</b
+            >
+            <b
+              ><span class="opacity-50"
+                >{#if $pref_listen_all}0.0.0.0{:else}localhost{/if}:</span
+              >9910</b
+            >
           </div>
         </svelte:fragment>"
       </SingleSetting>
