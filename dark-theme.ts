@@ -29,6 +29,10 @@ export const darkTheme: CustomThemeConfig = {
 		  if your accent color is dark, pick something light (#fdf6e3). Below is a reasonable
 		  inversion of your light theme’s on-colors.
 		*/
+    /*
+      It should be a lighter color.
+      Currently, the news section in new update (version 5) in dark mode, the text color isn't good and recognizable.
+    */
     "--on-primary": "7 54 66", // #073642
     "--on-secondary": "238 232 213", // #fdf6e3
     "--on-tertiary": "7 54 66",
