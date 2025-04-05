@@ -76,6 +76,7 @@ get-unlimited-speed,Get unlimited speed,获取无限速度,獲取無限速度,س
 github,GitHub,GitHub,GitHub,گیت‌هاب,GitHub
 global-vpn,Network-level VPN,全局VPN,全局VPN,فیلترشکن در سطح شبکه,VPN на уровне сети
 global-vpn-blurb,Force all traffic to use Geph,强制所有流量使用迷雾通,強制所有流量使用迷霧通,همه ترافیک ها را مجبور به استفاده از Geph می کند,Заставить весь трафик использовать Geph
+group,Group,用户群,用戶群,گروه کاربران,Группа пользователей
 i-have-old-username-password,"I have a username/password","旧版用户名/密码","舊版用戶名/密碼","من یک نام کاربری/رمز عبور قدیمی دارم","У меня есть имя пользователя/пароль"
 invalid-username-or-password,Wrong username or password,用户名或密码错误,用戶名或密碼錯誤,نام کاربری یا کلمه عبور نادرست است,Неправильное имя пользователя или пароль
 keep-window-open,"Please keep this window open!","请保持此窗口打开！","請保持此窗口打開！","لطفاً این پنجره را باز نگه دارید!","Пожалуйста, держите это окно открытым!"
