@@ -4,7 +4,7 @@
 @import url(inter-font/inter.css);
 
 html {
-  font-size: calc(min(4vw, 2vh));
+  font-size: 4vw;
 }
 
 body {
