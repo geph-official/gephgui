@@ -2,6 +2,7 @@
   import { SlideToggle } from "@skeletonlabs/skeleton";
   import SingleSetting from "./SingleSetting.svelte";
   import { curr_lang, l10n } from "../lib/l10n";
+  import { fade } from "svelte/transition";
   import { get } from "svelte/store";
   export let setting;
   const store = setting.store;
@@ -62,16 +63,18 @@
       {/if}
     </svelte:fragment>
     <svelte:fragment slot="collapse">
-      {#if setting.type === "collapse"}
-        {#each setting.inner as innerSetting}
-          <svelte:self
-            setting={{
-              ...innerSetting,
-              // disabled: setting.disabled || innerSetting.disabled,
-            }}
-          />
-        {/each}
-      {/if}
+      <div transition:fade>
+        {#if setting.type === "collapse"}
+          {#each setting.inner as innerSetting}
+            <svelte:self
+              setting={{
+                ...innerSetting,
+                // disabled: setting.disabled || innerSetting.disabled,
+              }}
+            />
+          {/each}
+        {/if}
+      </div>
     </svelte:fragment>
   </SingleSetting>
 {/if}

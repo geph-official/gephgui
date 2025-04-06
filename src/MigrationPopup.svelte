@@ -14,7 +14,6 @@
     showErrorToast,
   } from "./lib/utils";
   import Popup from "./lib/Popup.svelte";
-  import { onMount } from "svelte";
 
   export let open = false;
   // Accept initial values for username and password
@@ -70,14 +69,17 @@
   </p>
 
   {#if accountSecret}
-    <div transition:slide>
-      <div class="w-full flex items-center justify-center tnum">
+    <div>
+      <div class="w-full flex items-center justify-center tnum my-6">
         <div class="text-center text-3xl w-[20rem]">
           {formatNumberWithSpaces(accountSecret)}
         </div>
       </div>
       <div class="text-center mt-2">
-        <button class="btn variant-filled btn-sm" on:click={() => onLogin()}>
+        <button
+          class="btn variant-ghost-primary w-full"
+          on:click={() => onLogin()}
+        >
           {l10n($curr_lang, "login")}
         </button>
       </div>

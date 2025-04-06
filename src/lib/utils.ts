@@ -55,7 +55,7 @@ export const showErrorModal = async (modalStore: ModalStore, error: string) => {
 export const showToast = async (toastStore: ToastStore, message: string) => {
   const t: ToastSettings = {
     message,
-    background: "variant-ghost-primary",
+    background: "variant-filled-primary",
     hideDismiss: true,
   };
   toastStore.trigger(t);
@@ -67,7 +67,7 @@ export const showErrorToast = async (
 ) => {
   const t: ToastSettings = {
     message,
-    background: "variant-ghost-error",
+    background: "variant-filled-error",
     hideDismiss: true,
   };
   toastStore.trigger(t);

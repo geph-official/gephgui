@@ -10,9 +10,10 @@
   import {
     ProgressBar,
     getModalStore,
+    getToastStore,
     type ModalSettings,
   } from "@skeletonlabs/skeleton";
-  import { showErrorModal } from "./lib/utils";
+  import { showErrorModal, showErrorToast, showToast } from "./lib/utils";
   import Popup from "./lib/Popup.svelte";
 
   // Tracks the currently selected index; starts at 0 to force an option.
@@ -32,6 +33,7 @@
   let redeemInProgress = false;
   let voucherCode = "";
   const modalStore = getModalStore();
+  const toastStore = getToastStore();
 
   async function handlePayNow(days: number) {
     createInvoiceInProgress = true;
@@ -70,11 +72,6 @@
 
   // Function for redeeming voucher
   async function redeemVoucher() {
-    if (!voucherCode.trim()) {
-      showErrorModal(modalStore, l10n($curr_lang, "please_enter_voucher_code"));
-      return;
-    }
-
     redeemInProgress = true;
     try {
       const gate = await native_gate();
@@ -85,19 +82,16 @@
 
       if (daysAdded === 0) {
         // Voucher is invalid
-        showErrorModal(modalStore, l10n($curr_lang, "voucher-invalid"));
+        showErrorToast(toastStore, l10n($curr_lang, "voucher-invalid"));
       } else {
-        showErrorModal(
-          modalStore,
+        showToast(
+          toastStore,
           `${l10n($curr_lang, "voucher-success")} (+${daysAdded} ${l10n($curr_lang, "days")})`
         );
-        currentScreen = "completion";
+        handleClose();
       }
     } catch (e) {
-      showErrorModal(
-        modalStore,
-        l10n($curr_lang, "err_redeem_voucher") + ": " + e
-      );
+      showErrorToast(toastStore, "" + e);
     } finally {
       redeemInProgress = false;
     }

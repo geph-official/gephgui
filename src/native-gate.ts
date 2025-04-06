@@ -396,7 +396,7 @@ const MockDaemonRpc = {
         b2e_listen: "0.0.0.0:2",
         country: "US",
         city: "Miami",
-        load: 0.3,
+        load: 0.55,
         expiry: 10000000000,
       },
     ];
@@ -423,7 +423,7 @@ const MockDaemonRpc = {
     return {
       level: "Plus",
       expiry: 10000000000,
-      recurring: true,
+      recurring: false,
     };
     // return {
     //   level: "Free",

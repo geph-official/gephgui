@@ -38,20 +38,6 @@ export type NewsItem = {
   important: boolean;
 };
 
-const newsCache = new LRUCache<string, NewsItem[]>({
-  max: 5,
-  ttl: 60 * 60 * 1000, // 1 hour
-  fetchMethod: async (lang, oldValue, { signal }) => {
-    const gate = await native_gate();
-    const resp = (await gate.daemon_rpc("latest_news", [lang])) as NewsItem[];
-    return resp;
-  },
-});
-
-async function fetchNews(lang: string): Promise<NewsItem[]> {
-  return newsCache.fetch(lang) as any;
-}
-
 const serverListCache = new LRUCache<string, ExitDescriptor[]>({
   max: 1,
   ttl: 5 * 60 * 1000,
@@ -78,7 +64,6 @@ export type ConnectionStatus =
 export type AppStatus = {
   account: AccountStatus;
 
-  news: NewsItem[];
   exits: ExitDescriptor[];
 };
 
@@ -123,7 +108,7 @@ function selfRefreshingStore<T>(
  * @param intervalMs - Refresh interval in milliseconds.
  * @param initialValue - The initial value of the store.
  */
-function persistentSelfRefreshingStore<T>(
+export function persistentSelfRefreshingStore<T>(
   storageName: string,
   refreshFn: () => Promise<T>,
   intervalMs: number,
@@ -190,7 +175,10 @@ async function fetchConnectionStatus(): Promise<ConnectionStatus> {
 
   if (info.state === "Connected") {
     return {
-      bridge: `${info.protocol} ${info.bridge.split(":")[0]}`,
+      bridge: `${info.protocol
+        .replace("sosistab", "sos")
+        .replace("plain", "pln")
+        .replace("client-exit", "c-e")} ${info.bridge.split(":")[0]}`,
       exit: info.exit.c2e_listen.split(":")[0],
       country: info.exit.country,
     };
@@ -219,7 +207,11 @@ export const traffic_history: Readable<number[]> = selfRefreshingStore(
     if (v.length > 0) {
       v.pop();
     }
-    return v;
+    // Pad the array with zeros at the beginning to reach a length of 600
+    const padLength = Math.max(0, 600 - v.length);
+    const paddedArray = [...Array(padLength).fill(0), ...v];
+
+    return paddedArray;
   },
   1000,
   []
@@ -245,15 +237,14 @@ export const app_status: Writable<AppStatus | null> =
 
       // Run all fetch operations in parallel
       console.log("lang", lang);
-      const [account, news, exits] = await Promise.all([
+      const [account, exits] = await Promise.all([
         accountStatusCache.fetch(secret),
-        fetchNews(lang),
+
         serverListCache.fetch("exits"),
       ]);
 
       return {
         account: account as any,
-        news: news as any,
         exits: exits as any,
       };
     },

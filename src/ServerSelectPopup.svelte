@@ -65,7 +65,7 @@
   };
 
   const rowClass =
-    "flex flex-row bg-surface-200 p-2 text-sm rounded-md cursor-pointer items-center text-left block";
+    "flex flex-row variant-ghost p-2 rounded-md cursor-pointer items-center text-left block text-sm";
 </script>
 
 <Popup
@@ -85,7 +85,7 @@
           reconnectDaemon();
         }}
       >
-        <div class="w-7">
+        <div class="w-8">
           <RefreshAuto width="1.3rem" height="1.3rem" />
         </div>
         <div class="grow">
@@ -108,7 +108,7 @@
               }}
             >
               <!-- Flag icon -->
-              <div class="w-7">
+              <div class="w-8">
                 <Flag {country} />
               </div>
               <!-- Country / City name -->
@@ -117,13 +117,18 @@
               </div>
               <!-- Display least loaded server's load as a percentage -->
               <div
-                class="text-green-700 font-medium"
-                class:text-orange-700={getMinLoad(
+                class="px-[0.4rem] py-[0.1rem] rounded font-medium tnum text-xs"
+                class:variant-ghost-success={getMinLoad(
+                  $app_status.exits,
+                  country,
+                  city
+                ) <= 0.5}
+                class:variant-ghost-warning={getMinLoad(
                   $app_status.exits,
                   country,
                   city
                 ) > 0.5}
-                class:text-red-700={getMinLoad(
+                class:variant-ghost-error={getMinLoad(
                   $app_status.exits,
                   country,
                   city
