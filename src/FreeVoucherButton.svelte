@@ -43,7 +43,7 @@
     );
   };
 
-  let popupOpen = false;
+  let popupOpen = true;
   let applied = false;
 </script>
 
