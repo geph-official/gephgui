@@ -41,11 +41,11 @@ export const pref_exit_constraint: Writable<ExitConstraint> =
 export const pref_exit_constraint_derived: Readable<ExitConstraint> = derived(
   [pref_exit_constraint, app_status],
   ([$pref_exit_constraint, $app_status]) => {
-    if ($app_status?.account.level === "Free") {
-      return "auto";
-    } else {
-      return $pref_exit_constraint;
-    }
+    // if ($app_status?.account.level === "Free") {
+    //   return "auto";
+    // } else {
+    return $pref_exit_constraint;
+    // }
   }
 );
 
