@@ -48,15 +48,14 @@
     <svelte:fragment slot="trail">
       {#if $curr_valid_secret !== null && !$pref_wizard}
         <FreeVoucherButton />
-
-        <button
-          on:click={() => {
-            accountOpen = true;
-          }}
-        >
-          <AccountCircleOutline size="1.5rem" />
-        </button>
       {/if}
+      <button
+        on:click={() => {
+          accountOpen = true;
+        }}
+      >
+        <AccountCircleOutline size="1.5rem" />
+      </button>
       <button
         on:click={() => {
           settingsOpen = true;
