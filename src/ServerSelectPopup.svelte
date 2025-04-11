@@ -8,7 +8,7 @@
   import { showErrorModal } from "./lib/utils";
   import { app_status, conn_status, startDaemonArgs } from "./lib/user";
   import Popup from "./lib/Popup.svelte";
-
+  import { paymentsOpen } from "./lib/user";
   export let open = false;
 
   const modalStore = getModalStore();
@@ -66,6 +66,11 @@
 
   const rowClass =
     "flex flex-row variant-ghost p-2 rounded-md cursor-pointer items-center text-left block text-sm";
+
+  $: exitList =
+    $app_status?.account.level === "Free"
+      ? $app_status?.free_exits
+      : $app_status?.exits;
 </script>
 
 <Popup
@@ -76,7 +81,19 @@
   <div class="flex flex-col gap-2 pt-2">
     {#if closing}
       <ProgressBar />
-    {:else if $app_status}
+    {:else if exitList}
+      {#if $app_status?.account.level === "Free"}
+        <button
+          class="btn variant-ghost-primary rounded p-2 text-sm text-center font-bold"
+          on:click={() => {
+            $paymentsOpen = true;
+            open = false;
+          }}
+        >
+          {l10n($curr_lang, "upgrade-to-plus-locations")}!
+        </button>
+      {/if}
+
       <!-- "Automatic" option -->
       <button
         class={rowClass}
@@ -94,8 +111,8 @@
       </button>
 
       <!-- Per country and city -->
-      {#each getCountries($app_status.exits) as country}
-        {#each getCitiesByCountry($app_status.exits, country) as city}
+      {#each getCountries(exitList) as country}
+        {#each getCitiesByCountry(exitList, country) as city}
           {#if city}
             <button
               class={rowClass}
@@ -119,24 +136,19 @@
               <div
                 class="px-[0.4rem] py-[0.1rem] rounded font-medium tnum text-xs"
                 class:variant-ghost-success={getMinLoad(
-                  $app_status.exits,
+                  exitList,
                   country,
                   city
                 ) <= 0.5}
                 class:variant-ghost-warning={getMinLoad(
-                  $app_status.exits,
+                  exitList,
                   country,
                   city
                 ) > 0.5}
-                class:variant-ghost-error={getMinLoad(
-                  $app_status.exits,
-                  country,
-                  city
-                ) > 0.8}
+                class:variant-ghost-error={getMinLoad(exitList, country, city) >
+                  0.8}
               >
-                {(getMinLoad($app_status.exits, country, city) * 100).toFixed(
-                  0
-                )}%
+                {(getMinLoad(exitList, country, city) * 100).toFixed(0)}%
               </div>
             </button>
           {/if}

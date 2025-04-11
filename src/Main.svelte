@@ -17,10 +17,8 @@
 
 <div id="main">
   {#if $app_status}
-    {#if $app_status.account.level === "Free"}
-      {#if $pref_wizard}
-        <Wizard />
-      {/if}
+    {#if $app_status.account.level === "Free" && $pref_wizard}
+      <Wizard />
     {/if}
     <ServerSelectPopup bind:open={serversOpen} />
     <div class="flex flex-col gap-5">

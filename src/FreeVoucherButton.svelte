@@ -12,9 +12,13 @@
 
   const fetchVoucher = async () => {
     const gate = await native_gate();
-    return (await gate.daemon_rpc("get_free_voucher", [
+    const info = (await gate.daemon_rpc("get_free_voucher", [
       $curr_valid_secret,
     ])) as VoucherInfo | null;
+    if (localStorage.getItem("dismissedFreeVoucher") !== info?.code) {
+      popupOpen = true;
+    }
+    return info;
   };
 
   let applyingVoucher = false;
@@ -43,7 +47,7 @@
     );
   };
 
-  let popupOpen = true;
+  let popupOpen = false;
   let applied = false;
 </script>
 
@@ -61,6 +65,10 @@
     <Popup
       bind:open={popupOpen}
       fullScreen={false}
+      onClose={() => {
+        localStorage.setItem("dismissedFreeVoucher", voucher?.code);
+        popupOpen = false;
+      }}
       title={l10n($curr_lang, "free-plus")}
     >
       <div class="flex flex-col gap-2">
@@ -73,8 +81,12 @@
             on:click={() => applyVoucher(voucher?.code)}
             >{l10n($curr_lang, "apply-voucher")}</button
           >
-          <button class="btn variant-ghost" on:click={() => (popupOpen = false)}
-            >{l10n($curr_lang, "use-later")}</button
+          <button
+            class="btn variant-ghost"
+            on:click={() => {
+              localStorage.setItem("dismissedFreeVoucher", voucher?.code);
+              popupOpen = false;
+            }}>{l10n($curr_lang, "use-later")}</button
           >
         {/if}
       </div>

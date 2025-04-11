@@ -55,7 +55,7 @@ export type ExitConstraint = "auto" | { city: string; country: string };
  * Whether or not the wizard is active
  */
 export const pref_wizard: Writable<boolean> = persistentWritable(
-  "wizarddd",
+  "wizardddd",
   true
 );
 
