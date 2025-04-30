@@ -42,17 +42,19 @@ export const pref_exit_constraint_derived: Readable<ExitConstraint> = derived(
   [pref_exit_constraint, app_status],
   ([$pref_exit_constraint, $app_status]) => {
     // Return "auto" when the constraint is already "auto"
-    if ($pref_exit_constraint === "auto") {
+    if ($pref_exit_constraint === "auto" || !$app_status) {
       return "auto";
     }
 
+    const exits = $app_status.account.level === "Free" ? $app_status.free_exits : $app_status.exits;
+
     // Check if app_status has exits data
-    if (!$app_status || !$app_status.exits || $app_status.exits.length === 0) {
+    if (exits.length === 0) {
       return "auto";
     }
 
     // Check if any exit matches the constraint (country and city)
-    const matchingExit = $app_status.exits.find(
+    const matchingExit = exits.find(
       (exit) => 
         exit.country === $pref_exit_constraint.country && 
         exit.city === $pref_exit_constraint.city
