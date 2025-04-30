@@ -36,16 +36,30 @@ export const pref_exit_constraint: Writable<ExitConstraint> =
   persistentWritable("exit_constraint", "auto");
 
 /**
- * The current exit constraint, taking into account free/plus
+ * The current exit constraint, taking into account available exits
  */
 export const pref_exit_constraint_derived: Readable<ExitConstraint> = derived(
   [pref_exit_constraint, app_status],
   ([$pref_exit_constraint, $app_status]) => {
-    // if ($app_status?.account.level === "Free") {
-    //   return "auto";
-    // } else {
-    return $pref_exit_constraint;
-    // }
+    // Return "auto" when the constraint is already "auto"
+    if ($pref_exit_constraint === "auto") {
+      return "auto";
+    }
+
+    // Check if app_status has exits data
+    if (!$app_status || !$app_status.exits || $app_status.exits.length === 0) {
+      return "auto";
+    }
+
+    // Check if any exit matches the constraint (country and city)
+    const matchingExit = $app_status.exits.find(
+      (exit) => 
+        exit.country === $pref_exit_constraint.country && 
+        exit.city === $pref_exit_constraint.city
+    );
+
+    // If no exit matches the constraint, return "auto", otherwise return the constraint
+    return matchingExit ? $pref_exit_constraint : "auto";
   }
 );
 
