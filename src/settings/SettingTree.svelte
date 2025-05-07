@@ -43,6 +43,9 @@
         {#if setting.disabled}
           <span class="badge variant-ghost-warning">PLUS</span>
         {/if}
+        {#if setting.tag}
+          <span class="badge variant-ghost-warning">{setting.tag}</span>
+        {/if}
       </div>
       {#if setting.blurb}
         <small>

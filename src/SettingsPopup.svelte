@@ -111,6 +111,17 @@
           description: "global-vpn",
           type: "checkbox",
           store: pref_global_vpn,
+          tag: l10n($curr_lang, "beta"),
+          onToggle: (value) => {
+            if (value) {
+              showToast(
+                toastStore,
+                l10n($curr_lang, "global-vpn") +
+                  ": " +
+                  l10n($curr_lang, "experimental-feature-warning"),
+              );
+            }
+          },
         },
         gate.supports_proxy_conf && {
           icon: Creation,
@@ -271,7 +282,7 @@
                   ]);
                   showToast(
                     toastStore,
-                    l10n($curr_lang, "successfully-submitted")
+                    l10n($curr_lang, "successfully-submitted"),
                   );
                 } catch (e) {
                   showErrorToast(toastStore, "Error: " + e);

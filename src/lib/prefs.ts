@@ -94,7 +94,7 @@ export const pref_routing_mode: Writable<"auto" | "bridges" | "direct"> =
  * Whether to do global vpn stuff
  */
 export const pref_global_vpn: Writable<boolean> = persistentWritable(
-  "global_vpn",
+  "global_vpn_1",
   false
 );
 

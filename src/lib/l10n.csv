@@ -190,3 +190,5 @@ yesterday,Yesterday,昨天,昨天,دیروز,Вчера
 your-email-optional,"Your email (optional)","您的邮箱（可选）","您的郵箱（可選）","ایمیل شما (اختیاری)","Ваш email (необязательно)"
 your-new-user-secret,"Your new user secret is:","您的新的账户密钥为：","您的新的帳戶密鑰為：","رمز حساب کاربری جدید شما این است:","Ваш новый секретный ключ аккаунта:"
 upgrade-to-plus-locations,"Upgrade to Plus to unlock premium locations","升级到 Plus 以解锁高级位置","升級到 Plus 以解鎖高級位置","برای دسترسی به مکان‌های ویژه به پلاس ارتقا دهید","Обновите до Plus, чтобы разблокировать премиум-локации"
+experimental-feature-warning,"This is a highly experimental feature. Please report any problems you encounter.","这是一个高度实验性功能。请报告您遇到的任何问题。","這是一個高度實驗性功能。請報告您遇到的任何問題。","این یک ویژگی بسیار آزمایشی است. لطفا هر مشکلی که با آن مواجه می‌شوید را گزارش دهید.","Это экспериментальная функция. Пожалуйста, сообщайте о любых проблемах, с которыми вы столкнетесь."
+beta,Beta,Beta,Beta
