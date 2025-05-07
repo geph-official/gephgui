@@ -402,6 +402,20 @@ const MockDaemonRpc = {
     ];
   },
 
+  async free_exit_list() {
+    await random_sleep();
+    return [
+      {
+        c2e_listen: "0.0.0.0:1",
+        b2e_listen: "0.0.0.0:2",
+        country: "US",
+        city: "Miami",
+        load: 0.55,
+        expiry: 10000000000,
+      },
+    ];
+  },
+
   async conn_info() {
     return {
       state: "Connected",
@@ -420,14 +434,14 @@ const MockDaemonRpc = {
 
   async user_info(secret: string) {
     await random_sleep();
-    return {
-      level: "Plus",
-      expiry: 10000000000,
-      recurring: false,
-    };
     // return {
-    //   level: "Free",
+    //   level: "Plus",
+    //   expiry: 10000000000,
+    //   recurring: false,
     // };
+    return {
+      level: "Free",
+    };
   },
 
   async latest_news(lang: string) {

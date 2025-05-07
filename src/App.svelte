@@ -17,7 +17,7 @@
   import AccountPopup from "./AccountPopup.svelte";
   import PaymentPopup from "./PaymentPopup.svelte";
   import { pref_lightdark, pref_wizard } from "./lib/prefs";
-  import Wizard from "./Wizard.svelte";
+
   import FreeVoucherButton from "./FreeVoucherButton.svelte";
 
   let settingsOpen = false;
@@ -46,17 +46,16 @@
     </svelte:fragment>
     <!-- <b id="logo-text">{l10n($curr_lang, "geph")}</b> -->
     <svelte:fragment slot="trail">
-      {#if $curr_valid_secret !== null}
+      {#if $curr_valid_secret !== null && !$pref_wizard}
         <FreeVoucherButton />
-
-        <button
-          on:click={() => {
-            accountOpen = true;
-          }}
-        >
-          <AccountCircleOutline size="1.5rem" />
-        </button>
       {/if}
+      <button
+        on:click={() => {
+          accountOpen = true;
+        }}
+      >
+        <AccountCircleOutline size="1.5rem" />
+      </button>
       <button
         on:click={() => {
           settingsOpen = true;

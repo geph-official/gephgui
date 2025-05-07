@@ -42,11 +42,7 @@
   };
 
   const switchServers = async () => {
-    if ($app_status?.account.level === "Free") {
-      $pref_wizard = true;
-    } else {
-      serversOpen = true;
-    }
+    serversOpen = true;
   };
 
   $: connectionStatus =

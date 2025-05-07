@@ -51,6 +51,19 @@ const serverListCache = new LRUCache<string, ExitDescriptor[]>({
   },
 });
 
+const freeServerListCache = new LRUCache<string, ExitDescriptor[]>({
+  max: 1,
+  ttl: 5 * 60 * 1000,
+  fetchMethod: async (dummy, oldValue, { signal }) => {
+    const gate = await native_gate();
+    const freeExitList: ExitDescriptor[] = (await gate.daemon_rpc(
+      "free_exit_list",
+      []
+    )) as any;
+    return freeExitList;
+  },
+});
+
 // Combined app status types
 export type AccountStatus =
   | { level: "Plus"; expiry: number; user_id: number; recurring: boolean }
@@ -65,6 +78,7 @@ export type AppStatus = {
   account: AccountStatus;
 
   exits: ExitDescriptor[];
+  free_exits: ExitDescriptor[];
 };
 
 /**
@@ -237,16 +251,20 @@ export const app_status: Writable<AppStatus | null> =
 
       // Run all fetch operations in parallel
       console.log("lang", lang);
-      const [account, exits] = await Promise.all([
+      const [account, exits, free_exits] = await Promise.all([
         accountStatusCache.fetch(secret),
 
         serverListCache.fetch("exits"),
+        freeServerListCache.fetch("exits"),
       ]);
 
-      return {
+      const toret = {
         account: account as any,
         exits: exits as any,
+        free_exits: free_exits as any,
       };
+      console.log("app_status", toret);
+      return toret;
     },
     2000, // refresh interval in ms
     null
