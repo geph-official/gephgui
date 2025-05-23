@@ -143,14 +143,14 @@
       <!-- Tab selector -->
       <div class="flex justify-center gap-2 mt-2">
         <button
-          class="chip px-2 py-1 text-sm"
+          class="btn px-2 py-1 text-sm"
           class:variant-filled-primary={tab === "core"}
           on:click={() => (tab = "core")}
         >
           {l10n($curr_lang, "core-tab")}
         </button>
         <button
-          class="chip px-2 py-1 text-sm"
+          class="btn px-2 py-1 text-sm"
           class:variant-filled-primary={tab === "streaming"}
           on:click={() => (tab = "streaming")}
         >
@@ -169,14 +169,10 @@
           {#if city}
             <button
               class={rowClass}
-              class:opacity-50={
-                $app_status?.account.level === "Free" &&
-                !cityAllowedForFree(currentExitInfos, country, city)
-              }
-              class:pointer-events-none={
-                $app_status?.account.level === "Free" &&
-                !cityAllowedForFree(currentExitInfos, country, city)
-              }
+              class:opacity-50={$app_status?.account.level === "Free" &&
+                !cityAllowedForFree(currentExitInfos, country, city)}
+              class:pointer-events-none={$app_status?.account.level ===
+                "Free" && !cityAllowedForFree(currentExitInfos, country, city)}
               on:click={async () => {
                 $pref_exit_constraint = {
                   city,

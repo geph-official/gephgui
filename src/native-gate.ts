@@ -411,7 +411,7 @@ const MockDaemonRpc = {
           city: "Miami",
           load: 0.3,
           expiry: 10000000000,
-        }, {allowed_levels: ["Free"], category: "core"}],
+        }, {allowed_levels: ["Plus"], category: "core"}],
       }
     }
   },
