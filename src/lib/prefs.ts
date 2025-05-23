@@ -48,7 +48,7 @@ export const pref_exit_constraint_derived: Readable<ExitConstraint> = derived(
 
     const exitList = Object.values($app_status.net_status.exits).map(v => v[1]);
     const freeExitList = Object.values($app_status.net_status.exits).filter(v => v[2].allowed_levels.includes("Free")).map(v => v[1]);
-    const exits = $app_status.account.level === "Free" ? exitList : freeExitList;
+    const exits = ($app_status.account.level === "Free") ? freeExitList : exitList;
 
     // Check if app_status has exits data
     if (exits.length === 0) {
@@ -96,7 +96,7 @@ export const pref_routing_mode: Writable<"auto" | "bridges" | "direct"> =
  * Whether to do global vpn stuff
  */
 export const pref_global_vpn: Writable<boolean> = persistentWritable(
-  "global_vpn_1",
+  "global_vpn_2",
   false
 );
 
@@ -119,7 +119,7 @@ export const pref_block_gambling: Writable<boolean> = persistentWritable(
  * Whether or not to autoconf proxies.
  */
 export const pref_proxy_autoconf: Writable<boolean> = persistentWritable(
-  "proxy_autoconf",
+  "proxy_autoconf_1",
   true
 );
 

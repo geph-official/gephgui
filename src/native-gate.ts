@@ -442,14 +442,14 @@ const MockDaemonRpc = {
 
   async user_info(secret: string) {
     await random_sleep();
-    // return {
-    //   level: "Plus",
-    //   expiry: 10000000000,
-    //   recurring: false,
-    // };
     return {
-      level: "Free",
+      level: "Plus",
+      expiry: 10000000000,
+      recurring: false,
     };
+    // return {
+    //   level: "Free",
+    // };
   },
 
   async latest_news(lang: string) {
