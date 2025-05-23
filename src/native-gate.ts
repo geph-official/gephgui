@@ -412,6 +412,14 @@ const MockDaemonRpc = {
           load: 0.3,
           expiry: 10000000000,
         }, {allowed_levels: ["Plus"], category: "core"}],
+        "chele": ["dummy", {
+          c2e_listen: "0.0.0.0:1",
+          b2e_listen: "0.0.0.0:2",
+          country: "TW",
+          city: "Taipei",
+          load: 0.3,
+          expiry: 10000000000,
+        }, {allowed_levels: ["Plus"], category: "streaming"}],
       }
     }
   },
