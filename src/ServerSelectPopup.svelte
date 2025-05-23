@@ -112,17 +112,6 @@
     {#if closing}
       <ProgressBar />
     {:else if exitInfos}
-      {#if $app_status?.account.level === "Free"}
-        <button
-          class="btn variant-ghost-primary rounded-md p-2 text-sm text-center font-bold"
-          on:click={() => {
-            $paymentsOpen = true;
-            open = false;
-          }}
-        >
-          {l10n($curr_lang, "upgrade-to-plus-locations")}!
-        </button>
-      {/if}
 
       <!-- "Automatic" option -->
       <button
@@ -169,11 +158,19 @@
           {#if city}
             <button
               class={rowClass}
-              class:opacity-50={$app_status?.account.level === "Free" &&
-                !cityAllowedForFree(currentExitInfos, country, city)}
-              class:pointer-events-none={$app_status?.account.level ===
-                "Free" && !cityAllowedForFree(currentExitInfos, country, city)}
+              class:opacity-50={
+                $app_status?.account.level === "Free" &&
+                !cityAllowedForFree(currentExitInfos, country, city)
+              }
               on:click={async () => {
+                if (
+                  $app_status?.account.level === "Free" &&
+                  !cityAllowedForFree(currentExitInfos, country, city)
+                ) {
+                  $paymentsOpen = true;
+                  open = false;
+                  return;
+                }
                 $pref_exit_constraint = {
                   city,
                   country,
@@ -186,8 +183,12 @@
                 <Flag {country} />
               </div>
               <!-- Country / City name -->
-              <div class="grow">
-                <b class="font-bold">{country}</b> / {city}
+              <div class="grow flex flex-row items-center gap-1">
+                <span><b class="font-bold">{country}</b> / {city}</span>
+                {#if $app_status?.account.level === "Free" &&
+                !cityAllowedForFree(currentExitInfos, country, city)}
+                  <span class="badge variant-ghost-warning">PLUS</span>
+                {/if}
               </div>
               <!-- Display least loaded server's load as a percentage -->
               <div
