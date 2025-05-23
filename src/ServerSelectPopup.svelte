@@ -2,7 +2,11 @@
   import { ProgressBar, getModalStore } from "@skeletonlabs/skeleton";
   import RefreshAuto from "svelte-material-icons/RefreshAuto.svelte";
   import { curr_lang, l10n } from "./lib/l10n";
-  import { native_gate, type ExitDescriptor } from "./native-gate";
+  import {
+    native_gate,
+    type ExitDescriptor,
+    type ExitMetadata,
+  } from "./native-gate";
   import { pref_exit_constraint } from "./lib/prefs";
   import Flag from "./lib/Flag.svelte";
   import { showErrorModal } from "./lib/utils";
@@ -67,16 +71,36 @@
   const rowClass =
     "flex flex-row variant-ghost p-2 rounded-md cursor-pointer items-center text-left block text-sm";
 
-  $: allExitList =
-    $app_status && Object.values($app_status.net_status.exits).map((v) => v[1]);
-  $: freeExitList =
-    $app_status &&
-    Object.values($app_status.net_status.exits)
-      .filter((v) => v[2].allowed_levels.includes("Free"))
-      .map((v) => v[1]);
+  type ExitInfo = { desc: ExitDescriptor; meta: ExitMetadata };
 
-  $: exitList =
-    $app_status?.account.level === "Free" ? freeExitList : allExitList;
+  let tab: "core" | "streaming" = "core";
+
+  $: exitInfos =
+    $app_status &&
+    Object.values($app_status.net_status.exits).map((v) => ({
+      desc: v[1],
+      meta: v[2],
+    }));
+
+  $: coreExitInfos = exitInfos?.filter((e) => e.meta.category === "core") ?? [];
+  $: streamingExitInfos =
+    exitInfos?.filter((e) => e.meta.category === "streaming") ?? [];
+
+  $: currentExitInfos = tab === "core" ? coreExitInfos : streamingExitInfos;
+  $: exitList = currentExitInfos.map((e) => e.desc);
+
+  const cityAllowedForFree = (
+    infos: ExitInfo[],
+    country: string,
+    city: string,
+  ): boolean => {
+    return infos.some(
+      (i) =>
+        i.desc.country === country &&
+        i.desc.city === city &&
+        i.meta.allowed_levels.includes("Free"),
+    );
+  };
 </script>
 
 <Popup
@@ -87,7 +111,7 @@
   <div class="flex flex-col gap-2 pt-2">
     {#if closing}
       <ProgressBar />
-    {:else if exitList}
+    {:else if exitInfos}
       {#if $app_status?.account.level === "Free"}
         <button
           class="btn variant-ghost-primary rounded-md p-2 text-sm text-center font-bold"
@@ -116,12 +140,39 @@
         </div>
       </button>
 
+      <!-- Tab selector -->
+      <div class="flex justify-center gap-2 mt-2">
+        <button
+          class="btn px-2 py-1 text-sm"
+          class:variant-filled-primary={tab === "core"}
+          on:click={() => (tab = "core")}
+        >
+          {l10n($curr_lang, "core-tab")}
+        </button>
+        <button
+          class="btn px-2 py-1 text-sm"
+          class:variant-filled-primary={tab === "streaming"}
+          on:click={() => (tab = "streaming")}
+        >
+          {l10n($curr_lang, "streaming-tab")}
+        </button>
+      </div>
+      <p class="text-center text-xs opacity-70">
+        {tab === "core"
+          ? l10n($curr_lang, "core-blurb")
+          : l10n($curr_lang, "streaming-blurb")}
+      </p>
+
       <!-- Per country and city -->
       {#each getCountries(exitList) as country}
         {#each getCitiesByCountry(exitList, country) as city}
           {#if city}
             <button
               class={rowClass}
+              class:opacity-50={$app_status?.account.level === "Free" &&
+                !cityAllowedForFree(currentExitInfos, country, city)}
+              class:pointer-events-none={$app_status?.account.level ===
+                "Free" && !cityAllowedForFree(currentExitInfos, country, city)}
               on:click={async () => {
                 $pref_exit_constraint = {
                   city,
