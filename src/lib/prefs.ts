@@ -46,7 +46,9 @@ export const pref_exit_constraint_derived: Readable<ExitConstraint> = derived(
       return "auto";
     }
 
-    const exits = $app_status.account.level === "Free" ? $app_status.free_exits : $app_status.exits;
+    const exitList = Object.values($app_status.net_status.exits).map(v => v[1]);
+    const freeExitList = Object.values($app_status.net_status.exits).filter(v => v[2].allowed_levels.includes("Free")).map(v => v[1]);
+    const exits = $app_status.account.level === "Free" ? exitList : freeExitList;
 
     // Check if app_status has exits data
     if (exits.length === 0) {

@@ -25,7 +25,7 @@
     } catch (e) {
       showErrorModal(
         modalStore,
-        l10n($curr_lang, "cant-reconnect-now") + ":<br>" + e
+        l10n($curr_lang, "cant-reconnect-now") + ":<br>" + e,
       );
     } finally {
       open = false;
@@ -40,7 +40,7 @@
 
   const getCitiesByCountry = (
     servers: ExitDescriptor[],
-    country: string
+    country: string,
   ): string[] => {
     const cities = servers
       .filter((server) => server.country === country)
@@ -55,10 +55,10 @@
   const getMinLoad = (
     servers: ExitDescriptor[],
     country: string,
-    city: string
+    city: string,
   ): number => {
     const cityServers = servers.filter(
-      (server) => server.country === country && server.city === city
+      (server) => server.country === country && server.city === city,
     );
     if (cityServers.length === 0) return 0;
     return Math.min(...cityServers.map((s) => s.load));
@@ -67,10 +67,16 @@
   const rowClass =
     "flex flex-row variant-ghost p-2 rounded-md cursor-pointer items-center text-left block text-sm";
 
+  $: allExitList =
+    $app_status && Object.values($app_status.net_status.exits).map((v) => v[1]);
+  $: freeExitList =
+    $app_status &&
+    Object.values($app_status.net_status.exits)
+      .filter((v) => v[2].allowed_levels.includes("Free"))
+      .map((v) => v[1]);
+
   $: exitList =
-    $app_status?.account.level === "Free"
-      ? $app_status?.free_exits
-      : $app_status?.exits;
+    $app_status?.account.level === "Free" ? freeExitList : allExitList;
 </script>
 
 <Popup
@@ -84,7 +90,7 @@
     {:else if exitList}
       {#if $app_status?.account.level === "Free"}
         <button
-          class="btn variant-ghost-primary rounded p-2 text-sm text-center font-bold"
+          class="btn variant-ghost-primary rounded-md p-2 text-sm text-center font-bold"
           on:click={() => {
             $paymentsOpen = true;
             open = false;
@@ -138,12 +144,12 @@
                 class:variant-ghost-success={getMinLoad(
                   exitList,
                   country,
-                  city
+                  city,
                 ) <= 0.5}
                 class:variant-ghost-warning={getMinLoad(
                   exitList,
                   country,
-                  city
+                  city,
                 ) > 0.5}
                 class:variant-ghost-error={getMinLoad(exitList, country, city) >
                   0.8}

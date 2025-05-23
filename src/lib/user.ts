@@ -15,6 +15,7 @@ import {
   native_gate,
   type DaemonArgs,
   type ExitDescriptor,
+  type NetStatus,
 } from "../native-gate";
 import { LRUCache } from "lru-cache";
 import { curr_lang } from "./l10n";
@@ -38,31 +39,19 @@ export type NewsItem = {
   important: boolean;
 };
 
-const serverListCache = new LRUCache<string, ExitDescriptor[]>({
+const serverListCache = new LRUCache<string, NetStatus>({
   max: 1,
   ttl: 5 * 60 * 1000,
   fetchMethod: async (dummy, oldValue, { signal }) => {
     const gate = await native_gate();
-    const exitList: ExitDescriptor[] = (await gate.daemon_rpc(
-      "exit_list",
+    const exitList: NetStatus = (await gate.daemon_rpc(
+      "net_status",
       []
     )) as any;
     return exitList;
   },
 });
 
-const freeServerListCache = new LRUCache<string, ExitDescriptor[]>({
-  max: 1,
-  ttl: 5 * 60 * 1000,
-  fetchMethod: async (dummy, oldValue, { signal }) => {
-    const gate = await native_gate();
-    const freeExitList: ExitDescriptor[] = (await gate.daemon_rpc(
-      "free_exit_list",
-      []
-    )) as any;
-    return freeExitList;
-  },
-});
 
 // Combined app status types
 export type AccountStatus =
@@ -77,8 +66,7 @@ export type ConnectionStatus =
 export type AppStatus = {
   account: AccountStatus;
 
-  exits: ExitDescriptor[];
-  free_exits: ExitDescriptor[];
+  net_status: NetStatus
 };
 
 /**
@@ -239,7 +227,7 @@ export const traffic_history: Readable<number[]> = selfRefreshingStore(
  */
 export const app_status: Writable<AppStatus | null> =
   persistentSelfRefreshingStore<AppStatus | null>(
-    "app_status", // localStorage key
+    "app_status_1", // localStorage key
     async () => {
       const secret = get(curr_valid_secret);
       if (!secret) {
@@ -251,17 +239,15 @@ export const app_status: Writable<AppStatus | null> =
 
       // Run all fetch operations in parallel
       console.log("lang", lang);
-      const [account, exits, free_exits] = await Promise.all([
+      const [account, net_status] = await Promise.all([
         accountStatusCache.fetch(secret),
 
         serverListCache.fetch("exits"),
-        freeServerListCache.fetch("exits"),
       ]);
 
       const toret = {
         account: account as any,
-        exits: exits as any,
-        free_exits: free_exits as any,
+        net_status: net_status as any,
       };
       console.log("app_status", toret);
       return toret;

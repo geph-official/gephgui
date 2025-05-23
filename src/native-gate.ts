@@ -125,6 +125,18 @@ export interface ExitDescriptor {
   expiry: number;
 }
 
+export interface ExitMetadata {
+  allowed_levels: Level[],
+  category: "core" | "streaming"
+}
+
+/**
+ * Network status dump 
+ */
+export interface NetStatus {
+  exits: Record<string, [any, ExitDescriptor, ExitMetadata]>
+}
+
 /**
  * App descriptor
  */
@@ -380,40 +392,28 @@ const MockDaemonRpc = {
     return MockLogs;
   },
 
-  async exit_list() {
+  async net_status() {
     await random_sleep();
-    return [
-      {
-        c2e_listen: "0.0.0.0:1",
-        b2e_listen: "0.0.0.0:2",
-        country: "CA",
-        city: "Montreal",
-        load: 0.3,
-        expiry: 10000000000,
-      },
-      {
-        c2e_listen: "0.0.0.0:1",
-        b2e_listen: "0.0.0.0:2",
-        country: "US",
-        city: "Miami",
-        load: 0.55,
-        expiry: 10000000000,
-      },
-    ];
-  },
-
-  async free_exit_list() {
-    await random_sleep();
-    return [
-      {
-        c2e_listen: "0.0.0.0:1",
-        b2e_listen: "0.0.0.0:2",
-        country: "US",
-        city: "Miami",
-        load: 0.55,
-        expiry: 10000000000,
-      },
-    ];
+    return {
+      "exits": {
+        "hello": ["dummy", {
+          c2e_listen: "0.0.0.0:1",
+          b2e_listen: "0.0.0.0:2",
+          country: "CA",
+          city: "Montreal",
+          load: 0.3,
+          expiry: 10000000000,
+        }, {allowed_levels: ["Free", "Plus"], category: "core"}],
+        "world": ["dummy", {
+          c2e_listen: "0.0.0.0:1",
+          b2e_listen: "0.0.0.0:2",
+          country: "US",
+          city: "Miami",
+          load: 0.3,
+          expiry: 10000000000,
+        }, {allowed_levels: ["Free"], category: "core"}],
+      }
+    }
   },
 
   async conn_info() {
