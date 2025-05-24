@@ -112,7 +112,6 @@
     {#if closing}
       <ProgressBar />
     {:else if exitInfos}
-
       <!-- "Automatic" option -->
       <button
         class={rowClass}
@@ -143,7 +142,7 @@
           class:variant-filled-primary={tab === "streaming"}
           on:click={() => (tab = "streaming")}
         >
-          {l10n($curr_lang, "streaming-tab")}
+          {l10n($curr_lang, "streaming-tab") + " (Beta)"}
         </button>
       </div>
       <p class="text-center text-xs opacity-70">
@@ -158,10 +157,8 @@
           {#if city}
             <button
               class={rowClass}
-              class:opacity-50={
-                $app_status?.account.level === "Free" &&
-                !cityAllowedForFree(currentExitInfos, country, city)
-              }
+              class:opacity-50={$app_status?.account.level === "Free" &&
+                !cityAllowedForFree(currentExitInfos, country, city)}
               on:click={async () => {
                 if (
                   $app_status?.account.level === "Free" &&
@@ -185,8 +182,7 @@
               <!-- Country / City name -->
               <div class="grow flex flex-row items-center gap-1">
                 <span><b class="font-bold">{country}</b> / {city}</span>
-                {#if $app_status?.account.level === "Free" &&
-                !cityAllowedForFree(currentExitInfos, country, city)}
+                {#if $app_status?.account.level === "Free" && !cityAllowedForFree(currentExitInfos, country, city)}
                   <span class="badge variant-ghost-warning">PLUS</span>
                 {/if}
               </div>
