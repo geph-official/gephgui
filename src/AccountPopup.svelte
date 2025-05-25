@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { ProgressBar } from "@skeletonlabs/skeleton";
+  import { ProgressBar, getModalStore, type ModalSettings } from "@skeletonlabs/skeleton";
   import EyeOutline from "svelte-material-icons/EyeOutline.svelte";
   import EyeOffOutline from "svelte-material-icons/EyeOffOutline.svelte";
   import ContentCopy from "svelte-material-icons/ContentCopy.svelte";
@@ -7,11 +7,14 @@
   let loggingOut = false;
 
   import { curr_lang, l10n } from "./lib/l10n";
-  import { app_status, curr_valid_secret } from "./lib/user";
+  import { app_status, curr_valid_secret, clearAllCaches } from "./lib/user";
   import { native_gate } from "./native-gate";
   import Popup from "./lib/Popup.svelte";
+  import { showErrorModal } from "./lib/utils";
 
   let secretShown = false;
+  const modalStore = getModalStore();
+  let deleteClickTimes: number[] = [];
 
   function copyToClipboard(text: string) {
     // Create a hidden textarea
@@ -26,6 +29,43 @@
     // Remove the textarea
     document.body.removeChild(textArea);
     console.log("Text copied to clipboard!");
+  }
+
+  async function deleteAccount() {
+    loggingOut = true;
+    try {
+      const gate = await native_gate();
+      await gate.stop_daemon();
+      await gate.daemon_rpc("delete_account", [$curr_valid_secret]);
+      clearAllCaches();
+      localStorage.clear();
+    } catch (e) {
+      await showErrorModal(modalStore, l10n($curr_lang, "error") + ": " + e);
+    } finally {
+      window.location.reload();
+    }
+  }
+
+  function handleDeleteClick() {
+    const now = Date.now();
+    deleteClickTimes = deleteClickTimes.filter((t) => now - t < 1500);
+    deleteClickTimes.push(now);
+    if (deleteClickTimes.length >= 10) {
+      deleteClickTimes = [];
+      const modal: ModalSettings = {
+        type: "confirm",
+        title: l10n($curr_lang, "delete-account"),
+        body: l10n($curr_lang, "delete-account-are-you-sure") +
+          "<br/>" +
+          l10n($curr_lang, "delete-account-blurb"),
+        response: (r: boolean) => {
+          if (r) {
+            deleteAccount();
+          }
+        },
+      };
+      modalStore.trigger(modal);
+    }
   }
 </script>
 
@@ -119,6 +159,15 @@
         }}
       >
         {l10n($curr_lang, "logout")}
+      </button>
+    </section>
+    <div class="opacity-50 text-center">&mdash;&mdash;&mdash;</div>
+    <section class="flex flex-row">
+      <button
+        class="btn variant-ghost-error btn-sm"
+        on:click={handleDeleteClick}
+      >
+        {l10n($curr_lang, "delete-account")}
       </button>
     </section>
   {/if}

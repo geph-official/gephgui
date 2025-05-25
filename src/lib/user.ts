@@ -162,6 +162,11 @@ export const clearAccountCache = () => {
   account_refreshing.set(true);
 };
 
+export const clearAllCaches = () => {
+  clearAccountCache();
+  serverListCache.clear();
+};
+
 export const account_refreshing = writable(false);
 
 /**
