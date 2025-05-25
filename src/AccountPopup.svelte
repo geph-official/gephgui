@@ -109,16 +109,30 @@
         {l10n($curr_lang, "manage-account")}
       </button>
       <button
+        class="btn variant-ghost-warning btn-sm"
+        on:click={async () => {
+          const gate = await native_gate();
+          await gate.daemon_rpc("delete_account", [$curr_valid_secret]);
+          localStorage.clear();
+          window.location.reload();
+        }}
+      >
+        {l10n($curr_lang, "logout")}
+      </button>
+    </section>
+    <section>
+      <button
         class="btn variant-ghost-error btn-sm"
         on:click={async () => {
           loggingOut = true;
           const gate = await native_gate();
           await gate.stop_daemon();
           localStorage.clear();
+          // TODO: call binder_rpc to delete account
           window.location.reload();
         }}
       >
-        {l10n($curr_lang, "logout")}
+        {l10n($curr_lang, "delete-account")}
       </button>
     </section>
   {/if}
