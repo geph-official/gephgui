@@ -351,6 +351,10 @@ const MockDaemonRpc = {
     }
   },
 
+  async delete_account(secret: string) {
+    await random_sleep();
+  },
+
   async check_secret(secret: string) {
     await random_sleep();
     return secret === "12345678";
