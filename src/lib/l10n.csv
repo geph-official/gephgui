@@ -54,8 +54,8 @@ debug-logs,Debug logs,调试日志,調試日誌,گزارش‌های عیب‌ی�
 debug-pack,Debug pack,调试包,調試包,بسته عیب یابی,Отладочный пакет
 debug-pack-blurb,Save debugging info for developers,保存调试信息以供开发人员使用,保存除錯資訊以供開發人員使用,ذخیره گزارش‌های عیب‌یابی برای توسعه‌دهندگان,Сохранить отладочную информацию для разработчиков
 delete,Delete,删除,刪除,حذف,Удалить
-delete-account,Delete account,刪除账户,刪除賬戶,حذف حساب کاربری,Удалить аккаунт
-delete-account-are-you-sure,Are you sure that you want to delete your account?,你确定要删除你的账户吗？,你確定要刪除你的賬戶嗎？,آیا مطمئن هستید که می‌خواهید اکانت خود را حذف کنید؟,Вы уверены, что хотите удалить свой аккаунт?
+delete-account,Delete account (tap 10x quickly),刪除账户(快速点10次),刪除賬戶(快速點10次),حذف حساب کاربری (۱۰ بار سریع بزنید),Удалить аккаунт (нажать 10 раз)
+delete-account-are-you-sure,Are you sure that you want to <b>permanently</b> delete your account?,你确定要<b>永久</b>删除你的账户吗？,你確定要<b>永久</b>刪除你的賬戶嗎？,آیا مطمئن هستید که می‌خواهی
 delete-account-blurb,Permanently delete account,永久删除账户,永久刪除賬戶,حذف دائمی حساب کاربری,Безвозвратно удалить аккаунт
 direct,Direct,直连,直连,مستقیم,Прямой
 disconnect,Disconnect,断开,斷開,قطع اتصال,Отключить
