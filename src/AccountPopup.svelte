@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { ProgressBar } from "@skeletonlabs/skeleton";
+  import { ProgressBar, getModalStore, type ModalSettings } from "@skeletonlabs/skeleton";
   import EyeOutline from "svelte-material-icons/EyeOutline.svelte";
   import EyeOffOutline from "svelte-material-icons/EyeOffOutline.svelte";
   import ContentCopy from "svelte-material-icons/ContentCopy.svelte";
@@ -7,9 +7,13 @@
   let loggingOut = false;
 
   import { curr_lang, l10n } from "./lib/l10n";
-  import { app_status, curr_valid_secret } from "./lib/user";
+  import { app_status, curr_valid_secret, clearAllCaches } from "./lib/user";
   import { native_gate } from "./native-gate";
   import Popup from "./lib/Popup.svelte";
+
+  const modalStore = getModalStore();
+  let deleteClicks = 0;
+  let deleteTimer: any = null;
 
   let secretShown = false;
 
@@ -26,6 +30,47 @@
     // Remove the textarea
     document.body.removeChild(textArea);
     console.log("Text copied to clipboard!");
+  }
+
+  async function handleDeleteClick() {
+    if (deleteTimer) {
+      clearTimeout(deleteTimer);
+    }
+    deleteClicks += 1;
+    deleteTimer = setTimeout(() => {
+      deleteClicks = 0;
+    }, 1000);
+
+    if (deleteClicks >= 10) {
+      deleteClicks = 0;
+      const confirm = await new Promise<boolean>((resolve) => {
+        const modal: ModalSettings = {
+          type: "confirm",
+          title: l10n($curr_lang, "delete-account"),
+          body: l10n($curr_lang, "delete-account-are-you-sure"),
+          response: (r: boolean) => resolve(r),
+        };
+        modalStore.trigger(modal);
+      });
+      if (confirm) {
+        loggingOut = true;
+        const gate = await native_gate();
+        try {
+          await gate.stop_daemon();
+        } catch {}
+        try {
+          await gate.daemon_rpc("delete_account", [$curr_valid_secret]);
+        } catch {}
+        try {
+          if ((gate as any).purge_caches) {
+            (gate as any).purge_caches();
+          }
+        } catch {}
+        clearAllCaches();
+        localStorage.clear();
+        window.location.reload();
+      }
+    }
   }
 </script>
 
@@ -113,6 +158,7 @@
         on:click={async () => {
           const gate = await native_gate();
           await gate.daemon_rpc("delete_account", [$curr_valid_secret]);
+          clearAllCaches();
           localStorage.clear();
           window.location.reload();
         }}
@@ -120,17 +166,11 @@
         {l10n($curr_lang, "logout")}
       </button>
     </section>
+    <div class="divider" />
     <section>
       <button
         class="btn variant-ghost-error btn-sm"
-        on:click={async () => {
-          loggingOut = true;
-          const gate = await native_gate();
-          await gate.stop_daemon();
-          localStorage.clear();
-          // TODO: call binder_rpc to delete account
-          window.location.reload();
-        }}
+        on:click={handleDeleteClick}
       >
         {l10n($curr_lang, "delete-account")}
       </button>
@@ -148,5 +188,11 @@
     font-weight: 600;
     font-size: 0.9rem;
     margin-bottom: 0.5rem;
+  }
+
+  .divider {
+    border-top: 1px solid #ccc;
+    margin-top: 0.3rem;
+    margin-bottom: 1rem;
   }
 </style>
