@@ -1,5 +1,9 @@
 <script lang="ts">
-  import { ProgressBar, getModalStore, type ModalSettings } from "@skeletonlabs/skeleton";
+  import {
+    ProgressBar,
+    getModalStore,
+    type ModalSettings,
+  } from "@skeletonlabs/skeleton";
   import EyeOutline from "svelte-material-icons/EyeOutline.svelte";
   import EyeOffOutline from "svelte-material-icons/EyeOffOutline.svelte";
   import ContentCopy from "svelte-material-icons/ContentCopy.svelte";
@@ -156,9 +160,9 @@
       <button
         class="btn variant-ghost-warning btn-sm"
         on:click={async () => {
+          loggingOut = true;
           const gate = await native_gate();
-          await gate.daemon_rpc("delete_account", [$curr_valid_secret]);
-          clearAllCaches();
+          await gate.stop_daemon();
           localStorage.clear();
           window.location.reload();
         }}
