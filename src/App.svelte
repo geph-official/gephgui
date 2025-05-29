@@ -16,12 +16,14 @@
   import Main from "./Main.svelte";
   import AccountPopup from "./AccountPopup.svelte";
   import PaymentPopup from "./PaymentPopup.svelte";
-  import { pref_lightdark, pref_wizard } from "./lib/prefs";
+  import DataCollectionPopup from "./DataCollectionPopup.svelte";
+  import { pref_lightdark, pref_wizard, pref_seen_data_collection } from "./lib/prefs";
 
   import FreeVoucherButton from "./FreeVoucherButton.svelte";
 
   let settingsOpen = false;
   let accountOpen = false;
+  let dataNoticeOpen = false;
 
   initializeStores();
 
@@ -31,6 +33,14 @@
   );
 
   $: document.body.setAttribute("lang", $curr_lang);
+
+  $: if (
+    $curr_valid_secret !== null &&
+    !$pref_seen_data_collection &&
+    !dataNoticeOpen
+  ) {
+    dataNoticeOpen = true;
+  }
 </script>
 
 <svelte:head>
@@ -75,6 +85,7 @@
   <SettingsPopup bind:open={settingsOpen} />
   <AccountPopup bind:open={accountOpen} />
   <PaymentPopup />
+  <DataCollectionPopup bind:open={dataNoticeOpen} />
 </main>
 
 <style>
