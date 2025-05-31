@@ -151,7 +151,7 @@
             >
               {l10n($curr_lang, "pay-now")}
             </button>
-            <button
+            <!-- <button
               class="btn variant-ghost-primary"
               on:click={() => {
                 currentScreen = "voucher";
@@ -159,11 +159,11 @@
               }}
             >
               {l10n($curr_lang, "redeem-voucher")}
-            </button>
+            </button> -->
 
             <div class="opacity-50 text-center">&mdash;&mdash;&mdash;</div>
 
-            <button
+            <!-- <button
               class="btn btn-sm variant-ghost"
               on:click={() => {
                 window.open(
@@ -173,7 +173,7 @@
               }}
             >
               {l10n($curr_lang, "other-payment-methods")}
-            </button>
+            </button> -->
           </div>
         {/if}
       {:catch e}

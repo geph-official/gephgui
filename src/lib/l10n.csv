@@ -54,8 +54,8 @@ debug-logs,Debug logs,调试日志,調試日誌,گزارش‌های عیب‌ی�
 debug-pack,Debug pack,调试包,調試包,بسته عیب یابی,Отладочный пакет
 debug-pack-blurb,Save debugging info for developers,保存调试信息以供开发人员使用,保存除錯資訊以供開發人員使用,ذخیره گزارش‌های عیب‌یابی برای توسعه‌دهندگان,Сохранить отладочную информацию для разработчиков
 delete,Delete,删除,刪除,حذف,Удалить
-delete-account,Delete account,刪除账户,刪除賬戶,حذف حساب کاربری,Удалить аккаунт
-delete-account-are-you-sure,Are you sure that you want to delete your account?,你确定要删除你的账户吗？,你確定要刪除你的賬戶嗎？,آیا مطمئن هستید که می‌خواهید اکانت خود را حذف کنید؟,Вы уверены, что хотите удалить свой аккаунт?
+delete-account,Delete account (tap 10x quickly),刪除账户(快速点10次),刪除賬戶(快速點10次),حذف حساب کاربری (۱۰ بار سریع بزنید),Удалить аккаунт (нажать 10 раз)
+delete-account-are-you-sure,Are you sure that you want to <b>permanently</b> delete your account?,你确定要<b>永久</b>删除你的账户吗？,你確定要<b>永久</b>刪除你的賬戶嗎？,آیا مطمئن هستید که می‌خواهی
 delete-account-blurb,Permanently delete account,永久删除账户,永久刪除賬戶,حذف دائمی حساب کاربری,Безвозвратно удалить аккаунт
 direct,Direct,直连,直连,مستقیم,Прямой
 disconnect,Disconnect,断开,斷開,قطع اتصال,Отключить
@@ -93,6 +93,7 @@ get-unlimited-speed,Get unlimited speed,获取无限速度,獲取無限速度,س
 github,GitHub,GitHub,GitHub,گیت‌هاب,GitHub
 global-vpn,Network-level VPN,全局VPN,全局VPN,فیلترشکن در سطح شبکه,VPN на уровне сети
 global-vpn-blurb,Force all traffic to use Geph,强制所有流量使用迷雾通,強制所有流量使用迷霧通,همه ترافیک ها را مجبور به استفاده از Geph می کند,Заставить весь трафик использовать Geph
+group,Group,用户群,用戶群,گروه کاربران,Группа пользователей
 i-have-old-username-password,"I have a username/password","旧版用户名/密码","舊版用戶名/密碼","من یک نام کاربری/رمز عبور قدیمی دارم","У меня есть имя пользователя/пароль"
 important,Important,重要,重要,مهم,Важно
 incorrect-user-secret,"Incorrect user secret","错误的账户密钥","錯誤的帳戶密鑰","رمز حساب کاربری اشتباه است","Неверный секретный ключ аккаунта"
