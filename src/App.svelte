@@ -12,7 +12,7 @@
 
   import { curr_lang, l10n } from "./lib/l10n";
   import Login from "./Login.svelte";
-  import { curr_valid_secret } from "./lib/user";
+  import { app_status, curr_valid_secret } from "./lib/user";
   import Main from "./Main.svelte";
   import AccountPopup from "./AccountPopup.svelte";
   import PaymentPopup from "./PaymentPopup.svelte";
@@ -27,7 +27,7 @@
 
   $: document.body.setAttribute(
     "data-theme",
-    $pref_lightdark === "light" ? "light-theme" : "dark-theme"
+    $pref_lightdark === "light" ? "light-theme" : "dark-theme",
   );
 
   $: document.body.setAttribute("lang", $curr_lang);
@@ -46,7 +46,7 @@
     </svelte:fragment>
     <!-- <b id="logo-text">{l10n($curr_lang, "geph")}</b> -->
     <svelte:fragment slot="trail">
-      {#if $curr_valid_secret !== null && !$pref_wizard}
+      {#if $curr_valid_secret !== null && (!$pref_wizard || $app_status?.account.level !== "Free")}
         <FreeVoucherButton />
       {/if}
       <button
