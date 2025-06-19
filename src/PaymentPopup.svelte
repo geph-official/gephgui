@@ -45,7 +45,7 @@
     } catch (e) {
       showErrorModal(
         modalStore,
-        l10n($curr_lang, "err_create_invoice") + ": " + e
+        l10n($curr_lang, "err_create_invoice") + ": " + e,
       );
     } finally {
       createInvoiceInProgress = false;
@@ -86,7 +86,7 @@
       } else {
         showToast(
           toastStore,
-          `${l10n($curr_lang, "voucher-success")} (+${daysAdded} ${l10n($curr_lang, "days")})`
+          `${l10n($curr_lang, "voucher-success")} (+${daysAdded} ${l10n($curr_lang, "days")})`,
         );
         handleClose();
       }
@@ -104,7 +104,7 @@
     } catch (e) {
       showErrorModal(
         modalStore,
-        l10n($curr_lang, "err_load_price_points") + ": " + e
+        l10n($curr_lang, "err_load_price_points") + ": " + e,
       );
       handleClose();
       throw e;
@@ -151,7 +151,7 @@
             >
               {l10n($curr_lang, "pay-now")}
             </button>
-            <!-- <button
+            <button
               class="btn variant-ghost-primary"
               on:click={() => {
                 currentScreen = "voucher";
@@ -159,21 +159,21 @@
               }}
             >
               {l10n($curr_lang, "redeem-voucher")}
-            </button> -->
+            </button>
 
             <div class="opacity-50 text-center">&mdash;&mdash;&mdash;</div>
 
-            <!-- <button
+            <button
               class="btn btn-sm variant-ghost"
               on:click={() => {
                 window.open(
-                  `https://geph.io/billing/login_secret?secret=${$curr_valid_secret}`
+                  `https://geph.io/billing/login_secret?secret=${$curr_valid_secret}`,
                 );
                 currentScreen = "completion";
               }}
             >
               {l10n($curr_lang, "other-payment-methods")}
-            </button> -->
+            </button>
           </div>
         {/if}
       {:catch e}

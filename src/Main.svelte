@@ -29,14 +29,14 @@
 
     <CommunityButtons />
 
-    <div class="card rounded-b-none">
+    <!-- <div class="card rounded-b-none">
       <Graph
         data={$traffic_history.map((s) => s / 1000)}
         title={l10n($curr_lang, "total-traffic")}
         decimals={0}
         unit="KB/s"
       />
-    </div>
+    </div> -->
 
     <ConnectionControl bind:serversOpen />
   {:else}

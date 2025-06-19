@@ -94,7 +94,7 @@
             </button>
           {:else}
             <button
-              class="btn variant-filled-primary btn"
+              class="btn variant-filled-primary"
               on:click={() => ($paymentsOpen = true)}
             >
               {l10n($curr_lang, "extend")}

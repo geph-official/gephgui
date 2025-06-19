@@ -54,7 +54,7 @@
 </script>
 
 {#if $app_status}
-  <div class="bottom card flex flex-col rounded-t-none">
+  <div class="bottom card flex flex-col">
     <button
       class="flex flex-row mb-4 text-left"
       on:click={() => switchServers()}
@@ -77,7 +77,7 @@
               <span class="font-normal">
                 [{#if $conn_status.bridge}{$conn_status.bridge}{:else}{l10n(
                     $curr_lang,
-                    "direct"
+                    "direct",
                   )}{/if}]
               </span>
             </small>
