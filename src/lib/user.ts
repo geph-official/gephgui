@@ -41,7 +41,7 @@ export type NewsItem = {
 
 const serverListCache = new LRUCache<string, NetStatus>({
   max: 1,
-  ttl: 5 * 60 * 1000,
+  ttl: 60 * 1000,
   fetchMethod: async (dummy, oldValue, { signal }) => {
     const gate = await native_gate();
     const exitList: NetStatus = (await gate.daemon_rpc(
@@ -55,8 +55,14 @@ const serverListCache = new LRUCache<string, NetStatus>({
 
 // Combined app status types
 export type AccountStatus =
-  | { level: "Plus"; expiry: number; user_id: number; recurring: boolean }
+  | { level: "Plus"; expiry: number; user_id: number; recurring: boolean; bw_consumption: BwConsumption | null; }
   | { level: "Free"; user_id: number };
+
+  export type BwConsumption = {
+    mb_used: number;
+    mb_limit: number;
+    renew_unix: number;
+  }
 
 export type ConnectionStatus =
   | { bridge: string | null; exit: string; country: string }

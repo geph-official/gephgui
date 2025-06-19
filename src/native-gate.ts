@@ -450,6 +450,12 @@ const MockDaemonRpc = {
       level: "Plus",
       expiry: 10000000000,
       recurring: false,
+
+      bw_consumption: {
+        mb_used: Math.random() * 10000,
+        mb_limit: 10000,
+        renew_unix: 10000000000
+      }
     };
     // return {
     //   level: "Free",
