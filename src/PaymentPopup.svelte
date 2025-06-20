@@ -183,7 +183,12 @@
             {#if planTab === "unlimited" && remainingBasicDays !== null}
               <p class="text-center text-xs mb-2 font-bold">
                 {l10n($curr_lang, "basic-upgrade-blurb-prefix")}
-                {remainingBasicDays}
+                {Math.min(
+                  remainingBasicDays,
+                  (planTab === "unlimited"
+                    ? allInfo.pricePoints
+                    : allInfo.basicPricePoints)[selectedIndex][0],
+                )}
                 {" "}
                 {l10n($curr_lang, "basic-upgrade-blurb-suffix")}
               </p>
