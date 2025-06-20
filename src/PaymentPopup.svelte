@@ -137,18 +137,19 @@
 >
   {#if currentScreen === "main"}
     <div class="flex flex-col">
-      <div class="flex justify-center gap-2 mb-2">
-        <button
-          class="btn px-2 py-1 text-sm"
-          class:variant-filled-primary={planTab === "unlimited"}
-          on:click={() => {
-            planTab = "unlimited";
-            selectedIndex = 0;
-          }}
-        >
-          {l10n($curr_lang, "unlimited-tab")}
-        </button>
-        {#if basicInfo}
+      {#if basicInfo}
+        <div class="flex justify-center gap-2 mb-2">
+          <button
+            class="btn px-2 py-1 text-sm"
+            class:variant-filled-primary={planTab === "unlimited"}
+            on:click={() => {
+              planTab = "unlimited";
+              selectedIndex = 0;
+            }}
+          >
+            {l10n($curr_lang, "unlimited-tab")}
+          </button>
+
           <button
             class="btn px-2 py-1 text-sm"
             class:variant-filled-primary={planTab === "basic"}
@@ -159,18 +160,19 @@
           >
             {l10n($curr_lang, "basic-tab")}
           </button>
-        {/if}
-      </div>
-      <p class="text-center text-xs opacity-70 mb-2">
-        {planTab === "unlimited"
-          ? l10n($curr_lang, "unlimited-bandwidth")
-          : basicInfo
-            ? l10n($curr_lang, "bandwidth-limit-prefix") +
-              basicInfo.bw_limit +
-              " " +
-              l10n($curr_lang, "mb-per-month")
-            : ""}
-      </p>
+        </div>
+
+        <p class="text-center text-xs opacity-70 mb-2">
+          {planTab === "unlimited"
+            ? l10n($curr_lang, "unlimited-bandwidth")
+            : basicInfo
+              ? l10n($curr_lang, "bandwidth-limit-prefix") +
+                basicInfo.bw_limit +
+                " " +
+                l10n($curr_lang, "mb-per-month")
+              : ""}
+        </p>
+      {/if}
       {#key planTab}
         {#await getPricePoints()}
           <ProgressBar />
@@ -183,7 +185,7 @@
               on:click={() => handleSelect(i)}
             >
               <div>{days} {l10n($curr_lang, "days")}</div>
-              <div class="grow text-right">
+              <div class="grow text-right tnum">
                 <span class="font-semibold">€{price.toFixed(2)}</span>
                 <span class="font-semibold opacity-[0.6] ml-2"
                   >€{(price / days).toFixed(2)}/d</span
