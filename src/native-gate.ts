@@ -298,7 +298,6 @@ function mock_native_gate(): NativeGate {
     },
 
     async get_basic_info(secret: string) {
-      random_fail();
       await random_sleep();
       return { bw_limit: 5000 };
     },

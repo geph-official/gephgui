@@ -171,7 +171,7 @@
             ? l10n($curr_lang, "unlimited-bandwidth")
             : basicInfo
               ? l10n($curr_lang, "bandwidth-limit-prefix") +
-                basicInfo.bw_limit +
+                basicInfo.bw_limit / 1000 +
                 " " +
                 l10n($curr_lang, "gb-per-month")
               : ""}
