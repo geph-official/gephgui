@@ -48,14 +48,29 @@ export interface NativeGate {
   price_points(): Promise<[number, number][]>;
 
   /**
+   * Obtains the list of Basic price points
+   */
+  basic_price_points(): Promise<[number, number][]>;
+
+  /**
    * Create an invoice using a number of days
    */
   create_invoice(secret: string, days: number): Promise<InvoiceInfo>;
 
   /**
+   * Create a Basic invoice using a number of days
+   */
+  create_basic_invoice(secret: string, days: number): Promise<InvoiceInfo>;
+
+  /**
    * Pay an invoice with a given method
    */
   pay_invoice(id: string, method: string): Promise<void>;
+
+  /**
+   * Obtain Basic account rollout info
+   */
+  get_basic_info(secret: string): Promise<{ bw_limit: number } | null>;
 
   /**
    * Gets the list of apps
@@ -251,6 +266,14 @@ function mock_native_gate(): NativeGate {
       ];
     },
 
+    basic_price_points: async () => {
+      random_fail();
+      return [
+        [30, 2],
+        [60, 4],
+      ];
+    },
+
     async create_invoice(secret: string, days: number) {
       random_fail();
       await random_sleep();
@@ -260,9 +283,24 @@ function mock_native_gate(): NativeGate {
       };
     },
 
+    async create_basic_invoice(secret: string, days: number) {
+      random_fail();
+      await random_sleep();
+      return {
+        id: "foobar-basic",
+        methods: ["credit-card"],
+      };
+    },
+
     async pay_invoice(id: string, method: string) {
       random_fail();
       await random_sleep();
+    },
+
+    async get_basic_info(secret: string) {
+      random_fail();
+      await random_sleep();
+      return { bw_limit: 5000 };
     },
 
     async daemon_rpc(method, args) {
