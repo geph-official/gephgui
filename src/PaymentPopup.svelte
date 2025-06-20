@@ -7,6 +7,7 @@
     clearAccountCache,
     curr_valid_secret,
     paymentsOpen,
+    app_status,
   } from "./lib/user";
   import {
     ProgressBar,
@@ -45,6 +46,14 @@
   let payInProgress = false;
   let redeemInProgress = false;
   let voucherCode = "";
+  $: remainingBasicDays =
+    $app_status &&
+    $app_status.account.level === "Plus" &&
+    $app_status.account.bw_consumption
+      ? Math.ceil(
+          ($app_status.account.expiry - Math.floor(Date.now() / 1000)) / 86400,
+        )
+      : null;
   const modalStore = getModalStore();
   const toastStore = getToastStore();
 
@@ -176,6 +185,15 @@
                 l10n($curr_lang, "gb-per-month")
               : ""}
         </p>
+        {#if planTab === "unlimited" && remainingBasicDays !== null}
+          <p class="text-center text-xs mb-2 font-bold">
+            {l10n($curr_lang, "basic-upgrade-blurb-prefix")}
+            {remainingBasicDays}
+            {" "}
+            {l10n($curr_lang, "days")}
+            {l10n($curr_lang, "basic-upgrade-blurb-suffix")}
+          </p>
+        {/if}
       {/if}
       {#key planTab}
         {#await getPricePoints()}
