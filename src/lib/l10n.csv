@@ -198,3 +198,7 @@ streaming-tab,"Streaming","流媒体","流媒體","استریمینگ","Стри
 core-blurb,"Core servers have the best security and speed.","核心服务器具有最高的安全性和速度","核心伺服器具有最高的安全性和速度","سرورهای هسته برای امنیت و عملکرد بهینه شده‌اند.","Основные серверы оптимизированы для безопасности и производительности."
 streaming-blurb,"Streaming servers are recommended for streaming services.","流媒体服务器推荐用于流媒体服务","流媒體伺服器推薦用於流媒體服務","سرورهای استریمینگ برای خدمات پخش زنده توصیه می‌شوند.","Стриминговые серверы рекомендуются для потоковых сервисов."
 unlimited-bandwidth,Unlimited usage,无限用量,無限用量,پهنای باند نامحدود,Безлимитная пропускная способность
+unlimited-tab,Unlimited,无限,無限,نامحدود,Безлимит
+basic-tab,Basic,基础,Basic,ساده,Базовый
+bandwidth-limit-prefix,Bandwidth limit:,流量上限：,流量上限：,حد پهنای باند:,Лимит трафика:
+mb-per-month,MB/month,MB/月,MB/月,MB/ماه,МБ/мес

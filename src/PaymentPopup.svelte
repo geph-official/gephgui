@@ -1,6 +1,7 @@
 <script lang="ts">
   import { slide } from "svelte/transition";
   import { curr_lang, l10n } from "./lib/l10n";
+  import { onMount } from "svelte";
   import { native_gate, type InvoiceInfo } from "./native-gate";
   import {
     clearAccountCache,
@@ -18,6 +19,18 @@
 
   // Tracks the currently selected index; starts at 0 to force an option.
   let selectedIndex = 0;
+
+  let planTab: "unlimited" | "basic" = "unlimited";
+  let basicInfo: { bw_limit: number } | null = null;
+
+  onMount(async () => {
+    try {
+      const gate = await native_gate();
+      basicInfo = await gate.get_basic_info($curr_valid_secret || "");
+    } catch {
+      basicInfo = null;
+    }
+  });
 
   // Track which screen to show
   type Screen = "main" | "payment" | "voucher" | "completion";
@@ -39,7 +52,10 @@
     createInvoiceInProgress = true;
     try {
       const gate = await native_gate();
-      const invoice = await gate.create_invoice($curr_valid_secret || "", days);
+      const invoice =
+        planTab === "unlimited"
+          ? await gate.create_invoice($curr_valid_secret || "", days)
+          : await gate.create_basic_invoice($curr_valid_secret || "", days);
       secondPageInvoice = invoice;
       currentScreen = "payment";
     } catch (e) {
@@ -100,7 +116,9 @@
   const getPricePoints = async () => {
     try {
       const gate = await native_gate();
-      return await gate.price_points();
+      return planTab === "unlimited"
+        ? await gate.price_points()
+        : await gate.basic_price_points();
     } catch (e) {
       showErrorModal(
         modalStore,
@@ -119,6 +137,34 @@
 >
   {#if currentScreen === "main"}
     <div class="flex flex-col">
+      <div class="flex justify-center gap-2 mb-2">
+        <button
+          class="btn px-2 py-1 text-sm"
+          class:variant-filled-primary={planTab === "unlimited"}
+          on:click={() => { planTab = "unlimited"; selectedIndex = 0; }}
+        >
+          {l10n($curr_lang, "unlimited-tab")}
+        </button>
+        {#if basicInfo}
+          <button
+            class="btn px-2 py-1 text-sm"
+            class:variant-filled-primary={planTab === "basic"}
+            on:click={() => { planTab = "basic"; selectedIndex = 0; }}
+          >
+            {l10n($curr_lang, "basic-tab")}
+          </button>
+        {/if}
+      </div>
+      <p class="text-center text-xs opacity-70 mb-2">
+        {planTab === "unlimited"
+          ? l10n($curr_lang, "unlimited-bandwidth")
+          : basicInfo
+          ? l10n($curr_lang, "bandwidth-limit-prefix") +
+            basicInfo.bw_limit +
+            " " +
+            l10n($curr_lang, "mb-per-month")
+          : ""}
+      </p>
       {#await getPricePoints()}
         <ProgressBar />
       {:then pricePoints}
