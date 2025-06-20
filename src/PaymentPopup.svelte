@@ -162,14 +162,18 @@
           </button>
         </div>
 
-        <p class="text-center text-xs opacity-70 mb-2">
+        <p
+          class={planTab === "unlimited"
+            ? "text-center text-xs mb-2 font-bold text-success-600"
+            : "text-center text-xs mb-2 font-bold text-red-600"}
+        >
           {planTab === "unlimited"
             ? l10n($curr_lang, "unlimited-bandwidth")
             : basicInfo
               ? l10n($curr_lang, "bandwidth-limit-prefix") +
                 basicInfo.bw_limit +
                 " " +
-                l10n($curr_lang, "mb-per-month")
+                l10n($curr_lang, "gb-per-month")
               : ""}
         </p>
       {/if}

@@ -200,5 +200,6 @@ streaming-blurb,"Streaming servers are recommended for streaming services.","流
 unlimited-bandwidth,Unlimited usage,无限用量,無限用量,پهنای باند نامحدود,Безлимитная пропускная способность
 unlimited-tab,Unlimited,无限,無限,نامحدود,Безлимит
 basic-tab,Basic,基础,Basic,ساده,Базовый
-bandwidth-limit-prefix,Bandwidth limit:,流量上限：,流量上限：,حد پهنای باند:,Лимит трафика:
+bandwidth-limit-prefix,Bandwidth limit: ,流量上限：,流量上限：,حد پهنای باند: ,Лимит трафика: 
 mb-per-month,MB/month,MB/月,MB/月,MB/ماه,МБ/мес
+gb-per-month,GB/month,GB/月,GB/月,GB/ماه,GB/мес
