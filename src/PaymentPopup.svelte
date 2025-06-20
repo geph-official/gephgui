@@ -137,94 +137,104 @@
 >
   {#if currentScreen === "main"}
     <div class="flex flex-col">
-      <div class="flex justify-center gap-2 mb-2">
-        <button
-          class="btn px-2 py-1 text-sm"
-          class:variant-filled-primary={planTab === "unlimited"}
-          on:click={() => { planTab = "unlimited"; selectedIndex = 0; }}
-        >
-          {l10n($curr_lang, "unlimited-tab")}
-        </button>
-        {#if basicInfo}
+      {#if basicInfo}
+        <div class="flex justify-center gap-2 mb-2">
+          <button
+            class="btn px-2 py-1 text-sm"
+            class:variant-filled-primary={planTab === "unlimited"}
+            on:click={() => {
+              planTab = "unlimited";
+              selectedIndex = 0;
+            }}
+          >
+            {l10n($curr_lang, "unlimited-tab")}
+          </button>
+
           <button
             class="btn px-2 py-1 text-sm"
             class:variant-filled-primary={planTab === "basic"}
-            on:click={() => { planTab = "basic"; selectedIndex = 0; }}
+            on:click={() => {
+              planTab = "basic";
+              selectedIndex = 0;
+            }}
           >
             {l10n($curr_lang, "basic-tab")}
           </button>
-        {/if}
-      </div>
-      <p class="text-center text-xs opacity-70 mb-2">
-        {planTab === "unlimited"
-          ? l10n($curr_lang, "unlimited-bandwidth")
-          : basicInfo
-          ? l10n($curr_lang, "bandwidth-limit-prefix") +
-            basicInfo.bw_limit +
-            " " +
-            l10n($curr_lang, "mb-per-month")
-          : ""}
-      </p>
-      {#await getPricePoints()}
-        <ProgressBar />
-      {:then pricePoints}
-        {#each pricePoints as [days, price], i}
-          <button
-            class={`btn variant-outline rounded-lg border p-3 flex-row flex gap-2 items-center mb-2 cursor-pointer ${
-              i === selectedIndex ? "variant-ghost-primary" : ""
-            }`}
-            on:click={() => handleSelect(i)}
-          >
-            <div>{days} {l10n($curr_lang, "days")}</div>
-            <div class="grow text-right">
-              <span class="font-semibold">€{price.toFixed(2)}</span>
-              <span class="font-semibold opacity-[0.6] ml-2"
-                >€{(price / days).toFixed(2)}/d</span
-              >
-            </div>
-          </button>
-        {/each}
+        </div>
 
-        <!-- Trigger the transition to the second page -->
-        {#if createInvoiceInProgress}
+        <p class="text-center text-xs opacity-70 mb-2">
+          {planTab === "unlimited"
+            ? l10n($curr_lang, "unlimited-bandwidth")
+            : basicInfo
+              ? l10n($curr_lang, "bandwidth-limit-prefix") +
+                basicInfo.bw_limit +
+                " " +
+                l10n($curr_lang, "mb-per-month")
+              : ""}
+        </p>
+      {/if}
+      {#key planTab}
+        {#await getPricePoints()}
           <ProgressBar />
-        {:else}
-          <div class="flex flex-col gap-2 mt-3">
+        {:then pricePoints}
+          {#each pricePoints as [days, price], i}
             <button
-              class="btn variant-filled"
-              on:click={() => handlePayNow(pricePoints[selectedIndex][0])}
-              disabled={createInvoiceInProgress}
+              class={`btn variant-outline rounded-lg border p-3 flex-row flex gap-2 items-center mb-2 cursor-pointer ${
+                i === selectedIndex ? "variant-ghost-primary" : ""
+              }`}
+              on:click={() => handleSelect(i)}
             >
-              {l10n($curr_lang, "pay-now")}
+              <div>{days} {l10n($curr_lang, "days")}</div>
+              <div class="grow text-right tnum">
+                <span class="font-semibold">€{price.toFixed(2)}</span>
+                <span class="font-semibold opacity-[0.6] ml-2"
+                  >€{(price / days).toFixed(2)}/d</span
+                >
+              </div>
             </button>
-            <button
-              class="btn variant-ghost-primary"
-              on:click={() => {
-                currentScreen = "voucher";
-                voucherCode = "";
-              }}
-            >
-              {l10n($curr_lang, "redeem-voucher")}
-            </button>
+          {/each}
 
-            <div class="opacity-50 text-center">&mdash;&mdash;&mdash;</div>
+          <!-- Trigger the transition to the second page -->
+          {#if createInvoiceInProgress}
+            <ProgressBar />
+          {:else}
+            <div class="flex flex-col gap-2 mt-3">
+              <button
+                class="btn variant-filled"
+                on:click={() => handlePayNow(pricePoints[selectedIndex][0])}
+                disabled={createInvoiceInProgress}
+              >
+                {l10n($curr_lang, "pay-now")}
+              </button>
+              <button
+                class="btn variant-ghost-primary"
+                on:click={() => {
+                  currentScreen = "voucher";
+                  voucherCode = "";
+                }}
+              >
+                {l10n($curr_lang, "redeem-voucher")}
+              </button>
 
-            <button
-              class="btn btn-sm variant-ghost"
-              on:click={() => {
-                window.open(
-                  `https://geph.io/billing/login_secret?secret=${$curr_valid_secret}`,
-                );
-                currentScreen = "completion";
-              }}
-            >
-              {l10n($curr_lang, "other-payment-methods")}
-            </button>
-          </div>
-        {/if}
-      {:catch e}
-        {e}
-      {/await}
+              <div class="opacity-50 text-center">&mdash;&mdash;&mdash;</div>
+
+              <button
+                class="btn btn-sm variant-ghost"
+                on:click={() => {
+                  window.open(
+                    `https://geph.io/billing/login_secret?secret=${$curr_valid_secret}`,
+                  );
+                  currentScreen = "completion";
+                }}
+              >
+                {l10n($curr_lang, "other-payment-methods")}
+              </button>
+            </div>
+          {/if}
+        {:catch e}
+          {e}
+        {/await}
+      {/key}
     </div>
   {:else if currentScreen === "payment" && secondPageInvoice}
     <div class="flex-col flex gap-2">
