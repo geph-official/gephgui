@@ -163,6 +163,7 @@
                 }}
               >
                 {l10n($curr_lang, "basic-tab")}
+                <span class="badge variant-ghost-warning ml-2">BETA</span>
               </button>
             </div>
 
