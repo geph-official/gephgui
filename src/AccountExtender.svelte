@@ -146,7 +146,7 @@
   </div>
 
   {#if $app_status.account.level === "Free"}
-    <div class="card p-3 items-center variant-ghost-error text-sm">
+    <div class="card p-3 items-center variant-ghost-error text-sm text-center">
       {@html l10n($curr_lang, "free-is-bad")}
     </div>
   {/if}
