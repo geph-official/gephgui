@@ -203,5 +203,8 @@ basic-tab,Basic,Basic,Basic,ساده,Базовый
 bandwidth-limit-prefix,Bandwidth limit: ,流量上限：,流量上限：,حد پهنای باند: ,Лимит трафика: 
 mb-per-month,MB/month,MB/月,MB/月,MB/ماه,МБ/мес
 gb-per-month,GB/month,GB/月,GB/月,GB/ماه,GB/мес
-basic-upgrade-blurb-prefix,This will upgrade ,这将升级当前轻量计划剩余,這將升級當前輕量方案剩餘,با ارتقا، ,Это обновит 
-basic-upgrade-blurb-suffix, days of your Basic plan.,天。,天。,روز از طرح پایه شما.,дней вашего базового плана.
+basic-upgrade-blurb,This will upgrade DAYS days of your Basic plan.,这将升级当前轻量计划剩余DAYS天。,這將升級當前輕量方案剩餘DAYS天。,با ارتقا، DAYS روز از طرح پایه شما.,Это обновит DAYS дней вашего базового плана.
+upgrade,Upgrade,升级,升級,ارتقا,Обновить
+basic-free-blurb,"Full Plus features—unlimited speed, premium locations, and advanced filtering—for GB GB.","完整 Plus 功能，无限速度，高级位置和高级过滤，持续 GB GB.","完整 Plus 功能，無限速度，高級位置和高級過濾，持續 GB GB.","تمام امکانات Plus‌‌—سرعت نامحدود، مکان‌های ویژه و فیلتر پیشرفته—به مدت GB GB.","Полный набор функций Plus—неограниченная скорость, премиум-локации и расширенная фильтрация—в течение GB ГБ."
+basic-plus-blurb,Only 5 GB per month, for occasional use. Currently in beta.,每月仅 5GB，仅供偶尔使用。Beta。 ,每月僅 5GB，僅供偶爾使用。Beta。,فقط 5 گیگابایت در ماه، برای استفاده موردی. بتا.,Всего 5 ГБ в месяц, для редкого использования. Бета.
+basic-beta-warning,Basic is in beta and prices may change.,Basic 仍在测试阶段，价格可能会变化。,Basic 仍在測試階段，價格可能會變化。,طرح Basic بتا است و قیمت‌ها ممکن است تغییر کند.,Basic находится в бета-версии, цены могут измениться.
