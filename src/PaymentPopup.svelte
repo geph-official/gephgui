@@ -225,7 +225,10 @@
                     (allInfo.basicInfo.bw_limit / 1000).toString(),
                   )}
                 {:else}
-                  {l10n($curr_lang, "basic-plus-blurb")}
+                  {l10n($curr_lang, "basic-plus-blurb").replace(
+                    "GB",
+                    (allInfo.basicInfo.bw_limit / 1000).toString(),
+                  )}
                 {/if}
               </p>
               <p class="text-center text-xs mb-2 opacity-70">
