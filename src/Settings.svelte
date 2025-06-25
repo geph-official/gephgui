@@ -338,12 +338,20 @@
     <div class="social-buttons">
       <a
         class="social-button"
-        href="https://t.me/s/gephannounce"
+        href="https://x.com/GephOfficial"
+        target="_blank"
+        rel="noopener"
+      >
+        <img src="twitter.png" alt="tg-logo" />
+      </a>
+      <a
+        class="social-button"
+        href="https://t.me/gephusers"
         target="_blank"
         rel="noopener"
       >
         <img src="telegram.svg" alt="tg-logo" />
-        {l10n($curr_lang, "news")}
+        <!-- {l10n($curr_lang, "group")} -->
       </a>
       <a
         class="social-button"
@@ -352,7 +360,7 @@
         rel="noopener"
       >
         <img src="forum.png" alt="forum-logo" />
-        {l10n($curr_lang, "forum")}
+        <!-- {l10n($curr_lang, "forum")} -->
       </a>
       <a
         class="social-button"
@@ -361,7 +369,7 @@
         rel="noopener"
       >
         <img src="github.svg" alt="tg-logo" />
-        {l10n($curr_lang, "github")}
+        <!-- {l10n($curr_lang, "github")} -->
       </a>
     </div>
 
@@ -403,7 +411,7 @@
   .social-button img {
     height: 1.5rem;
     width: 1.5rem;
-    margin-inline-end: 0.5rem;
+    /* margin-inline-end: 0.5rem; */
   }
 
   .social-button {
@@ -415,6 +423,8 @@
     display: flex;
     flex-direction: row;
     align-items: center;
+    justify-content: center; /* Center horizontally */
+    text-align: center;
     box-sizing: border-box;
     border-radius: 0.3rem;
     text-decoration: none;
