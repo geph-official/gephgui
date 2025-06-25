@@ -203,5 +203,5 @@ basic-tab,Basic,Basic,Basic,ساده,Базовый
 bandwidth-limit-prefix,Bandwidth limit: ,流量上限：,流量上限：,حد پهنای باند: ,Лимит трафика: 
 mb-per-month,MB/month,MB/月,MB/月,MB/ماه,МБ/мес
 gb-per-month,GB/month,GB/月,GB/月,GB/ماه,GB/мес
-basic-upgrade-blurb-prefix,This will upgrade ,这将升级当前 Basic 计划剩余,這將升級當前 Basic 方案剩餘,با ارتقا، ,Это обновит 
-basic-upgrade-blurb-suffix, days of your Basic plan at a lower price.,天，价格会更低。,天，價格會更低。, روز از طرح پایه شما و قیمت نهایی کمتر می‌شود., дней вашего базового плана, снизив цену.
+basic-upgrade-blurb-prefix,This will upgrade ,这将升级当前轻量计划剩余,這將升級當前輕量方案剩餘,با ارتقا، ,Это обновит 
+basic-upgrade-blurb-suffix, days of your Basic plan.,天。,天。,روز از طرح پایه شما.,дней вашего базового плана.
