@@ -4,6 +4,17 @@
   import { pref_wizard } from "./lib/prefs";
   import { fade } from "svelte/transition";
   import { paymentsOpen } from "./lib/user";
+  import { onMount } from "svelte";
+  import { native_gate } from "./native-gate";
+
+  let bestPrice = null;
+  onMount(async () => {
+    const gate = await native_gate();
+    bestPrice = Math.min(
+      Math.min(...(await gate.price_points()).map((x) => x[1])),
+      Math.min(...(await gate.basic_price_points()).map((x) => x[1])),
+    ).toFixed(2);
+  });
 </script>
 
 <div class="fixed inset-0 h-full z-[1000] bg-surface-50" transition:fade>
@@ -45,7 +56,7 @@
           $paymentsOpen = true;
         }}
       >
-        {l10n($curr_lang, "buy-plus-price")}
+        {l10n($curr_lang, "buy-plus-price").replace("PRICE", bestPrice || "-")}
       </button>
 
       <button
