@@ -27,13 +27,14 @@
 
   let planTab: "unlimited" | "basic" = "unlimited";
 
-  onMount(() => {
-    if (get(app_status)?.account.level === "Free") {
+  const autoFlip = () => {
+    if ($app_status?.account.level === "Free") {
       planTab = "basic";
     }
-  });
+  };
 
   const loadAllInfo = async () => {
+    autoFlip();
     for (;;) {
       try {
         const gate = await native_gate();
@@ -204,7 +205,8 @@
             </div>
 
             <p
-              class={planTab === "unlimited"
+              class={planTab === "unlimited" ||
+              $app_status?.account.level === "Free"
                 ? "text-center text-xs mb-2 font-bold text-success-600"
                 : "text-center text-xs mb-2 font-bold text-red-600"}
             >
@@ -235,19 +237,19 @@
                 {l10n($curr_lang, "basic-beta-warning")}
               </p>
             {/if}
-              {#if planTab === "unlimited" && remainingBasicDays !== null}
-                <p class="text-center text-xs mb-2 font-bold">
-                  {l10n($curr_lang, "basic-upgrade-blurb").replace(
-                    "DAYS",
-                    Math.min(
-                      remainingBasicDays,
-                      (planTab === "unlimited"
-                        ? allInfo.pricePoints
-                        : allInfo.basicPricePoints)[selectedIndex][0],
-                    ).toString(),
-                  )}
-                </p>
-              {/if}
+            {#if planTab === "unlimited" && remainingBasicDays !== null}
+              <p class="text-center text-xs mb-2 font-bold">
+                {l10n($curr_lang, "basic-upgrade-blurb").replace(
+                  "DAYS",
+                  Math.min(
+                    remainingBasicDays,
+                    (planTab === "unlimited"
+                      ? allInfo.pricePoints
+                      : allInfo.basicPricePoints)[selectedIndex][0],
+                  ).toString(),
+                )}
+              </p>
+            {/if}
           {/if}
 
           {#each planTab === "unlimited" ? allInfo.pricePoints : allInfo.basicPricePoints as [days, price], i}

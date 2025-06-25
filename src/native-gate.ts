@@ -484,20 +484,20 @@ const MockDaemonRpc = {
 
   async user_info(secret: string) {
     await random_sleep();
-    return {
-      level: "Plus",
-      expiry: 10000000000,
-      recurring: false,
-
-      bw_consumption: {
-        mb_used: Math.random() * 10000,
-        mb_limit: 10000,
-        renew_unix: 10000000000
-      }
-    };
     // return {
-    //   level: "Free",
+    //   level: "Plus",
+    //   expiry: 10000000000,
+    //   recurring: false,
+
+    //   bw_consumption: {
+    //     mb_used: Math.random() * 10000,
+    //     mb_limit: 10000,
+    //     renew_unix: 10000000000
+    //   }
     // };
+    return {
+      level: "Free",
+    };
   },
 
   async latest_news(lang: string) {
