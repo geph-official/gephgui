@@ -199,12 +199,12 @@ core-blurb,"Core servers have the best security and speed.","核心服务器具�
 streaming-blurb,"Streaming servers are recommended for streaming services.","流媒体服务器推荐用于流媒体服务","流媒體伺服器推薦用於流媒體服務","سرورهای استریمینگ برای خدمات پخش زنده توصیه می‌شوند.","Стриминговые серверы рекомендуются для потоковых сервисов."
 unlimited-bandwidth,Unlimited usage,无限用量,無限用量,پهنای باند نامحدود,Безлимитная пропускная способность
 unlimited-tab,Unlimited,无限,無限,نامحدود,Безлимит
-basic-tab,Basic,Basic,Basic,ساده,Базовый
+basic-tab,Basic,轻量,輕量,ساده,Базовый
 bandwidth-limit-prefix,Bandwidth limit: ,流量上限：,流量上限：,حد پهنای باند: ,Лимит трафика: 
 mb-per-month,MB/month,MB/月,MB/月,MB/ماه,МБ/мес
 gb-per-month,GB/month,GB/月,GB/月,GB/ماه,GB/мес
 basic-upgrade-blurb,This will upgrade DAYS days of your Basic plan.,这将升级当前轻量计划剩余DAYS天。,這將升級當前輕量方案剩餘DAYS天。,با ارتقا، DAYS روز از طرح پایه شما.,Это обновит DAYS дней вашего базового плана.
 upgrade,Upgrade,升级,升級,ارتقا,Обновить
 basic-free-blurb,"Full Plus features—unlimited speed, premium locations, and advanced filtering—for GB GB.","完整 Plus 功能，无限速度，高级位置和高级过滤，持续 GB GB.","完整 Plus 功能，無限速度，高級位置和高級過濾，持續 GB GB.","تمام امکانات Plus‌‌—سرعت نامحدود، مکان‌های ویژه و فیلتر پیشرفته—به مدت GB GB.","Полный набор функций Plus—неограниченная скорость, премиум-локации и расширенная фильтрация—в течение GB ГБ."
-basic-plus-blurb,Only GB GB per month, for occasional use. Currently in beta.,每月仅 GBGB，仅供偶尔使用。Beta。 ,每月僅 GBGB，僅供偶爾使用。Beta。,فقط GB گیگابایت در ماه، برای استفاده موردی. بتا.,Всего GB ГБ в месяц, для редкого использования. Бета.
-basic-beta-warning,Basic is in beta and prices may change.,Basic 仍在测试阶段，价格可能会变化。,Basic 仍在測試階段，價格可能會變化。,طرح Basic بتا است و قیمت‌ها ممکن است تغییر کند.,Basic находится в бета-версии, цены могут измениться.
+basic-plus-blurb,Only GB GB per month; recommended for occasional use only! ,每月只有 GB GB，仅推荐偶尔使用！。 ,每月僅 GB GB，僅供偶爾使用。,فقط GB گیگابایت در ماه، برای استفاده موردی. بتا.,Всего GB ГБ в месяц, для редкого использования. 
+basic-beta-warning,Basic is in beta and prices may change.,轻量套餐仍在测试阶段，价格可能会变化。,輕量套餐仍在測試階段，價格可能會變化。,طرح Basic بتا است و قیمت‌ها ممکن است تغییر کند.,Basic находится в бета-версии, цены могут измениться.

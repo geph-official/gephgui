@@ -263,6 +263,7 @@ function mock_native_gate(): NativeGate {
       return [
         [30, 5],
         [60, 10],
+                [600000, 100000],
       ];
     },
 
