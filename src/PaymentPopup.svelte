@@ -2,6 +2,7 @@
   import { slide } from "svelte/transition";
   import { curr_lang, l10n } from "./lib/l10n";
   import { onMount } from "svelte";
+  import { get } from "svelte/store";
   import { native_gate, type InvoiceInfo } from "./native-gate";
   import {
     clearAccountCache,
@@ -25,6 +26,12 @@
   let selectedIndex = 0;
 
   let planTab: "unlimited" | "basic" = "unlimited";
+
+  onMount(() => {
+    if (get(app_status)?.account.level === "Free") {
+      planTab = "basic";
+    }
+  });
 
   const loadAllInfo = async () => {
     for (;;) {
@@ -63,6 +70,35 @@
           ($app_status.account.expiry - Math.floor(Date.now() / 1000)) / 86400,
         )
       : null;
+  $: isBasic =
+    $app_status &&
+    $app_status.account.level === "Plus" &&
+    $app_status.account.bw_consumption;
+
+  function displayLabel(days: number) {
+    if (planTab === "unlimited" && isBasic) {
+      if (remainingBasicDays !== null && days > remainingBasicDays) {
+        return (
+          l10n($curr_lang, "upgrade") +
+          " " +
+          remainingBasicDays +
+          " + " +
+          (days - remainingBasicDays) +
+          " " +
+          l10n($curr_lang, "days")
+        );
+      } else {
+        return (
+          l10n($curr_lang, "upgrade") +
+          " " +
+          days +
+          " " +
+          l10n($curr_lang, "days")
+        );
+      }
+    }
+    return days + " " + l10n($curr_lang, "days");
+  }
 
   async function handlePayNow(days: number) {
     createInvoiceInProgress = true;
@@ -181,19 +217,37 @@
                     l10n($curr_lang, "gb-per-month")
                   : ""}
             </p>
-            {#if planTab === "unlimited" && remainingBasicDays !== null}
-              <p class="text-center text-xs mb-2 font-bold">
-                {l10n($curr_lang, "basic-upgrade-blurb-prefix")}
-                {Math.min(
-                  remainingBasicDays,
-                  (planTab === "unlimited"
-                    ? allInfo.pricePoints
-                    : allInfo.basicPricePoints)[selectedIndex][0],
-                )}
-                {" "}
-                {l10n($curr_lang, "basic-upgrade-blurb-suffix")}
+            {#if planTab === "basic"}
+              <p class="text-center text-xs mb-2">
+                {#if $app_status?.account.level === "Free"}
+                  {l10n($curr_lang, "basic-free-blurb").replace(
+                    "GB",
+                    (allInfo.basicInfo.bw_limit / 1000).toString(),
+                  )}
+                {:else}
+                  {l10n($curr_lang, "basic-plus-blurb").replace(
+                    "GB",
+                    (allInfo.basicInfo.bw_limit / 1000).toString(),
+                  )}
+                {/if}
+              </p>
+              <p class="text-center text-xs mb-2 opacity-70">
+                {l10n($curr_lang, "basic-beta-warning")}
               </p>
             {/if}
+              {#if planTab === "unlimited" && remainingBasicDays !== null}
+                <p class="text-center text-xs mb-2 font-bold">
+                  {l10n($curr_lang, "basic-upgrade-blurb").replace(
+                    "DAYS",
+                    Math.min(
+                      remainingBasicDays,
+                      (planTab === "unlimited"
+                        ? allInfo.pricePoints
+                        : allInfo.basicPricePoints)[selectedIndex][0],
+                    ).toString(),
+                  )}
+                </p>
+              {/if}
           {/if}
 
           {#each planTab === "unlimited" ? allInfo.pricePoints : allInfo.basicPricePoints as [days, price], i}
@@ -203,7 +257,7 @@
               }`}
               on:click={() => handleSelect(i)}
             >
-              <div>{days} {l10n($curr_lang, "days")}</div>
+              <div>{displayLabel(days)}</div>
               <div class="grow text-right tnum">
                 <span class="font-semibold">€{price.toFixed(2)}</span>
                 <span class="font-semibold opacity-[0.6] ml-2"
