@@ -146,8 +146,12 @@
   </div>
 
   {#if $app_status.account.level === "Free"}
-    <div class="card p-3 items-center variant-ghost-error text-sm text-center">
-      {@html l10n($curr_lang, "free-is-bad")}
+    <div
+      class="card p-3 items-center variant-ghost-error text-sm text-center"
+      on:click={() => ($paymentsOpen = true)}
+    >
+      {@html l10n($curr_lang, "free-is-bad")} <br />
+      <b>{@html l10n($curr_lang, "upgrade-to-plus-speed")}</b>
     </div>
   {/if}
 {/if}

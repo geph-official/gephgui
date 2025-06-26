@@ -34,11 +34,13 @@
   };
 
   const loadAllInfo = async () => {
-    autoFlip();
     for (;;) {
       try {
         const gate = await native_gate();
         const basicInfo = await gate.get_basic_info($curr_valid_secret || "");
+        if (basicInfo) {
+          autoFlip();
+        }
         return {
           basicInfo,
           pricePoints: await gate.price_points(),
@@ -178,7 +180,7 @@
     {:then allInfo}
       {#if currentScreen === "main"}
         <div class="flex flex-col">
-          {#if allInfo.basicInfo}
+          {#if allInfo.basicInfo && !($app_status?.account.level === "Plus" && $app_status?.account.bw_consumption === null)}
             <div class="flex justify-center gap-2 mb-2">
               <button
                 class="btn px-2 py-1 text-sm"
