@@ -3,17 +3,45 @@
   import CalendarRange from "svelte-material-icons/CalendarRange.svelte";
   import TimerSandComplete from "svelte-material-icons/TimerSandComplete.svelte";
   import Heart from "svelte-material-icons/Heart.svelte";
-  import Refresh from "svelte-material-icons/Refresh.svelte";
   import { curr_lang, l10n, l10n_date } from "../lib/l10n";
   import type { SubscriptionInfo } from "../native-gate";
+  import { native_gate, subinfo_serialize } from "../native-gate";
+  import { onMount, onDestroy } from "svelte";
   import { pref_userpwd, user_info_store } from "../lib/prefs";
   import GButton from "../lib/GButton.svelte";
-  import Button from "@smui/button";
   import { runWithSpinner } from "../lib/modals";
   export let username: string;
   export let user_info: SubscriptionInfo | null = null;
 
   let loading = false;
+
+  async function clearAccountCache() {
+    if ($pref_userpwd) {
+      try {
+        const gate = await native_gate();
+        $user_info_store = subinfo_serialize(
+          await gate.sync_user_info(
+            $pref_userpwd.username,
+            $pref_userpwd.password
+          )
+        );
+      } catch (e) {
+        console.error("failed to refresh account info", e);
+      }
+    }
+  }
+
+  function handleFocus() {
+    clearAccountCache();
+  }
+
+  onMount(() => {
+    window.addEventListener("focus", handleFocus);
+  });
+
+  onDestroy(() => {
+    window.removeEventListener("focus", handleFocus);
+  });
 
   $: extend_url = `https://geph.io/billing/login?next=%2Fbilling%2Fdashboard&uname=${encodeURIComponent(
     username
