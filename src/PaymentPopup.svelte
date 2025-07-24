@@ -65,6 +65,7 @@
   let payInProgress = false;
   let redeemInProgress = false;
   let voucherCode = "";
+  let promoCode = "";
   $: remainingBasicDays =
     $app_status &&
     $app_status.account.level === "Plus" &&
@@ -319,6 +320,21 @@
           {#if payInProgress}
             <ProgressBar />
           {:else}
+            <div class="my-2">
+              <label for="promo-code" class="label mb-1">
+                <span>{l10n($curr_lang, "promo-code")}</span>
+              </label>
+              <input
+                id="promo-code"
+                type="text"
+                bind:value={promoCode}
+                class="input p-2 border border-black w-full"
+                placeholder={l10n($curr_lang, "enter-promo-code")}
+              />
+              <p class="text-xs opacity-70 mt-1">
+                {l10n($curr_lang, "promo-code-blurb")}
+              </p>
+            </div>
             {#each secondPageInvoice.methods as method}
               <button
                 class="btn variant-filled border p-2 rounded-lg"
@@ -327,7 +343,12 @@
                     payInProgress = true;
                     try {
                       const gate = await native_gate();
-                      await gate.pay_invoice(secondPageInvoice.id, method);
+                      await gate.pay_invoice(
+                        secondPageInvoice.id,
+                        promoCode.trim()
+                          ? `${method}+++${promoCode.trim()}`
+                          : method,
+                      );
                       currentScreen = "completion";
                     } catch (e) {
                       showErrorModal(modalStore, "" + e);

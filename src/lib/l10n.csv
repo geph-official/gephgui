@@ -185,7 +185,10 @@ username,Username,用户名,用戶名,نام کاربری,Имя пользов�
 via,Via,经由,經由,از طریق,Через
 voucher-code,Voucher code,礼品卡代码,礼品卡代碼,کد تخفیف,Код ваучера
 voucher-invalid,"Invalid voucher code","无效的礼品卡代码","無效的禮品卡代碼","کد تخفیف نامعتبر","Недействительный код ваучера"
-voucher-success,"Voucher redeemed","礼品卡兑换成功","禮品卡兌換成功","کد تخفیف با موفقیت بازخرید شد","Ваучер успешно активирован"
+ voucher-success,"Voucher redeemed","礼品卡兑换成功","禮品卡兌換成功","کد تخفیف با موفقیت بازخرید شد","Ваучер успешно активирован"
+enter-promo-code,Enter promo code,输入优惠码,輸入優惠碼,کد تبلیغاتی را وارد کنید,Введите промокод
+promo-code,Promo code,优惠码,優惠碼,کد تبلیغاتی,Промокод
+promo-code-blurb,Any discounts for this code will be applied at checkout!,此优惠码的任何折扣将在结账时应用！,此優惠碼的任何折扣將在結帳時應用！,هرگونه تخفیف برای این کد هنگام پرداخت اعمال می‌شود!,Любые скидки по этому коду будут применены при оформлении заказа!
 wechat,WeChat,微信,微信,وی‌چت,WeChat
 yesterday,Yesterday,昨天,昨天,دیروز,Вчера
 your-email-optional,"Your email (optional)","您的邮箱（可选）","您的郵箱（可選）","ایمیل شما (اختیاری)","Ваш email (необязательно)"
