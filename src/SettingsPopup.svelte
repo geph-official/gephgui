@@ -165,6 +165,8 @@
             <option value="zh-TW">繁體中文</option>
             <option value="fa">فارسی</option>
             <option value="ru">Русский</option>
+            <option value="es">Español</option>
+            <option value="uk">Українська</option>
           </select>
         </svelte:fragment>"
       </SingleSetting>

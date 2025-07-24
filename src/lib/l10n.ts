@@ -4,12 +4,12 @@ import { persistentWritable } from "./prefs";
 import detectNearestBrowserLocale from "detect-nearest-browser-locale";
 
 // Languages
-export type Natlang = "en" | "zh-CN" | "zh-TW" | "fa" | "ru";
+export type Natlang = "en" | "zh-CN" | "zh-TW" | "fa" | "ru" | "es" | "uk";
 
 // The current language.
 export const curr_lang: Writable<Natlang> = persistentWritable(
   "language-new-6",
-  detectNearestBrowserLocale(["en", "zh-CN", "zh-TW", "fa", "ru"])
+  detectNearestBrowserLocale(["en", "zh-CN", "zh-TW", "fa", "ru", "es", "uk"])
 );
 
 interface CsvRow {
@@ -22,12 +22,16 @@ const l10n_map = (l10n_csv as CsvRow[]).reduce((prev, elem) => {
 }, {});
 
 export const l10n = (lang: Natlang, label: string) => {
-  try {
-    let v = l10n_map[label][lang] as string;
-    return v || "!" + label + "!";
-  } catch {
+  const row = l10n_map[label];
+  if (!row) {
     return "!" + label + "!";
   }
+  const v = row[lang] as string;
+  if (v) {
+    return v;
+  }
+  // Fallback to English if translation is missing
+  return (row.en as string) || "!" + label + "!";
 };
 
 export const l10n_date = (lang: Natlang, d: Date) => {
