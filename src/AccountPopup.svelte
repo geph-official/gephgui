@@ -13,6 +13,7 @@
   import { curr_lang, l10n } from "./lib/l10n";
   import { app_status, curr_valid_secret, clearAllCaches } from "./lib/user";
   import { native_gate } from "./native-gate";
+  import CryptoJS from "crypto-js";
   import Popup from "./lib/Popup.svelte";
 
   const modalStore = getModalStore();
@@ -35,6 +36,57 @@
     document.body.removeChild(textArea);
     console.log("Text copied to clipboard!");
   }
+
+  /**
+   * Convert CryptoJS WordArray to Uint8Array
+   */
+  function wordArrayToUint8Array(
+    wordArray: CryptoJS.lib.WordArray,
+  ): Uint8Array {
+    const words = wordArray.words;
+    const sigBytes = wordArray.sigBytes;
+    const u8 = new Uint8Array(sigBytes);
+    for (let i = 0; i < sigBytes; i++) {
+      /* eslint-disable no-bitwise */
+      u8[i] = (words[i >>> 2] >>> (24 - (i % 4) * 8)) & 0xff;
+      /* eslint-enable no-bitwise */
+    }
+    return u8;
+  }
+
+  /**
+   * Base32 encode a byte array (RFC 4648, no padding)
+   */
+  function base32Encode(bytes: Uint8Array): string {
+    // Crockford’s Base32 alphabet: 0–9 then A–Z without I, L, O, U
+    const alphabet = "0123456789ABCDEFGHJKMNPQRSTVWXYZ";
+    let bits = 0;
+    let value = 0;
+    let output = "";
+
+    for (let i = 0; i < bytes.length; ) {
+      if (bits < 5) {
+        value = (value << 8) | bytes[i++];
+        bits += 8;
+      }
+      output += alphabet[(value >>> (bits - 5)) & 31];
+      bits -= 5;
+    }
+    return output;
+  }
+
+  /**
+   * Compute invite code: first 10 chars of Base32(SHA256("invite-code" + secret))
+   */
+  function computeInviteCode(secret: string): string {
+    const hash = CryptoJS.SHA256(`invite-code${secret}`);
+    const bytes = wordArrayToUint8Array(hash);
+    return base32Encode(bytes).slice(0, 16);
+  }
+
+  $: inviteCode = $curr_valid_secret
+    ? computeInviteCode($curr_valid_secret)
+    : "";
 
   async function handleDeleteClick() {
     if (deleteTimer) {
@@ -128,7 +180,7 @@
                 <td>{l10n($curr_lang, "plus-expiry")}</td>
                 <td class="tnum"
                   >{new Date(
-                    $app_status?.account.expiry * 1000
+                    $app_status?.account.expiry * 1000,
                   ).toLocaleDateString(undefined, {
                     year: "numeric",
                     month: "short",
@@ -142,6 +194,15 @@
                 <td>{l10n($curr_lang, "free-account")}</td>
               </tr>
             {/if}
+            <tr>
+              <td>{l10n($curr_lang, "invite-code")}</td>
+              <td class="tnum flex flex-row gap-1 items-center"
+                >{inviteCode}
+                <button on:click={() => copyToClipboard(inviteCode || "")}
+                  ><ContentCopy size="1rem" /></button
+                ></td
+              >
+            </tr>
           </tbody>
         </table>
       </section>
@@ -151,7 +212,7 @@
         class="btn variant-ghost-primary btn-sm"
         on:click={async () => {
           window.open(
-            `https://geph.io/billing/login_secret?secret=${$curr_valid_secret}`
+            `https://geph.io/billing/login_secret?secret=${$curr_valid_secret}`,
           );
         }}
       >

@@ -26,7 +26,13 @@ auto-select,Auto-select least loaded server,自动选择负载最小的服务器
 automatic,Automatic,自动选择,自動選擇,خودکار,Авто,Automático,Автоматичний
 automatic-blurb,Uses best available server,使用最佳可用服务器,使用最佳可用伺服器,به بهترین سرور موجود وصل می‌شود,Использует лучший доступный сервер,Usa el mejor servidor disponible,"Використовує найкращий доступний сервер"
 back,Back,返回,返回,بازگشت,Назад,Atrás,Назад
+bandwidth-limit-prefix,Bandwidth limit: ,流量上限：,流量上限：,حد پهنای باند: ,Лимит трафика: ,Límite de ancho de banda: ,Ліміт пропускної здатності: 
+basic-free-blurb,"Test GB GB of full Plus features—unlimited speed, premium locations, and streaming support!","体验 GB GB 完整 Plus 功能——无限速度、低延迟、流媒体服务器！","體驗 GB GB 完整 Plus 功能－無限速度、低延遲、串流服務器！","تمام امکانات Plus‌‌—سرعت نامحدود، مکان‌های ویژه و فیلتر پیشرفته—به مدت GB GB.","Полный набор функций Plus—неограниченная скорость, премиум-локации и расширенная фильтрация—в течение GB ГБ.","Prueba GB GB de funciones completas de Plus: velocidad ilimitada, ubicaciones premium y soporte de streaming!","Тестуйте GB ГБ повних функцій Plus — необмежена швидкість, преміум-локації та підтримка потокового передавання!"
+basic-plus-blurb,Only GB GB per month; recommended for occasional use only! ,每月只有 GB GB，仅推荐偶尔使用！ ,每月僅 GB GB，僅供偶爾使用。,فقط GB گیگابایت در ماه، برای استفاده موردی.,Всего GB ГБ в месяц, для редкого использования. ,Solo GB GB por mes; ¡recomendado solo para uso ocasional! ,Лише GB ГБ на місяць; рекомендується тільки для рідкісного використання!
+basic-tab,Basic,轻量,輕量,ساده,Базовый,Básico,Базовий
+basic-upgrade-blurb,This will upgrade DAYS days of your Basic plan.,这将升级当前轻量计划剩余DAYS天。,這將升級當前輕量方案剩餘DAYS天。,با ارتقا، DAYS روز از طرح پایه شما.,Это обновит DAYS дней вашего базового плана.,Esto actualizará DAYS días de tu plan Básico.,Це оновить DAYS днів вашого базового плану.
 best-free-server,Best free server,最佳免费服务器,最佳免費伺服器,بهترین سرور رایگان,Лучший бесплатный сервер,Mejor servidor gratuito,Найкращий безкоштовний сервер
+beta,Beta,Beta,Beta,Beta,Beta,Beta,Beta
 buy-plus,Buy Plus,购买 Plus,購買 Plus,خرید پلاس,Купить Plus,Comprar Plus,Купити Plus
 buy-plus-price,Buy Plus (from €PRICE),购买 Plus（最低 €PRICE）,購買 Plus（最低 €PRICE）,خرید پلاس (€5/ماه),Купить Plus (€PRICE/месяц),Comprar Plus (desde €PRICE),Купити Plus (від €PRICE)
 calls-p2p-gaming,"🎮 Calls, P2P, and gaming","🎮 通话、P2P 和游戏","🎮 通話、P2P 和遊戲","🎮 تماس‌ها، P2P و بازی","🎮 Звонки, P2P и игры","🎮 Llamadas, P2P y juegos","🎮 Дзвінки, P2P та ігри"
@@ -43,6 +49,8 @@ connection-status,Connection status,连接状态,連接狀態,وضعیت اتص�
 content-filtering,Content filtering,内容屏蔽,內容屏蔽,فیلتر محتوا,Фильтрация контента,Filtrado de contenido,Фільтрація контенту
 convert-account,Convert account,转换账户,轉換帳戶,تبدیل حساب,Преобразовать аккаунт,Convertir cuenta,Перетворити обліковий запис
 copy,Copy,复制,複製,کپی,Копировать,Copiar,Копіювати
+core-blurb,"Core servers have the best security and speed.","核心服务器具有最高的安全性和速度","核心伺服器具有最高的安全性和速度","سرورهای هسته برای امنیت و عملکرد بهینه شده‌اند.","Основные серверы оптимизированы для безопасности и производительности.","Los servidores principales tienen la mejor seguridad y velocidad.","Основні сервери мають найкращу безпеку та швидкість."
+core-tab,"Core","核心","核心","هسته","Основной","Núcleo","Ядро"
 country,Country,国家,國家,کشور,Страна,País,Країна
 credit-card,Credit card,信用卡,信用卡,کارت اعتباری,Кредитная карта,Tarjeta de crédito,Кредитна картка
 crypto,Cryptocurrency,加密货币,加密貨幣,ارز دیجیتال,Криптовалюта,Criptomoneda,Криптовалюта
@@ -65,6 +73,7 @@ download,Download,下载,下載,دانلود,Скачать,Descargar,Заван
 duplicate-credentials,This username is already taken. Please choose another name,此用户名已存在。请选一个新的用户名,此用戶名已存在。 請選一個新的用戶名,این نام کاربری برداشته شده است. لطفا نام دیگری انتخاب کنید,Это имя пользователя уже занято. Пожалуйста, выберите другое имя.,Este nombre de usuario ya está tomado. Por favor, elige otro nombre.,Це ім'я користувача вже зайняте. Будь ласка, оберіть інше ім'я.
 enter-account-secret,Enter your account secret,输入您的账户密钥,輸入您的帳戶密鑰,رمز حساب کاربری خود را وارد کنید,Введите секретный ключ вашего аккаунта,Ingresa tu secreto de cuenta,Введіть секретний ключ вашого облікового запису
 enter-old-username-password-blurb,"Enter the username and password you use with previous versions to obtain your account secret.","请输入您在旧版本中使用的用户名和密码，以获取您的账户密钥。","請輸入您在舊版本中使用的用戶名和密碼，以獲取您的 帳戶密鑰。","نام کاربری و رمز عبوری را که در نسخه‌های قبلی استفاده می‌کردید وارد کنید تا رمز حساب کاربری خود را دریافت کنید.","Введите имя пользователя и пароль, которые вы использовали в предыдущих версиях, чтобы получить ваш секретный ключ аккаунта.","Ingresa el nombre de usuario y contraseña que usas con versiones anteriores para obtener tu secreto de cuenta.","Введіть ім'я користувача та пароль, які ви використовували в попередніх версіях, щоб отримати секретний ключ вашого облікового запису."
+enter-promo-code,Enter promo code,输入优惠码,輸入優惠碼,کد تبلیغاتی را وارد کنید,Введите промокод,Ingresa código promocional,Введіть промокод
 enter-voucher-code,Enter voucher code,输入礼品卡代码,輸入礼品卡代碼,کد تخفیف را وارد کنید,Введите код ваучера,Ingresa el código de cupón,Введіть код ваучера
 err_create_invoice,"Cannot create invoice","无法创建订单","無法創建訂單","خطا در ایجاد فاکتور","Не удается создать счет","No se puede crear la factura","Не вдається створити рахунок"
 err_load_price_points,"Cannot load price points","无法加载价格信息","無法加載價格資訊","خطا در بارگیری نقاط قیمت","Не удается загрузить ценовые точки","No se pueden cargar los puntos de precio","Не вдається завантажити цінові точки"
@@ -76,6 +85,7 @@ exclude-prc,Exclude PRC traffic,排除中国大陆流量,排除中國大陸流�
 exclude-prc-blurb,Let Chinese traffic bypass Geph,允许中国大陆流量绕过迷雾通,允許中國大陸流量繞過迷霧通,ترافیک چین از Geph عبور نکند,Позволить китайскому трафику обходить Geph,Permitir que el tráfico chino evite Geph,"Дозволити китайському трафіку обходити Geph"
 excluded-apps,"Excluded apps:","排除的应用：","排除的應用：","برنامه‌های مستثنی:","Исключенные приложения:","Aplicaciones excluidas:","Виключені додатки:"
 exit-selection,Select exit server,选择出口服务器,選擇出口伺服器,سرور خروجی را انتخاب کنید,Выбрать выходной сервер,Seleccionar servidor de salida,Вибрати сервер виходу
+experimental-feature-warning,"This is a highly experimental feature. Please report any problems you encounter.","这是一个高度实验性功能。请报告您遇到的任何问题。","這是一個高度實驗性功能。請報告您遇到的任何問題。","این یک ویژگی بسیار آزمایشی است. لطفا هر مشکلی که با آن مواجه می‌شوید را گزارش دهید.","Это экспериментальная функция. Пожалуйста, сообщайте о любых проблемах, с которыми вы столкнетесь.","Esta es una función altamente experimental. Por favor, reporta cualquier problema que encuentres.","Це високоекспериментальна функція. Будь ласка, повідомляйте про будь-які проблеми, з якими ви стикаєтеся."
 export,Export,导出,導出,صدور,Экспорт,Exportar,Експорт
 extend,Extend,延长,延長,تمدید,Продлить,Extender,Продовжити
 features,"Features","功能","功能","ویژگی‌ها","Функции","Características","Функції"
@@ -86,6 +96,7 @@ free-is-bad,Free accounts are limited to 3G network speeds,免费账号限速为
 free-plus,"Free Plus!","免费领取 Plus!","免費領取 Plus!","پلاس رایگان!","Бесплатный Plus!","¡Plus gratis!","Безкоштовний Plus!"
 free-server,Free,所有用户,所有用戶,رایگان,Бесплатно,Gratis,Безкоштовно
 gambling,Gambling,赌博,賭博,قمار,Азартные игры,Juegos de azar,Азартні ігри
+gb-per-month,GB/month,GB/月,GB/月,GB/ماه,GB/мес,GB/mes,ГБ/міс
 general,General,常规,常規,عمومی,Общие,General,Загальні
 geph,Geph,迷雾通,迷霧通,Geph,Geph,Geph,Geph
 get-full-geph-experience,"Get the full Geph experience","享受完整的迷雾通服务","享受完整的迷霧通服務","تجربه کامل Geph را دریافت کنید","Получите полный опыт использования Geph","Obtén la experiencia completa de Geph","Отримайте повний досвід використання Geph"
@@ -98,6 +109,7 @@ i-have-old-username-password,"I have a username/password","旧版用户名/密�
 important,Important,重要,重要,مهم,Важно,Importante,Важливо
 incorrect-user-secret,"Incorrect user secret","错误的账户密钥","錯誤的帳戶密鑰","رمز حساب کاربری اشتباه است","Неверный секретный ключ аккаунта","Secreto de usuario incorrecto","Неправильний секретний ключ облікового запису"
 invalid-username-or-password,Wrong username or password,用户名或密码错误,用戶名或密碼錯誤,نام کاربری یا کلمه عبور نادرست است,Неправильное имя пользователя или пароль,Nombre de usuario o contraseña incorrectos,Неправильне ім'я користувача або пароль
+invite-code,Invite code,邀请码,邀請碼,کد دعوت,Код приглашения,Código de invitación,Код запрошення
 keep-window-open,"Please keep this window open!","请保持此窗口打开！","請保持此窗口打開！","لطفاً این پنجره را باز نگه دارید!","Пожалуйста, держите это окно открытым!","¡Por favor, mantén esta ventana abierta!","Будь ласка, тримайте це вікно відкритим!"
 language,Language,语言,語言,زبان,Язык,Idioma,Мова
 latency,Latency,延迟,延遲,تاخیر,Задержка,Latencia,Затримка
@@ -118,6 +130,7 @@ logout,Log out,退出,退出,خروج,Выйти,Cerrar sesión,Вийти
 logs-copied,Debug logs copied,调试日志已复制,調試日誌已複製,گزارش‌های عیب‌یابی کپی شد,Отладочные логи скопированы,Registros de depuración copiados,Журнали налагодження скопійовані
 manage,Manage,管理,管理,مدیریت,Управление,Gestionar,Керувати
 manage-account,Manage account,管理账户,管理帳戶,مدیریت حساب کاربری,Управление аккаунтом,Gestionar cuenta,Керувати обліковим записом
+mb-per-month,MB/month,MB/月,MB/月,MB/ماه,МБ/мес,MB/mes,МБ/міс
 migrate-from-older-versions,"Migrate from older versions","从旧版本迁移","從舊版本遷移","مهاجرت از نسخه‌های قدیمی","Миграция со старых версий","Migrar desde versiones anteriores","Міграція зі старих версій"
 much-faster-speed,"🚀 Much faster speed","🚀 超快的速度","🚀 超快的速度","🚀 سرعت بسیار بالاتر","🚀 Намного быстрее","🚀 Mucha más velocidad","🚀 Значно швидше"
 network,Network,网络,網路,شبکه,Сеть,Red,Мережа
@@ -141,6 +154,8 @@ plus-expiry,Plus expiry,Plus 到期时间,Plus 到期時間,انقضای Plus,С
 plus-is-great,"Plus unlocks full speed on all servers!",Plus解除所有服务器的限速！,Plus解除所有服務器的限速！,پلاس قابلیت سرعت نامحدود را روی تمام سرور ها برای شما باز می‌کند!,"Plus разблокирует полную скорость на всех серверах!","¡Plus desbloquea velocidad completa en todos los servidores!","Plus розблоковує повну швидкість на всіх серверах!"
 plus-only-blurb,"Only Plus users are allowed on this server, select another one.",仅Plus用户允许访问此服务器,仅Plus用户允许访问此服务器,این سرور مخصوص اعضای پلاس است,"На этот сервер допускаются только пользователи Plus, выберите другой.","Solo usuarios Plus están permitidos en este servidor, selecciona otro.","На цей сервер допускаються тільки користувачі Plus, оберіть інший."
 plus-server,Plus,仅限Plus,僅限Plus,پلاس,Plus,Plus,Plus
+promo-code,Promo code,优惠码,優惠碼,کد تبلیغاتی,Промокод,Código promocional,Промокод
+promo-code-blurb,Any discounts for this code will be applied at checkout!,此优惠码的任何折扣将在结账时应用！,此優惠碼的任何折扣將在結帳時應用！,هرگونه تخفیف برای این کد هنگام پرداخت اعمال می‌شود!,Любые скидки по этому коду будут применены при оформлении заказа!,Cualquier descuento para este código se aplicará al finalizar la compra!,Будь-які знижки за цим кодом будуть застосовані при оформленні замовлення!
 protocol,Protocol,协议,協議,پروتکل,Протокол,Protocolo,Протокол
 recurring-subscription,Recurring subscription,自动续费 Plus,自動續費 Plus,اشتراک دوره‌ای,Периодическая подписка,Suscripción recurrente,Періодична підписка
 redeem,Redeem,兑换,兌換,بازخرید,Активировать,Canjear,Активувати
@@ -170,13 +185,20 @@ settings,Settings,设置,設置,تنظیمات,Настройки,Configuracione
 show-all-servers,Show all servers,显示所有服务器,顯示所有服務器,نمایش تمام سرورها,Показать все серверы,Mostrar todos los servidores,Показати всі сервери
 skip-wait-login-secret,"If you already have another device with Geph, you can skip this wait by logging in with your account secret instead:","如果您已经有其他设备使用迷雾通，可以通过使用您的账户密钥登录来跳过等待：","如果您已經有其他設備使用迷雾通，可以通過使用您的帳戶密鑰登錄來跳過等待：","اگر از قبل دستگاه دیگری با Geph دارید، می‌توانید با ورود با رمز حساب کاربری خود این انتظار را رد کنید.","Если у вас уже есть другое устройство с Geph, вы можете пропустить ожидание, войдя с помощью секретного ключа аккаунта.","Si ya tienes otro dispositivo con Geph, puedes saltarte esta espera iniciando sesión con tu secreto de cuenta en su lugar:","Якщо у вас вже є інший пристрій з Geph, ви можете пропустити це очікування, увійшовши за допомогою секретного ключа облікового запису."
 split-tunneling,Split tunneling,分流隧道,分流隧道,تونل بندی جداگانه,Разделённое туннелирование,Túnel dividido,Розділене тунелювання
+streaming-blurb,"Streaming servers are recommended for streaming services.","流媒体服务器推荐用于流媒体服务","流媒體伺服器推薦用於流媒體服務","سرورهای استریمینگ برای خدمات پخش زنده توصیه می‌شوند.","Стриминговые серверы рекомендуются для потоковых сервисов.","Se recomiendan servidores de streaming para servicios de streaming.","Потокові сервери рекомендуються для потокових сервісів."
+streaming-tab,"Streaming","流媒体","流媒體","استریمینگ","Стриминг","Transmisión","Потокове передавання"
 successfully-submitted,"Successfully submitted","提交成功","提交成功","با موفقیت ارسال شد","Успешно отправлено","Enviado exitosamente","Успішно надіслано"
 theme,Theme,主题,主題,قالب,Тема,Tema,Тема
 today,Today,今天,今天,امروز,Сегодня,Hoy,Сьогодні
 total-traffic,Current traffic,当前速率,當前速率,کل ترافیک,Общий трафик,Tráfico actual,Поточний трафік
 total-users,Total users,总用户数,總用戶數,کل کاربران,Всего пользователей,Usuarios totales,Всього користувачів
+unlimited-bandwidth,Unlimited usage,无限用量,無限用量,پهنای باند نامحدود,Безлимитная пропускная способность,Uso ilimitado,Необмежене використання
+unlimited-tab,Unlimited,无限,無限,نامحدود,Безлимит,Ilimitado,Необмежений
 unlock-all-locations,"🌎 Unlock all locations","🌎 解锁所有位置","🌎 解鎖所有位置","🌎 همه مکان‌ها را باز کنید","🌎 Разблокировать все локации","🌎 Desbloquear todas las ubicaciones","🌎 Розблокувати всі локації"
 unrestricted-access,"Enjoy unrestricted access to ports other than 80 and 443. Perfect for gaming, P2P, video conferencing, and more.","享受对除 80 和 443 之外端口的 无限制访问。非常适合游戏、P2P、视频会议等。","享受對除 80 和 443 之外端口的 無限制訪問。非常適合遊戲、P2P、視頻會議等。","از دسترسی نامحدود به پورت‌های غیر از 80 و 443 لذت ببرید. مناسب برای بازی، P2P، ویدئو کنفرانس و موارد دیگر","Наслаждайтесь неограниченным доступом к портам, кроме 80 и 443. Идеально для игр, P2P, видеоконференций и многого другого.","Disfruta de acceso ilimitado a puertos distintos de 80 y 443. Perfecto para juegos, P2P, videoconferencias y más.","Насолоджуйтесь необмеженим доступом до портів, окрім 80 та 443. Ідеально для ігор, P2P, відеоконференцій тощо."
+upgrade,Upgrade,升级,升級,ارتقا,Обновить,Actualizar,Оновити
+upgrade-to-plus-locations,"Upgrade to Plus to unlock premium locations","升级到 Plus 以解锁高级位置","升級到 Plus 以解鎖高級位置","برای دسترسی به مکان‌های ویژه به پلاس ارتقا دهید","Обновите до Plus, чтобы разблокировать премиум-локации","Actualiza a Plus para desbloquear ubicaciones premium","Оновіть до Plus, щоб розблокувати преміум-локації"
+upgrade-to-plus-speed,Upgrade to Plus for unlimited speed!,升级到 Plus 畅享超高速度！,升級到 Plus 以獲得超高速度！,برای سرعت نامحدود به Plus ارتقا دهید,Обновите до Plus для безлимитной скорости!,¡Actualiza a Plus para velocidad ilimitada!,Оновіть до Plus для необмеженої швидкості!
 upload,Upload,上传,上傳,آپلود,Загрузить,Subir,Завантажити
 use-automatic,Automatically select server,自动选择服务器,自動選擇伺服器,انتخاب خودکار سرور,Автоматически выбрать сервер,Seleccionar servidor automáticamente,Автоматично вибрати сервер
 use-later,Use later,稍后使用,稍後使用,استفاده در آینده,Использовать позже,Usar más tarde,Використати пізніше
@@ -185,29 +207,8 @@ username,Username,用户名,用戶名,نام کاربری,Имя пользов�
 via,Via,经由,經由,از طریق,Через,Vía,Через
 voucher-code,Voucher code,礼品卡代码,礼品卡代碼,کد تخفیف,Код ваучера,Código de cupón,Код ваучера
 voucher-invalid,"Invalid voucher code","无效的礼品卡代码","無效的禮品卡代碼","کد تخفیف نامعتبر","Недействительный код ваучера","Código de cupón inválido","Недійсний код ваучера"
- voucher-success,"Voucher redeemed","礼品卡兑换成功","禮品卡兌換成功","کد تخفیف با موفقیت بازخرید شد","Ваучер успешно активирован","Cupón canjeado","Ваучер успішно активовано"
-enter-promo-code,Enter promo code,输入优惠码,輸入優惠碼,کد تبلیغاتی را وارد کنید,Введите промокод,Ingresa código promocional,Введіть промокод
-promo-code,Promo code,优惠码,優惠碼,کد تبلیغاتی,Промокод,Código promocional,Промокод
-promo-code-blurb,Any discounts for this code will be applied at checkout!,此优惠码的任何折扣将在结账时应用！,此優惠碼的任何折扣將在結帳時應用！,هرگونه تخفیف برای این کد هنگام پرداخت اعمال می‌شود!,Любые скидки по этому коду будут применены при оформлении заказа!,Cualquier descuento para este código se aplicará al finalizar la compra!,Будь-які знижки за цим кодом будуть застосовані при оформленні замовлення!
+voucher-success,"Voucher redeemed","礼品卡兑换成功","禮品卡兌換成功","کد تخفیف با موفقیت بازخرید شد","Ваучер успешно активирован","Cupón canjeado","Ваучер успішно активовано"
 wechat,WeChat,微信,微信,وی‌چت,WeChat,WeChat,WeChat
 yesterday,Yesterday,昨天,昨天,دیروز,Вчера,Ayer,Вчора
 your-email-optional,"Your email (optional)","您的邮箱（可选）","您的郵箱（可選）","ایمیل شما (اختیاری)","Ваш email (необязательно)","Tu correo electrónico (opcional)","Ваш email (необов'язково)"
 your-new-user-secret,"Your new user secret is:","您的新的账户密钥为：","您的新的帳戶密鑰為：","رمز حساب کاربری جدید شما این است:","Ваш новый секретный ключ аккаунта:","Tu nuevo secreto de usuario es:","Ваш новий секретний ключ облікового запису:"
-upgrade-to-plus-locations,"Upgrade to Plus to unlock premium locations","升级到 Plus 以解锁高级位置","升級到 Plus 以解鎖高級位置","برای دسترسی به مکان‌های ویژه به پلاس ارتقا دهید","Обновите до Plus, чтобы разблокировать премиум-локации","Actualiza a Plus para desbloquear ubicaciones premium","Оновіть до Plus, щоб розблокувати преміум-локації"
-experimental-feature-warning,"This is a highly experimental feature. Please report any problems you encounter.","这是一个高度实验性功能。请报告您遇到的任何问题。","這是一個高度實驗性功能。請報告您遇到的任何問題。","این یک ویژگی بسیار آزمایشی است. لطفا هر مشکلی که با آن مواجه می‌شوید را گزارش دهید.","Это экспериментальная функция. Пожалуйста, сообщайте о любых проблемах, с которыми вы столкнетесь.","Esta es una función altamente experimental. Por favor, reporta cualquier problema que encuentres.","Це високоекспериментальна функція. Будь ласка, повідомляйте про будь-які проблеми, з якими ви стикаєтеся."
-beta,Beta,Beta,Beta,Beta,Beta,Beta,Beta
-core-tab,"Core","核心","核心","هسته","Основной","Núcleo","Ядро"
-streaming-tab,"Streaming","流媒体","流媒體","استریمینگ","Стриминг","Transmisión","Потокове передавання"
-core-blurb,"Core servers have the best security and speed.","核心服务器具有最高的安全性和速度","核心伺服器具有最高的安全性和速度","سرورهای هسته برای امنیت و عملکرد بهینه شده‌اند.","Основные серверы оптимизированы для безопасности и производительности.","Los servidores principales tienen la mejor seguridad y velocidad.","Основні сервери мають найкращу безпеку та швидкість."
-streaming-blurb,"Streaming servers are recommended for streaming services.","流媒体服务器推荐用于流媒体服务","流媒體伺服器推薦用於流媒體服務","سرورهای استریمینگ برای خدمات پخش زنده توصیه می‌شوند.","Стриминговые серверы рекомендуются для потоковых сервисов.","Se recomiendan servidores de streaming para servicios de streaming.","Потокові сервери рекомендуються для потокових сервісів."
-unlimited-bandwidth,Unlimited usage,无限用量,無限用量,پهنای باند نامحدود,Безлимитная пропускная способность,Uso ilimitado,Необмежене використання
-unlimited-tab,Unlimited,无限,無限,نامحدود,Безлимит,Ilimitado,Необмежений
-basic-tab,Basic,轻量,輕量,ساده,Базовый,Básico,Базовий
-bandwidth-limit-prefix,Bandwidth limit: ,流量上限：,流量上限：,حد پهنای باند: ,Лимит трафика: ,Límite de ancho de banda: ,Ліміт пропускної здатності: 
-mb-per-month,MB/month,MB/月,MB/月,MB/ماه,МБ/мес,MB/mes,МБ/міс
-gb-per-month,GB/month,GB/月,GB/月,GB/ماه,GB/мес,GB/mes,ГБ/міс
-basic-upgrade-blurb,This will upgrade DAYS days of your Basic plan.,这将升级当前轻量计划剩余DAYS天。,這將升級當前輕量方案剩餘DAYS天。,با ارتقا، DAYS روز از طرح پایه شما.,Это обновит DAYS дней вашего базового плана.,Esto actualizará DAYS días de tu plan Básico.,Це оновить DAYS днів вашого базового плану.
-upgrade,Upgrade,升级,升級,ارتقا,Обновить,Actualizar,Оновити
-basic-free-blurb,"Test GB GB of full Plus features—unlimited speed, premium locations, and streaming support!","体验 GB GB 完整 Plus 功能——无限速度、低延迟、流媒体服务器！","體驗 GB GB 完整 Plus 功能－無限速度、低延遲、串流服務器！","تمام امکانات Plus‌‌—سرعت نامحدود، مکان‌های ویژه و فیلتر پیشرفته—به مدت GB GB.","Полный набор функций Plus—неограниченная скорость, премиум-локации и расширенная фильтрация—в течение GB ГБ.","Prueba GB GB de funciones completas de Plus: velocidad ilimitada, ubicaciones premium y soporte de streaming!","Тестуйте GB ГБ повних функцій Plus — необмежена швидкість, преміум-локації та підтримка потокового передавання!"
-basic-plus-blurb,Only GB GB per month; recommended for occasional use only! ,每月只有 GB GB，仅推荐偶尔使用！ ,每月僅 GB GB，僅供偶爾使用。,فقط GB گیگابایت در ماه، برای استفاده موردی.,Всего GB ГБ в месяц, для редкого использования. ,Solo GB GB por mes; ¡recomendado solo para uso ocasional! ,Лише GB ГБ на місяць; рекомендується тільки для рідкісного використання!
-upgrade-to-plus-speed,Upgrade to Plus for unlimited speed!,升级到 Plus 畅享超高速度！,升級到 Plus 以獲得超高速度！,برای سرعت نامحدود به Plus ارتقا دهید,Обновите до Plus для безлимитной скорости!,¡Actualiza a Plus para velocidad ilimitada!,Оновіть до Plus для необмеженої швидкості!
