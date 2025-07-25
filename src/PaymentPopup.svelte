@@ -203,7 +203,6 @@
                 }}
               >
                 {l10n($curr_lang, "basic-tab")}
-                <span class="badge variant-ghost-warning ml-2">BETA</span>
               </button>
             </div>
 
@@ -235,9 +234,6 @@
                     (allInfo.basicInfo.bw_limit / 1000).toString(),
                   )}
                 {/if}
-              </p>
-              <p class="text-center text-xs mb-2 opacity-70">
-                {l10n($curr_lang, "basic-beta-warning")}
               </p>
             {/if}
             {#if planTab === "unlimited" && remainingBasicDays !== null}
