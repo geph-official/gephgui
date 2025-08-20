@@ -27,35 +27,24 @@
 
   let planTab: "unlimited" | "basic" = "unlimited";
 
-  let cnyFxRate: number | null = null;
-
-  onMount(async () => {
-    const gate = await native_gate();
-    let rate = (await gate.daemon_rpc("call_geph_payments", [
-      "eur_cny_fx_rate",
-      [],
-    ])) as number;
-    cnyFxRate = rate;
-  });
-
-  const autoFlip = () => {
-    if ($app_status?.account.level === "Free") {
-      planTab = "unlimited";
-    }
-  };
+  // const autoFlip = () => {
+  //   if ($app_status?.account.level === "Free") {
+  //     planTab = "unlimited";
+  //   }
+  // };
 
   const loadAllInfo = async () => {
     for (;;) {
       try {
         const gate = await native_gate();
-        const basicInfo = await gate.get_basic_info($curr_valid_secret || "");
-        if (basicInfo) {
-          autoFlip();
-        }
         return {
-          basicInfo,
+          basicInfo: await gate.get_basic_info($curr_valid_secret || ""),
           pricePoints: await gate.price_points(),
           basicPricePoints: await gate.basic_price_points(),
+          cnyFxRate: (await gate.daemon_rpc("call_geph_payments", [
+            "eur_cny_fx_rate",
+            [],
+          ])) as number,
         };
       } catch (e) {
         showErrorToast(toastStore, "" + e);
@@ -272,8 +261,10 @@
               <div>{displayLabel(days)}</div>
               <div class="grow text-right tnum">
                 <span class="font-semibold">
-                  {#if cnyFxRate !== null && $curr_lang == "zh-CN"}
-                    €{price.toFixed(2)} / ¥{Math.ceil(price * cnyFxRate)}
+                  {#if $curr_lang == "zh-CN"}
+                    €{price.toFixed(2)} / ¥{Math.ceil(
+                      price * allInfo.cnyFxRate
+                    )}
                   {:else}
                     €{price.toFixed(2)}
                   {/if}
