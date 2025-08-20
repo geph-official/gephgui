@@ -537,4 +537,10 @@ const MockDaemonRpc = {
       return Math.floor(Math.random() * 90) + 1;
     }
   },
+
+  async call_geph_payments(method: string, params: any[]) {
+    if (method == 'eur_cny_fx_rate') {
+      return 8;
+    } else return 0;
+  }
 };

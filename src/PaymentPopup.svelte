@@ -27,9 +27,20 @@
 
   let planTab: "unlimited" | "basic" = "unlimited";
 
+  let cnyFxRate: number | null = null;
+
+  onMount(async () => {
+    const gate = await native_gate();
+    let rate = (await gate.daemon_rpc("call_geph_payments", [
+      "eur_cny_fx_rate",
+      [],
+    ])) as number;
+    cnyFxRate = rate;
+  });
+
   const autoFlip = () => {
     if ($app_status?.account.level === "Free") {
-      planTab = "basic";
+      planTab = "unlimited";
     }
   };
 
@@ -71,7 +82,7 @@
     $app_status.account.level === "Plus" &&
     $app_status.account.bw_consumption
       ? Math.ceil(
-          ($app_status.account.expiry - Math.floor(Date.now() / 1000)) / 86400,
+          ($app_status.account.expiry - Math.floor(Date.now() / 1000)) / 86400
         )
       : null;
   $: isBasic =
@@ -117,7 +128,7 @@
     } catch (e) {
       showErrorModal(
         modalStore,
-        l10n($curr_lang, "err_create_invoice") + ": " + e,
+        l10n($curr_lang, "err_create_invoice") + ": " + e
       );
     } finally {
       createInvoiceInProgress = false;
@@ -158,7 +169,7 @@
       } else {
         showToast(
           toastStore,
-          `${l10n($curr_lang, "voucher-success")} (+${daysAdded} ${l10n($curr_lang, "days")})`,
+          `${l10n($curr_lang, "voucher-success")} (+${daysAdded} ${l10n($curr_lang, "days")})`
         );
         handleClose();
       }
@@ -226,12 +237,12 @@
                 {#if $app_status?.account.level === "Free"}
                   {l10n($curr_lang, "basic-free-blurb").replace(
                     "GB",
-                    (allInfo.basicInfo.bw_limit / 1000).toString(),
+                    (allInfo.basicInfo.bw_limit / 1000).toString()
                   )}
                 {:else}
                   {l10n($curr_lang, "basic-plus-blurb").replace(
                     "GB",
-                    (allInfo.basicInfo.bw_limit / 1000).toString(),
+                    (allInfo.basicInfo.bw_limit / 1000).toString()
                   )}
                 {/if}
               </p>
@@ -244,8 +255,8 @@
                     remainingBasicDays,
                     (planTab === "unlimited"
                       ? allInfo.pricePoints
-                      : allInfo.basicPricePoints)[selectedIndex][0],
-                  ).toString(),
+                      : allInfo.basicPricePoints)[selectedIndex][0]
+                  ).toString()
                 )}
               </p>
             {/if}
@@ -260,10 +271,13 @@
             >
               <div>{displayLabel(days)}</div>
               <div class="grow text-right tnum">
-                <span class="font-semibold">€{price.toFixed(2)}</span>
-                <span class="font-semibold opacity-[0.6] ml-2"
-                  >€{(price / days).toFixed(2)}/d</span
-                >
+                <span class="font-semibold">
+                  {#if cnyFxRate !== null && $curr_lang == "zh-CN"}
+                    €{price.toFixed(2)} / ¥{Math.ceil(price * cnyFxRate)}
+                  {:else}
+                    €{price.toFixed(2)}
+                  {/if}
+                </span>
               </div>
             </button>
           {/each}
@@ -279,7 +293,7 @@
                   handlePayNow(
                     (planTab === "unlimited"
                       ? allInfo.pricePoints
-                      : allInfo.basicPricePoints)[selectedIndex][0],
+                      : allInfo.basicPricePoints)[selectedIndex][0]
                   )}
                 disabled={createInvoiceInProgress}
               >
@@ -301,7 +315,7 @@
                 class="btn btn-sm variant-ghost"
                 on:click={() => {
                   window.open(
-                    `https://geph.io/billing/login_secret?secret=${$curr_valid_secret}`,
+                    `https://geph.io/billing/login_secret?secret=${$curr_valid_secret}`
                   );
                   currentScreen = "completion";
                 }}
@@ -343,7 +357,7 @@
                         secondPageInvoice.id,
                         promoCode.trim()
                           ? `${method}+++${promoCode.trim()}`
-                          : method,
+                          : method
                       );
                       currentScreen = "completion";
                     } catch (e) {
