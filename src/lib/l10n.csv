@@ -192,7 +192,7 @@ theme,Theme,主题,主題,قالب,Тема,Tema,Тема
 today,Today,今天,今天,امروز,Сегодня,Hoy,Сьогодні
 total-traffic,Current traffic,当前速率,當前速率,کل ترافیک,Общий трафик,Tráfico actual,Поточний трафік
 total-users,Total users,总用户数,總用戶數,کل کاربران,Всего пользователей,Usuarios totales,Всього користувачів
-unlimited-bandwidth,Unlimited usage,无限用量,無限用量,پهنای باند نامحدود,Безлимитная пропускная способность,Uso ilimitado,Необмежене використання
+unlimited-bandwidth,Unmetered usage,无限用量,無限用量,پهنای باند نامحدود,Безлимитная пропускная способность,Uso ilimitado,Необмежене використання
 unlimited-tab,Unlimited,无限,無限,نامحدود,Безлимит,Ilimitado,Необмежений
 unlock-all-locations,"🌎 Unlock all locations","🌎 解锁所有位置","🌎 解鎖所有位置","🌎 همه مکان‌ها را باز کنید","🌎 Разблокировать все локации","🌎 Desbloquear todas las ubicaciones","🌎 Розблокувати всі локації"
 unrestricted-access,"Enjoy unrestricted access to ports other than 80 and 443. Perfect for gaming, P2P, video conferencing, and more.","享受对除 80 和 443 之外端口的 无限制访问。非常适合游戏、P2P、视频会议等。","享受對除 80 和 443 之外端口的 無限制訪問。非常適合遊戲、P2P、視頻會議等。","از دسترسی نامحدود به پورت‌های غیر از 80 و 443 لذت ببرید. مناسب برای بازی، P2P، ویدئو کنفرانس و موارد دیگر","Наслаждайтесь неограниченным доступом к портам, кроме 80 и 443. Идеально для игр, P2P, видеоконференций и многого другого.","Disfruta de acceso ilimitado a puertos distintos de 80 y 443. Perfecto para juegos, P2P, videoconferencias y más.","Насолоджуйтесь необмеженим доступом до портів, окрім 80 та 443. Ідеально для ігор, P2P, відеоконференцій тощо."
@@ -212,3 +212,11 @@ wechat,WeChat,微信,微信,وی‌چت,WeChat,WeChat,WeChat
 yesterday,Yesterday,昨天,昨天,دیروز,Вчера,Ayer,Вчора
 your-email-optional,"Your email (optional)","您的邮箱（可选）","您的郵箱（可選）","ایمیل شما (اختیاری)","Ваш email (необязательно)","Tu correo electrónico (opcional)","Ваш email (необов'язково)"
 your-new-user-secret,"Your new user secret is:","您的新的账户密钥为：","您的新的帳戶密鑰為：","رمز حساب کاربری جدید شما این است:","Ваш новый секретный ключ аккаунта:","Tu nuevo secreto de usuario es:","Ваш новий секретний ключ облікового запису:"
+remove-speed-limit,Unlimited speed,无限速,無限速,حذف محدودیت سرعت,Убрать ограничение скорости,Eliminar límite de velocidad,Прибрати обмеження швидкості
+access-premium-locations,Access premium locations,访问高级位置,訪問高級位置,دسترسی به مکان‌های ممتاز,Доступ к премиум-локациям,Accede a ubicaciones premium,Доступ до преміум-локацій
+more-resilient-connections,More resilient connections,更稳健的连接,更穩健的連線,اتصالات مقاوم‌تر,Более устойчивые соединения,Conexiones más resistentes,Більш надійні з'єднання
+best-for-everyday-usage,Best for everyday usage,最适合日常使用,最適合日常使用,بهترین برای استفاده روزمره,Лучшее для повседневного использования,Mejor para uso diario,Найкраще для щоденного використання
+best-for-occasional-usage,Best for occasional usage,最适合偶尔使用,最適合偶爾使用,بهترین برای استفاده گاه‌به‌گاه,Лучшее для редкого использования,Mejor para uso ocasional,Найкраще для епізодичного використання
+popular,Popular,推荐,推薦,محبوب,Популярно,Popular,Популярно
+per-month,per month,每月,每月,در ماه,в месяц,por mes,на місяць
+show-cny-prices,Show prices in CNY,使用人民币显示价格,使用人民幣顯示價格,نمایش قیمت‌ها به یوان,Показывать цены в юанях,Mostrar precios en CNY,Показувати ціни в юанях
