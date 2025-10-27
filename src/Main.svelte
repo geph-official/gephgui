@@ -7,7 +7,7 @@
   import ServerSelectPopup from "./ServerSelectPopup.svelte";
   import AccountExtender from "./AccountExtender.svelte";
   import NewsFeed from "./NewsFeed.svelte";
-  import Wizard from "./Wizard.svelte";
+  import PlusPitch from "./PlusPitch.svelte";
   import CommunityButtons from "./CommunityButtons.svelte";
   import ConnectionControl from "./ConnectionControl.svelte";
   import Graph from "./Graph.svelte";
@@ -18,7 +18,7 @@
 <div id="main">
   {#if $app_status}
     {#if $app_status.account.level === "Free" && $pref_wizard}
-      <Wizard />
+      <PlusPitch />
     {/if}
     <ServerSelectPopup bind:open={serversOpen} />
     <div class="flex flex-col gap-5">

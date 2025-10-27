@@ -1,7 +1,7 @@
 <script lang="ts">
   import { curr_lang, l10n } from "./lib/l10n";
   import { app_status, conn_status, startDaemonArgs } from "./lib/user";
-  import { pref_exit_constraint_derived, pref_wizard } from "./lib/prefs";
+  import { pref_exit_constraint_derived } from "./lib/prefs";
   import { native_gate } from "./native-gate";
   import { ProgressBar, getModalStore } from "@skeletonlabs/skeleton";
   import ChevronRight from "svelte-material-icons/ChevronRight.svelte";

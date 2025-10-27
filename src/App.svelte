@@ -8,7 +8,6 @@
   import AccountCircleOutline from "svelte-material-icons/AccountCircleOutline.svelte";
   import CogOutline from "svelte-material-icons/CogOutline.svelte";
   import SettingsPopup from "./SettingsPopup.svelte";
-  import { fly } from "svelte/transition";
 
   import { curr_lang, l10n } from "./lib/l10n";
   import Login from "./Login.svelte";
@@ -86,9 +85,5 @@
   }
   #logo {
     height: 1.7rem;
-  }
-
-  #logo-text {
-    font-size: 1.1rem;
   }
 </style>
