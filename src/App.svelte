@@ -50,7 +50,9 @@
       typeof (status.account as any).expiry === "number"
     ) {
       const nowSec = Math.floor(Date.now() / 1000);
-      const diffDays = Math.ceil(((status.account as any).expiry - nowSec) / 86400);
+      const diffDays = Math.ceil(
+        ((status.account as any).expiry - nowSec) / 86400,
+      );
       daysRemaining = diffDays;
       expiryUnix = (status.account as any).expiry;
 
