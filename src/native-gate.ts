@@ -484,20 +484,15 @@ const MockDaemonRpc = {
 
   async user_info(secret: string) {
     await random_sleep();
-    // return {
-    //   level: "Plus",
-    //   expiry: 10000000000,
-    //   recurring: false,
-
-    //   bw_consumption: {
-    //     mb_used: Math.random() * 10000,
-    //     mb_limit: 10000,
-    //     renew_unix: 10000000000
-    //   }
-    // };
+    // Mock a Plus account that expires soon (in 2 days), non-recurring
+    const nowSec = Math.floor(Date.now() / 1000);
     return {
-      level: "Free",
-    };
+      level: "Plus",
+      user_id: 12345,
+      expiry: nowSec + 2 * 86400,
+      recurring: false,
+      bw_consumption: null,
+    } as any;
   },
 
   async latest_news(lang: string) {

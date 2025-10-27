@@ -18,9 +18,18 @@
   import { pref_lightdark, pref_wizard } from "./lib/prefs";
 
   import FreeVoucherButton from "./FreeVoucherButton.svelte";
+  import ExpiryWarningPopup from "./ExpiryWarningPopup.svelte";
 
   let settingsOpen = false;
   let accountOpen = false;
+  let expiryOpen = false;
+
+  // Show-once-per-session flag
+  let warnedThisSession = false;
+
+  // Track days remaining and expiry for popup
+  let daysRemaining: number | null = null;
+  let expiryUnix: number | null = null;
 
   initializeStores();
 
@@ -30,6 +39,30 @@
   );
 
   $: document.body.setAttribute("lang", $curr_lang);
+
+  // Compute when to show expiry warning: last 3 days, Plus, non-recurring
+  $: {
+    const status = $app_status;
+    if (
+      status &&
+      status.account.level === "Plus" &&
+      (status.account as any).recurring === false &&
+      typeof (status.account as any).expiry === "number"
+    ) {
+      const nowSec = Math.floor(Date.now() / 1000);
+      const diffDays = Math.ceil(((status.account as any).expiry - nowSec) / 86400);
+      daysRemaining = diffDays;
+      expiryUnix = (status.account as any).expiry;
+
+      if (!warnedThisSession && diffDays >= 0 && diffDays <= 3) {
+        expiryOpen = true;
+        warnedThisSession = true;
+      }
+    } else {
+      daysRemaining = null;
+      expiryUnix = null;
+    }
+  }
 </script>
 
 <svelte:head>
@@ -74,6 +107,7 @@
   <SettingsPopup bind:open={settingsOpen} />
   <AccountPopup bind:open={accountOpen} />
   <PaymentPopup />
+  <ExpiryWarningPopup bind:open={expiryOpen} {daysRemaining} {expiryUnix} />
 </main>
 
 <style>
