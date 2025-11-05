@@ -49,7 +49,7 @@ connection-status,Connection status,连接状态,連接狀態,وضعیت اتص�
 content-filtering,Content filtering,内容屏蔽,內容屏蔽,فیلتر محتوا,Фильтрация контента,Filtrado de contenido,Фільтрація контенту
 convert-account,Convert account,转换账户,轉換帳戶,تبدیل حساب,Преобразовать аккаунт,Convertir cuenta,Перетворити обліковий запис
 copy,Copy,复制,複製,کپی,Копировать,Copiar,Копіювати
-core-blurb,"Core servers have the best security and speed.","核心服务器具有最高的安全性和速度","核心伺服器具有最高的安全性和速度","سرورهای هسته برای امنیت و عملکرد بهینه شده‌اند.","Основные серверы оптимизированы для безопасности и производительности.","Los servidores principales tienen la mejor seguridad y velocidad.","Основні сервери мають найкращу безпеку та швидкість."
+core-blurb,"Best balance of security and speed for everyday browsing.","提供日常浏览所需的最佳安全与速度。","提供日常瀏覽所需的最佳安全與速度。","بهترین توازن امنیت و سرعت برای استفاده روزمره.","Лучший баланс безопасности и скорости для ежедневного использования.","El mejor equilibrio entre seguridad y velocidad para el uso diario.","Найкращий баланс безпеки й швидкості для щоденного використання."
 core-tab,"Core","核心","核心","هسته","Основной","Núcleo","Ядро"
 country,Country,国家,國家,کشور,Страна,País,Країна
 credit-card,Credit card,信用卡,信用卡,کارت اعتباری,Кредитная карта,Tarjeta de crédito,Кредитна картка
@@ -190,7 +190,7 @@ settings,Settings,设置,設置,تنظیمات,Настройки,Configuracione
 show-all-servers,Show all servers,显示所有服务器,顯示所有服務器,نمایش تمام سرورها,Показать все серверы,Mostrar todos los servidores,Показати всі сервери
 skip-wait-login-secret,"If you already have another device with Geph, you can skip this wait by logging in with your account secret instead:","如果您已经有其他设备使用迷雾通，可以通过使用您的账户密钥登录来跳过等待：","如果您已經有其他設備使用迷雾通，可以通過使用您的帳戶密鑰登錄來跳過等待：","اگر از قبل دستگاه دیگری با Geph دارید، می‌توانید با ورود با رمز حساب کاربری خود این انتظار را رد کنید.","Если у вас уже есть другое устройство с Geph, вы можете пропустить ожидание, войдя с помощью секретного ключа аккаунта.","Si ya tienes otro dispositivo con Geph, puedes saltarte esta espera iniciando sesión con tu secreto de cuenta en su lugar:","Якщо у вас вже є інший пристрій з Geph, ви можете пропустити це очікування, увійшовши за допомогою секретного ключа облікового запису."
 split-tunneling,Split tunneling,分流隧道,分流隧道,تونل بندی جداگانه,Разделённое туннелирование,Túnel dividido,Розділене тунелювання
-streaming-blurb,"Streaming servers are recommended for streaming services.","流媒体服务器推荐用于流媒体服务","流媒體伺服器推薦用於流媒體服務","سرورهای استریمینگ برای خدمات پخش زنده توصیه می‌شوند.","Стриминговые серверы рекомендуются для потоковых сервисов.","Se recomiendan servidores de streaming para servicios de streaming.","Потокові сервери рекомендуються для потокових сервісів."
+streaming-blurb,"Optimized for video services and region-locked media.","为视频服务和区域锁定的媒体进行了优化。","為視訊服務和區域鎖定的媒體進行了最佳化。","برای سرویس‌های ویدیویی و محتوای محدود به منطقه بهینه شده‌اند.","Оптимизированы для видеосервисов и регионально ограниченного контента.","Optimizados para servicios de video y contenido con bloqueo regional.","Оптимізовані для відеосервісів та регіонально обмеженого контенту."
 streaming-tab,"Streaming","流媒体","流媒體","استریمینگ","Стриминг","Transmisión","Потокове передавання"
 successfully-submitted,"Successfully submitted","提交成功","提交成功","با موفقیت ارسال شد","Успешно отправлено","Enviado exitosamente","Успішно надіслано"
 theme,Theme,主题,主題,قالب,Тема,Tema,Тема
