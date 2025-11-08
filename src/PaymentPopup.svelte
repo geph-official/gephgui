@@ -519,6 +519,9 @@
                 id="promo-code"
                 type="text"
                 bind:value={promoCode}
+                on:input={(event) => {
+                  promoCode = event.currentTarget.value.toUpperCase();
+                }}
                 class="input p-2 border border-black w-full"
                 placeholder={l10n($curr_lang, "enter-promo-code")}
               />
