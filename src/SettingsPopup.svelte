@@ -28,7 +28,12 @@
   import SingleSetting from "./settings/SingleSetting.svelte";
   import ShowLogsPopup from "./ShowLogsPopup.svelte";
   import Popup from "./lib/Popup.svelte";
-  import { app_status, paymentsOpen, startDaemonArgs } from "./lib/user";
+  import {
+    app_status,
+    curr_valid_secret,
+    paymentsOpen,
+    startDaemonArgs,
+  } from "./lib/user";
   import { pref_wizard } from "./lib/prefs";
   import AppWhitelistControl from "./settings/AppWhitelistControl.svelte";
   import { writable } from "svelte/store";
@@ -42,6 +47,7 @@
 
   const modalStore = getModalStore();
   const toastStore = getToastStore();
+  const restrictedSettingsSections = new Set(["features", "network"]);
 
   // Function to open the wizard/upgrade popup for Free tier users
   const handleFreeTierFeature = () => {
@@ -188,7 +194,12 @@
       </SingleSetting>
     </section>
 
-    {#each Object.entries(settings) as [section, contents]}
+    {#each Object.entries(settings)
+      .filter(
+        ([section]) =>
+          $curr_valid_secret !== null ||
+          !restrictedSettingsSections.has(section),
+      ) as [section, contents]}
       {#await native_gate() then gate}
         <section>
           <h2 class="text-primary-700 uppercase font-semibold text-sm mb-2">
@@ -227,83 +238,85 @@
       {/await}
     {/each}
 
-    <section>
-      <h2 class="text-primary-700 uppercase font-semibold text-sm mb-2">
-        {l10n($curr_lang, "debug")}
-      </h2>
+    {#if $curr_valid_secret !== null}
+      <section>
+        <h2 class="text-primary-700 uppercase font-semibold text-sm mb-2">
+          {l10n($curr_lang, "debug")}
+        </h2>
 
-      <SingleSetting>
-        <svelte:fragment slot="icon">
-          <NetworkOutline size="1.4rem" />
-        </svelte:fragment>
-        <svelte:fragment slot="description">
-          <div class="flex flex-col text-sm">
-            <div>SOCKS5 proxy</div>
-            <div>HTTP proxy</div>
-          </div>
-        </svelte:fragment>
-        <svelte:fragment slot="switch">
-          <div class="flex flex-col text-sm tnum">
-            <b
-              ><span class="opacity-50"
-                >{#if $pref_listen_all}0.0.0.0{:else}localhost{/if}:</span
-              >9909</b
-            >
-            <b
-              ><span class="opacity-50"
-                >{#if $pref_listen_all}0.0.0.0{:else}localhost{/if}:</span
-              >9910</b
-            >
-          </div>
-        </svelte:fragment>"
-      </SingleSetting>
+        <SingleSetting>
+          <svelte:fragment slot="icon">
+            <NetworkOutline size="1.4rem" />
+          </svelte:fragment>
+          <svelte:fragment slot="description">
+            <div class="flex flex-col text-sm">
+              <div>SOCKS5 proxy</div>
+              <div>HTTP proxy</div>
+            </div>
+          </svelte:fragment>
+          <svelte:fragment slot="switch">
+            <div class="flex flex-col text-sm tnum">
+              <b
+                ><span class="opacity-50"
+                  >{#if $pref_listen_all}0.0.0.0{:else}localhost{/if}:</span
+                >9909</b
+              >
+              <b
+                ><span class="opacity-50"
+                  >{#if $pref_listen_all}0.0.0.0{:else}localhost{/if}:</span
+                >9910</b
+              >
+            </div>
+          </svelte:fragment>"
+        </SingleSetting>
 
-      <div class="flex flex-row gap-2">
-        <button
-          class="btn variant-filled btn-sm"
-          on:click={() => {
-            const modal = {
-              type: "prompt",
-              title: l10n($curr_lang, "report-problem"),
-              body: l10n($curr_lang, "attach-log-blurb"),
-              valueAttr: {
-                type: "text",
-                minlength: 3,
-                maxlength: 200,
-                required: false,
-                placeholder: l10n($curr_lang, "your-email-optional"),
-                rows: 10,
-              },
-              response: async (email) => {
-                const gate = await native_gate();
-                try {
-                  const pack = await gate.get_debug_pack();
-                  await gate.daemon_rpc("export_debug_pack", [
-                    email || "",
-                    pack,
-                  ]);
-                  showToast(
-                    toastStore,
-                    l10n($curr_lang, "successfully-submitted"),
-                  );
-                } catch (e) {
-                  showErrorToast(toastStore, "Error: " + e);
-                }
-              },
-            };
-            modalStore.trigger(modal);
-          }}
-        >
-          {l10n($curr_lang, "report-problem")}
-        </button>
-        <button
-          class="btn variant-ghost btn-sm"
-          on:click={() => {
-            showLogsOpen = true;
-          }}>{l10n($curr_lang, "debug-logs")}</button
-        >
-      </div>
-    </section>
+        <div class="flex flex-row gap-2">
+          <button
+            class="btn variant-filled btn-sm"
+            on:click={() => {
+              const modal = {
+                type: "prompt",
+                title: l10n($curr_lang, "report-problem"),
+                body: l10n($curr_lang, "attach-log-blurb"),
+                valueAttr: {
+                  type: "text",
+                  minlength: 3,
+                  maxlength: 200,
+                  required: false,
+                  placeholder: l10n($curr_lang, "your-email-optional"),
+                  rows: 10,
+                },
+                response: async (email) => {
+                  const gate = await native_gate();
+                  try {
+                    const pack = await gate.get_debug_pack();
+                    await gate.daemon_rpc("export_debug_pack", [
+                      email || "",
+                      pack,
+                    ]);
+                    showToast(
+                      toastStore,
+                      l10n($curr_lang, "successfully-submitted"),
+                    );
+                  } catch (e) {
+                    showErrorToast(toastStore, "Error: " + e);
+                  }
+                },
+              };
+              modalStore.trigger(modal);
+            }}
+          >
+            {l10n($curr_lang, "report-problem")}
+          </button>
+          <button
+            class="btn variant-ghost btn-sm"
+            on:click={() => {
+              showLogsOpen = true;
+            }}>{l10n($curr_lang, "debug-logs")}</button
+          >
+        </div>
+      </section>
+    {/if}
 
     <VersionDisplay />
   {/await}
