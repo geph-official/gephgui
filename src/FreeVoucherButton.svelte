@@ -47,6 +47,9 @@
     );
   };
 
+  const isNotificationVoucher = (voucher: VoucherInfo | null) =>
+    voucher?.code.includes("!") ?? false;
+
   let popupOpen = false;
   let applied = false;
 </script>
@@ -76,18 +79,26 @@
         {#if applyingVoucher}
           <ProgressBar />
         {:else}
-          <button
-            class="btn variant-ghost-primary"
-            on:click={() => applyVoucher(voucher?.code)}
-            >{l10n($curr_lang, "apply-voucher")}</button
-          >
-          <button
-            class="btn variant-ghost"
-            on:click={() => {
-              localStorage.setItem("dismissedFreeVoucher", voucher?.code);
-              popupOpen = false;
-            }}>{l10n($curr_lang, "use-later")}</button
-          >
+          {#if isNotificationVoucher(voucher)}
+            <button
+              class="btn variant-ghost-primary"
+              on:click={() => applyVoucher(voucher?.code)}
+              >{l10n($curr_lang, "voucher-notification-ok")}</button
+            >
+          {:else}
+            <button
+              class="btn variant-ghost-primary"
+              on:click={() => applyVoucher(voucher?.code)}
+              >{l10n($curr_lang, "apply-voucher")}</button
+            >
+            <button
+              class="btn variant-ghost"
+              on:click={() => {
+                localStorage.setItem("dismissedFreeVoucher", voucher?.code);
+                popupOpen = false;
+              }}>{l10n($curr_lang, "use-later")}</button
+            >
+          {/if}
         {/if}
       </div>
     </Popup>
