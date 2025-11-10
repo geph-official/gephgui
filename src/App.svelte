@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { onMount } from "svelte";
   import {
     AppBar,
     Modal,
@@ -15,7 +16,9 @@
   import Main from "./Main.svelte";
   import AccountPopup from "./AccountPopup.svelte";
   import PaymentPopup from "./PaymentPopup.svelte";
-  import { pref_lightdark, pref_wizard } from "./lib/prefs";
+  import DataCollectionPopup from "./DataCollectionPopup.svelte";
+  import { pref_lightdark, pref_wizard, pref_seen_data_collection } from "./lib/prefs";
+  import { native_gate } from "./native-gate";
 
   import FreeVoucherButton from "./FreeVoucherButton.svelte";
   import ExpiryWarningPopup from "./ExpiryWarningPopup.svelte";
@@ -23,6 +26,8 @@
   let settingsOpen = false;
   let accountOpen = false;
   let expiryOpen = false;
+  let dataNoticeOpen = false;
+  let isIOS = false;
 
   // Show-once-per-session flag
   let warnedThisSession = false;
@@ -32,6 +37,16 @@
   let expiryUnix: number | null = null;
 
   initializeStores();
+
+  onMount(async () => {
+    try {
+      const gate = await native_gate();
+      const info = await gate.get_native_info();
+      isIOS = info.platform_type === "ios";
+    } catch (error) {
+      console.warn("Unable to determine platform type", error);
+    }
+  });
 
   $: document.body.setAttribute(
     "data-theme",
@@ -64,6 +79,15 @@
       daysRemaining = null;
       expiryUnix = null;
     }
+  }
+
+  $: if (
+    isIOS &&
+    $curr_valid_secret !== null &&
+    !$pref_seen_data_collection &&
+    !dataNoticeOpen
+  ) {
+    dataNoticeOpen = true;
   }
 </script>
 
@@ -112,6 +136,9 @@
   <AccountPopup bind:open={accountOpen} />
   <PaymentPopup />
   <ExpiryWarningPopup bind:open={expiryOpen} {daysRemaining} {expiryUnix} />
+  {#if isIOS}
+    <DataCollectionPopup bind:open={dataNoticeOpen} />
+  {/if}
 </main>
 
 <style>
