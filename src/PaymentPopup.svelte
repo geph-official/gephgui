@@ -1,8 +1,6 @@
 <script lang="ts">
   import { slide } from "svelte/transition";
   import { curr_lang, l10n } from "./lib/l10n";
-  import { onMount } from "svelte";
-  import { get } from "svelte/store";
   import { native_gate, type InvoiceInfo } from "./native-gate";
   import {
     clearAccountCache,
@@ -32,25 +30,35 @@
   let selectedIndex = 0;
 
   let planTab: "unlimited" | "basic" = "unlimited";
+  let hasBasicPlan = true;
+  let effectivePlanTab: "unlimited" | "basic" = "unlimited";
 
-  // const autoFlip = () => {
-  //   if ($app_status?.account.level === "Free") {
-  //     planTab = "unlimited";
-  //   }
-  // };
+  $: effectivePlanTab = hasBasicPlan ? planTab : "unlimited";
 
   const loadAllInfo = async () => {
     for (;;) {
       try {
         const gate = await native_gate();
+        const basicInfo = await gate.get_basic_info($curr_valid_secret || "");
+        const pricePoints = await gate.price_points();
+        const basicPricePoints = await gate.basic_price_points();
+        hasBasicPlan = basicPricePoints.length > 0;
+        const nativeInfo = await gate.get_native_info();
+        const isIOS = nativeInfo.platform_type === "ios";
+        const cnyFxRate = (await gate.daemon_rpc("call_geph_payments", [
+          "eur_cny_fx_rate",
+          [],
+        ])) as number;
+        if (!hasBasicPlan && planTab === "basic") {
+          planTab = "unlimited";
+          selectedIndex = 0;
+        }
         return {
-          basicInfo: await gate.get_basic_info($curr_valid_secret || ""),
-          pricePoints: await gate.price_points(),
-          basicPricePoints: await gate.basic_price_points(),
-          cnyFxRate: (await gate.daemon_rpc("call_geph_payments", [
-            "eur_cny_fx_rate",
-            [],
-          ])) as number,
+          basicInfo,
+          pricePoints,
+          basicPricePoints,
+          isIOS,
+          cnyFxRate,
         };
       } catch (e) {
         showErrorToast(toastStore, "" + e);
@@ -73,6 +81,7 @@
   let promoCode = "";
   let initialized = false;
   let showCNYPrices = false;
+
   $: remainingBasicDays =
     $app_status &&
     $app_status.account.level === "Plus" &&
@@ -114,8 +123,11 @@
     initialized = true;
   }
 
-  function displayLabel(days: number) {
-    if (planTab === "unlimited" && isBasic) {
+  function displayLabel(
+    days: number,
+    plan: "unlimited" | "basic"
+  ) {
+    if (plan === "unlimited" && isBasic) {
       if (remainingBasicDays !== null && days > remainingBasicDays) {
         return (
           l10n($curr_lang, "upgrade") +
@@ -139,12 +151,15 @@
     return days + " " + l10n($curr_lang, "days");
   }
 
-  async function handlePayNow(days: number) {
+  async function handlePayNow(
+    days: number,
+    plan: "unlimited" | "basic"
+  ) {
     createInvoiceInProgress = true;
     try {
       const gate = await native_gate();
       const invoice =
-        planTab === "unlimited"
+        plan === "unlimited"
           ? await gate.create_invoice($curr_valid_secret || "", days)
           : await gate.create_basic_invoice($curr_valid_secret || "", days);
       secondPageInvoice = invoice;
@@ -217,6 +232,9 @@
     {#await loadAllInfo()}
       <ProgressBar />
     {:then allInfo}
+      {@const planChoices = allInfo.basicPricePoints.length
+        ? ["unlimited", "basic"]
+        : ["unlimited"]}
       {#if $curr_lang === "zh-CN"}
         <div class="flex items-center justify-end gap-3 mb-2">
           <span class="text-sm opacity-80">
@@ -233,7 +251,7 @@
       {#if currentScreen === "planSelect"}
         <div class="flex flex-col gap-3">
           <div class="grid grid-cols-1 gap-3">
-            {#each ["unlimited", "basic"] as plan}
+            {#each planChoices as plan}
               <button
                 class={`${
                   plan === "unlimited"
@@ -399,22 +417,25 @@
           </div>
         </div>
       {:else if currentScreen === "main"}
+        {@const activePricePoints = effectivePlanTab === "unlimited"
+          ? allInfo.pricePoints
+          : allInfo.basicPricePoints}
         <div class="flex flex-col">
           {#if allInfo.basicInfo}
             <p
-              class={planTab === "unlimited" ||
+              class={effectivePlanTab === "unlimited" ||
               $app_status?.account.level === "Free"
                 ? "text-center mb-2 font-bold text-success-600"
                 : "text-center mb-2 font-bold text-red-600"}
             >
-              {planTab === "unlimited"
+              {effectivePlanTab === "unlimited"
                 ? l10n($curr_lang, "unlimited-bandwidth")
                 : l10n($curr_lang, "bandwidth-limit-prefix") +
                   allInfo.basicInfo.bw_limit / 1000 +
                   " " +
                   l10n($curr_lang, "gb-per-month")}
             </p>
-            {#if planTab === "basic"}
+            {#if effectivePlanTab === "basic"}
               <p class="text-center text-sm mb-2">
                 {#if $app_status?.account.level === "Free"}
                   {l10n($curr_lang, "basic-free-blurb").replace(
@@ -429,13 +450,13 @@
                 {/if}
               </p>
             {/if}
-            {#if planTab === "unlimited" && remainingBasicDays !== null}
+            {#if effectivePlanTab === "unlimited" && remainingBasicDays !== null}
               <p class="text-center text-xs mb-2 font-bold">
                 {l10n($curr_lang, "basic-upgrade-blurb").replace(
                   "DAYS",
                   Math.min(
                     remainingBasicDays,
-                    (planTab === "unlimited"
+                    (effectivePlanTab === "unlimited"
                       ? allInfo.pricePoints
                       : allInfo.basicPricePoints)[selectedIndex][0]
                   ).toString()
@@ -444,14 +465,14 @@
             {/if}
           {/if}
 
-          {#each planTab === "unlimited" ? allInfo.pricePoints : allInfo.basicPricePoints as [days, price], i}
+          {#each activePricePoints as [days, price], i}
             <button
               class={`btn variant-outline rounded-lg border p-3 flex-row flex gap-2 items-center mb-2 cursor-pointer ${
                 i === selectedIndex ? "variant-ghost-primary" : ""
               }`}
               on:click={() => handleSelect(i)}
             >
-              <div>{displayLabel(days)}</div>
+              <div>{displayLabel(days, effectivePlanTab)}</div>
               <div class="grow text-right tnum">
                 <span class="font-semibold">
                   {#if showCNYPrices}
@@ -470,12 +491,13 @@
             <div class="flex flex-col gap-2 mt-3">
               <button
                 class="btn variant-filled"
-                on:click={() =>
-                  handlePayNow(
-                    (planTab === "unlimited"
-                      ? allInfo.pricePoints
-                      : allInfo.basicPricePoints)[selectedIndex][0]
-                  )}
+                on:click={() => {
+                  const selected = activePricePoints[selectedIndex] ?? activePricePoints[0];
+                  if (!selected) {
+                    return;
+                  }
+                  handlePayNow(selected[0], effectivePlanTab);
+                }}
                 disabled={createInvoiceInProgress}
               >
                 {l10n($curr_lang, "pay-now")}
@@ -511,21 +533,23 @@
           {#if payInProgress}
             <ProgressBar />
           {:else}
-            <div class="my-2">
-              <label for="promo-code" class="label mb-1">
-                <span>{l10n($curr_lang, "promo-code")}</span>
-              </label>
-              <input
-                id="promo-code"
-                type="text"
-                bind:value={promoCode}
-                class="input p-2 border border-black w-full"
-                placeholder={l10n($curr_lang, "enter-promo-code")}
-              />
-              <p class="text-xs opacity-70 mt-1">
-                {l10n($curr_lang, "promo-code-blurb")}
-              </p>
-            </div>
+            {#if !allInfo.isIOS}
+              <div class="my-2">
+                <label for="promo-code" class="label mb-1">
+                  <span>{l10n($curr_lang, "promo-code")}</span>
+                </label>
+                <input
+                  id="promo-code"
+                  type="text"
+                  bind:value={promoCode}
+                  class="input p-2 border border-black w-full"
+                  placeholder={l10n($curr_lang, "enter-promo-code")}
+                />
+                <p class="text-xs opacity-70 mt-1">
+                  {l10n($curr_lang, "promo-code-blurb")}
+                </p>
+              </div>
+            {/if}
             {#each secondPageInvoice.methods as method}
               <button
                 class="btn variant-filled border p-2 rounded-lg"

@@ -16,7 +16,7 @@
     <p>{@html l10n($curr_lang, "data-collection-blurb")}</p>
     <div class="mt-auto">
       <button class="btn variant-filled-primary w-full" on:click={close}>
-        {l10n($curr_lang, "ok")}
+        {l10n($curr_lang, "data-collection-agree")}
       </button>
     </div>
   </div>
