@@ -11,14 +11,18 @@
   };
 
   const fetchVoucher = async () => {
-    const gate = await native_gate();
-    const info = (await gate.daemon_rpc("get_free_voucher", [
-      $curr_valid_secret,
-    ])) as VoucherInfo | null;
-    if (localStorage.getItem("dismissedFreeVoucher") !== info?.code) {
-      popupOpen = true;
+    try {
+      const gate = await native_gate();
+      const info = (await gate.daemon_rpc("get_free_voucher", [
+        $curr_valid_secret,
+      ])) as VoucherInfo | null;
+      if (localStorage.getItem("dismissedFreeVoucher") !== info?.code) {
+        popupOpen = true;
+      }
+      return info;
+    } catch (e: any) {
+      alert("failed to fetch voucher " + e.to_string());
     }
-    return info;
   };
 
   let applyingVoucher = false;
@@ -46,6 +50,9 @@
       ""
     );
   };
+
+  const isNotificationVoucher = (voucher: VoucherInfo | null) =>
+    voucher?.code.includes("!") ?? false;
 
   let popupOpen = false;
   let applied = false;
@@ -75,6 +82,12 @@
         <div class="mb-5 explanation">{@html getExplanation(voucher)}</div>
         {#if applyingVoucher}
           <ProgressBar />
+        {:else if isNotificationVoucher(voucher)}
+          <button
+            class="btn variant-ghost-primary"
+            on:click={() => applyVoucher(voucher?.code)}
+            >{l10n($curr_lang, "voucher-notification-ok")}</button
+          >
         {:else}
           <button
             class="btn variant-ghost-primary"

@@ -72,8 +72,21 @@
     "flex flex-row variant-ghost p-2 rounded-md cursor-pointer items-center text-left block text-sm";
 
   type ExitInfo = { desc: ExitDescriptor; meta: ExitMetadata };
+  type CategoryKey = "core" | "streaming";
+  type CategoryConfig = {
+    key: CategoryKey;
+    labelKey: string;
+    blurbKey: string;
+  };
 
-  let tab: "core" | "streaming" = "core";
+  const serverCategories: CategoryConfig[] = [
+    { key: "core", labelKey: "core-tab", blurbKey: "core-blurb" },
+    {
+      key: "streaming",
+      labelKey: "streaming-tab",
+      blurbKey: "streaming-blurb",
+    },
+  ];
 
   $: exitInfos =
     $app_status &&
@@ -86,8 +99,15 @@
   $: streamingExitInfos =
     exitInfos?.filter((e) => e.meta.category === "streaming") ?? [];
 
-  $: currentExitInfos = tab === "core" ? coreExitInfos : streamingExitInfos;
-  $: exitList = currentExitInfos.map((e) => e.desc);
+  $: exitInfosByCategory = {
+    core: coreExitInfos,
+    streaming: streamingExitInfos,
+  } satisfies Record<CategoryKey, ExitInfo[]>;
+
+  $: exitListsByCategory = {
+    core: coreExitInfos.map((e) => e.desc),
+    streaming: streamingExitInfos.map((e) => e.desc),
+  } satisfies Record<CategoryKey, ExitDescriptor[]>;
 
   const cityAllowedForFree = (
     infos: ExitInfo[],
@@ -128,86 +148,103 @@
         </div>
       </button>
 
-      <!-- Tab selector -->
-      <div class="flex justify-center gap-2 mt-2">
-        <button
-          class="btn px-2 py-1 text-sm"
-          class:variant-filled-primary={tab === "core"}
-          on:click={() => (tab = "core")}
-        >
-          {l10n($curr_lang, "core-tab")}
-        </button>
-        <button
-          class="btn px-2 py-1 text-sm"
-          class:variant-filled-primary={tab === "streaming"}
-          on:click={() => (tab = "streaming")}
-        >
-          {l10n($curr_lang, "streaming-tab") + " (Beta)"}
-        </button>
-      </div>
-      <p class="text-center text-xs opacity-70">
-        {tab === "core"
-          ? l10n($curr_lang, "core-blurb")
-          : l10n($curr_lang, "streaming-blurb")}
-      </p>
+      <!-- Category sections -->
+      <div class="flex flex-col gap-7 mt-3">
+        {#each serverCategories as category (category.key)}
+          <section
+            class="rounded-lg border border-white/10 bg-white/5 flex flex-col gap-2"
+          >
+            <div class="flex flex-col flex-wrap">
+              <h3 class="font-semibold uppercase tracking-wide">
+                {l10n($curr_lang, category.labelKey)}
+              </h3>
+              <span class="text-xs opacity-70 leading-relaxed">
+                {l10n($curr_lang, category.blurbKey)}
+              </span>
+            </div>
 
-      <!-- Per country and city -->
-      {#each getCountries(exitList) as country}
-        {#each getCitiesByCountry(exitList, country) as city}
-          {#if city}
-            <button
-              class={rowClass}
-              class:opacity-50={$app_status?.account.level === "Free" &&
-                !cityAllowedForFree(currentExitInfos, country, city)}
-              on:click={async () => {
-                if (
-                  $app_status?.account.level === "Free" &&
-                  !cityAllowedForFree(currentExitInfos, country, city)
-                ) {
-                  $paymentsOpen = true;
-                  open = false;
-                  return;
-                }
-                $pref_exit_constraint = {
-                  city,
-                  country,
-                };
-                await reconnectDaemon();
-              }}
-            >
-              <!-- Flag icon -->
-              <div class="w-8">
-                <Flag {country} />
-              </div>
-              <!-- Country / City name -->
-              <div class="grow flex flex-row items-center gap-1">
-                <span><b class="font-bold">{country}</b> / {city}</span>
-                {#if $app_status?.account.level === "Free" && !cityAllowedForFree(currentExitInfos, country, city)}
-                  <span class="badge variant-ghost-warning">PLUS</span>
-                {/if}
-              </div>
-              <!-- Display least loaded server's load as a percentage -->
-              <div
-                class="px-[0.4rem] py-[0.1rem] rounded font-medium tnum text-xs"
-                class:variant-ghost-success={getMinLoad(
-                  exitList,
-                  country,
-                  city,
-                ) <= 0.5}
-                class:variant-ghost-warning={getMinLoad(
-                  exitList,
-                  country,
-                  city,
-                ) > 0.5}
-                class:variant-ghost-error={getMinLoad(exitList, country, city) >
-                  0.8}
-              >
-                {(getMinLoad(exitList, country, city) * 100).toFixed(0)}%
-              </div>
-            </button>
-          {/if}
+            {#if exitListsByCategory[category.key].length === 0}
+              <p class="text-xs italic opacity-60">
+                {l10n($curr_lang, "loading-server-list")}
+              </p>
+            {:else}
+              {#each getCountries(exitListsByCategory[category.key]) as country}
+                {#each getCitiesByCountry(exitListsByCategory[category.key], country) as city}
+                  {#if city}
+                    <button
+                      class={rowClass}
+                      class:opacity-50={$app_status?.account.level === "Free" &&
+                        !cityAllowedForFree(
+                          exitInfosByCategory[category.key],
+                          country,
+                          city,
+                        )}
+                      on:click={async () => {
+                        if (
+                          $app_status?.account.level === "Free" &&
+                          !cityAllowedForFree(
+                            exitInfosByCategory[category.key],
+                            country,
+                            city,
+                          )
+                        ) {
+                          $paymentsOpen = true;
+                          open = false;
+                          return;
+                        }
+                        $pref_exit_constraint = {
+                          city,
+                          country,
+                        };
+                        await reconnectDaemon();
+                      }}
+                    >
+                      <!-- Flag icon -->
+                      <div class="w-8">
+                        <Flag {country} />
+                      </div>
+                      <!-- Country / City name -->
+                      <div class="grow flex flex-row items-center gap-1">
+                        <span><b class="font-bold">{country}</b> / {city}</span>
+                        {#if $app_status?.account.level === "Free" && !cityAllowedForFree(exitInfosByCategory[category.key], country, city)}
+                          <span class="badge variant-ghost-warning">PLUS</span>
+                        {/if}
+                      </div>
+                      <!-- Display least loaded server's load as a percentage -->
+                      <div
+                        class="px-[0.4rem] py-[0.1rem] rounded font-medium tnum text-xs"
+                        class:variant-ghost-success={getMinLoad(
+                          exitListsByCategory[category.key],
+                          country,
+                          city,
+                        ) <= 0.5}
+                        class:variant-ghost-warning={getMinLoad(
+                          exitListsByCategory[category.key],
+                          country,
+                          city,
+                        ) > 0.5}
+                        class:variant-ghost-error={getMinLoad(
+                          exitListsByCategory[category.key],
+                          country,
+                          city,
+                        ) > 0.8}
+                      >
+                        {(
+                          getMinLoad(
+                            exitListsByCategory[category.key],
+                            country,
+                            city,
+                          ) * 100
+                        ).toFixed(0)}%
+                      </div>
+                    </button>
+                  {/if}
+                {/each}
+              {/each}
+            {/if}
+          </section>
         {/each}
-      {/each}
+      </div>
     {/if}
   </div>
 </Popup>

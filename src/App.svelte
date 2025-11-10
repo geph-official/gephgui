@@ -107,13 +107,15 @@
       {#if $curr_valid_secret !== null && (!$pref_wizard || $app_status?.account.level !== "Free")}
         <FreeVoucherButton />
       {/if}
-      <button
-        on:click={() => {
-          accountOpen = true;
-        }}
-      >
-        <AccountCircleOutline size="1.5rem" />
-      </button>
+      {#if $curr_valid_secret !== null}
+        <button
+          on:click={() => {
+            accountOpen = true;
+          }}
+        >
+          <AccountCircleOutline size="1.5rem" />
+        </button>
+      {/if}
       <button
         on:click={() => {
           settingsOpen = true;
