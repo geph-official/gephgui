@@ -1,19 +1,21 @@
-<script>
+<script lang="ts">
   import { l10n, curr_lang } from "./lib/l10n";
 
   import { pref_wizard } from "./lib/prefs";
   import { fade } from "svelte/transition";
   import { paymentsOpen } from "./lib/user";
   import { onMount } from "svelte";
-  import { native_gate } from "./native-gate";
+  import { broker_rpc } from "./native-gate";
 
-  let bestPrice = null;
+  let bestPrice: string | null = null;
   onMount(async () => {
-    const gate = await native_gate();
-    bestPrice = Math.min(
-      Math.min(...(await gate.price_points()).map((x) => x[1])),
-      Math.min(...(await gate.basic_price_points()).map((x) => x[1])),
-    ).toFixed(2);
+    const [rawPlus, rawBasic]: [number, number][][] = await Promise.all([
+      broker_rpc("raw_price_points", []),
+      broker_rpc("basic_price_points", []),
+    ]);
+    const plusPrices = rawPlus.map((x) => x[1] / 100);
+    const basicPrices = rawBasic.map((x) => x[1] / 100);
+    bestPrice = Math.min(Math.min(...plusPrices), Math.min(...basicPrices)).toFixed(2);
   });
 </script>
 
@@ -50,7 +52,6 @@
     <div class="bottom">
       <button
         class="btn mx-4 variant-filled"
-        stretch
         on:click={() => {
           $pref_wizard = false;
           $paymentsOpen = true;

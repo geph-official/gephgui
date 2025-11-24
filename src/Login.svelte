@@ -2,7 +2,7 @@
   import { ProgressBar, getModalStore } from "@skeletonlabs/skeleton";
   import { curr_lang, l10n } from "./lib/l10n";
   import { curr_valid_secret } from "./lib/user";
-  import { native_gate } from "./native-gate";
+  import { native_gate, broker_rpc } from "./native-gate";
   import RegisterPopup from "./RegisterPopup.svelte";
   import MigrationPopup from "./MigrationPopup.svelte";
   import { formatNumberWithSpaces, showErrorModal } from "./lib/utils";
@@ -25,10 +25,11 @@
     loggingIn = true;
     try {
       const secret = inputValue.replaceAll(" ", "");
-      const gate = await native_gate();
-      const isValidSecret = (await gate.daemon_rpc("check_secret", [
-        secret,
-      ])) as boolean;
+      await native_gate();
+      const userInfo = (await broker_rpc("get_user_info_by_cred", [
+        { secret },
+      ])) as any;
+      const isValidSecret = !!userInfo;
       if (isValidSecret) {
         $curr_valid_secret = secret;
       } else {

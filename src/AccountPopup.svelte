@@ -12,7 +12,7 @@
 
   import { curr_lang, l10n } from "./lib/l10n";
   import { app_status, curr_valid_secret, clearAllCaches } from "./lib/user";
-  import { native_gate } from "./native-gate";
+  import { native_gate, broker_rpc } from "./native-gate";
   import CryptoJS from "crypto-js";
   import Popup from "./lib/Popup.svelte";
 
@@ -115,7 +115,7 @@
           await gate.stop_daemon();
         } catch {}
         try {
-          await gate.daemon_rpc("delete_account", [$curr_valid_secret]);
+          await broker_rpc("delete_account", [$curr_valid_secret]);
         } catch {}
         try {
           if ((gate as any).purge_caches) {

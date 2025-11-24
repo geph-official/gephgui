@@ -3,7 +3,7 @@
   import { curr_lang, l10n } from "./lib/l10n";
   import { onMount } from "svelte";
   import { get } from "svelte/store";
-  import { native_gate, type InvoiceInfo } from "./native-gate";
+  import { native_gate, broker_rpc } from "./native-gate";
   import {
     clearAccountCache,
     curr_valid_secret,
@@ -43,17 +43,41 @@
     for (;;) {
       try {
         const gate = await native_gate();
+        const secret = $curr_valid_secret || "";
+        const [
+          rawPricePoints,
+          rawBasicPricePoints,
+          basicLimit,
+          basicAbTest,
+          fxResp,
+        ] = await Promise.all([
+          broker_rpc("raw_price_points", []),
+          broker_rpc("basic_price_points", []),
+          broker_rpc("basic_mb_limit", []),
+          gate.daemon_rpc("ab_test", ["basic", secret]),
+          broker_rpc("call_geph_payments", [
+            {
+              jsonrpc: "2.0",
+              method: "eur_cny_fx_rate",
+              params: [],
+              id: 1,
+            },
+          ]),
+        ]);
+        const pricePoints = (rawPricePoints as [number, number][])
+          .map(([d, c]) => [d, c / 100]) as [number, number][];
+        const basicPricePoints = (rawBasicPricePoints as [number, number][])
+          .map(([d, c]) => [d, c / 100]) as [number, number][];
         return {
-          basicInfo: await gate.get_basic_info($curr_valid_secret || ""),
-          pricePoints: await gate.price_points(),
-          basicPricePoints: await gate.basic_price_points(),
-          cnyFxRate: (await gate.daemon_rpc("call_geph_payments", [
-            "eur_cny_fx_rate",
-            [],
-          ])) as number,
+          basicInfo: basicAbTest ? { bw_limit: basicLimit as number } : null,
+          pricePoints,
+          basicPricePoints,
+          cnyFxRate: (fxResp as any).result as number,
         };
       } catch (e) {
         showErrorToast(toastStore, "" + e);
+        // Prevent tight retry loops that can freeze the UI
+        await new Promise((r) => setTimeout(r, 500));
       }
     }
   };
@@ -65,7 +89,13 @@
     selectedIndex = index;
   }
 
-  let secondPageInvoice: InvoiceInfo | null = null;
+  type PaymentIntent = {
+    level: "unlimited" | "basic";
+    days: number;
+    methods: string[];
+  };
+
+  let secondPagePayment: PaymentIntent | null = null;
   let createInvoiceInProgress = false;
   let payInProgress = false;
   let redeemInProgress = false;
@@ -92,7 +122,7 @@
     $app_status.account.bw_consumption === null;
 
   // Helper to choose a reasonable "monthly" price point
-  function getMonthlyPrice(allInfo: any, plan: "unlimited" | "basic") {
+  function getMonthlyPrice(allInfo: any, plan: string) {
     const points: [number, number][] =
       plan === "unlimited" ? allInfo.pricePoints : allInfo.basicPricePoints;
     const choice =
@@ -143,11 +173,12 @@
     createInvoiceInProgress = true;
     try {
       const gate = await native_gate();
-      const invoice =
-        planTab === "unlimited"
-          ? await gate.create_invoice($curr_valid_secret || "", days)
-          : await gate.create_basic_invoice($curr_valid_secret || "", days);
-      secondPageInvoice = invoice;
+      const methods = (await broker_rpc("payment_methods", [])) as string[];
+      secondPagePayment = {
+        level: planTab,
+        days,
+        methods,
+      };
       currentScreen = "payment";
     } catch (e) {
       showErrorModal(
@@ -162,7 +193,7 @@
   function handleClose() {
     clearAccountCache();
     $paymentsOpen = false;
-    secondPageInvoice = null;
+    secondPagePayment = null;
     currentScreen = "planSelect";
     voucherCode = "";
     initialized = false;
@@ -181,8 +212,7 @@
   async function redeemVoucher() {
     redeemInProgress = true;
     try {
-      const gate = await native_gate();
-      const daysAdded = await gate.daemon_rpc("redeem_voucher", [
+      const daysAdded = await broker_rpc("redeem_voucher", [
         $curr_valid_secret || "",
         voucherCode,
       ]);
@@ -506,7 +536,7 @@
             </div>
           {/if}
         </div>
-      {:else if currentScreen === "payment" && secondPageInvoice}
+      {:else if currentScreen === "payment" && secondPagePayment}
         <div class="flex-col flex gap-2">
           {#if payInProgress}
             <ProgressBar />
@@ -529,20 +559,26 @@
                 {l10n($curr_lang, "promo-code-blurb")}
               </p>
             </div>
-            {#each secondPageInvoice.methods as method}
+            {#each secondPagePayment.methods as method}
               <button
                 class="btn variant-filled border p-2 rounded-lg"
                 on:click={async () => {
-                  if (secondPageInvoice) {
+                  if (secondPagePayment) {
                     payInProgress = true;
                     try {
                       const gate = await native_gate();
-                      await gate.pay_invoice(
-                        secondPageInvoice.id,
+                      const rpcMethod =
+                        secondPagePayment.level === "basic"
+                          ? "create_basic_payment"
+                          : "create_payment";
+                      const url = await broker_rpc(rpcMethod, [
+                        $curr_valid_secret || "",
+                        secondPagePayment.days,
                         promoCode.trim()
                           ? `${method}+++${promoCode.trim()}`
-                          : method
-                      );
+                          : method,
+                      ]);
+                      await gate.daemon_rpc("open_browser", [url]);
                       currentScreen = "completion";
                     } catch (e) {
                       showErrorModal(modalStore, "" + e);

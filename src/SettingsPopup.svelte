@@ -24,7 +24,7 @@
     pref_proxy_autoconf,
     pref_listen_all,
   } from "./lib/prefs";
-  import { native_gate } from "./native-gate";
+  import { native_gate, broker_rpc } from "./native-gate";
   import SingleSetting from "./settings/SingleSetting.svelte";
   import ShowLogsPopup from "./ShowLogsPopup.svelte";
   import Popup from "./lib/Popup.svelte";
@@ -290,10 +290,7 @@
                   const gate = await native_gate();
                   try {
                     const pack = await gate.get_debug_pack();
-                    await gate.daemon_rpc("export_debug_pack", [
-                      email || "",
-                      pack,
-                    ]);
+                    await broker_rpc("upload_debug_pack", [email || "", pack]);
                     showToast(
                       toastStore,
                       l10n($curr_lang, "successfully-submitted"),

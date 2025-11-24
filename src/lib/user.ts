@@ -16,6 +16,7 @@ import {
   type DaemonArgs,
   type ExitDescriptor,
   type NetStatus,
+  broker_rpc,
 } from "../native-gate";
 import { LRUCache } from "lru-cache";
 import { curr_lang } from "./l10n";
@@ -154,8 +155,25 @@ const accountStatusCache = new LRUCache<string, AccountStatus>({
   fetchMethod: async (secret, oldValue, { signal }) => {
     account_refreshing.set(true);
     try {
-      const gate = await native_gate();
-      return (await gate.daemon_rpc("user_info", [secret])) as AccountStatus;
+      await native_gate();
+      const info = (await broker_rpc("get_user_info_by_cred", [
+        { secret },
+      ])) as any;
+      if (!info) {
+        throw new Error("no such user");
+      }
+      const level = info.plus_expires_unix ? "Plus" : "Free";
+      const account: AccountStatus =
+        level === "Plus"
+          ? {
+              level,
+              expiry: info.plus_expires_unix,
+              user_id: info.user_id,
+              recurring: info.recurring,
+              bw_consumption: info.bw_consumption,
+            }
+          : { level, user_id: info.user_id };
+      return account;
     } finally {
       account_refreshing.set(false);
     }

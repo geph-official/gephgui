@@ -6,7 +6,7 @@
   } from "@skeletonlabs/skeleton";
   import { slide } from "svelte/transition";
   import { curr_lang, l10n } from "./lib/l10n";
-  import { native_gate } from "./native-gate";
+  import { native_gate, broker_rpc } from "./native-gate";
   import { curr_valid_secret } from "./lib/user";
   import {
     formatNumberWithSpaces,
@@ -33,9 +33,8 @@
     accountSecret = null;
     try {
       const gate = await native_gate();
-      accountSecret = (await gate.daemon_rpc("convert_legacy_account", [
-        username,
-        password,
+      accountSecret = (await broker_rpc("upgrade_to_secret", [
+        { legacy_username_password: { username, password } },
       ])) as string;
     } catch (e) {
       showErrorToast(toastStore, `${e}`);

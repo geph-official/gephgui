@@ -3,7 +3,7 @@
   import Popup from "./lib/Popup.svelte";
   import { curr_lang, l10n } from "./lib/l10n";
   import { clearAccountCache, curr_valid_secret } from "./lib/user";
-  import { native_gate } from "./native-gate";
+  import { native_gate, broker_rpc } from "./native-gate";
 
   type VoucherInfo = {
     code: string;
@@ -13,7 +13,7 @@
   const fetchVoucher = async () => {
     try {
       const gate = await native_gate();
-      const info = (await gate.daemon_rpc("get_free_voucher", [
+      const info = (await broker_rpc("get_free_voucher", [
         $curr_valid_secret,
       ])) as VoucherInfo | null;
       if (localStorage.getItem("dismissedFreeVoucher") !== info?.code) {
@@ -31,7 +31,7 @@
     applyingVoucher = true;
     try {
       const gate = await native_gate();
-      await gate.daemon_rpc("redeem_voucher", [$curr_valid_secret, voucher]);
+      await broker_rpc("redeem_voucher", [$curr_valid_secret, voucher]);
       popupOpen = false;
       applied = true;
       clearAccountCache();
