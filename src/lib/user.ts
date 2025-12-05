@@ -42,7 +42,7 @@ export type NewsItem = {
 
 const serverListCache = new LRUCache<string, NetStatus>({
   max: 1,
-  ttl: 60 * 1000,
+  ttl: 5 * 60 * 1000,
   fetchMethod: async (dummy, oldValue, { signal }) => {
     const gate = await native_gate();
     const exitList: NetStatus = (await gate.daemon_rpc(
@@ -252,7 +252,6 @@ export const traffic_history: Readable<number[]> = selfRefreshingStore(
  * Single store to track account, stats, and news.
  * Returns null if the secret is missing.
  * Persists to localStorage so that on startup it still has the previous version.
- * Note: connectionStatus has been moved to a separate store
  */
 export const app_status: Writable<AppStatus | null> =
   persistentSelfRefreshingStore<AppStatus | null>(
