@@ -3,7 +3,8 @@ import type {
   SubscriptionInfo,
   SubscriptionInfoSerializable,
 } from "../native-gate";
-import { writable, type Writable } from "svelte/store";
+import { derived, writable, type Readable, type Writable } from "svelte/store";
+import { app_status } from "./user";
 
 export function persistentWritable<T>(
   storage_name: string,
@@ -29,20 +30,52 @@ export function persistentWritable<T>(
 }
 
 /**
+ * The current exit constraint
+ */
+export const pref_exit_constraint: Writable<ExitConstraint> =
+  persistentWritable("exit_constraint", "auto");
+
+/**
+ * The current exit constraint, taking into account available exits
+ */
+export const pref_exit_constraint_derived: Readable<ExitConstraint> = derived(
+  [pref_exit_constraint, app_status],
+  ([$pref_exit_constraint, $app_status]) => {
+    // Return "auto" when the constraint is already "auto"
+    if ($pref_exit_constraint === "auto" || !$app_status) {
+      return "auto";
+    }
+
+    const exitList = Object.values($app_status.net_status.exits).map(v => v[1]);
+    const freeExitList = Object.values($app_status.net_status.exits).filter(v => v[2].allowed_levels.includes("Free")).map(v => v[1]);
+    const exits = ($app_status.account.level === "Free") ? freeExitList : exitList;
+
+    // Check if app_status has exits data
+    if (exits.length === 0) {
+      return "auto";
+    }
+
+    // Check if any exit matches the constraint (country and city)
+    const matchingExit = exits.find(
+      (exit) => 
+        exit.country === $pref_exit_constraint.country && 
+        exit.city === $pref_exit_constraint.city
+    );
+
+    // If no exit matches the constraint, return "auto", otherwise return the constraint
+    return matchingExit ? $pref_exit_constraint : "auto";
+  }
+);
+
+export type ExitConstraint = "auto" | { city: string; country: string };
+
+/**
  * Whether or not the wizard is active
  */
 export const pref_wizard: Writable<boolean> = persistentWritable(
-  "wizardd",
-  false
+  "wizardddd",
+  true
 );
-
-/**
- * The current username and password.
- */
-export const pref_userpwd: Writable<{
-  username: string;
-  password: string;
-} | null> = persistentWritable("userpwd", null);
 
 export const user_info_store: Writable<SubscriptionInfoSerializable | null> =
   persistentWritable("user_info", null);
@@ -56,14 +89,29 @@ export const pref_selected_exit: Writable<ExitDescriptor | null> =
 /**
  * Selected routing mode
  */
-export const pref_routing_mode: Writable<"auto" | "bridges"> =
+export const pref_routing_mode: Writable<"auto" | "bridges" | "direct"> =
   persistentWritable("routing_mode", "auto");
 
 /**
  * Whether to do global vpn stuff
  */
 export const pref_global_vpn: Writable<boolean> = persistentWritable(
-  "global_vpn",
+  "global_vpn_2",
+  false
+);
+
+export const pref_block_ads: Writable<boolean> = persistentWritable(
+  "block_ads",
+  false
+);
+
+export const pref_block_adult: Writable<boolean> = persistentWritable(
+  "block_adult",
+  false
+);
+
+export const pref_block_gambling: Writable<boolean> = persistentWritable(
+  "block_gambling",
   false
 );
 
@@ -71,7 +119,7 @@ export const pref_global_vpn: Writable<boolean> = persistentWritable(
  * Whether or not to autoconf proxies.
  */
 export const pref_proxy_autoconf: Writable<boolean> = persistentWritable(
-  "proxy_autoconf",
+  "proxy_autoconf_1",
   true
 );
 
@@ -113,5 +161,7 @@ export const pref_eastereggs: Writable<boolean> = writable(false);
 /**
  * Dark mode: forced on, forced off, or auto
  */
-export const pref_lightdark: Writable<"light" | "dark" | "auto"> =
-  persistentWritable("lightdark", "auto");
+export const pref_lightdark: Writable<"light" | "dark"> = persistentWritable(
+  "lightdark2",
+  "light"
+);

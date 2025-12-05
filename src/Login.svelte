@@ -1,115 +1,165 @@
 <script lang="ts">
-  import Textfield from "@smui/textfield";
-  import GButton from "./lib/GButton.svelte";
+  import { ProgressBar, getModalStore } from "@skeletonlabs/skeleton";
   import { curr_lang, l10n } from "./lib/l10n";
-  import { pref_userpwd, pref_wizard } from "./lib/prefs";
-  import { native_gate } from "./native-gate";
-  import Register from "./login/Register.svelte";
+  import { curr_valid_secret } from "./lib/user";
+  import { native_gate, broker_rpc } from "./native-gate";
+  import RegisterPopup from "./RegisterPopup.svelte";
+  import MigrationPopup from "./MigrationPopup.svelte";
+  import { formatNumberWithSpaces, showErrorModal } from "./lib/utils";
+  import { onMount } from "svelte";
 
-  import { runWithSpinner, showErrorModal } from "./lib/modals";
+  let inputValue = "";
 
-  let username = "";
-  let password = "";
+  let loggingIn = false;
 
-  let loading = false;
+  const handleInput = (e: Event) => {
+    const target = e.target as HTMLInputElement;
+    let formattedValue = formatNumberWithSpaces(target.value);
+    console.log(target.value, formattedValue);
+    inputValue = formattedValue; // Update the store with the formatted value
+  };
 
-  let register_open = false;
+  const modalStore = getModalStore();
 
-  const translateError = (err: string) => {
-    if (err.includes("invalid")) {
-      return l10n($curr_lang, "invalid-username-or-password");
-    } else if (err.includes("429")) {
-      return l10n($curr_lang, "login-server-overloaded");
-    } else {
-      return err;
+  const onLogin = async () => {
+    loggingIn = true;
+    try {
+      const secret = inputValue.replaceAll(" ", "");
+      await native_gate();
+      const userInfo = (await broker_rpc("get_user_info_by_cred", [
+        { secret },
+      ])) as any;
+      const isValidSecret = !!userInfo;
+      if (isValidSecret) {
+        $curr_valid_secret = secret;
+      } else {
+        await showErrorModal(
+          modalStore,
+          l10n($curr_lang, "incorrect-user-secret")
+        );
+      }
+    } catch (e: any) {
+      await showErrorModal(modalStore, e.toString());
+    } finally {
+      loggingIn = false;
     }
   };
+
+  const onRegister = async () => {
+    registerOpen = true;
+  };
+
+  let registerOpen = false;
+
+  let migrateOpen = false;
+
+  // Legacy user credentials for migration
+  let legacyUsername = "";
+  let legacyPassword = "";
+
+  // Check for legacy credentials on component mount
+  onMount(() => {
+    // Check if the legacy userpwd key exists in localStorage
+    const legacyCredentials = localStorage.getItem("userpwd");
+    if (legacyCredentials) {
+      try {
+        // Parse the JSON object containing username and password
+        const credentials = JSON.parse(legacyCredentials);
+        if (credentials.username && credentials.password) {
+          // Store the legacy credentials to pass to MigrationPopup
+          legacyUsername = credentials.username;
+          legacyPassword = credentials.password;
+          // Open the migration popup automatically
+          migrateOpen = true;
+        }
+      } catch (e) {
+        console.error("Failed to parse legacy credentials:", e);
+      }
+    }
+  });
 </script>
 
-<div class="wrap">
-  {#if register_open}
-    <Register
-      bind:open={register_open}
-      onRegisterSuccess={(u, p) => {
-        console.log(u, p);
-        username = u;
-        password = p;
-      }}
+<div id="login">
+  <RegisterPopup bind:open={registerOpen} />
+  {#if migrateOpen}
+    <MigrationPopup
+      bind:open={migrateOpen}
+      initialUsername={legacyUsername}
+      initialPassword={legacyPassword}
     />
   {/if}
-  <img class="big-logo" src="gephlogo.png" />
-  <div class="form">
-    <Textfield
-      variant="outlined"
-      label={l10n($curr_lang, "username")}
-      bind:value={username}
-      input$autocorrect="off"
-      input$autocapitalize="none"
+  <div class="middle">
+    <h1 class="text-3xl">{l10n($curr_lang, "login")}</h1>
+    <input
+      id="accnumber"
+      class="input my-4 tnum"
+      bind:value={inputValue}
+      type="text"
+      inputmode="numeric"
+      on:input={handleInput}
+      on:keydown={(e) => {
+        if (e.key === "Enter") {
+          onLogin();
+        }
+      }}
+      placeholder={l10n($curr_lang, "enter-account-secret")}
     />
-    <div class="spacer" />
-    <Textfield
-      variant="outlined"
-      type="password"
-      label={l10n($curr_lang, "password")}
-      bind:value={password}
-    />
-    <div class="spacer" />
-    <div class="spacer" />
-
-    <GButton
-      disabled={loading}
-      onClick={async () => {
-        await runWithSpinner(
-          l10n($curr_lang, "logging-in") + "...",
-          0,
-          async () => {
-            loading = true;
-            try {
-              await (await native_gate()).sync_user_info(username, password);
-
-              $pref_userpwd = {
-                username: username,
-                password: password,
-              };
-            } catch (err) {
-              await showErrorModal(translateError(err.toString()));
-            } finally {
-              loading = false;
-            }
-          }
-        );
-      }}>{l10n($curr_lang, "log-in-blurb")}</GButton
+    <button
+      type="button"
+      class="btn variant-ghost-primary mb-1"
+      disabled={loggingIn}
+      on:click={() => onLogin()}
     >
-    <div class="spacer" />
-    <GButton inverted disabled={loading} onClick={() => (register_open = true)}
-      >{l10n($curr_lang, "register-blurb")}</GButton
+      {l10n($curr_lang, "login")}
+    </button>
+    {#if loggingIn}
+      <ProgressBar meter="bg-primary-600" />
+    {/if}
+  </div>
+  <div
+    class="absolute bottom-0 left-0 flex flex-col w-screen bg-surface-100 px-8 pt-3 pb-4"
+  >
+    <small>{l10n($curr_lang, "dont-have-account-secret")}</small>
+    <button
+      type="button"
+      class="btn variant-ghost mt-2 btn-sm"
+      disabled={loggingIn}
+      on:click={() => onRegister()}
     >
+      {l10n($curr_lang, "register")}
+    </button>
+    <button
+      type="button"
+      class="btn variant-ringed mt-2 btn-sm"
+      disabled={loggingIn}
+      on:click={() => (migrateOpen = true)}
+    >
+      {l10n($curr_lang, "migrate-from-older-versions")}
+    </button>
   </div>
 </div>
 
 <style>
-  .wrap {
+  #login {
     display: flex;
     flex-direction: column;
-    width: 100%;
-    height: 100%;
-    align-items: center;
     justify-content: center;
+    align-items: center;
+    padding: 1rem;
   }
 
-  .big-logo {
-    width: 50vmin;
+  #accnumber {
+    height: 2.5rem;
+    padding: 0.3rem;
   }
 
-  .form {
+  .middle {
+    width: 100%;
+    padding: 1rem;
+
+    box-sizing: border-box;
+    margin-top: calc((100vh - 25rem) / 3);
     display: flex;
     flex-direction: column;
-    align-items: center;
-    margin-top: 2rem;
-  }
-
-  .spacer {
-    display: block;
-    height: 0.5rem;
   }
 </style>
