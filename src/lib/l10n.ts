@@ -7,19 +7,20 @@ import detectNearestBrowserLocale from "detect-nearest-browser-locale";
 export type Natlang = "en" | "zh-CN" | "zh-TW" | "fa" | "ru" | "es" | "uk";
 
 // The current language.
-export const curr_lang: Writable<Natlang> = persistentWritable(
+export const curr_lang: Writable<Natlang> = persistentWritable<Natlang>(
   "language-new-6",
-  detectNearestBrowserLocale(["en", "zh-CN", "zh-TW", "fa", "ru", "es", "uk"])
+  detectNearestBrowserLocale(["en", "zh-CN", "zh-TW", "fa", "ru", "es", "uk"]) as Natlang
 );
 
-interface CsvRow {
-  label: string;
-}
+type CsvRow = { label: string } & Partial<Record<Natlang, string>>;
 
-const l10n_map = (l10n_csv as CsvRow[]).reduce((prev, elem) => {
-  prev[elem.label] = elem;
-  return prev;
-}, {});
+const l10n_map: Record<string, CsvRow> = (l10n_csv as CsvRow[]).reduce(
+  (prev, elem) => {
+    prev[elem.label] = elem;
+    return prev;
+  },
+  {} as Record<string, CsvRow>
+);
 
 export const l10n = (lang: Natlang, label: string) => {
   const row = l10n_map[label];

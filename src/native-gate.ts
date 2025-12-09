@@ -8,123 +8,25 @@ import {
 import { curr_valid_secret } from "./lib/user";
 import { get } from "svelte/store";
 
-export interface InvoiceInfo {
-  id: string;
-  methods: [string];
-}
-
-/**
- * An object that represents the communication interface with the native side of a Geph frontend.
- */
 export interface NativeGate {
-  /**
-   * Starts the daemon. Only resolves when the daemon is confirmed to be running.
-   */
   start_daemon(daemon_args: DaemonArgs): Promise<void>;
-
-  /**
-   * Restarts the daemon. May fail if the daemon is not in a state ready to restart.
-   */
   restart_daemon(daemon_args: DaemonArgs): Promise<void>;
-
-  /**
-   * Stops the daemon. Only resolves when the daemon is confirmed to have stopped running.
-   */
   stop_daemon(): Promise<void>;
-
-  /**
-   * Obtains whether the *daemon* is running
-   */
   is_running(): Promise<boolean>;
-
-  /**
-   * Calls the daemon RPC endpoint
-   */
   daemon_rpc(method: string, args: any[]): Promise<unknown>;
 
-  /**
-   * Obtains the list of price points
-   */
-  price_points(): Promise<[number, number][]>;
-
-  /**
-   * Obtains the list of Basic price points
-   */
-  basic_price_points(): Promise<[number, number][]>;
-
-  /**
-   * Create an invoice using a number of days
-   */
-  create_invoice(secret: string, days: number): Promise<InvoiceInfo>;
-
-  /**
-   * Create a Basic invoice using a number of days
-   */
-  create_basic_invoice(secret: string, days: number): Promise<InvoiceInfo>;
-
-  /**
-   * Pay an invoice with a given method
-   */
-  pay_invoice(id: string, method: string): Promise<void>;
-
-  /**
-   * Obtain Basic account rollout info
-   */
-  get_basic_info(secret: string): Promise<{ bw_limit: number } | null>;
-
-  /**
-   * Gets the list of apps
-   */
   sync_app_list(): Promise<AppDescriptor[]>;
-
-  /**
-   * Exports debug pack with a given email
-   */
   export_debug_pack(email: string): Promise<void>;
-
-  /**
-   * Obtains the icon of an app
-   */
   get_app_icon_url(id: string): Promise<string>;
-
-  /**
-   * Gets the complete debug logs as a string
-   */
   get_debug_pack(): Promise<string>;
 
-  /**
-   * Whether this platform supports listening on all interfaces
-   */
   supports_listen_all: boolean;
-
-  /**
-   * Whether this platform supports app whitelists
-   */
   supports_app_whitelist: boolean;
-
-  /**
-   * Whether this platform supports the PRC whitelist
-   */
   supports_prc_whitelist: boolean;
-
-  /**
-   * Whether this platform supports proxy configuration
-   */
   supports_proxy_conf: boolean;
-
-  /**
-   * Whether this platform supports VPN configuration
-   */
   supports_vpn_conf: boolean;
-
-  /**
-   * Whether this platform supports autoupdates
-   */
   supports_autoupdate: boolean;
 
-  /**
-   * Obtains native info, for debugging. The return type may be extended, and should not guide application logic.
-   */
   get_native_info(): Promise<NativeInfo>;
 }
 
@@ -258,51 +160,6 @@ function mock_native_gate(): NativeGate {
       return running;
     },
 
-    price_points: async () => {
-      random_fail();
-      return [
-        [30, 5],
-        [60, 10],
-                [600000, 100000],
-      ];
-    },
-
-    basic_price_points: async () => {
-      random_fail();
-      return [
-        [30, 2],
-        [60, 4],
-      ];
-    },
-
-    async create_invoice(secret: string, days: number) {
-      random_fail();
-      await random_sleep();
-      return {
-        id: "foobar",
-        methods: ["credit-card"],
-      };
-    },
-
-    async create_basic_invoice(secret: string, days: number) {
-      random_fail();
-      await random_sleep();
-      return {
-        id: "foobar-basic",
-        methods: ["credit-card"],
-      };
-    },
-
-    async pay_invoice(id: string, method: string) {
-      random_fail();
-      await random_sleep();
-    },
-
-    async get_basic_info(secret: string) {
-      await random_sleep();
-      return { bw_limit: 5000 };
-    },
-
     async daemon_rpc(method, args) {
       random_fail();
       if ((MockDaemonRpc as any)[method]) {
@@ -370,15 +227,82 @@ export async function native_gate(): Promise<NativeGate> {
   ) {
     (window as any)["NATIVE_GATE"] = mock_native_gate();
   }
-  while (!window.hasOwnProperty("NATIVE_GATE")) {
-    await new Promise((r) => setTimeout(r, 100));
+  if ((window as any)["NATIVE_GATE"]) {
+    return (window as any)["NATIVE_GATE"] as NativeGate;
   }
-  return (window as any)["NATIVE_GATE"] as NativeGate;
+  return new Promise<NativeGate>((resolve) => {
+    const existing = (window as any)["NATIVE_GATE"];
+    if (existing) {
+      resolve(existing as NativeGate);
+      return;
+    }
+    const handler = () => {
+      if ((window as any)["NATIVE_GATE"]) {
+        resolve((window as any)["NATIVE_GATE"] as NativeGate);
+        window.removeEventListener("native_gate_ready", handler as any);
+      }
+    };
+    window.addEventListener("native_gate_ready", handler as any, { once: true });
+  });
+}
+
+export async function broker_rpc(method: string, params: any[]): Promise<any> {
+  const gate = await native_gate();
+  return gate.daemon_rpc("broker_rpc", [method, params]);
 }
 
 let mockRegisterProgress = 0.0;
 
 const MockDaemonRpc = {
+  async ab_test(_key: string, _secret: string) {
+    return true;
+  },
+
+  async broker_rpc(method: string, params: any[]) {
+    switch (method) {
+      case "raw_price_points":
+        return [
+          [30, 500],
+          [60, 1000],
+        ];
+      case "basic_price_points":
+        return [
+          [30, 200],
+          [60, 400],
+        ];
+      case "basic_mb_limit":
+        return 5000;
+      case "payment_methods":
+        return ["credit-card"];
+      case "create_payment":
+      case "create_basic_payment":
+        return "https://payments.example.com";
+      case "get_free_voucher":
+        return {
+          code: "freeplus",
+          explanation: { en: "Enjoy free Plus time" },
+        };
+      case "redeem_voucher":
+        return 30;
+      case "call_geph_payments":
+        return { result: 8 };
+      case "upgrade_to_secret":
+        return "12345678";
+      case "get_user_info_by_cred":
+        return {
+          user_id: 12345,
+          plus_expires_unix: Math.floor(Date.now() / 1000) + 86400 * 30,
+          recurring: false,
+          bw_consumption: null,
+        };
+      case "delete_account":
+      case "upload_debug_pack":
+        return null;
+      default:
+        throw new Error(`Unknown broker RPC: ${method}`);
+    }
+  },
+
   async start_registration() {
     mockRegisterProgress = 0.0;
     (async () => {

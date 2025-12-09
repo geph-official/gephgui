@@ -16,6 +16,7 @@ import {
   type DaemonArgs,
   type ExitDescriptor,
   type NetStatus,
+  broker_rpc,
 } from "../native-gate";
 import { LRUCache } from "lru-cache";
 import { curr_lang } from "./l10n";
@@ -41,7 +42,7 @@ export type NewsItem = {
 
 const serverListCache = new LRUCache<string, NetStatus>({
   max: 1,
-  ttl: 60 * 1000,
+  ttl: 5 * 60 * 1000,
   fetchMethod: async (dummy, oldValue, { signal }) => {
     const gate = await native_gate();
     const exitList: NetStatus = (await gate.daemon_rpc(
@@ -154,8 +155,25 @@ const accountStatusCache = new LRUCache<string, AccountStatus>({
   fetchMethod: async (secret, oldValue, { signal }) => {
     account_refreshing.set(true);
     try {
-      const gate = await native_gate();
-      return (await gate.daemon_rpc("user_info", [secret])) as AccountStatus;
+      await native_gate();
+      const info = (await broker_rpc("get_user_info_by_cred", [
+        { secret },
+      ])) as any;
+      if (!info) {
+        throw new Error("no such user");
+      }
+      const level = info.plus_expires_unix ? "Plus" : "Free";
+      const account: AccountStatus =
+        level === "Plus"
+          ? {
+              level,
+              expiry: info.plus_expires_unix,
+              user_id: info.user_id,
+              recurring: info.recurring,
+              bw_consumption: info.bw_consumption,
+            }
+          : { level, user_id: info.user_id };
+      return account;
     } finally {
       account_refreshing.set(false);
     }
@@ -234,7 +252,6 @@ export const traffic_history: Readable<number[]> = selfRefreshingStore(
  * Single store to track account, stats, and news.
  * Returns null if the secret is missing.
  * Persists to localStorage so that on startup it still has the previous version.
- * Note: connectionStatus has been moved to a separate store
  */
 export const app_status: Writable<AppStatus | null> =
   persistentSelfRefreshingStore<AppStatus | null>(
