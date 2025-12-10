@@ -62,10 +62,12 @@
             },
           ]),
         ]);
-        const pricePoints = (rawPricePoints as [number, number][])
-          .map(([d, c]) => [d, c / 100]) as [number, number][];
-        const basicPricePoints = (rawBasicPricePoints as [number, number][])
-          .map(([d, c]) => [d, c / 100]) as [number, number][];
+        const pricePoints = (rawPricePoints as [number, number][]).map(
+          ([d, c]) => [d, c / 100]
+        ) as [number, number][];
+        const basicPricePoints = (
+          rawBasicPricePoints as [number, number][]
+        ).map(([d, c]) => [d, c / 100]) as [number, number][];
         const nativeInfo = await gate.get_native_info();
 
         return {
@@ -73,7 +75,7 @@
           pricePoints,
           basicPricePoints,
           cnyFxRate: (fxResp as any).result as number,
-          isIOS: nativeInfo.platform_type === "ios"
+          isIOS: nativeInfo.platform_type === "ios",
         };
       } catch (e) {
         showErrorToast(toastStore, "" + e);
@@ -146,10 +148,7 @@
     initialized = true;
   }
 
-  function displayLabel(
-    days: number,
-    plan: "unlimited" | "basic"
-  ) {
+  function displayLabel(days: number, plan: "unlimited" | "basic") {
     if (plan === "unlimited" && isBasic) {
       if (remainingBasicDays !== null && days > remainingBasicDays) {
         return (
@@ -174,10 +173,7 @@
     return days + " " + l10n($curr_lang, "days");
   }
 
-  async function handlePayNow(
-    days: number,
-    plan: "unlimited" | "basic"
-  ) {
+  async function handlePayNow(days: number, plan: "unlimited" | "basic") {
     createInvoiceInProgress = true;
     try {
       const gate = await native_gate();
@@ -440,9 +436,10 @@
           </div>
         </div>
       {:else if currentScreen === "main"}
-        {@const activePricePoints = effectivePlanTab === "unlimited"
-          ? allInfo.pricePoints
-          : allInfo.basicPricePoints}
+        {@const activePricePoints =
+          effectivePlanTab === "unlimited"
+            ? allInfo.pricePoints
+            : allInfo.basicPricePoints}
         <div class="flex flex-col">
           {#if allInfo.basicInfo}
             <p
@@ -515,7 +512,8 @@
               <button
                 class="btn variant-filled"
                 on:click={() => {
-                  const selected = activePricePoints[selectedIndex] ?? activePricePoints[0];
+                  const selected =
+                    activePricePoints[selectedIndex] ?? activePricePoints[0];
                   if (!selected) {
                     return;
                   }
@@ -525,7 +523,7 @@
               >
                 {l10n($curr_lang, "pay-now")}
               </button>
-              {#if allInfo.isIOS}
+              {#if !allInfo.isIOS}
                 <button
                   class="btn variant-ghost-primary"
                   on:click={() => {
@@ -568,15 +566,16 @@
                   type="text"
                   bind:value={promoCode}
                   on:input={(event) => {
-                  promoCode = event.currentTarget.value.toUpperCase();
-                }}
-                class="input p-2 border border-black w-full"
-                placeholder={l10n($curr_lang, "enter-promo-code")}
-              />
-              <p class="text-xs opacity-70 mt-1">
-                {l10n($curr_lang, "promo-code-blurb")}
-              </p>
-            </div>
+                    promoCode = event.currentTarget.value.toUpperCase();
+                  }}
+                  class="input p-2 border border-black w-full"
+                  placeholder={l10n($curr_lang, "enter-promo-code")}
+                />
+                <p class="text-xs opacity-70 mt-1">
+                  {l10n($curr_lang, "promo-code-blurb")}
+                </p>
+              </div>
+            {/if}
             {#each secondPagePayment.methods as method}
               <button
                 class="btn variant-filled border p-2 rounded-lg"
@@ -611,7 +610,7 @@
             {/each}
           {/if}
         </div>
-      {:else if currentScreen === "voucher"}
+      {:else if currentScreen === "voucher" && !allInfo.isIOS}
         <div class="flex-col flex gap-2">
           <div class="my-2">
             <label for="voucher-code" class="label mb-1">
