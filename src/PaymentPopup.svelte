@@ -14,7 +14,6 @@
     ProgressBar,
     getModalStore,
     getToastStore,
-    type ModalSettings,
   } from "@skeletonlabs/skeleton";
   import { showErrorModal, showErrorToast, showToast } from "./lib/utils";
   import Popup from "./lib/Popup.svelte";
@@ -48,6 +47,7 @@
           basicLimit,
           basicAbTest,
           fxResp,
+          isIOS,
         ] = await Promise.all([
           broker_rpc("raw_price_points", []),
           broker_rpc("basic_price_points", []),
@@ -66,11 +66,14 @@
           .map(([d, c]) => [d, c / 100]) as [number, number][];
         const basicPricePoints = (rawBasicPricePoints as [number, number][])
           .map(([d, c]) => [d, c / 100]) as [number, number][];
+        const nativeInfo = await gate.get_native_info();
+
         return {
           basicInfo: basicAbTest ? { bw_limit: basicLimit as number } : null,
           pricePoints,
           basicPricePoints,
           cnyFxRate: (fxResp as any).result as number,
+          isIOS: nativeInfo.platform_type === "ios"
         };
       } catch (e) {
         showErrorToast(toastStore, "" + e);
@@ -522,15 +525,17 @@
               >
                 {l10n($curr_lang, "pay-now")}
               </button>
-              <button
-                class="btn variant-ghost-primary"
-                on:click={() => {
-                  currentScreen = "voucher";
-                  voucherCode = "";
-                }}
-              >
-                {l10n($curr_lang, "redeem-voucher")}
-              </button>
+              {#if allInfo.isIOS}
+                <button
+                  class="btn variant-ghost-primary"
+                  on:click={() => {
+                    currentScreen = "voucher";
+                    voucherCode = "";
+                  }}
+                >
+                  {l10n($curr_lang, "redeem-voucher")}
+                </button>
+              {/if}
 
               <div class="opacity-50 text-center">&mdash;&mdash;&mdash;</div>
 
