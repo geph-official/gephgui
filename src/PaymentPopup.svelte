@@ -175,11 +175,23 @@
 
   async function handlePayNow(days: number, plan: "unlimited" | "basic") {
     createInvoiceInProgress = true;
+    secondPagePayment = null;
     try {
       const gate = await native_gate();
+
+      if (typeof gate.start_native_payment === "function") {
+        try {
+          await gate.start_native_payment($curr_valid_secret || "", plan, days);
+          currentScreen = "completion";
+          return;
+        } catch (nativeErr) {
+          console.warn("Native payment unavailable, falling back", nativeErr);
+        }
+      }
+
       const methods = (await broker_rpc("payment_methods", [])) as string[];
       secondPagePayment = {
-        level: planTab,
+        level: plan,
         days,
         methods,
       };
