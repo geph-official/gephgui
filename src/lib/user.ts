@@ -162,6 +162,7 @@ const accountStatusCache = new LRUCache<string, AccountStatus>({
       if (!info) {
         throw new Error("no such user");
       }
+      console.log("new info", info);
       const level = info.plus_expires_unix ? "Plus" : "Free";
       const account: AccountStatus =
         level === "Plus"
