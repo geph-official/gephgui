@@ -16,9 +16,7 @@ export interface NativeGate {
   daemon_rpc(method: string, args: any[]): Promise<unknown>;
 
   start_native_payment(
-    secret: string,
-    plan: "unlimited" | "basic",
-    days: number
+    secret: string
   ): Promise<void>;
 
   sync_app_list(): Promise<AppDescriptor[]>;

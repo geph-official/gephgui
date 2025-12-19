@@ -33,6 +33,7 @@
   let planTab: "unlimited" | "basic" = "unlimited";
   let hasBasicPlan = true;
   let effectivePlanTab: "unlimited" | "basic" = "unlimited";
+  let nativePaymentAttempted = false;
 
   $: effectivePlanTab = hasBasicPlan ? planTab : "unlimited";
 
@@ -41,13 +42,24 @@
       try {
         const gate = await native_gate();
         const secret = $curr_valid_secret || "";
+        if (!nativePaymentAttempted && typeof gate.start_native_payment === "function") {
+          nativePaymentAttempted = true;
+          console.log("gate.START_NATIVE_PAYMENT()")
+            try {
+              await gate.start_native_payment(
+                $curr_valid_secret || ""
+              );
+              currentScreen = "completion";
+            } catch (nativeErr) {
+              console.warn("Native payment unavailable, falling back", nativeErr);
+            }
+        }
         const [
           rawPricePoints,
           rawBasicPricePoints,
           basicLimit,
           basicAbTest,
           fxResp,
-          isIOS,
         ] = await Promise.all([
           broker_rpc("raw_price_points", []),
           broker_rpc("basic_price_points", []),
@@ -68,15 +80,13 @@
         const basicPricePoints = (
           rawBasicPricePoints as [number, number][]
         ).map(([d, c]) => [d, c / 100]) as [number, number][];
-        const nativeInfo = await gate.get_native_info();
-
-        return {
+        const result = {
           basicInfo: basicAbTest ? { bw_limit: basicLimit as number } : null,
           pricePoints,
           basicPricePoints,
           cnyFxRate: (fxResp as any).result as number,
-          isIOS: nativeInfo.platform_type === "ios",
         };
+        return result;
       } catch (e) {
         showErrorToast(toastStore, "" + e);
         // Prevent tight retry loops that can freeze the UI
@@ -147,6 +157,9 @@
     showCNYPrices = $curr_lang === "zh-CN";
     initialized = true;
   }
+  $: if (!$paymentsOpen) {
+    nativePaymentAttempted = false;
+  }
 
   function displayLabel(days: number, plan: "unlimited" | "basic") {
     if (plan === "unlimited" && isBasic) {
@@ -177,18 +190,6 @@
     createInvoiceInProgress = true;
     secondPagePayment = null;
     try {
-      const gate = await native_gate();
-
-      if (typeof gate.start_native_payment === "function") {
-        try {
-          await gate.start_native_payment($curr_valid_secret || "", plan, days);
-          currentScreen = "completion";
-          return;
-        } catch (nativeErr) {
-          console.warn("Native payment unavailable, falling back", nativeErr);
-        }
-      }
-
       const methods = (await broker_rpc("payment_methods", [])) as string[];
       secondPagePayment = {
         level: plan,
@@ -213,6 +214,7 @@
     currentScreen = "planSelect";
     voucherCode = "";
     initialized = false;
+    nativePaymentAttempted = false;
   }
 
   let refreshInProgress = false;
@@ -445,8 +447,8 @@
                 </div>
               </button>
             {/each}
-          </div>
         </div>
+      </div>
       {:else if currentScreen === "main"}
         {@const activePricePoints =
           effectivePlanTab === "unlimited"
@@ -535,17 +537,15 @@
               >
                 {l10n($curr_lang, "pay-now")}
               </button>
-              {#if !allInfo.isIOS}
-                <button
-                  class="btn variant-ghost-primary"
-                  on:click={() => {
-                    currentScreen = "voucher";
-                    voucherCode = "";
-                  }}
-                >
-                  {l10n($curr_lang, "redeem-voucher")}
-                </button>
-              {/if}
+              <button
+                class="btn variant-ghost-primary"
+                on:click={() => {
+                  currentScreen = "voucher";
+                  voucherCode = "";
+                }}
+              >
+                {l10n($curr_lang, "redeem-voucher")}
+              </button>
 
               <div class="opacity-50 text-center">&mdash;&mdash;&mdash;</div>
 
@@ -568,26 +568,24 @@
           {#if payInProgress}
             <ProgressBar />
           {:else}
-            {#if !allInfo.isIOS}
-              <div class="my-2">
-                <label for="promo-code" class="label mb-1">
-                  <span>{l10n($curr_lang, "promo-code")}</span>
-                </label>
-                <input
-                  id="promo-code"
-                  type="text"
-                  bind:value={promoCode}
-                  on:input={(event) => {
-                    promoCode = event.currentTarget.value.toUpperCase();
-                  }}
-                  class="input p-2 border border-black w-full"
-                  placeholder={l10n($curr_lang, "enter-promo-code")}
-                />
-                <p class="text-xs opacity-70 mt-1">
-                  {l10n($curr_lang, "promo-code-blurb")}
-                </p>
-              </div>
-            {/if}
+            <div class="my-2">
+              <label for="promo-code" class="label mb-1">
+                <span>{l10n($curr_lang, "promo-code")}</span>
+              </label>
+              <input
+                id="promo-code"
+                type="text"
+                bind:value={promoCode}
+                on:input={(event) => {
+                  promoCode = event.currentTarget.value.toUpperCase();
+                }}
+                class="input p-2 border border-black w-full"
+                placeholder={l10n($curr_lang, "enter-promo-code")}
+              />
+              <p class="text-xs opacity-70 mt-1">
+                {l10n($curr_lang, "promo-code-blurb")}
+              </p>
+            </div>
             {#each secondPagePayment.methods as method}
               <button
                 class="btn variant-filled border p-2 rounded-lg"
@@ -622,7 +620,7 @@
             {/each}
           {/if}
         </div>
-      {:else if currentScreen === "voucher" && !allInfo.isIOS}
+      {:else if currentScreen === "voucher"}
         <div class="flex-col flex gap-2">
           <div class="my-2">
             <label for="voucher-code" class="label mb-1">
