@@ -93,6 +93,14 @@ export const pref_routing_mode: Writable<"auto" | "bridges" | "direct"> =
   persistentWritable("routing_mode", "auto");
 
 /**
+ * Whether or not to allow direct connections.
+ */
+export const pref_allow_direct: Writable<boolean> = persistentWritable(
+  "allow_direct",
+  false
+);
+
+/**
  * Whether to do global vpn stuff
  */
 export const pref_global_vpn: Writable<boolean> = persistentWritable(

@@ -16,6 +16,7 @@
     pref_block_ads,
     pref_block_adult,
     pref_block_gambling,
+    pref_allow_direct,
     pref_global_vpn,
     pref_routing_mode,
     pref_lightdark,
@@ -140,6 +141,13 @@
           description: "listen-all",
           type: "checkbox",
           store: pref_listen_all,
+        },
+        {
+          icon: NetworkOutline,
+          description: "allow-direct",
+          type: "checkbox",
+          store: pref_allow_direct,
+          blurb: "allow-direct-blurb",
         },
       ].filter(Boolean),
     };

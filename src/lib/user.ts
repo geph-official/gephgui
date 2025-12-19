@@ -4,6 +4,7 @@ import {
   pref_app_whitelist,
   pref_block_ads,
   pref_block_adult,
+  pref_allow_direct,
   pref_exit_constraint_derived,
   pref_global_vpn,
   pref_listen_all,
@@ -162,6 +163,7 @@ const accountStatusCache = new LRUCache<string, AccountStatus>({
       if (!info) {
         throw new Error("no such user");
       }
+      console.log("new info", info, secret);
       const level = info.plus_expires_unix ? "Plus" : "Free";
       const account: AccountStatus =
         level === "Plus"
@@ -309,6 +311,7 @@ export const startDaemonArgs = async (): Promise<DaemonArgs | null> => {
     exit: get(pref_exit_constraint_derived),
     app_whitelist: whitelistApps,
     prc_whitelist: get(pref_use_prc_whitelist),
+    allow_direct: get(pref_allow_direct),
     listen_all: get(pref_listen_all),
     proxy_autoconf: get(pref_proxy_autoconf),
     global_vpn: get(pref_global_vpn),

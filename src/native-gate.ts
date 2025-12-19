@@ -79,6 +79,7 @@ export interface DaemonArgs {
 
   // connection stuff
   exit: ExitConstraint;
+  allow_direct: boolean;
 
   // platform-specific arguments
   global_vpn: boolean;

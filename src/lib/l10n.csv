@@ -114,6 +114,8 @@ keep-window-open,"Please keep this window open!","请保持此窗口打开！","
 language,Language,语言,語言,زبان,Язык,Idioma,Мова
 latency,Latency,延迟,延遲,تاخیر,Задержка,Latencia,Затримка
 light,Light,亮色,亮色,روشن,Светлая тема,Claro,Світла тема
+allow-direct,Allow direct connections,允许直连,允許直連,اجازهٔ اتصال مستقیم,Разрешить прямые подключения,Permitir conexiones directas,Дозволити прямі підключення
+allow-direct-blurb,"Let Geph connect without bridges when possible. May reduce the effectiveness of censorship circumvention.","允许在可能时不使用桥接直连。可能降低审查规避效果。","允許在可能時不使用橋接直連。可能降低審查規避效果。","در صورت امکان اجازهٔ اتصال مستقیم بدون پل‌ها را می‌دهد. ممکن است اثربخشی دور زدن سانسور را کاهش دهد.","Позволяет подключаться без мостов, когда это возможно. Может снизить эффективность обхода цензуры.","Permite conectarse sin puentes cuando sea posible. Puede reducir la efectividad de la evasión de la censura.","Дозволяє підключатися без мостів, коли це можливо. Може знизити ефективність обходу цензури."
 listen-all,Listen on all interfaces,监听所有地址,監聽所有地址,گوش‌دادن به همه رابط ها,Прослушивать все интерфейсы,Escuchar en todas las interfaces,Прослуховувати всі інтерфейси
 listen-all-blurb,Allows other computers to use Geph,允许其他计算机使用迷雾通,允許其他計算機使用迷霧通,اجازه می‌دهد بقیه کامپیوترها از Geph استفاده کنند,Позволяет другим компьютерам использовать Geph,Permite que otras computadoras usen Geph,"Дозволяє іншим комп'ютерам використовувати Geph"
 listening-ports,Listening ports,监听端口,監聽端口,پورت های فراخوانی شده,Порты прослушивания,Puertos de escucha,Порти прослуховування
