@@ -147,7 +147,6 @@
           description: "allow-direct",
           type: "checkbox",
           store: pref_allow_direct,
-          blurb: "allow-direct-blurb",
         },
       ].filter(Boolean),
     };
@@ -202,12 +201,7 @@
       </SingleSetting>
     </section>
 
-    {#each Object.entries(settings)
-      .filter(
-        ([section]) =>
-          $curr_valid_secret !== null ||
-          !restrictedSettingsSections.has(section),
-      ) as [section, contents]}
+    {#each Object.entries(settings).filter(([section]) => $curr_valid_secret !== null || !restrictedSettingsSections.has(section)) as [section, contents]}
       {#await native_gate() then gate}
         <section>
           <h2 class="text-primary-700 uppercase font-semibold text-sm mb-2">
