@@ -14,7 +14,6 @@
     ProgressBar,
     getModalStore,
     getToastStore,
-    type ModalSettings,
   } from "@skeletonlabs/skeleton";
   import { showErrorModal, showErrorToast, showToast } from "./lib/utils";
   import Popup from "./lib/Popup.svelte";
@@ -32,18 +31,29 @@
   let selectedIndex = 0;
 
   let planTab: "unlimited" | "basic" = "unlimited";
+  let hasBasicPlan = true;
+  let effectivePlanTab: "unlimited" | "basic" = "unlimited";
+  let nativePaymentAttempted = false;
 
-  // const autoFlip = () => {
-  //   if ($app_status?.account.level === "Free") {
-  //     planTab = "unlimited";
-  //   }
-  // };
+  $: effectivePlanTab = hasBasicPlan ? planTab : "unlimited";
 
   const loadAllInfo = async () => {
     for (;;) {
       try {
         const gate = await native_gate();
         const secret = $curr_valid_secret || "";
+        if (!nativePaymentAttempted && typeof gate.start_native_payment === "function") {
+          nativePaymentAttempted = true;
+          console.log("gate.START_NATIVE_PAYMENT()")
+            try {
+              await gate.start_native_payment(
+                $curr_valid_secret || ""
+              );
+              currentScreen = "completion";
+            } catch (nativeErr) {
+              console.warn("Native payment unavailable, falling back", nativeErr);
+            }
+        }
         const [
           rawPricePoints,
           rawBasicPricePoints,
@@ -64,16 +74,19 @@
             },
           ]),
         ]);
-        const pricePoints = (rawPricePoints as [number, number][])
-          .map(([d, c]) => [d, c / 100]) as [number, number][];
-        const basicPricePoints = (rawBasicPricePoints as [number, number][])
-          .map(([d, c]) => [d, c / 100]) as [number, number][];
-        return {
+        const pricePoints = (rawPricePoints as [number, number][]).map(
+          ([d, c]) => [d, c / 100]
+        ) as [number, number][];
+        const basicPricePoints = (
+          rawBasicPricePoints as [number, number][]
+        ).map(([d, c]) => [d, c / 100]) as [number, number][];
+        const result = {
           basicInfo: basicAbTest ? { bw_limit: basicLimit as number } : null,
           pricePoints,
           basicPricePoints,
           cnyFxRate: (fxResp as any).result as number,
         };
+        return result;
       } catch (e) {
         showErrorToast(toastStore, "" + e);
         // Prevent tight retry loops that can freeze the UI
@@ -103,6 +116,7 @@
   let promoCode = "";
   let initialized = false;
   let showCNYPrices = false;
+
   $: remainingBasicDays =
     $app_status &&
     $app_status.account.level === "Plus" &&
@@ -143,9 +157,12 @@
     showCNYPrices = $curr_lang === "zh-CN";
     initialized = true;
   }
+  $: if (!$paymentsOpen) {
+    nativePaymentAttempted = false;
+  }
 
-  function displayLabel(days: number) {
-    if (planTab === "unlimited" && isBasic) {
+  function displayLabel(days: number, plan: "unlimited" | "basic") {
+    if (plan === "unlimited" && isBasic) {
       if (remainingBasicDays !== null && days > remainingBasicDays) {
         return (
           l10n($curr_lang, "upgrade") +
@@ -169,13 +186,13 @@
     return days + " " + l10n($curr_lang, "days");
   }
 
-  async function handlePayNow(days: number) {
+  async function handlePayNow(days: number, plan: "unlimited" | "basic") {
     createInvoiceInProgress = true;
+    secondPagePayment = null;
     try {
-      const gate = await native_gate();
       const methods = (await broker_rpc("payment_methods", [])) as string[];
       secondPagePayment = {
-        level: planTab,
+        level: plan,
         days,
         methods,
       };
@@ -197,6 +214,7 @@
     currentScreen = "planSelect";
     voucherCode = "";
     initialized = false;
+    nativePaymentAttempted = false;
   }
 
   let refreshInProgress = false;
@@ -247,6 +265,9 @@
     {#await loadAllInfo()}
       <ProgressBar />
     {:then allInfo}
+      {@const planChoices = allInfo.basicPricePoints.length
+        ? ["unlimited", "basic"]
+        : ["unlimited"]}
       {#if $curr_lang === "zh-CN"}
         <div class="flex items-center justify-end gap-3 mb-2">
           <span class="text-sm opacity-80">
@@ -263,7 +284,7 @@
       {#if currentScreen === "planSelect"}
         <div class="flex flex-col gap-3">
           <div class="grid grid-cols-1 gap-3">
-            {#each ["unlimited", "basic"] as plan}
+            {#each planChoices as plan}
               <button
                 class={`${
                   plan === "unlimited"
@@ -426,25 +447,29 @@
                 </div>
               </button>
             {/each}
-          </div>
         </div>
+      </div>
       {:else if currentScreen === "main"}
+        {@const activePricePoints =
+          effectivePlanTab === "unlimited"
+            ? allInfo.pricePoints
+            : allInfo.basicPricePoints}
         <div class="flex flex-col">
           {#if allInfo.basicInfo}
             <p
-              class={planTab === "unlimited" ||
+              class={effectivePlanTab === "unlimited" ||
               $app_status?.account.level === "Free"
                 ? "text-center mb-2 font-bold text-success-600"
                 : "text-center mb-2 font-bold text-red-600"}
             >
-              {planTab === "unlimited"
+              {effectivePlanTab === "unlimited"
                 ? l10n($curr_lang, "unlimited-bandwidth")
                 : l10n($curr_lang, "bandwidth-limit-prefix") +
                   allInfo.basicInfo.bw_limit / 1000 +
                   " " +
                   l10n($curr_lang, "gb-per-month")}
             </p>
-            {#if planTab === "basic"}
+            {#if effectivePlanTab === "basic"}
               <p class="text-center text-sm mb-2">
                 {#if $app_status?.account.level === "Free"}
                   {l10n($curr_lang, "basic-free-blurb").replace(
@@ -459,13 +484,13 @@
                 {/if}
               </p>
             {/if}
-            {#if planTab === "unlimited" && remainingBasicDays !== null}
+            {#if effectivePlanTab === "unlimited" && remainingBasicDays !== null}
               <p class="text-center text-xs mb-2 font-bold">
                 {l10n($curr_lang, "basic-upgrade-blurb").replace(
                   "DAYS",
                   Math.min(
                     remainingBasicDays,
-                    (planTab === "unlimited"
+                    (effectivePlanTab === "unlimited"
                       ? allInfo.pricePoints
                       : allInfo.basicPricePoints)[selectedIndex][0]
                   ).toString()
@@ -474,14 +499,14 @@
             {/if}
           {/if}
 
-          {#each planTab === "unlimited" ? allInfo.pricePoints : allInfo.basicPricePoints as [days, price], i}
+          {#each activePricePoints as [days, price], i}
             <button
               class={`btn variant-outline rounded-lg border p-3 flex-row flex gap-2 items-center mb-2 cursor-pointer ${
                 i === selectedIndex ? "variant-ghost-primary" : ""
               }`}
               on:click={() => handleSelect(i)}
             >
-              <div>{displayLabel(days)}</div>
+              <div>{displayLabel(days, effectivePlanTab)}</div>
               <div class="grow text-right tnum">
                 <span class="font-semibold">
                   {#if showCNYPrices}
@@ -500,12 +525,14 @@
             <div class="flex flex-col gap-2 mt-3">
               <button
                 class="btn variant-filled"
-                on:click={() =>
-                  handlePayNow(
-                    (planTab === "unlimited"
-                      ? allInfo.pricePoints
-                      : allInfo.basicPricePoints)[selectedIndex][0]
-                  )}
+                on:click={() => {
+                  const selected =
+                    activePricePoints[selectedIndex] ?? activePricePoints[0];
+                  if (!selected) {
+                    return;
+                  }
+                  handlePayNow(selected[0], effectivePlanTab);
+                }}
                 disabled={createInvoiceInProgress}
               >
                 {l10n($curr_lang, "pay-now")}
