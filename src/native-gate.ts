@@ -16,6 +16,10 @@ export interface NativeGate {
   daemon_rpc(method: string, args: any[]): Promise<unknown>;
   open_browser(args: any[]): Promise<unknown>;
 
+  start_native_payment(
+    secret: string
+  ): Promise<void>;
+
   sync_app_list(): Promise<AppDescriptor[]>;
   export_debug_pack(email: string): Promise<void>;
   get_app_icon_url(id: string): Promise<string>;
@@ -169,6 +173,11 @@ function mock_native_gate(): NativeGate {
       } else {
         throw new Error(`Unknown RPC method: ${method}`);
       }
+    },
+
+    async start_native_payment() {
+      random_fail();
+      throw new Error("native payments unsupported");
     },
 
     sync_app_list: async () => {

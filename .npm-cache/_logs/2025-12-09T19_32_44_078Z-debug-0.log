@@ -1,0 +1,19 @@
+0 verbose cli /opt/homebrew/Cellar/node/24.10.0/bin/node /opt/homebrew/bin/npm
+1 info using npm@11.6.0
+2 info using node@v24.10.0
+3 silly config load:file:/opt/homebrew/lib/node_modules/npm/npmrc
+4 silly config load:file:/Users/nullchinchilla/gephgui/.npmrc
+5 silly config load:file:/Users/nullchinchilla/.npmrc
+6 silly config load:file:/opt/homebrew/etc/npmrc
+7 verbose title npm run check
+8 verbose argv "run" "check"
+9 verbose logfile logs-max:10 dir:/Users/nullchinchilla/gephgui/.npm-cache/_logs/2025-12-09T19_32_44_078Z-
+10 verbose logfile /Users/nullchinchilla/gephgui/.npm-cache/_logs/2025-12-09T19_32_44_078Z-debug-0.log
+11 silly logfile done cleaning log files
+12 http fetch GET https://registry.npmjs.org/npm attempt 1 failed with ENOTFOUND
+13 verbose cwd /Users/nullchinchilla/gephgui
+14 verbose os Darwin 25.1.0
+15 verbose node v24.10.0
+16 verbose npm  v11.6.0
+17 verbose exit 1
+18 verbose code 1

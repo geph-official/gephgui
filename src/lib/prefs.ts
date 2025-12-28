@@ -173,3 +173,11 @@ export const pref_lightdark: Writable<"light" | "dark"> = persistentWritable(
   "lightdark2",
   "light"
 );
+
+/**
+ * Whether the data collection notice has been shown
+ */
+export const pref_seen_data_collection: Writable<boolean> = persistentWritable(
+  "seen_data_collection_1",
+  false
+);
