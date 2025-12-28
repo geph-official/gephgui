@@ -14,6 +14,7 @@ export interface NativeGate {
   stop_daemon(): Promise<void>;
   is_running(): Promise<boolean>;
   daemon_rpc(method: string, args: any[]): Promise<unknown>;
+  open_browser(args: any[]): Promise<unknown>;
 
   sync_app_list(): Promise<AppDescriptor[]>;
   export_debug_pack(email: string): Promise<void>;
@@ -214,6 +215,10 @@ function mock_native_gate(): NativeGate {
         version: "0.0.0-mockk",
       };
     },
+
+    async open_browser() {
+      
+    }
   };
 }
 
