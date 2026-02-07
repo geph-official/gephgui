@@ -5,9 +5,8 @@ import {
   type ToastSettings,
   type ToastStore,
 } from "@skeletonlabs/skeleton";
-import { getContext, onDestroy, setContext } from "svelte";
-import { cubicOut } from "svelte/easing";
-import twemoji from "twemoji";
+import { onDestroy } from "svelte";
+
 
 export function onInterval(callback: () => Promise<any>, milliseconds: number) {
   callback();

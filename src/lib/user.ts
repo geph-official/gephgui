@@ -15,7 +15,6 @@ import {
 import {
   native_gate,
   type DaemonArgs,
-  type ExitDescriptor,
   type NetStatus,
   broker_rpc,
 } from "../native-gate";

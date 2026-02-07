@@ -54,7 +54,7 @@
 </script>
 
 {#if $app_status}
-  <div class="bottom card flex flex-col">
+  <div class="bottom flex flex-col mt-2 p-1">
     <button
       class="flex flex-row mb-4 text-left"
       on:click={() => switchServers()}
@@ -105,7 +105,7 @@
         {l10n($curr_lang, "connect")}
       </button>
       {#if connectButtonDisabled}
-        <ProgressBar />
+        <div class="progress-wrap"><ProgressBar /></div>
       {/if}
     {:else if $conn_status === "connecting"}
       <button
@@ -116,7 +116,7 @@
         {l10n($curr_lang, "cancel")}
       </button>
 
-      <ProgressBar />
+      <div class="progress-wrap"><ProgressBar /></div>
     {:else}
       <button
         class="btn variant-ghost mb-1"
@@ -126,17 +126,13 @@
         {l10n($curr_lang, "disconnect")}
       </button>
       {#if connectButtonDisabled}
-        <ProgressBar />
+        <div class="progress-wrap"><ProgressBar /></div>
       {/if}
     {/if}
   </div>
 {/if}
 
 <style>
-  .bottom {
-    padding: 1rem;
-  }
-
   .server-name {
     font-weight: 600;
     line-height: 1;
@@ -144,5 +140,9 @@
 
   .server-name small {
     font-weight: 500;
+  }
+
+  .progress-wrap {
+    height: 0px;
   }
 </style>
