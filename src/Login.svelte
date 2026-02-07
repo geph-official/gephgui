@@ -143,8 +143,12 @@
   #login {
     display: flex;
     flex-direction: column;
+    flex: 1 1 auto;
+    min-height: 0;
     justify-content: center;
     align-items: center;
+    position: relative;
+    overflow: auto;
     padding: 1rem;
   }
 
@@ -156,9 +160,9 @@
   .middle {
     width: 100%;
     padding: 1rem;
+    padding-bottom: 10rem;
 
     box-sizing: border-box;
-    margin-top: calc((100vh - 25rem) / 3);
     display: flex;
     flex-direction: column;
   }

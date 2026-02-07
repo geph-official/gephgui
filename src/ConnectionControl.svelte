@@ -104,9 +104,6 @@
       >
         {l10n($curr_lang, "connect")}
       </button>
-      {#if connectButtonDisabled}
-        <div class="progress-wrap"><ProgressBar /></div>
-      {/if}
     {:else if $conn_status === "connecting"}
       <button
         class="btn variant-ghost mb-1"
@@ -115,8 +112,6 @@
       >
         {l10n($curr_lang, "cancel")}
       </button>
-
-      <div class="progress-wrap"><ProgressBar /></div>
     {:else}
       <button
         class="btn variant-ghost mb-1"
@@ -125,9 +120,10 @@
       >
         {l10n($curr_lang, "disconnect")}
       </button>
-      {#if connectButtonDisabled}
-        <div class="progress-wrap"><ProgressBar /></div>
-      {/if}
+    {/if}
+
+    {#if $conn_status === "connecting" || connectButtonDisabled}
+      <div class="progress-wrap"><ProgressBar key="pbar" /></div>
     {/if}
   </div>
 {/if}

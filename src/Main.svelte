@@ -48,8 +48,8 @@
   #main {
     display: flex;
     flex-direction: column;
-    flex-grow: 1;
+    flex: 1 1 auto;
+    min-height: 0;
     padding: 1rem;
-    max-height: calc(100vh - 60px);
   }
 </style>
