@@ -19,7 +19,7 @@
     "@tsconfig/svelte": "^5.0.0",
     "@types/node": "^22.9.4",
     "autoprefixer": "^10.4.20",
-    "rollup": "^2.79.1",
+    "rollup": "^2.80.0",
     "svelte": "^4.0.0",
     "svelte-check": "^3.4.3",
     "svelte-flags": "^1.0.3",
