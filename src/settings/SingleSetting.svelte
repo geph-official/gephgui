@@ -1,34 +1,60 @@
 <script lang="ts">
-  export let collapse = false;
-  export let disabled = false;
-  import ChevronDown from "svelte-material-icons/ChevronDown.svelte";
-  import ChevronUp from "svelte-material-icons/ChevronUp.svelte";
+  import type { Snippet } from "svelte";
+  import { CaretDown, CaretUp } from "phosphor-svelte";
 
-  export let open = false;
+  interface Props {
+    collapse?: boolean;
+    disabled?: boolean;
+    open?: boolean;
+    onclick?: (event: MouseEvent | KeyboardEvent) => void;
+    icon?: Snippet;
+    description?: Snippet;
+    control?: Snippet;
+    details?: Snippet;
+  }
+
+  let {
+    collapse = false,
+    disabled = false,
+    open = false,
+    onclick,
+    icon,
+    description,
+    control,
+    details,
+  }: Props = $props();
 </script>
 
-<!-- svelte-ignore a11y-click-events-have-key-events -->
-<div class="setting" class:clicky={collapse} class:disabled on:click>
-  <div class="icon"><slot name="icon" /></div>
-  <div class="desc"><slot name="description" /></div>
-  {#if !collapse}
-    <div class="switch">
-      <slot name="switch" />
-    </div>
-  {:else}
+{#if collapse}
+  <button
+    type="button"
+    class="setting clicky"
+    class:disabled
+    onclick={onclick}
+  >
+    <div class="icon">{@render icon?.()}</div>
+    <div class="desc">{@render description?.()}</div>
     <div class="switch">
       {#if open}
-        <ChevronUp size="1.4rem" />
+        <CaretUp size="1.4rem" />
       {:else}
-        <ChevronDown size="1.4rem" />
+        <CaretDown size="1.4rem" />
       {/if}
     </div>
-  {/if}
-</div>
+  </button>
+{:else}
+  <div class="setting" class:disabled>
+    <div class="icon">{@render icon?.()}</div>
+    <div class="desc">{@render description?.()}</div>
+    <div class="switch">
+      {@render control?.()}
+    </div>
+  </div>
+{/if}
 
 {#if open}
   <div class="inner">
-    <slot name="collapse" />
+    {@render details?.()}
   </div>
 {/if}
 
@@ -39,18 +65,24 @@
 
   .disabled {
     opacity: 0.7;
-    cursor: pointer;
+    cursor: not-allowed;
   }
 
   .setting {
+    background: none;
+    border: 0;
+    color: inherit;
     display: flex;
     align-items: center;
     flex-direction: row;
+    font: inherit;
     justify-content: space-between;
     margin-bottom: 1rem;
-    width: 100%;
     margin-top: 1.5rem;
     margin-bottom: 1.5rem;
+    padding: 0;
+    text-align: left;
+    width: 100%;
   }
 
   .icon {

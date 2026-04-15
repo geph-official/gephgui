@@ -7,7 +7,7 @@
   import { onMount } from "svelte";
   import { broker_rpc } from "./native-gate";
 
-  let bestPrice: string | null = null;
+  let bestPrice: string | null = $state(null);
   onMount(async () => {
     const [rawPlus, rawBasic]: [number, number][][] = await Promise.all([
       broker_rpc("raw_price_points", []),
@@ -52,7 +52,7 @@
     <div class="bottom">
       <button
         class="btn mx-4 variant-filled"
-        on:click={() => {
+        onclick={() => {
           $pref_wizard = false;
           $paymentsOpen = true;
         }}
@@ -62,7 +62,7 @@
 
       <button
         class="btn mx-4 mt-2 mb-8 variant-ghost-error"
-        on:click={() => ($pref_wizard = false)}
+        onclick={() => ($pref_wizard = false)}
       >
         {l10n($curr_lang, "not-now")}
       </button>

@@ -1,12 +1,16 @@
 <script lang="ts">
   import { getToastStore } from "@skeletonlabs/skeleton";
-  import ContentCopy from "svelte-material-icons/ContentCopy.svelte";
+  import { Copy } from "phosphor-svelte";
   import { curr_lang, l10n } from "./lib/l10n";
   import { native_gate } from "./native-gate";
   import { showToast } from "./lib/utils";
   import Popup from "./lib/Popup.svelte";
 
-  export let open = false;
+  interface Props {
+    open?: boolean;
+  }
+
+  let { open = $bindable(false) }: Props = $props();
   export const toastStore = getToastStore();
   
   async function fetchLogs() {
@@ -23,7 +27,7 @@
   <div class="h-full flex flex-col">
     {#await fetchLogs()}
       <div class="flex justify-center items-center h-full">
-        <div class="spinner-border" />
+        <div class="spinner-border"></div>
       </div>
     {:then logs}
       <div class="flex flex-col gap-2 h-full">
@@ -31,12 +35,12 @@
           <span>{logs.split("\n").length} lines</span>
           <button
             class="btn variant-ghost-primary btn-sm flex gap-1"
-            on:click={() => {
+            onclick={() => {
               navigator.clipboard.writeText(logs);
               showToast(toastStore, l10n($curr_lang, "logs-copied"));
             }}
           >
-            <ContentCopy />
+            <Copy />
             {l10n($curr_lang, "copy")}
           </button>
         </div>

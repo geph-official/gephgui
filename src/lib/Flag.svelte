@@ -1,11 +1,19 @@
-<script>
+<script lang="ts">
   import * as Flags from "country-flag-icons/string/3x2";
-  export let country;
-  export let large = false;
+  interface Props {
+    country: string;
+    large?: boolean;
+  }
+
+  let { country, large = false }: Props = $props();
+  let flagMarkup = $derived(
+    Flags[country.toUpperCase() as keyof typeof Flags] ?? "",
+  );
 </script>
 
 <img
-  src={"data:image/svg+xml;base64," + window.btoa(Flags[country.toUpperCase()])}
+  src={"data:image/svg+xml;base64," + window.btoa(flagMarkup)}
+  alt=""
   class="flag"
   class:large
 />

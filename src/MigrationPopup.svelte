@@ -15,17 +15,27 @@
   } from "./lib/utils";
   import Popup from "./lib/Popup.svelte";
 
-  export let open = false;
-  // Accept initial values for username and password
-  export let initialUsername = "";
-  export let initialPassword = "";
+  
+  interface Props {
+    open?: boolean;
+    // Accept initial values for username and password
+    initialUsername?: string;
+    initialPassword?: string;
+  }
 
-  let username = initialUsername;
-  let password = initialPassword;
+  let { open = $bindable(false), initialUsername = "", initialPassword = "" }: Props = $props();
 
-  let accountSecret: string | null = null;
+  let username = $state("");
+  let password = $state("");
 
-  let isConverting = false;
+  $effect(() => {
+    username = initialUsername;
+    password = initialPassword;
+  });
+
+  let accountSecret: string | null = $state(null);
+
+  let isConverting = $state(false);
 
   const toastStore = getToastStore();
   const onConvert = async () => {
@@ -77,7 +87,7 @@
       <div class="text-center mt-2">
         <button
           class="btn variant-ghost-primary w-full"
-          on:click={() => onLogin()}
+          onclick={() => onLogin()}
         >
           {l10n($curr_lang, "login")}
         </button>
@@ -99,13 +109,13 @@
         type="password"
         placeholder={l10n($curr_lang, "password")}
         bind:value={password}
-        on:keydown={(e) => {
+        onkeydown={(e) => {
           if (e.key === "Enter") {
             onConvert();
           }
         }}
       />
-      <button class="btn variant-filled" on:click={onConvert}>
+      <button class="btn variant-filled" onclick={onConvert}>
         {l10n($curr_lang, "convert-account")}
       </button>
     </div>

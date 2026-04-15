@@ -1,13 +1,17 @@
-<script>
+<script lang="ts">
+  import SettingTree from "./SettingTree.svelte";
   import { SlideToggle } from "@skeletonlabs/skeleton";
+  import { writable } from "svelte/store";
+  import type { Writable } from "svelte/store";
   import SingleSetting from "./SingleSetting.svelte";
   import { curr_lang, l10n } from "../lib/l10n";
   import { fade } from "svelte/transition";
-  import { get } from "svelte/store";
-  export let setting;
-  const store = setting.store;
+  import type { Setting } from "./types";
 
-  let open = false;
+  let { setting }: { setting: Setting } = $props();
+  const store: Writable<boolean> =
+    setting.type === "checkbox" ? setting.store : writable(false);
+  let open = $state(false);
 
   function handleClick() {
     if (setting.disabled && setting.onClickDisabled) {
@@ -17,9 +21,13 @@
     }
   }
 
-  function handleToggle(event) {
-    if (setting.onToggle) {
-      setting.onToggle(event.target.checked);
+  function handleToggle(event: Event) {
+    const checked =
+      (event.currentTarget as HTMLInputElement | null)?.checked ??
+      (event.target as HTMLInputElement | null)?.checked;
+
+    if (setting.type === "checkbox" && setting.onToggle) {
+      setting.onToggle(Boolean(checked));
     }
   }
 </script>
@@ -28,32 +36,36 @@
   <SingleSetting
     collapse={setting.type === "collapse"}
     disabled={setting.disabled}
-    on:click={handleClick}
+    onclick={setting.type === "collapse" ? handleClick : undefined}
     {open}
   >
-    <svelte:fragment slot="icon">
-      {#if setting.icon}
-        <svelte:component this={setting.icon} size="1.4rem" />
-      {/if}
-    </svelte:fragment>
+    {#snippet icon()}
+      
+        {#if setting.icon}
+          <setting.icon size="1.4rem" />
+        {/if}
+      
+      {/snippet}
 
-    <svelte:fragment slot="description">
-      <div class="main flex flex-row items-center gap-1">
-        {l10n($curr_lang, setting.description)}
-        {#if setting.disabled}
-          <span class="badge variant-ghost-warning">PLUS</span>
+    {#snippet description()}
+      
+        <div class="main flex flex-row items-center gap-1">
+          {l10n($curr_lang, setting.description)}
+          {#if setting.disabled}
+            <span class="badge variant-ghost-warning">PLUS</span>
+          {/if}
+          {#if setting.tag}
+            <span class="badge variant-ghost-warning">{setting.tag}</span>
+          {/if}
+        </div>
+        {#if setting.blurb}
+          <small>
+            {l10n($curr_lang, setting.blurb)}
+          </small>
         {/if}
-        {#if setting.tag}
-          <span class="badge variant-ghost-warning">{setting.tag}</span>
-        {/if}
-      </div>
-      {#if setting.blurb}
-        <small>
-          {l10n($curr_lang, setting.blurb)}
-        </small>
-      {/if}
-    </svelte:fragment>
-    <svelte:fragment slot="switch">
+      
+      {/snippet}
+    {#snippet control()}
       {#if setting.type === "checkbox"}
         <SlideToggle
           name={setting.description}
@@ -61,15 +73,15 @@
           active="bg-primary-500"
           bind:checked={$store}
           disabled={setting.disabled}
-          on:change={handleToggle}
+          onchange={handleToggle}
         />
       {/if}
-    </svelte:fragment>
-    <svelte:fragment slot="collapse">
+    {/snippet}
+    {#snippet details()}
       <div transition:fade>
         {#if setting.type === "collapse"}
           {#each setting.inner as innerSetting}
-            <svelte:self
+            <SettingTree
               setting={{
                 ...innerSetting,
                 // disabled: setting.disabled || innerSetting.disabled,
@@ -78,7 +90,7 @@
           {/each}
         {/if}
       </div>
-    </svelte:fragment>
+    {/snippet}
   </SingleSetting>
 {/if}
 

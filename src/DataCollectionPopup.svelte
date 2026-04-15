@@ -3,7 +3,11 @@
   import { curr_lang, l10n } from "./lib/l10n";
   import { pref_seen_data_collection } from "./lib/prefs";
 
-  export let open = false;
+  interface Props {
+    open?: boolean;
+  }
+
+  let { open = $bindable(false) }: Props = $props();
 
   const close = () => {
     open = false;
@@ -15,7 +19,7 @@
   <div class="flex flex-col gap-4 h-full">
     <p>{@html l10n($curr_lang, "data-collection-blurb")}</p>
     <div class="mt-auto">
-      <button class="btn variant-filled-primary w-full" on:click={close}>
+      <button class="btn variant-filled-primary w-full" onclick={close}>
         {l10n($curr_lang, "data-collection-agree")}
       </button>
     </div>

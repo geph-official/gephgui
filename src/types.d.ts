@@ -9,3 +9,10 @@ declare module "detect-nearest-browser-locale" {
     defaultLocale?: string
   ): string;
 }
+
+declare module "@fnando/sparkline" {
+  export default function sparkline(
+    element: SVGSVGElement,
+    data: number[]
+  ): void;
+}

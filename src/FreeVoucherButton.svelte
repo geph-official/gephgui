@@ -25,7 +25,7 @@
     }
   };
 
-  let applyingVoucher = false;
+  let applyingVoucher = $state(false);
 
   const applyVoucher = async (voucher: string) => {
     applyingVoucher = true;
@@ -54,8 +54,8 @@
   const isNotificationVoucher = (voucher: VoucherInfo | null) =>
     voucher?.code.includes("!") ?? false;
 
-  let popupOpen = false;
-  let applied = false;
+  let popupOpen = $state(false);
+  let applied = $state(false);
 </script>
 
 {#await fetchVoucher() then voucher}
@@ -63,7 +63,7 @@
     {#if !applied}
       <button
         class="btn btn-sm variant-ghost-warning -my-2 attention-button"
-        on:click={() => (popupOpen = true)}
+        onclick={() => (popupOpen = true)}
       >
         {l10n($curr_lang, "free-plus")}
       </button>
@@ -85,18 +85,18 @@
         {:else if isNotificationVoucher(voucher)}
           <button
             class="btn variant-ghost-primary"
-            on:click={() => applyVoucher(voucher?.code)}
+            onclick={() => applyVoucher(voucher?.code)}
             >{l10n($curr_lang, "voucher-notification-ok")}</button
           >
         {:else}
           <button
             class="btn variant-ghost-primary"
-            on:click={() => applyVoucher(voucher?.code)}
+            onclick={() => applyVoucher(voucher?.code)}
             >{l10n($curr_lang, "apply-voucher")}</button
           >
           <button
             class="btn variant-ghost"
-            on:click={() => {
+            onclick={() => {
               localStorage.setItem("dismissedFreeVoucher", voucher?.code);
               popupOpen = false;
             }}>{l10n($curr_lang, "use-later")}</button

@@ -7,13 +7,17 @@
   import { formatNumberWithSpaces } from "./lib/utils";
   import Popup from "./lib/Popup.svelte";
 
-  export let open = false;
+  interface Props {
+    open?: boolean;
+  }
+
+  let { open = $bindable(false) }: Props = $props();
 
   let registerNum: number | null = null;
-  let registerProgress: number | null = null;
-  let registerSpeed: number | null;
+  let registerProgress: number | null = $state(null);
+  let registerSpeed: number | null = $state(null);
   let startTime = new Date();
-  let accountSecret: string | null = null;
+  let accountSecret: string | null = $state(null);
 
   const handleOpen = async (open: boolean) => {
     if (open) {
@@ -56,7 +60,9 @@
     }
   });
 
-  $: handleOpen(open);
+  $effect(() => {
+    handleOpen(open);
+  });
 
   const onLogin = () => {
     $curr_valid_secret = accountSecret;
@@ -86,7 +92,7 @@
     <div class="text-center mt-2">
       <button
         class="btn variant-ghost-primary w-full"
-        on:click={() => onLogin()}
+        onclick={() => onLogin()}
       >
         {l10n($curr_lang, "login")}
       </button>
@@ -112,7 +118,7 @@
       {l10n($curr_lang, "skip-wait-login-secret")}
     </p>
 
-    <button class="btn w-full variant-ghost" on:click={() => (open = false)}>
+    <button class="btn w-full variant-ghost" onclick={() => (open = false)}>
       {l10n($curr_lang, "back")}
     </button>
   {/if}

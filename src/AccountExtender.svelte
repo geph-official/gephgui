@@ -1,10 +1,12 @@
 <script lang="ts">
   import { fade } from "svelte/transition";
   import { curr_lang, l10n } from "./lib/l10n";
-  import CalendarRangeOutline from "svelte-material-icons/CalendarRangeOutline.svelte";
-  import Heart from "svelte-material-icons/Heart.svelte";
-  import Repeat from "svelte-material-icons/Repeat.svelte";
-  import MeterElectricOutline from "svelte-material-icons/MeterElectricOutline.svelte";
+  import {
+    CalendarDots,
+    Heart,
+    Lightning,
+    Repeat,
+  } from "phosphor-svelte";
   import {
     app_status,
     paymentsOpen,
@@ -42,7 +44,7 @@
             </span>
           {:else}
             <span class="text-primary-700">
-              <CalendarRangeOutline size="1.4rem" />
+              <CalendarDots size="1.4rem" />
             </span>
           {/if}
         {:else}
@@ -85,7 +87,7 @@
           {#if $app_status.account.recurring}
             <button
               class="btn variant-filled-primary"
-              on:click={() =>
+              onclick={() =>
                 window.open(
                   `https://geph.io/billing/login_secret?secret=${$curr_valid_secret}`,
                 )}
@@ -95,7 +97,7 @@
           {:else}
             <button
               class="btn variant-filled-primary"
-              on:click={() => ($paymentsOpen = true)}
+              onclick={() => ($paymentsOpen = true)}
             >
               {l10n($curr_lang, "extend")}
             </button>
@@ -103,7 +105,7 @@
         {:else}
           <button
             class="btn variant-ghost-primary"
-            on:click={() => ($paymentsOpen = true)}
+            onclick={() => ($paymentsOpen = true)}
           >
             {l10n($curr_lang, "buy-plus")}
           </button>
@@ -118,9 +120,9 @@
         <div class="mb-1 tnum">
           <div class="flex flex-row items-center">
             <span class="text-primary-700"
-              ><MeterElectricOutline size="1.4rem" /></span
+              ><Lightning size="1.4rem" /></span
             >
-            <div class="w-3" />
+            <div class="w-3"></div>
 
             <div class="flex flex-col flex-grow">
               {#if $app_status.account.bw_consumption}
@@ -146,13 +148,14 @@
   </div>
 
   {#if $app_status.account.level === "Free"}
-    <div
-      class="card p-3 items-center variant-ghost-error text-sm text-center"
-      on:click={() => ($paymentsOpen = true)}
+    <button
+      type="button"
+      class="card w-full p-3 items-center variant-ghost-error text-sm text-center"
+      onclick={() => ($paymentsOpen = true)}
     >
       {@html l10n($curr_lang, "free-is-bad")} <br />
       <b>{@html l10n($curr_lang, "upgrade-to-plus-speed")}</b>
-    </div>
+    </button>
   {/if}
 {/if}
 

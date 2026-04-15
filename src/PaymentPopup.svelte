@@ -18,24 +18,26 @@
   import { showErrorModal, showErrorToast, showToast } from "./lib/utils";
   import Popup from "./lib/Popup.svelte";
   // Icons
-  import AllInclusive from "svelte-material-icons/AllInclusive.svelte";
-  import Gauge from "svelte-material-icons/Gauge.svelte";
-  import Speedometer from "svelte-material-icons/Speedometer.svelte";
-  import StarCircleOutline from "svelte-material-icons/StarCircleOutline.svelte";
-  import ShieldCheck from "svelte-material-icons/ShieldCheck.svelte";
+  import {
+    Gauge,
+    Infinity,
+    ShieldCheck,
+    StarFour,
+  } from "phosphor-svelte";
   import { SlideToggle } from "@skeletonlabs/skeleton";
 
   const modalStore = getModalStore();
   const toastStore = getToastStore();
 
-  let selectedIndex = 0;
+  let selectedIndex = $state(0);
 
-  let planTab: "unlimited" | "basic" = "unlimited";
-  let hasBasicPlan = true;
-  let effectivePlanTab: "unlimited" | "basic" = "unlimited";
-  let nativePaymentAttempted = false;
+  let planTab: "unlimited" | "basic" = $state("unlimited");
+  let effectivePlanTab: "unlimited" | "basic" = $state("unlimited");
+  let nativePaymentAttempted = $state(false);
 
-  $: effectivePlanTab = hasBasicPlan ? planTab : "unlimited";
+  $effect(() => {
+    effectivePlanTab = planTab;
+  });
 
   const loadAllInfo = async () => {
     for (;;) {
@@ -98,7 +100,7 @@
   };
 
   type Screen = "planSelect" | "main" | "payment" | "voucher" | "completion";
-  let currentScreen: Screen = "planSelect";
+  let currentScreen: Screen = $state("planSelect");
 
   function handleSelect(index: number) {
     selectedIndex = index;
@@ -110,32 +112,32 @@
     methods: string[];
   };
 
-  let secondPagePayment: PaymentIntent | null = null;
-  let createInvoiceInProgress = false;
-  let payInProgress = false;
-  let redeemInProgress = false;
-  let voucherCode = "";
-  let promoCode = "";
-  let initialized = false;
-  let showCNYPrices = false;
+  let secondPagePayment: PaymentIntent | null = $state(null);
+  let createInvoiceInProgress = $state(false);
+  let payInProgress = $state(false);
+  let redeemInProgress = $state(false);
+  let voucherCode = $state("");
+  let promoCode = $state("");
+  let initialized = $state(false);
+  let showCNYPrices = $state(false);
 
-  $: remainingBasicDays =
-    $app_status &&
+  let remainingBasicDays =
+    $derived($app_status &&
     $app_status.account.level === "Plus" &&
     $app_status.account.bw_consumption
       ? Math.ceil(
           ($app_status.account.expiry - Math.floor(Date.now() / 1000)) / 86400,
         )
-      : null;
-  $: isBasic =
-    $app_status &&
+      : null);
+  let isBasic =
+    $derived($app_status &&
     $app_status.account.level === "Plus" &&
-    $app_status.account.bw_consumption;
+    $app_status.account.bw_consumption);
 
-  $: isUnlimited =
-    $app_status &&
+  let isUnlimited =
+    $derived($app_status &&
     $app_status.account.level === "Plus" &&
-    $app_status.account.bw_consumption === null;
+    $app_status.account.bw_consumption === null);
 
   // Helper to choose a reasonable "monthly" price point
   function getMonthlyPrice(allInfo: any, plan: string) {
@@ -148,20 +150,24 @@
     return { days: choice[0], price: choice[1] };
   }
 
-  $: if ($paymentsOpen && !initialized) {
-    if (isUnlimited) {
-      planTab = "unlimited";
-      currentScreen = "main";
-    } else {
-      currentScreen = "planSelect";
+  $effect(() => {
+    if ($paymentsOpen && !initialized) {
+      if (isUnlimited) {
+        planTab = "unlimited";
+        currentScreen = "main";
+      } else {
+        currentScreen = "planSelect";
+      }
+      selectedIndex = 0;
+      showCNYPrices = $curr_lang === "zh-CN";
+      initialized = true;
     }
-    selectedIndex = 0;
-    showCNYPrices = $curr_lang === "zh-CN";
-    initialized = true;
-  }
-  $: if (!$paymentsOpen) {
-    nativePaymentAttempted = false;
-  }
+  });
+  $effect(() => {
+    if (!$paymentsOpen) {
+      nativePaymentAttempted = false;
+    }
+  });
 
   function displayLabel(days: number, plan: "unlimited" | "basic") {
     if (plan === "unlimited" && isBasic) {
@@ -219,7 +225,7 @@
     nativePaymentAttempted = false;
   }
 
-  let refreshInProgress = false;
+  let refreshInProgress = $state(false);
 
   function handleRefreshWithDelay() {
     refreshInProgress = true;
@@ -287,13 +293,14 @@
         <div class="flex flex-col gap-3">
           <div class="grid grid-cols-1 gap-3">
             {#each planChoices as plan}
+              {@const SvelteComponent = plan === "unlimited" ? Infinity : Gauge}
               <button
                 class={`${
                   plan === "unlimited"
                     ? "btn variant-ringed-primary bg-primary-50/40 dark:bg-primary-900/20 hover:bg-primary-100/70 dark:hover:bg-primary-900/30"
                     : "btn variant-ringed bg-surface-50/70 dark:bg-surface-900/10 hover:bg-surface-100/70 dark:hover:bg-surface-900/20"
                 } w-full text-left transition flex flex-col items-start gap-3 relative p-4`}
-                on:click={() => {
+                onclick={() => {
                   planTab = plan === "unlimited" ? "unlimited" : "basic";
                   selectedIndex = 0;
                   currentScreen = "main";
@@ -312,7 +319,7 @@
                     >
                   {/if}
                 {:else}
-                  <span class="absolute top-2 right-2" />
+                  <span class="absolute top-2 right-2"></span>
                 {/if}
                 <div class="flex items-center gap-3">
                   <div
@@ -322,8 +329,7 @@
                         : "bg-surface-500/10 opacity-80"
                     }`}
                   >
-                    <svelte:component
-                      this={plan === "unlimited" ? AllInclusive : Gauge}
+                    <SvelteComponent
                       size="1.25rem"
                     />
                   </div>
@@ -383,7 +389,7 @@
                         <div
                           class="w-6 flex justify-center opacity-80 text-primary-800 dark:text-primary-300"
                         >
-                          <AllInclusive size="1.1rem" />
+                          <Infinity size="1.1rem" />
                         </div>
                         <span
                           class="px-2 py-1 rounded bg-primary-500/10 text-primary-800 dark:text-primary-300 font-medium"
@@ -419,7 +425,7 @@
                       class="grid grid-cols-[1.5rem,1fr] items-center gap-2 opacity-90"
                     >
                       <div class="w-6 flex justify-center opacity-60">
-                        <Speedometer size="1.1rem" />
+                          <Gauge size="1.1rem" />
                       </div>
                       <span class="px-2"
                         >{l10n($curr_lang, "remove-speed-limit")}</span
@@ -429,7 +435,7 @@
                       class="grid grid-cols-[1.5rem,1fr] items-center gap-2 opacity-90"
                     >
                       <div class="w-6 flex justify-center opacity-60">
-                        <StarCircleOutline size="1.1rem" />
+                        <StarFour size="1.1rem" />
                       </div>
                       <span class="px-2"
                         >{l10n($curr_lang, "access-premium-locations")}</span
@@ -506,7 +512,7 @@
               class={`btn variant-outline rounded-lg border p-3 flex-row flex gap-2 items-center mb-2 cursor-pointer ${
                 i === selectedIndex ? "variant-ghost-primary" : ""
               }`}
-              on:click={() => handleSelect(i)}
+              onclick={() => handleSelect(i)}
             >
               <div>{displayLabel(days, effectivePlanTab)}</div>
               <div class="grow text-right tnum">
@@ -527,7 +533,7 @@
             <div class="flex flex-col gap-2 mt-3">
               <button
                 class="btn variant-filled"
-                on:click={() =>
+                onclick={() =>
                   handlePayNow(
                     (planTab === "unlimited"
                       ? allInfo.pricePoints
@@ -540,7 +546,7 @@
               </button>
               <button
                 class="btn variant-ghost-primary"
-                on:click={() => {
+                onclick={() => {
                   currentScreen = "voucher";
                   voucherCode = "";
                 }}
@@ -552,7 +558,7 @@
 
               <button
                 class="btn btn-sm variant-ghost"
-                on:click={() => {
+                onclick={() => {
                   window.open(
                     `https://geph.io/billing/login_secret?secret=${$curr_valid_secret}`,
                   );
@@ -577,7 +583,7 @@
                 id="promo-code"
                 type="text"
                 bind:value={promoCode}
-                on:input={(event) => {
+                oninput={(event) => {
                   promoCode = event.currentTarget.value.toUpperCase();
                 }}
                 class="input p-2 border border-black w-full"
@@ -590,7 +596,7 @@
             {#each secondPagePayment.methods as method}
               <button
                 class="btn variant-filled border p-2 rounded-lg"
-                on:click={async () => {
+                onclick={async () => {
                   if (secondPagePayment) {
                     payInProgress = true;
                     try {
@@ -642,14 +648,14 @@
           {:else}
             <button
               class="btn variant-filled"
-              on:click={redeemVoucher}
+              onclick={redeemVoucher}
               disabled={!voucherCode.trim()}
             >
               {l10n($curr_lang, "redeem")}
             </button>
             <button
               class="btn variant-ghost"
-              on:click={() => {
+              onclick={() => {
                 currentScreen = "main";
                 voucherCode = "";
               }}
@@ -669,7 +675,7 @@
           {:else}
             <button
               class="btn variant-filled w-full"
-              on:click={handleRefreshWithDelay}
+              onclick={handleRefreshWithDelay}
             >
               {l10n($curr_lang, "refresh-account-info")}
             </button>

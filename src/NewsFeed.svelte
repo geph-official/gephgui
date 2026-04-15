@@ -16,9 +16,9 @@
     important: boolean;
   };
 
-  let newsLoadingSlow = false;
+  let newsLoadingSlow = $state(false);
 
-  $: all_news = persistentSelfRefreshingStore(
+  let all_news = $derived(persistentSelfRefreshingStore(
     "news_" + $curr_lang,
     async () => {
       const loadingLol = setTimeout(() => {
@@ -37,11 +37,11 @@
     },
     60 * 60 * 1000,
     null
-  );
+  ));
 
-  let latestReadDate = 0;
-  let popupOpen = false;
-  let currentNewsItem: NewsItem | null = null;
+  let latestReadDate = $state(0);
+  let popupOpen = $state(false);
+  let currentNewsItem: NewsItem | null = $state(null);
 
   onMount(() => {
     if (typeof localStorage !== "undefined") {
@@ -110,7 +110,7 @@
             (item.date_unix > latestReadDate
               ? "unread-news text-primary-800"
               : "read-news")}
-          on:click={() => launchNews(item)}
+          onclick={() => launchNews(item)}
         >
           <div class=" news-left news-content">
             <div class="font-medium">{item.title}</div>

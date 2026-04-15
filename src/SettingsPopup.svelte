@@ -1,15 +1,22 @@
-<script>
-  import { getModalStore, getToastStore } from "@skeletonlabs/skeleton";
+<script lang="ts">
+  import {
+    getModalStore,
+    getToastStore,
+    type ModalSettings,
+  } from "@skeletonlabs/skeleton";
+  import type { Setting } from "./settings/types";
   import { curr_lang, l10n } from "./lib/l10n";
-  import Vpn from "svelte-material-icons/Vpn.svelte";
-  import AirFilter from "svelte-material-icons/AirFilter.svelte";
-  import Translate from "svelte-material-icons/Translate.svelte";
-  import Creation from "svelte-material-icons/Creation.svelte";
-  import CallSplit from "svelte-material-icons/CallSplit.svelte";
-  import NetworkOutline from "svelte-material-icons/NetworkOutline.svelte";
-  import Lan from "svelte-material-icons/Lan.svelte";
-  import ThemeLightDark from "svelte-material-icons/ThemeLightDark.svelte";
-  import Apps from "svelte-material-icons/Apps.svelte";
+  import {
+    CircleHalfTilt,
+    Funnel,
+    GlobeSimple,
+    LockKey,
+    Network,
+    SquaresFour,
+    Sparkle,
+    Translate,
+    TreeStructure,
+  } from "phosphor-svelte";
 
   import SettingTree from "./settings/SettingTree.svelte";
   import {
@@ -33,41 +40,50 @@
     app_status,
     curr_valid_secret,
     paymentsOpen,
-    startDaemonArgs,
   } from "./lib/user";
   import { pref_wizard } from "./lib/prefs";
   import AppWhitelistControl from "./settings/AppWhitelistControl.svelte";
-  import { writable } from "svelte/store";
   import VersionDisplay from "./settings/VersionDisplay.svelte";
 
   import { showToast, showErrorToast } from "./lib/utils";
 
-  export let open = false;
-  let showLogsOpen = false;
-  let showAppWhitelist = false;
+  interface Props {
+    open?: boolean;
+  }
+
+  let { open = $bindable(false) }: Props = $props();
+  let showLogsOpen = $state(false);
+  let showAppWhitelist = $state(false);
 
   const modalStore = getModalStore();
   const toastStore = getToastStore();
   const restrictedSettingsSections = new Set(["features", "network"]);
 
-  // Function to open the wizard/upgrade popup for Free tier users
   const handleFreeTierFeature = () => {
     open = false;
     $pref_wizard = true;
   };
 
-  function handleAppWhitelistToggle(value) {
+  type SettingsSections = Record<string, Setting[]>;
+
+  function filterSettings(
+    settings: Array<Setting | false | null | undefined>,
+  ): Setting[] {
+    return settings.filter((setting): setting is Setting => Boolean(setting));
+  }
+
+  function handleAppWhitelistToggle(value: boolean) {
     pref_use_app_whitelist.set(value);
   }
 
-  const settings = async () => {
+  const settings = async (): Promise<SettingsSections> => {
     const gate = await native_gate();
     const isPlusUser = $app_status?.account.level === "Plus";
 
     return {
-      features: [
+      features: filterSettings([
         {
-          icon: AirFilter,
+          icon: Funnel,
           description: "content-filtering",
           type: "collapse",
 
@@ -90,11 +106,11 @@
           ],
         },
         {
-          icon: CallSplit,
+          icon: TreeStructure,
           type: "collapse",
           description: "split-tunneling",
 
-          inner: [
+          inner: filterSettings([
             {
               description: "exclude-prc",
               type: "checkbox",
@@ -109,17 +125,17 @@
 
               onToggle: handleAppWhitelistToggle,
             },
-          ].filter(Boolean),
+          ]),
         },
-      ],
-      network: [
+      ]),
+      network: filterSettings([
         gate.supports_vpn_conf && {
-          icon: Vpn,
+          icon: LockKey,
           description: "global-vpn",
           type: "checkbox",
           store: pref_global_vpn,
           tag: l10n($curr_lang, "beta"),
-          onToggle: (value) => {
+          onToggle: (value: boolean) => {
             if (value) {
               showToast(
                 toastStore,
@@ -131,24 +147,24 @@
           },
         },
         gate.supports_proxy_conf && {
-          icon: Creation,
+          icon: Sparkle,
           description: "auto-proxy",
           type: "checkbox",
           store: pref_proxy_autoconf,
         },
         {
-          icon: Lan,
+          icon: GlobeSimple,
           description: "listen-all",
           type: "checkbox",
           store: pref_listen_all,
         },
         {
-          icon: NetworkOutline,
+          icon: Network,
           description: "allow-direct",
           type: "checkbox",
           store: pref_allow_direct,
         },
-      ].filter(Boolean),
+      ]),
     };
   };
 </script>
@@ -165,13 +181,17 @@
       </h2>
 
       <SingleSetting>
-        <svelte:fragment slot="icon">
-          <Translate size="1.4rem" />
-        </svelte:fragment>
-        <svelte:fragment slot="description">
-          {l10n($curr_lang, "language")}
-        </svelte:fragment>
-        <svelte:fragment slot="switch">
+        {#snippet icon()}
+              
+            <Translate size="1.4rem" />
+          
+              {/snippet}
+        {#snippet description()}
+              
+            {l10n($curr_lang, "language")}
+          
+              {/snippet}
+        {#snippet control()}
           <select class="select" bind:value={$curr_lang}>
             <option value="en">English</option>
             <option value="zh-CN">简体中文</option>
@@ -181,23 +201,27 @@
             <option value="es">Español</option>
             <option value="uk">Українська</option>
           </select>
-        </svelte:fragment>"
+        {/snippet}
       </SingleSetting>
 
       <SingleSetting>
-        <svelte:fragment slot="icon">
-          <ThemeLightDark size="1.4rem" />
-        </svelte:fragment>
-        <svelte:fragment slot="description">
-          {l10n($curr_lang, "theme")}
-        </svelte:fragment>
-        <svelte:fragment slot="switch">
+        {#snippet icon()}
+              
+            <CircleHalfTilt size="1.4rem" />
+          
+              {/snippet}
+        {#snippet description()}
+              
+            {l10n($curr_lang, "theme")}
+          
+              {/snippet}
+        {#snippet control()}
           <select class="select" bind:value={$pref_lightdark}>
             <!-- <option value="auto">{l10n($curr_lang, "automatic")}</option> -->
             <option value="light">{l10n($curr_lang, "light")}</option>
             <option value="dark">{l10n($curr_lang, "dark")}</option>
           </select>
-        </svelte:fragment>"
+        {/snippet}
       </SingleSetting>
     </section>
 
@@ -214,25 +238,29 @@
           {#if section === "features" && $pref_use_app_whitelist}
             <div class="app-whitelist-section">
               <SingleSetting>
-                <svelte:fragment slot="icon">
-                  <Apps size="1.4rem" />
-                </svelte:fragment>
-                <svelte:fragment slot="description">
-                  <div class="main flex flex-row items-center gap-1">
-                    {l10n($curr_lang, "select-excluded-apps")}
-                  </div>
-                  <small>
-                    {l10n($curr_lang, "select-excluded-apps-blurb")}
-                  </small>
-                </svelte:fragment>
-                <svelte:fragment slot="switch">
+                {#snippet icon()}
+                              
+                    <SquaresFour size="1.4rem" />
+                  
+                              {/snippet}
+                {#snippet description()}
+                              
+                    <div class="main flex flex-row items-center gap-1">
+                      {l10n($curr_lang, "select-excluded-apps")}
+                    </div>
+                    <small>
+                      {l10n($curr_lang, "select-excluded-apps-blurb")}
+                    </small>
+                  
+                              {/snippet}
+                {#snippet control()}
                   <button
                     class="btn btn-sm variant-filled-primary"
-                    on:click={() => (showAppWhitelist = true)}
+                    onclick={() => (showAppWhitelist = true)}
                   >
                     {l10n($curr_lang, "select")}
                   </button>
-                </svelte:fragment>
+                {/snippet}
               </SingleSetting>
             </div>
           {/if}
@@ -247,16 +275,20 @@
         </h2>
 
         <SingleSetting>
-          <svelte:fragment slot="icon">
-            <NetworkOutline size="1.4rem" />
-          </svelte:fragment>
-          <svelte:fragment slot="description">
-            <div class="flex flex-col text-sm">
-              <div>SOCKS5 proxy</div>
-              <div>HTTP proxy</div>
-            </div>
-          </svelte:fragment>
-          <svelte:fragment slot="switch">
+          {#snippet icon()}
+                  
+              <Network size="1.4rem" />
+            
+                  {/snippet}
+          {#snippet description()}
+                  
+              <div class="flex flex-col text-sm">
+                <div>SOCKS5 proxy</div>
+                <div>HTTP proxy</div>
+              </div>
+            
+                  {/snippet}
+          {#snippet control()}
             <div class="flex flex-col text-sm tnum">
               <b
                 ><span class="opacity-50"
@@ -269,14 +301,14 @@
                 >9910</b
               >
             </div>
-          </svelte:fragment>"
+          {/snippet}
         </SingleSetting>
 
         <div class="flex flex-row gap-2">
           <button
             class="btn variant-filled btn-sm"
-            on:click={() => {
-              const modal = {
+            onclick={() => {
+              const modal: ModalSettings = {
                 type: "prompt",
                 title: l10n($curr_lang, "report-problem"),
                 body: l10n($curr_lang, "attach-log-blurb"),
@@ -288,18 +320,20 @@
                   placeholder: l10n($curr_lang, "your-email-optional"),
                   rows: 10,
                 },
-                response: async (email) => {
-                  const gate = await native_gate();
-                  try {
-                    const pack = await gate.get_debug_pack();
-                    await broker_rpc("upload_debug_pack", [email || "", pack]);
-                    showToast(
-                      toastStore,
-                      l10n($curr_lang, "successfully-submitted"),
-                    );
-                  } catch (e) {
-                    showErrorToast(toastStore, "Error: " + e);
-                  }
+                response: (email: string) => {
+                  void (async () => {
+                    const gate = await native_gate();
+                    try {
+                      const pack = await gate.get_debug_pack();
+                      await broker_rpc("upload_debug_pack", [email || "", pack]);
+                      showToast(
+                        toastStore,
+                        l10n($curr_lang, "successfully-submitted"),
+                      );
+                    } catch (e) {
+                      showErrorToast(toastStore, "Error: " + e);
+                    }
+                  })();
                 },
               };
               modalStore.trigger(modal);
@@ -309,7 +343,7 @@
           </button>
           <button
             class="btn variant-ghost btn-sm"
-            on:click={() => {
+            onclick={() => {
               showLogsOpen = true;
             }}>{l10n($curr_lang, "debug-logs")}</button
           >

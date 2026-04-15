@@ -6,8 +6,7 @@
     Toast,
     initializeStores,
   } from "@skeletonlabs/skeleton";
-  import AccountCircleOutline from "svelte-material-icons/AccountCircleOutline.svelte";
-  import CogOutline from "svelte-material-icons/CogOutline.svelte";
+  import { Gear, UserCircle } from "phosphor-svelte";
   import SettingsPopup from "./SettingsPopup.svelte";
 
   import { curr_lang, l10n } from "./lib/l10n";
@@ -23,18 +22,18 @@
   import FreeVoucherButton from "./FreeVoucherButton.svelte";
   import ExpiryWarningPopup from "./ExpiryWarningPopup.svelte";
 
-  let settingsOpen = false;
-  let accountOpen = false;
-  let expiryOpen = false;
-  let dataNoticeOpen = false;
-  let isIOS = false;
+  let settingsOpen = $state(false);
+  let accountOpen = $state(false);
+  let expiryOpen = $state(false);
+  let dataNoticeOpen = $state(false);
+  let isIOS = $state(false);
 
   // Show-once-per-session flag
-  let warnedThisSession = false;
+  let warnedThisSession = $state(false);
 
   // Track days remaining and expiry for popup
-  let daysRemaining: number | null = null;
-  let expiryUnix: number | null = null;
+  let daysRemaining: number | null = $state(null);
+  let expiryUnix: number | null = $state(null);
 
   initializeStores();
 
@@ -48,15 +47,19 @@
     }
   });
 
-  $: document.body.setAttribute(
-    "data-theme",
-    $pref_lightdark === "light" ? "light-theme" : "dark-theme",
-  );
+  $effect(() => {
+    document.body.setAttribute(
+      "data-theme",
+      $pref_lightdark === "light" ? "light-theme" : "dark-theme",
+    );
+  });
 
-  $: document.body.setAttribute("lang", $curr_lang);
+  $effect(() => {
+    document.body.setAttribute("lang", $curr_lang);
+  });
 
   // Compute when to show expiry warning: last 3 days, Plus, non-recurring
-  $: {
+  $effect(() => {
     const status = $app_status;
     if (
       status &&
@@ -79,16 +82,18 @@
       daysRemaining = null;
       expiryUnix = null;
     }
-  }
+  });
 
-  $: if (
-    isIOS &&
-    $curr_valid_secret !== null &&
-    !$pref_seen_data_collection &&
-    !dataNoticeOpen
-  ) {
-    dataNoticeOpen = true;
-  }
+  $effect(() => {
+    if (
+      isIOS &&
+      $curr_valid_secret !== null &&
+      !$pref_seen_data_collection &&
+      !dataNoticeOpen
+    ) {
+      dataNoticeOpen = true;
+    }
+  });
 </script>
 
 <svelte:head>
@@ -99,31 +104,32 @@
   <Modal />
   <Toast />
   <AppBar>
-    <svelte:fragment slot="lead">
+    {#snippet lead()}
+      
       <img src="gephlogo.png" id="logo" alt="Geph logo" />
-    </svelte:fragment>
+    {/snippet}
     <!-- <b id="logo-text">{l10n($curr_lang, "geph")}</b> -->
-    <svelte:fragment slot="trail">
+    {#snippet trail()}
       {#if $curr_valid_secret !== null && (!$pref_wizard || $app_status?.account.level !== "Free")}
         <FreeVoucherButton />
       {/if}
       {#if $curr_valid_secret !== null}
         <button
-          on:click={() => {
+          onclick={() => {
             accountOpen = true;
           }}
         >
-          <AccountCircleOutline size="1.5rem" />
+          <UserCircle size="1.5rem" />
         </button>
       {/if}
       <button
-        on:click={() => {
+        onclick={() => {
           settingsOpen = true;
         }}
       >
-        <CogOutline size="1.5rem" />
+        <Gear size="1.5rem" />
       </button>
-    </svelte:fragment>
+    {/snippet}
   </AppBar>
 
   {#if $curr_valid_secret === null}

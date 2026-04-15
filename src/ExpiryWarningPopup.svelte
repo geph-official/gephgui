@@ -3,15 +3,19 @@
   import Popup from "./lib/Popup.svelte";
   import { paymentsOpen } from "./lib/user";
 
-  export let open = false;
-  export let expiryUnix: number | null = null; // seconds
-  export let daysRemaining: number | null = null;
+  interface Props {
+    open?: boolean;
+    expiryUnix?: number | null; // seconds
+    daysRemaining?: number | null;
+  }
+
+  let { open = $bindable(false), expiryUnix = null, daysRemaining = null }: Props = $props();
 
   const close = () => (open = false);
 
-  $: expiryDateStr = expiryUnix
+  let expiryDateStr = $derived(expiryUnix
     ? l10n_date($curr_lang, new Date(expiryUnix * 1000))
-    : "";
+    : "");
 </script>
 
 <Popup
@@ -44,12 +48,12 @@
     </div>
 
     <div class="flex flex-row gap-2 justify-end">
-      <button class="btn variant-ghost" on:click={close}>
+      <button class="btn variant-ghost" onclick={close}>
         {l10n($curr_lang, "not-now")}
       </button>
       <button
         class="btn variant-filled-primary"
-        on:click={() => {
+        onclick={() => {
           paymentsOpen.set(true);
           open = false;
         }}

@@ -1,19 +1,28 @@
-<script>
-  export let data = Array.from({ length: 100 }, () =>
-    Math.floor(Math.random() * 100)
-  );
-  export let unit = "Mbps";
-
-  export let title = "Total traffic";
-  export let decimals = 2;
-
+<script lang="ts">
   import sparkline from "@fnando/sparkline";
   import { pref_lightdark } from "./lib/prefs";
-  let container;
+  interface Props {
+    data?: any;
+    unit?: string;
+    title?: string;
+    decimals?: number;
+  }
 
-  let svgData = null;
+  let {
+    data = Array.from({ length: 100 }, () =>
+      Math.floor(Math.random() * 100),
+    ),
+    unit = "Mbps",
+    title = "Total traffic",
+    decimals = 2,
+  }: Props = $props();
+  let container = $state<SVGSVGElement | null>(null);
+
+  let svgData = $state<string | null>(null);
 
   const draw = () => {
+    if (!container) return;
+
     sparkline(container, data);
     const serializer = new XMLSerializer();
     const svgString = serializer.serializeToString(container);
@@ -22,15 +31,17 @@
     svgData = `data:image/svg+xml;base64,${base64}`;
   };
 
-  $: container && draw();
+  $effect(() => {
+    container && draw();
+  });
 
-  $: color = (() => {
+  let color = $derived((() => {
     if ($pref_lightdark === "dark") {
       return "#fdf6e3";
-    } else {
-      return "#073642";
     }
-  })();
+
+    return "#073642";
+  })());
 </script>
 
 {#key data}

@@ -1,4 +1,4 @@
-<div class="spinner" />
+<div class="spinner"></div>
 
 <style>
     .spinner::before {

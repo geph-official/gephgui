@@ -4,14 +4,18 @@
   import { pref_exit_constraint_derived } from "./lib/prefs";
   import { native_gate } from "./native-gate";
   import { ProgressBar, getModalStore } from "@skeletonlabs/skeleton";
-  import ChevronRight from "svelte-material-icons/ChevronRight.svelte";
+  import { CaretRight } from "phosphor-svelte";
   import Flag from "./lib/Flag.svelte";
   import StatusCircle from "./lib/StatusCircle.svelte";
   import { showErrorModal } from "./lib/utils";
 
-  export let serversOpen: boolean;
+  interface Props {
+    serversOpen: boolean;
+  }
 
-  let connectButtonDisabled = false;
+  let { serversOpen = $bindable() }: Props = $props();
+
+  let connectButtonDisabled = $state(false);
   const modalStore = getModalStore();
 
   const handleStartDaemon = async () => {
@@ -45,19 +49,19 @@
     serversOpen = true;
   };
 
-  $: connectionStatus =
-    $conn_status === "disconnected"
+  let connectionStatus =
+    $derived($conn_status === "disconnected"
       ? "disconnected"
       : $conn_status === "connecting"
         ? "connecting"
-        : "connected";
+        : "connected");
 </script>
 
 {#if $app_status}
   <div class="bottom flex flex-col mt-2 p-1">
     <button
       class="flex flex-row mb-4 text-left"
-      on:click={() => switchServers()}
+      onclick={() => switchServers()}
     >
       <div class="server-name grow">
         <div class="flex items-center">
@@ -92,14 +96,14 @@
         </div>
       </div>
       <div class="icon">
-        <ChevronRight size="1.5rem" />
+        <CaretRight size="1.5rem" />
       </div>
     </button>
 
     {#if $conn_status === "disconnected"}
       <button
         class="btn variant-filled mb-1"
-        on:click={() => handleStartDaemon()}
+        onclick={() => handleStartDaemon()}
         disabled={connectButtonDisabled}
       >
         {l10n($curr_lang, "connect")}
@@ -107,7 +111,7 @@
     {:else if $conn_status === "connecting"}
       <button
         class="btn variant-ghost mb-1"
-        on:click={() => handleStopDaemon()}
+        onclick={() => handleStopDaemon()}
         disabled={connectButtonDisabled}
       >
         {l10n($curr_lang, "cancel")}
@@ -115,7 +119,7 @@
     {:else}
       <button
         class="btn variant-ghost mb-1"
-        on:click={() => handleStopDaemon()}
+        onclick={() => handleStopDaemon()}
         disabled={connectButtonDisabled}
       >
         {l10n($curr_lang, "disconnect")}

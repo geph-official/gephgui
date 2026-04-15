@@ -8,9 +8,9 @@
   import { formatNumberWithSpaces, showErrorModal } from "./lib/utils";
   import { onMount } from "svelte";
 
-  let inputValue = "";
+  let inputValue = $state("");
 
-  let loggingIn = false;
+  let loggingIn = $state(false);
 
   const handleInput = (e: Event) => {
     const target = e.target as HTMLInputElement;
@@ -49,13 +49,13 @@
     registerOpen = true;
   };
 
-  let registerOpen = false;
+  let registerOpen = $state(false);
 
-  let migrateOpen = false;
+  let migrateOpen = $state(false);
 
   // Legacy user credentials for migration
-  let legacyUsername = "";
-  let legacyPassword = "";
+  let legacyUsername = $state("");
+  let legacyPassword = $state("");
 
   // Check for legacy credentials on component mount
   onMount(() => {
@@ -96,8 +96,8 @@
       bind:value={inputValue}
       type="text"
       inputmode="numeric"
-      on:input={handleInput}
-      on:keydown={(e) => {
+      oninput={handleInput}
+      onkeydown={(e) => {
         if (e.key === "Enter") {
           onLogin();
         }
@@ -108,7 +108,7 @@
       type="button"
       class="btn variant-ghost-primary mb-1"
       disabled={loggingIn}
-      on:click={() => onLogin()}
+      onclick={() => onLogin()}
     >
       {l10n($curr_lang, "login")}
     </button>
@@ -124,7 +124,7 @@
       type="button"
       class="btn variant-ghost mt-2 btn-sm"
       disabled={loggingIn}
-      on:click={() => onRegister()}
+      onclick={() => onRegister()}
     >
       {l10n($curr_lang, "register")}
     </button>
@@ -132,7 +132,7 @@
       type="button"
       class="btn variant-ringed mt-2 btn-sm"
       disabled={loggingIn}
-      on:click={() => (migrateOpen = true)}
+      onclick={() => (migrateOpen = true)}
     >
       {l10n($curr_lang, "migrate-from-older-versions")}
     </button>

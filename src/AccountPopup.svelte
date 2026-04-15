@@ -4,23 +4,25 @@
     getModalStore,
     type ModalSettings,
   } from "@skeletonlabs/skeleton";
-  import EyeOutline from "svelte-material-icons/EyeOutline.svelte";
-  import EyeOffOutline from "svelte-material-icons/EyeOffOutline.svelte";
-  import ContentCopy from "svelte-material-icons/ContentCopy.svelte";
-  export let open = false;
-  let loggingOut = false;
+  import { Copy, Eye, EyeSlash } from "phosphor-svelte";
+  let loggingOut = $state(false);
 
   import { curr_lang, l10n } from "./lib/l10n";
   import { app_status, curr_valid_secret, clearAllCaches } from "./lib/user";
   import { native_gate, broker_rpc } from "./native-gate";
   import CryptoJS from "crypto-js";
   import Popup from "./lib/Popup.svelte";
+  interface Props {
+    open?: boolean;
+  }
+
+  let { open = $bindable(false) }: Props = $props();
 
   const modalStore = getModalStore();
   let deleteClicks = 0;
   let deleteTimer: any = null;
 
-  let secretShown = false;
+  let secretShown = $state(false);
 
   function copyToClipboard(text: string) {
     // Create a hidden textarea
@@ -84,9 +86,9 @@
     return base32Encode(bytes).slice(0, 16);
   }
 
-  $: inviteCode = $curr_valid_secret
+  let inviteCode = $derived($curr_valid_secret
     ? computeInviteCode($curr_valid_secret)
-    : "";
+    : "");
 
   async function handleDeleteClick() {
     if (deleteTimer) {
@@ -154,15 +156,15 @@
                 ?.join(" ")}
             {/if}
           </div>
-          <button on:click={() => (secretShown = !secretShown)} class="mr-2">
+          <button onclick={() => (secretShown = !secretShown)} class="mr-2">
             {#if secretShown}
-              <EyeOffOutline size="1.5rem" />
+              <EyeSlash size="1.5rem" />
             {:else}
-              <EyeOutline size="1.5rem" />
+              <Eye size="1.5rem" />
             {/if}
           </button>
-          <button on:click={() => copyToClipboard($curr_valid_secret || "")}>
-            <ContentCopy size="1.5rem" />
+          <button onclick={() => copyToClipboard($curr_valid_secret || "")}>
+            <Copy size="1.5rem" />
           </button>
         </div>
       </section>
@@ -198,8 +200,8 @@
               <td>{l10n($curr_lang, "invite-code")}</td>
               <td class="tnum flex flex-row gap-1 items-center"
                 >{inviteCode}
-                <button on:click={() => copyToClipboard(inviteCode || "")}
-                  ><ContentCopy size="1rem" /></button
+                <button onclick={() => copyToClipboard(inviteCode || "")}
+                  ><Copy size="1rem" /></button
                 ></td
               >
             </tr>
@@ -210,7 +212,7 @@
     <section class="flex flex-row gap-2">
       <button
         class="btn variant-ghost-primary btn-sm"
-        on:click={async () => {
+        onclick={async () => {
           window.open(
             `https://geph.io/billing/login_secret?secret=${$curr_valid_secret}`,
           );
@@ -220,7 +222,7 @@
       </button>
       <button
         class="btn variant-ghost-warning btn-sm"
-        on:click={async () => {
+        onclick={async () => {
           loggingOut = true;
           const gate = await native_gate();
           await gate.stop_daemon();
@@ -231,11 +233,11 @@
         {l10n($curr_lang, "logout")}
       </button>
     </section>
-    <div class="divider" />
+    <div class="divider"></div>
     <section>
       <button
         class="btn variant-ghost-error btn-sm"
-        on:click={handleDeleteClick}
+        onclick={handleDeleteClick}
       >
         {l10n($curr_lang, "delete-account")}
       </button>

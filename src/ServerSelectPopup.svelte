@@ -1,6 +1,6 @@
 <script lang="ts">
   import { ProgressBar, getModalStore } from "@skeletonlabs/skeleton";
-  import RefreshAuto from "svelte-material-icons/RefreshAuto.svelte";
+  import { ArrowsClockwise } from "phosphor-svelte";
   import { curr_lang, l10n } from "./lib/l10n";
   import {
     native_gate,
@@ -13,10 +13,14 @@
   import { app_status, conn_status, startDaemonArgs } from "./lib/user";
   import Popup from "./lib/Popup.svelte";
   import { paymentsOpen } from "./lib/user";
-  export let open = false;
+  interface Props {
+    open?: boolean;
+  }
+
+  let { open = $bindable(false) }: Props = $props();
 
   const modalStore = getModalStore();
-  let closing = false;
+  let closing = $state(false);
 
   const reconnectDaemon = async () => {
     try {
@@ -88,26 +92,26 @@
     },
   ];
 
-  $: exitInfos =
-    $app_status &&
+  let exitInfos =
+    $derived($app_status &&
     Object.values($app_status.net_status.exits).map((v) => ({
       desc: v[1],
       meta: v[2],
-    }));
+    })));
 
-  $: coreExitInfos = exitInfos?.filter((e) => e.meta.category === "core") ?? [];
-  $: streamingExitInfos =
-    exitInfos?.filter((e) => e.meta.category === "streaming") ?? [];
+  let coreExitInfos = $derived(exitInfos?.filter((e) => e.meta.category === "core") ?? []);
+  let streamingExitInfos =
+    $derived(exitInfos?.filter((e) => e.meta.category === "streaming") ?? []);
 
-  $: exitInfosByCategory = {
+  let exitInfosByCategory = $derived({
     core: coreExitInfos,
     streaming: streamingExitInfos,
-  } satisfies Record<CategoryKey, ExitInfo[]>;
+  } satisfies Record<CategoryKey, ExitInfo[]>);
 
-  $: exitListsByCategory = {
+  let exitListsByCategory = $derived({
     core: coreExitInfos.map((e) => e.desc),
     streaming: streamingExitInfos.map((e) => e.desc),
-  } satisfies Record<CategoryKey, ExitDescriptor[]>;
+  } satisfies Record<CategoryKey, ExitDescriptor[]>);
 
   const cityAllowedForFree = (
     infos: ExitInfo[],
@@ -135,13 +139,13 @@
       <!-- "Automatic" option -->
       <button
         class={rowClass}
-        on:click={() => {
+        onclick={() => {
           $pref_exit_constraint = "auto";
           reconnectDaemon();
         }}
       >
         <div class="w-8">
-          <RefreshAuto width="1.3rem" height="1.3rem" />
+          <ArrowsClockwise width="1.3rem" height="1.3rem" />
         </div>
         <div class="grow">
           <b class="font-bold">{l10n($curr_lang, "automatic")}</b>
@@ -179,7 +183,7 @@
                           country,
                           city,
                         )}
-                      on:click={async () => {
+                      onclick={async () => {
                         if (
                           $app_status?.account.level === "Free" &&
                           !cityAllowedForFree(

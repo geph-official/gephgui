@@ -12,7 +12,7 @@
   import ConnectionControl from "./ConnectionControl.svelte";
   import Graph from "./Graph.svelte";
 
-  let serversOpen = false;
+  let serversOpen = $state(false);
 </script>
 
 <div id="main">

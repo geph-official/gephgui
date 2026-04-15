@@ -2,6 +2,7 @@ import "./inter-font/inter.css";
 import "./vazirmatn-font/vazirmatn.css";
 import "./app.css";
 import "./uPlot.min.css";
+import { mount } from "svelte";
 import App from "./App.svelte";
 import {
   auto as autoDark,
@@ -10,8 +11,8 @@ import {
 } from "darkreader";
 import { pref_lightdark } from "./lib/prefs";
 
-const app = new App({
-  target: document.getElementById("app") as any,
+const app = mount(App, {
+  target: document.getElementById("app") as HTMLElement,
 });
 
 // // HACK to get rid of ugly hover and focus indicators, especially on mobile

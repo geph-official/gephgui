@@ -1,21 +1,26 @@
-<script>
-  import { native_gate } from "../native-gate";
+<script lang="ts">
+  import {
+    native_gate,
+    type AppDescriptor,
+    type NativeGate,
+  } from "../native-gate";
   import { curr_lang, l10n } from "../lib/l10n";
   import { pref_app_whitelist } from "../lib/prefs";
-  import CircleOutline from "svelte-material-icons/CircleOutline.svelte";
-  import CheckCircleOutline from "svelte-material-icons/CheckCircleOutline.svelte";
-  import Magnify from "svelte-material-icons/Magnify.svelte";
+  import { CheckCircle, Circle, MagnifyingGlass } from "phosphor-svelte";
   import Popup from "../lib/Popup.svelte";
   import { ProgressBar } from "@skeletonlabs/skeleton";
 
-  export let open = false;
+  interface Props {
+    open?: boolean;
+  }
 
-  let searchQuery = "";
-  let apps = [];
-  let appIcons = {};
-  let gate;
+  let { open = $bindable(false) }: Props = $props();
 
-  function toggleApp(appId) {
+  let searchQuery = $state("");
+  let appIcons = $state<Record<string, string | null>>({});
+  let gate: NativeGate | null = null;
+
+  function toggleApp(appId: string) {
     pref_app_whitelist.update((whitelist) => {
       const newWhitelist = { ...whitelist };
       newWhitelist[appId] = !newWhitelist[appId];
@@ -23,22 +28,20 @@
     });
   }
 
-  async function loadApps() {
+  async function loadApps(): Promise<AppDescriptor[]> {
     gate = await native_gate();
     if (gate.supports_app_whitelist) {
       const appList = await gate.sync_app_list();
-      // Start loading icons for each app
-      loadAppIcons(appList);
+      void loadAppIcons(appList);
       return appList;
-    } else {
-      throw new Error("app-whitelist-not-supported");
     }
+
+    throw new Error("app-whitelist-not-supported");
   }
 
-  async function loadAppIcons(appList) {
+  async function loadAppIcons(appList: AppDescriptor[]): Promise<void> {
     if (!gate) return;
 
-    // Load icons for each app
     for (const app of appList) {
       try {
         appIcons[app.id] = await gate.get_app_icon_url(app.id);
@@ -50,15 +53,18 @@
     }
   }
 
-  function getFilteredApps(apps, query) {
+  function getFilteredApps(apps: AppDescriptor[], query: string): AppDescriptor[] {
+    const normalizedQuery = query.trim().toLowerCase();
+    if (!normalizedQuery) return apps;
+
     return apps.filter(
       (app) =>
-        app.friendly_name.toLowerCase().includes(query.toLowerCase()) ||
-        app.id.toLowerCase().includes(query.toLowerCase())
+        app.friendly_name.toLowerCase().includes(normalizedQuery) ||
+        app.id.toLowerCase().includes(normalizedQuery)
     );
   }
 
-  function getSelectedCount(whitelist) {
+  function getSelectedCount(whitelist: Record<string, boolean>): number {
     return Object.values(whitelist).filter(Boolean).length;
   }
 </script>
@@ -87,7 +93,7 @@
       {:then loadedApps}
         <div class="relative flex items-center mb-4">
           <div class="absolute left-3 opacity-70">
-            <Magnify size="1.2rem" />
+            <MagnifyingGlass size="1.2rem" />
           </div>
           <input
             type="text"
@@ -109,19 +115,19 @@
         >
           {#each getFilteredApps(loadedApps, searchQuery) as app}
             <li class="border-b border-surface-300 last:border-b-0">
-              <!-- svelte-ignore a11y-click-events-have-key-events -->
-              <div
-                class="flex items-center p-3 cursor-pointer transition-colors duration-200 hover:bg-surface-200"
-                on:click={() => toggleApp(app.id)}
+              <button
+                type="button"
+                class="flex w-full items-center p-3 text-left transition-colors duration-200 hover:bg-surface-200"
+                onclick={() => toggleApp(app.id)}
               >
                 <div class="mr-3 flex items-center">
                   {#if $pref_app_whitelist[app.id]}
-                    <CheckCircleOutline
+                    <CheckCircle
                       size="1.4rem"
                       class="text-primary-500"
                     />
                   {:else}
-                    <CircleOutline size="1.4rem" />
+                    <Circle size="1.4rem" />
                   {/if}
                 </div>
                 <div
@@ -145,7 +151,7 @@
                   <div class="font-medium">{app.friendly_name}</div>
                   <div class="text-xs opacity-70">{app.id}</div>
                 </div>
-              </div>
+              </button>
             </li>
           {/each}
 
