@@ -44,7 +44,7 @@
   };
 
   const handleBackdropKeydown = (event: KeyboardEvent) => {
-    if (event.key === "Escape" || event.key === "Enter" || event.key === " ") {
+    if (event.key === "Escape") {
       event.preventDefault();
       handleCloseRequest();
     }
