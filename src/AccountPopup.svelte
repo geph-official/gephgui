@@ -137,117 +137,199 @@
   title={l10n($curr_lang, "account")}
   onClose={() => (open = false)}
 >
-  {#if loggingOut}
-    <div class="my-5">
-      <ProgressBar />
-    </div>
-  {:else}
-    {#if $curr_valid_secret}
-      <section>
-        <h2 class="text-primary-700">{l10n($curr_lang, "account-secret")}</h2>
-        <div class="flex flex-row tnum">
-          <div class="grow">
-            {#if secretShown}
-              {$curr_valid_secret.match(/.{1,4}/g)?.join(" ")}
-            {:else}
-              {$curr_valid_secret
-                .replace(/\d/g, "•")
-                .match(/.{1,4}/g)
-                ?.join(" ")}
-            {/if}
-          </div>
-          <button onclick={() => (secretShown = !secretShown)} class="mr-2">
-            {#if secretShown}
-              <EyeSlash size="1.5rem" />
-            {:else}
-              <Eye size="1.5rem" />
-            {/if}
-          </button>
-          <button onclick={() => copyToClipboard($curr_valid_secret || "")}>
-            <Copy size="1.5rem" />
-          </button>
-        </div>
-      </section>
+  <div class="popup-layout">
+    {#if loggingOut}
+      <div class="my-5">
+        <ProgressBar />
+      </div>
+    {:else}
+      <div class="popup-main">
+        {#if $curr_valid_secret}
+          <section>
+            <h2 class="text-primary-700">{l10n($curr_lang, "account-secret")}</h2>
+            <div class="flex flex-row tnum">
+              <div class="grow">
+                {#if secretShown}
+                  {$curr_valid_secret.match(/.{1,4}/g)?.join(" ")}
+                {:else}
+                  {$curr_valid_secret
+                    .replace(/\d/g, "•")
+                    .match(/.{1,4}/g)
+                    ?.join(" ")}
+                {/if}
+              </div>
+              <button onclick={() => (secretShown = !secretShown)} class="mr-2">
+                {#if secretShown}
+                  <EyeSlash size="1.5rem" />
+                {:else}
+                  <Eye size="1.5rem" />
+                {/if}
+              </button>
+              <button onclick={() => copyToClipboard($curr_valid_secret || "")}>
+                <Copy size="1.5rem" />
+              </button>
+            </div>
+          </section>
 
-      <section>
-        <h2 class="text-primary-700">{l10n($curr_lang, "account-info")}</h2>
-        <table class="table table-hover">
-          <tbody>
-            {#if $app_status?.account.level === "Plus"}
-              <tr>
-                <td>{l10n($curr_lang, "account-level")}</td>
-                <td>{l10n($curr_lang, "plus-account")}</td>
-              </tr>
-              <tr>
-                <td>{l10n($curr_lang, "plus-expiry")}</td>
-                <td class="tnum"
-                  >{new Date(
-                    $app_status?.account.expiry * 1000,
-                  ).toLocaleDateString(undefined, {
-                    year: "numeric",
-                    month: "short",
-                    day: "numeric",
-                  })}</td
-                >
-              </tr>
-            {:else if $app_status?.account.level === "Free"}
-              <tr>
-                <td>{l10n($curr_lang, "account-level")}</td>
-                <td>{l10n($curr_lang, "free-account")}</td>
-              </tr>
-            {/if}
-            <tr>
-              <td>{l10n($curr_lang, "invite-code")}</td>
-              <td class="tnum flex flex-row gap-1 items-center"
-                >{inviteCode}
-                <button onclick={() => copyToClipboard(inviteCode || "")}
-                  ><Copy size="1rem" /></button
-                ></td
-              >
-            </tr>
-          </tbody>
-        </table>
-      </section>
+          <section>
+            <h2 class="text-primary-700">{l10n($curr_lang, "account-info")}</h2>
+            <table class="table table-hover">
+              <tbody>
+                {#if $app_status?.account.level === "Plus"}
+                  <tr>
+                    <td>{l10n($curr_lang, "account-level")}</td>
+                    <td>{l10n($curr_lang, "plus-account")}</td>
+                  </tr>
+                  <tr>
+                    <td>{l10n($curr_lang, "plus-expiry")}</td>
+                    <td class="tnum"
+                      >{new Date(
+                        $app_status?.account.expiry * 1000,
+                      ).toLocaleDateString(undefined, {
+                        year: "numeric",
+                        month: "short",
+                        day: "numeric",
+                      })}</td
+                    >
+                  </tr>
+                {:else if $app_status?.account.level === "Free"}
+                  <tr>
+                    <td>{l10n($curr_lang, "account-level")}</td>
+                    <td>{l10n($curr_lang, "free-account")}</td>
+                  </tr>
+                {/if}
+                <tr>
+                  <td>{l10n($curr_lang, "invite-code")}</td>
+                  <td class="tnum flex flex-row gap-1 items-center"
+                    >{inviteCode}
+                    <button onclick={() => copyToClipboard(inviteCode || "")}
+                      ><Copy size="1rem" /></button
+                    ></td
+                  >
+                </tr>
+              </tbody>
+            </table>
+          </section>
+
+          <section class="policy-link">
+            <a href="https://github.com/geph-official/geph5/blob/master/PRIVACY.md"
+              >{l10n($curr_lang, "privacy-eula")}</a
+            >
+          </section>
+
+        {/if}
+      </div>
+
+      <div class="popup-actions">
+        <section class="action-block">
+          <button
+            class="btn variant-ghost-primary action-button"
+            onclick={async () => {
+              window.open(
+                `https://geph.io/billing/login_secret?secret=${$curr_valid_secret}`,
+              );
+            }}
+          >
+            {l10n($curr_lang, "manage-account")}
+          </button>
+        </section>
+
+        <section class="logout-action">
+          <button
+            class="btn variant-outline action-button"
+            onclick={async () => {
+              loggingOut = true;
+              const gate = await native_gate();
+              await gate.stop_daemon();
+              localStorage.clear();
+              window.location.reload();
+            }}
+          >
+            {l10n($curr_lang, "logout")}
+          </button>
+        </section>
+
+
+        <div class="divider"></div>
+
+  
+
+        <section class="delete-action">
+          <button
+            class="underline text-error-700"
+            onclick={handleDeleteClick}
+          >
+            {l10n($curr_lang, "delete-account")}
+          </button>
+        </section>
+      </div>
     {/if}
-    <section class="flex flex-row gap-2">
-      <button
-        class="btn variant-ghost-primary btn-sm"
-        onclick={async () => {
-          window.open(
-            `https://geph.io/billing/login_secret?secret=${$curr_valid_secret}`,
-          );
-        }}
-      >
-        {l10n($curr_lang, "manage-account")}
-      </button>
-      <button
-        class="btn variant-ghost-warning btn-sm"
-        onclick={async () => {
-          loggingOut = true;
-          const gate = await native_gate();
-          await gate.stop_daemon();
-          localStorage.clear();
-          window.location.reload();
-        }}
-      >
-        {l10n($curr_lang, "logout")}
-      </button>
-    </section>
-    <div class="divider"></div>
-    <section>
-      <button
-        class="btn variant-ghost-error btn-sm"
-        onclick={handleDeleteClick}
-      >
-        {l10n($curr_lang, "delete-account")}
-      </button>
-    </section>
-  {/if}
+  </div>
 </Popup>
 
 <style>
+  .popup-layout {
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .popup-main {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .popup-actions {
+    margin-top: auto;
+    padding-top: 1rem;
+  }
+
   section {
     margin-bottom: 1rem;
+  }
+
+  .action-block {
+    margin-bottom: 0.75rem;
+  }
+
+  .action-button {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .policy-link {
+    margin-bottom: 0.75rem;
+    text-align: center;
+    font-size: 0.9rem;
+    opacity: 0.8;
+  }
+
+  .policy-link a {
+    text-decoration: underline;
+  }
+
+  .logout-action {
+    margin-bottom: 1rem;
+  }
+
+  .delete-action {
+    margin-bottom: 0;
+    text-align: center;
+    padding-top: 0.5rem;
+  }
+
+  .delete-button {
+    display: inline-flex;
+    width: auto;
+    min-width: 0;
+    justify-content: center;
+    opacity: 0.8;
+  }
+
+  .delete-button:hover,
+  .delete-button:focus-visible {
+    opacity: 1;
   }
 
   h2 {
