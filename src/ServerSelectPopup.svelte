@@ -10,9 +10,13 @@
   import { pref_exit_constraint } from "./lib/prefs";
   import Flag from "./lib/Flag.svelte";
   import { showErrorModal } from "./lib/utils";
-  import { app_status, conn_status, startDaemonArgs } from "./lib/user";
+  import {
+    app_status,
+    conn_status,
+    openPayments,
+    startDaemonArgs,
+  } from "./lib/user";
   import Popup from "./lib/Popup.svelte";
-  import { paymentsOpen } from "./lib/user";
   interface Props {
     open?: boolean;
   }
@@ -192,7 +196,7 @@
                             city,
                           )
                         ) {
-                          $paymentsOpen = true;
+                          openPayments();
                           open = false;
                           return;
                         }

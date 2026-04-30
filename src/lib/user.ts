@@ -319,3 +319,20 @@ export const startDaemonArgs = async (): Promise<DaemonArgs | null> => {
 
 // A simple store to open or close a payments modal
 export const paymentsOpen: Writable<boolean> = writable(false);
+export const iosSubscriptionOpen: Writable<boolean> = writable(false);
+
+export async function openPayments() {
+  try {
+    const gate = await native_gate();
+    const info = await gate.get_native_info();
+    if (info.platform_type === "ios") {
+      paymentsOpen.set(false);
+      iosSubscriptionOpen.set(true);
+      return;
+    }
+  } catch (error) {
+    console.warn("Unable to determine payment platform", error);
+  }
+  iosSubscriptionOpen.set(false);
+  paymentsOpen.set(true);
+}

@@ -1,7 +1,7 @@
 <script lang="ts">
   import { curr_lang, l10n, l10n_date } from "./lib/l10n";
   import Popup from "./lib/Popup.svelte";
-  import { paymentsOpen } from "./lib/user";
+  import { openPayments } from "./lib/user";
 
   interface Props {
     open?: boolean;
@@ -54,7 +54,7 @@
       <button
         class="btn variant-filled-primary"
         onclick={() => {
-          paymentsOpen.set(true);
+          openPayments();
           open = false;
         }}
       >

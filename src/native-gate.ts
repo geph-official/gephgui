@@ -19,6 +19,7 @@ export interface NativeGate {
   start_native_payment(
     secret: string
   ): Promise<void>;
+  get_ios_plus_price(): Promise<IosPlusPrice>;
 
   sync_app_list(): Promise<AppDescriptor[]>;
   export_debug_pack(email: string): Promise<void>;
@@ -33,6 +34,11 @@ export interface NativeGate {
   supports_autoupdate: boolean;
 
   get_native_info(): Promise<NativeInfo>;
+}
+
+export interface IosPlusPrice {
+  localized_price: string;
+  period: "month";
 }
 
 /**
@@ -178,6 +184,14 @@ function mock_native_gate(): NativeGate {
     async start_native_payment() {
       random_fail();
       throw new Error("native payments unsupported");
+    },
+
+    async get_ios_plus_price() {
+      await random_sleep();
+      return {
+        localized_price: "$4.99",
+        period: "month",
+      };
     },
 
     sync_app_list: async () => {

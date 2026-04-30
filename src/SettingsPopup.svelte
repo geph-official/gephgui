@@ -39,7 +39,6 @@
   import {
     app_status,
     curr_valid_secret,
-    paymentsOpen,
   } from "./lib/user";
   import { pref_wizard } from "./lib/prefs";
   import AppWhitelistControl from "./settings/AppWhitelistControl.svelte";

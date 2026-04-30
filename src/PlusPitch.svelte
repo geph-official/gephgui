@@ -3,7 +3,7 @@
 
   import { pref_wizard } from "./lib/prefs";
   import { fade } from "svelte/transition";
-  import { paymentsOpen } from "./lib/user";
+  import { openPayments } from "./lib/user";
   import { onMount } from "svelte";
   import { broker_rpc } from "./native-gate";
 
@@ -54,7 +54,7 @@
         class="btn mx-4 variant-filled"
         onclick={() => {
           $pref_wizard = false;
-          $paymentsOpen = true;
+          openPayments();
         }}
       >
         {l10n($curr_lang, "buy-plus-price").replace("PRICE", bestPrice || "-")}

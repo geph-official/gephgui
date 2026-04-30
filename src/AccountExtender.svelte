@@ -9,9 +9,9 @@
   } from "phosphor-svelte";
   import {
     app_status,
-    paymentsOpen,
     account_refreshing,
     curr_valid_secret,
+    openPayments,
     type BwConsumption,
   } from "./lib/user";
   import { ProgressBar } from "@skeletonlabs/skeleton";
@@ -97,7 +97,7 @@
           {:else}
             <button
               class="btn variant-filled-primary"
-              onclick={() => ($paymentsOpen = true)}
+              onclick={openPayments}
             >
               {l10n($curr_lang, "extend")}
             </button>
@@ -105,7 +105,7 @@
         {:else}
           <button
             class="btn variant-ghost-primary"
-            onclick={() => ($paymentsOpen = true)}
+            onclick={openPayments}
           >
             {l10n($curr_lang, "buy-plus")}
           </button>
@@ -151,7 +151,7 @@
     <button
       type="button"
       class="card w-full p-3 items-center variant-ghost-error text-sm text-center"
-      onclick={() => ($paymentsOpen = true)}
+      onclick={openPayments}
     >
       {@html l10n($curr_lang, "free-is-bad")} <br />
       <b>{@html l10n($curr_lang, "upgrade-to-plus-speed")}</b>

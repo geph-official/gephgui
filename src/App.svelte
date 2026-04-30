@@ -15,6 +15,7 @@
   import Main from "./Main.svelte";
   import AccountPopup from "./AccountPopup.svelte";
   import PaymentPopup from "./PaymentPopup.svelte";
+  import IosPlusSubscription from "./IosPlusSubscription.svelte";
   import DataCollectionPopup from "./DataCollectionPopup.svelte";
   import { pref_lightdark, pref_wizard, pref_seen_data_collection } from "./lib/prefs";
   import { native_gate } from "./native-gate";
@@ -140,7 +141,10 @@
 
   <SettingsPopup bind:open={settingsOpen} />
   <AccountPopup bind:open={accountOpen} />
-  <PaymentPopup />
+  {#if !isIOS}
+    <PaymentPopup />
+  {/if}
+  <IosPlusSubscription />
   <ExpiryWarningPopup bind:open={expiryOpen} {daysRemaining} {expiryUnix} />
   {#if isIOS}
     <DataCollectionPopup bind:open={dataNoticeOpen} />

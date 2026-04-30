@@ -1,8 +1,5 @@
 <script lang="ts">
-  import { slide } from "svelte/transition";
   import { curr_lang, l10n } from "./lib/l10n";
-  import { onMount } from "svelte";
-  import { get } from "svelte/store";
   import { native_gate, broker_rpc } from "./native-gate";
   import {
     clearAccountCache,
@@ -33,7 +30,6 @@
 
   let planTab: "unlimited" | "basic" = $state("unlimited");
   let effectivePlanTab: "unlimited" | "basic" = $state("unlimited");
-  let nativePaymentAttempted = $state(false);
 
   $effect(() => {
     effectivePlanTab = planTab;
@@ -44,19 +40,6 @@
       try {
         const gate = await native_gate();
         const secret = $curr_valid_secret || "";
-        if (
-          !nativePaymentAttempted &&
-          typeof gate.start_native_payment === "function"
-        ) {
-          nativePaymentAttempted = true;
-          console.log("gate.START_NATIVE_PAYMENT()");
-          try {
-            await gate.start_native_payment($curr_valid_secret || "");
-            currentScreen = "completion";
-          } catch (nativeErr) {
-            console.warn("Native payment unavailable, falling back", nativeErr);
-          }
-        }
         const [
           rawPricePoints,
           rawBasicPricePoints,
@@ -163,11 +146,6 @@
       initialized = true;
     }
   });
-  $effect(() => {
-    if (!$paymentsOpen) {
-      nativePaymentAttempted = false;
-    }
-  });
 
   function displayLabel(days: number, plan: "unlimited" | "basic") {
     if (plan === "unlimited" && isBasic) {
@@ -222,7 +200,6 @@
     currentScreen = "planSelect";
     voucherCode = "";
     initialized = false;
-    nativePaymentAttempted = false;
   }
 
   let refreshInProgress = $state(false);
