@@ -40,6 +40,7 @@
     app_status,
     conn_status,
     curr_valid_secret,
+    type SessionInfo,
   } from "./lib/user";
   import Flag from "./lib/Flag.svelte";
 
@@ -51,6 +52,43 @@
     }
     const hue = ((h >>> 0) % 360);
     return `hsl(${hue}, 40%, 30%)`;
+  }
+
+  type CollapsedSessionInfo = SessionInfo & { count: number };
+
+  function sessionIdentityKey(session: SessionInfo): string {
+    const bridge = session.bridge || null;
+    const protocol = bridge ? session.protocol : "";
+
+    return JSON.stringify([
+      session.country,
+      session.city,
+      session.exit,
+      bridge ? "bridge" : "direct",
+      bridge ?? "",
+      protocol,
+    ]);
+  }
+
+  function collapseSessions(sessions: SessionInfo[]): CollapsedSessionInfo[] {
+    const collapsed: CollapsedSessionInfo[] = [];
+    const byIdentity = new Map<string, CollapsedSessionInfo>();
+
+    for (const session of sessions) {
+      const key = sessionIdentityKey(session);
+      const existing = byIdentity.get(key);
+
+      if (existing) {
+        existing.count += 1;
+        continue;
+      }
+
+      const entry = { ...session, count: 1 };
+      byIdentity.set(key, entry);
+      collapsed.push(entry);
+    }
+
+    return collapsed;
   }
   import { pref_wizard } from "./lib/prefs";
   import AppWhitelistControl from "./settings/AppWhitelistControl.svelte";
@@ -286,10 +324,11 @@
         </h2>
 
         {#if $conn_status !== "disconnected" && $conn_status !== "connecting"}
+          {@const sessions = collapseSessions($conn_status.sessions)}
           <div class="session-grid mb-2 tnum">
-            {#each $conn_status.sessions as session, i}
+            {#each sessions as session, i}
               {@const sameAsPrev =
-                i > 0 && $conn_status.sessions[i - 1].exit === session.exit}
+                i > 0 && sessions[i - 1].exit === session.exit}
               {#if sameAsPrev}
                 <span></span>
                 <span></span>
@@ -298,9 +337,17 @@
                 <span>{session.exit}</span>
               {/if}
               {#if session.bridge}
-                <span><span class="opacity-60">via</span> {session.bridge}</span>
+                <span>
+                  <span class="opacity-60">via</span> {session.bridge}{#if session.count > 1}
+                    <span class="opacity-60">[{session.count}]</span>
+                  {/if}
+                </span>
               {:else}
-                <span class="font-bold">direct</span>
+                <span class="font-bold">
+                  direct{#if session.count > 1}
+                    <span class="font-normal opacity-60">[{session.count}]</span>
+                  {/if}
+                </span>
               {/if}
               <span
                 class="text-right"
