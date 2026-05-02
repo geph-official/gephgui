@@ -1,6 +1,11 @@
 <script lang="ts">
   import { curr_lang, l10n } from "./lib/l10n";
-  import { app_status, conn_status, startDaemonArgs } from "./lib/user";
+  import {
+    app_status,
+    conn_status,
+    startDaemonArgs,
+    triggerPollBurst,
+  } from "./lib/user";
   import {
     pref_exit_constraint_derived,
     pref_seen_direct_prompt,
@@ -35,6 +40,7 @@
       if (args) {
         const gate = await native_gate();
         await gate.start_daemon(args);
+        triggerPollBurst();
       }
     } catch (e) {
       showErrorModal(modalStore, l10n($curr_lang, "error") + ": " + e);
@@ -56,6 +62,7 @@
     try {
       const gate = await native_gate();
       await gate.stop_daemon();
+      triggerPollBurst();
     } catch (e) {
       showErrorModal(modalStore, l10n($curr_lang, "error") + ": " + e);
     } finally {

@@ -114,10 +114,12 @@ export function endpointHost(endpoint: string): string {
  */
 function selfRefreshingStore<T>(
   refreshFn: () => Promise<T>,
-  intervalMs: number,
+  intervalMs: number | (() => number),
   initialValue: T
 ): Writable<T> {
   const store = writable(initialValue);
+  const getInterval =
+    typeof intervalMs === "function" ? intervalMs : () => intervalMs;
 
   async function loop() {
     while (true) {
@@ -127,12 +129,10 @@ function selfRefreshingStore<T>(
       } catch (error) {
         console.error("Error during refresh:", error);
       }
-      // Sleep for intervalMs
-      await new Promise((resolve) => setTimeout(resolve, intervalMs));
+      await pollSleep(getInterval());
     }
   }
 
-  // Start the background task
   loop();
 
   return store;
@@ -149,11 +149,12 @@ function selfRefreshingStore<T>(
 export function persistentSelfRefreshingStore<T>(
   storageName: string,
   refreshFn: () => Promise<T>,
-  intervalMs: number,
+  intervalMs: number | (() => number),
   initialValue: T
 ): Writable<T> {
-  // Create a persistent store
   const store = persistentWritable<T>(storageName, initialValue);
+  const getInterval =
+    typeof intervalMs === "function" ? intervalMs : () => intervalMs;
 
   async function loop() {
     while (true) {
@@ -163,15 +164,46 @@ export function persistentSelfRefreshingStore<T>(
       } catch (error) {
         console.error("Error during refresh:", error);
       }
-      // Sleep for intervalMs
-      await new Promise((resolve) => setTimeout(resolve, intervalMs));
+      await pollSleep(getInterval());
     }
   }
 
-  // Start the background task
   loop();
 
   return store;
+}
+
+/**
+ * Adaptive polling: callers (start/stop daemon) set a burst window during
+ * which conn-status / traffic polls fire at a much higher rate. Triggering
+ * a burst also wakes any sleeping polls so the very next refresh fires
+ * immediately rather than waiting out the slow-interval sleep.
+ */
+let burstUntil = 0;
+const pollWakers = new Set<() => void>();
+
+export function triggerPollBurst(durationMs: number = 10_000) {
+  burstUntil = Date.now() + durationMs;
+  for (const w of [...pollWakers]) w();
+}
+
+function pollInterval(slowMs: number, fastMs: number = 100): number {
+  return Date.now() < burstUntil ? fastMs : slowMs;
+}
+
+function pollSleep(ms: number): Promise<void> {
+  return new Promise((resolve) => {
+    let done = false;
+    const finish = () => {
+      if (done) return;
+      done = true;
+      pollWakers.delete(finish);
+      clearTimeout(t);
+      resolve();
+    };
+    const t = setTimeout(finish, ms);
+    pollWakers.add(finish);
+  });
 }
 
 /**
@@ -272,7 +304,7 @@ export const conn_status: Writable<ConnectionStatus> =
   persistentSelfRefreshingStore(
     "connection_status", // localStorage key
     fetchConnectionStatus,
-    500, // refresh interval in ms
+    () => pollInterval(1000),
     "disconnected" // initial value
   );
 

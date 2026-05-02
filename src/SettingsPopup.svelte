@@ -306,41 +306,45 @@
                 class="text-right"
                 style:color={protocolColor(session.protocol)}
               >
-                {session.protocol}
+                {session.bridge ? session.protocol : ""}
               </span>
             {/each}
           </div>
         {/if}
 
-        <SingleSetting>
-          {#snippet icon()}
+        {#await native_gate() then gate}
+          {#if gate.supports_proxy_conf}
+            <SingleSetting>
+              {#snippet icon()}
 
-              <Network size="1.4rem" />
-            
-                  {/snippet}
-          {#snippet description()}
-                  
-              <div class="flex flex-col text-sm">
-                <div>SOCKS5 proxy</div>
-                <div>HTTP proxy</div>
-              </div>
-            
-                  {/snippet}
-          {#snippet control()}
-            <div class="flex flex-col text-sm tnum">
-              <b
-                ><span class="opacity-50"
-                  >{#if $pref_listen_all}0.0.0.0{:else}localhost{/if}:</span
-                >9909</b
-              >
-              <b
-                ><span class="opacity-50"
-                  >{#if $pref_listen_all}0.0.0.0{:else}localhost{/if}:</span
-                >9910</b
-              >
-            </div>
-          {/snippet}
-        </SingleSetting>
+                  <Network size="1.4rem" />
+
+                      {/snippet}
+              {#snippet description()}
+
+                  <div class="flex flex-col text-sm">
+                    <div>SOCKS5 proxy</div>
+                    <div>HTTP proxy</div>
+                  </div>
+
+                      {/snippet}
+              {#snippet control()}
+                <div class="flex flex-col text-sm tnum">
+                  <b
+                    ><span class="opacity-50"
+                      >{#if $pref_listen_all}0.0.0.0{:else}localhost{/if}:</span
+                    >9909</b
+                  >
+                  <b
+                    ><span class="opacity-50"
+                      >{#if $pref_listen_all}0.0.0.0{:else}localhost{/if}:</span
+                    >9910</b
+                  >
+                </div>
+              {/snippet}
+            </SingleSetting>
+          {/if}
+        {/await}
 
         <div class="flex flex-row gap-2">
           <button
@@ -419,7 +423,7 @@
     row-gap: 0.25rem;
     align-items: center;
     width: 100%;
-    font-size: clamp(0.8rem, 3.5vw, 1rem);
+    font-size: clamp(0.8rem, 3.5vw, 0.875rem);
     white-space: nowrap;
   }
 </style>
