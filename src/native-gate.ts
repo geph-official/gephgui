@@ -422,16 +422,56 @@ const MockDaemonRpc = {
   async conn_info() {
     return {
       state: "Connected",
-      protocol: "sosistab3",
-      bridge: "fake",
-      exit: {
-        c2e_listen: "0.0.0.0:1",
-        b2e_listen: "0.0.0.0:2",
-        country: "CA",
-        city: "Montreal",
-        load: 0.3,
-        expiry: 10000000000,
-      },
+      sessions: [
+        {
+          protocol: "sosistab3",
+          exit: {
+            c2e_listen: "192.0.2.10:443",
+            b2e_listen: "192.0.2.10:444",
+            country: "CA",
+            city: "Montreal",
+            load: 0.3,
+            expiry: 10000000000,
+          },
+          bridge: "203.0.113.1:443",
+        },
+        {
+          protocol: "meeklike",
+          exit: {
+            c2e_listen: "192.0.2.10:443",
+            b2e_listen: "192.0.2.10:444",
+            country: "CA",
+            city: "Montreal",
+            load: 0.3,
+            expiry: 10000000000,
+          },
+          bridge: "203.0.113.42:8443",
+        },
+        {
+          protocol: "sosistab3",
+          exit: {
+            c2e_listen: "192.0.2.20:443",
+            b2e_listen: "192.0.2.20:444",
+            country: "CA",
+            city: "Toronto",
+            load: 0.5,
+            expiry: 10000000000,
+          },
+          bridge: null,
+        },
+        {
+          protocol: "meeklike",
+          exit: {
+            c2e_listen: "198.51.100.30:443",
+            b2e_listen: "198.51.100.30:444",
+            country: "US",
+            city: "New York",
+            load: 0.4,
+            expiry: 10000000000,
+          },
+          bridge: "198.51.100.7:8443",
+        },
+      ],
     };
   },
 

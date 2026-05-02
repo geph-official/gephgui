@@ -1,21 +1,13 @@
 <script lang="ts">
-  import { ProgressBar, getModalStore } from "@skeletonlabs/skeleton";
   import { ArrowsClockwise } from "phosphor-svelte";
   import { curr_lang, l10n } from "./lib/l10n";
   import {
-    native_gate,
     type ExitDescriptor,
     type ExitMetadata,
   } from "./native-gate";
-  import { pref_exit_constraint } from "./lib/prefs";
+  import { pref_exit_constraint, type ExitConstraint } from "./lib/prefs";
   import Flag from "./lib/Flag.svelte";
-  import { showErrorModal } from "./lib/utils";
-  import {
-    app_status,
-    conn_status,
-    openPayments,
-    startDaemonArgs,
-  } from "./lib/user";
+  import { app_status, openPayments } from "./lib/user";
   import Popup from "./lib/Popup.svelte";
   interface Props {
     open?: boolean;
@@ -23,26 +15,9 @@
 
   let { open = $bindable(false) }: Props = $props();
 
-  const modalStore = getModalStore();
-  let closing = $state(false);
-
-  const reconnectDaemon = async () => {
-    try {
-      closing = true;
-      const gate = await native_gate();
-      const args = await startDaemonArgs();
-      if (args && $conn_status !== "disconnected") {
-        await gate.restart_daemon(args);
-      }
-    } catch (e) {
-      showErrorModal(
-        modalStore,
-        l10n($curr_lang, "cant-reconnect-now") + ":<br>" + e,
-      );
-    } finally {
-      open = false;
-      closing = false;
-    }
+  const selectExit = (constraint: ExitConstraint) => {
+    pref_exit_constraint.set(constraint);
+    open = false;
   };
 
   const getCountries = (servers: ExitDescriptor[]): string[] => {
@@ -137,16 +112,11 @@
   onClose={() => (open = false)}
 >
   <div class="flex flex-col gap-2 pt-2">
-    {#if closing}
-      <ProgressBar />
-    {:else if exitInfos}
+    {#if exitInfos}
       <!-- "Automatic" option -->
       <button
         class={rowClass}
-        onclick={() => {
-          $pref_exit_constraint = "auto";
-          reconnectDaemon();
-        }}
+        onclick={() => selectExit("auto")}
       >
         <div class="w-8">
           <ArrowsClockwise width="1.3rem" height="1.3rem" />
@@ -187,7 +157,7 @@
                           country,
                           city,
                         )}
-                      onclick={async () => {
+                      onclick={() => {
                         if (
                           $app_status?.account.level === "Free" &&
                           !cityAllowedForFree(
@@ -200,11 +170,7 @@
                           open = false;
                           return;
                         }
-                        $pref_exit_constraint = {
-                          city,
-                          country,
-                        };
-                        await reconnectDaemon();
+                        selectExit({ city, country });
                       }}
                     >
                       <!-- Flag icon -->

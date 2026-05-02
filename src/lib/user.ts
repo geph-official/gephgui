@@ -65,8 +65,16 @@ export type AccountStatus =
     renew_unix: number;
   }
 
+export type SessionInfo = {
+  exit: string;
+  country: string;
+  city: string;
+  protocol: string;
+  bridge: string | null;
+};
+
 export type ConnectionStatus =
-  | { bridge: string | null; exit: string; country: string }
+  | { sessions: SessionInfo[]; primary: SessionInfo }
   | "disconnected"
   | "connecting";
 
@@ -75,6 +83,27 @@ export type AppStatus = {
 
   net_status: NetStatus
 };
+
+export function endpointHost(endpoint: string): string {
+  const trimmed = endpoint.trim();
+
+  const bracketedIpv6 = trimmed.match(/^\[([^\]]+)\](?::\d+)?$/);
+  if (bracketedIpv6) {
+    return bracketedIpv6[1];
+  }
+
+  const firstColon = trimmed.indexOf(":");
+  const lastColon = trimmed.lastIndexOf(":");
+  if (
+    firstColon > -1 &&
+    firstColon === lastColon &&
+    /^\d+$/.test(trimmed.slice(firstColon + 1))
+  ) {
+    return trimmed.slice(0, firstColon);
+  }
+
+  return trimmed;
+}
 
 /**
  * Creates a self-refreshing store that calls an async function at a given interval.
@@ -206,14 +235,31 @@ async function fetchConnectionStatus(): Promise<ConnectionStatus> {
   console.log("INFO", info);
 
   if (info.state === "Connected") {
-    return {
-      bridge: `${info.protocol
-        .replace("sosistab", "sos")
-        .replace("plain", "pln")
-        .replace("client-exit", "c-e")} ${info.bridge.split(":")[0]}`,
-      exit: info.exit.c2e_listen.split(":")[0],
-      country: info.exit.country,
-    };
+    const sessions: SessionInfo[] = (info.sessions ?? []).map((s: any) => ({
+      exit: endpointHost(s.exit.c2e_listen),
+      country: s.exit.country,
+      city: s.exit.city,
+      protocol: s.protocol,
+      bridge: s.bridge ?? null,
+    }));
+    if (sessions.length === 0) {
+      return "connecting";
+    }
+    const counts = new Map<string, number>();
+    for (const s of sessions) {
+      counts.set(s.country, (counts.get(s.country) ?? 0) + 1);
+    }
+    let bestCountry = sessions[0].country;
+    let bestCount = -1;
+    for (const [c, n] of counts) {
+      if (n > bestCount) {
+        bestCount = n;
+        bestCountry = c;
+      }
+    }
+    const primary =
+      sessions.find((s) => s.country === bestCountry) ?? sessions[0];
+    return { sessions, primary };
   } else {
     return "connecting";
   }

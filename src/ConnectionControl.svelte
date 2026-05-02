@@ -1,12 +1,21 @@
 <script lang="ts">
   import { curr_lang, l10n } from "./lib/l10n";
   import { app_status, conn_status, startDaemonArgs } from "./lib/user";
-  import { pref_exit_constraint_derived } from "./lib/prefs";
+  import {
+    pref_exit_constraint_derived,
+    pref_seen_direct_prompt,
+  } from "./lib/prefs";
+  import { get } from "svelte/store";
   import { native_gate } from "./native-gate";
-  import { ProgressBar, getModalStore } from "@skeletonlabs/skeleton";
+  import {
+    ProgressBar,
+    getModalStore,
+    type ModalSettings,
+  } from "@skeletonlabs/skeleton";
   import { CaretRight } from "phosphor-svelte";
   import Flag from "./lib/Flag.svelte";
   import StatusCircle from "./lib/StatusCircle.svelte";
+  import DirectConnectionPromptPopup from "./DirectConnectionPromptPopup.svelte";
   import { showErrorModal } from "./lib/utils";
 
   interface Props {
@@ -16,9 +25,10 @@
   let { serversOpen = $bindable() }: Props = $props();
 
   let connectButtonDisabled = $state(false);
+  let directPromptOpen = $state(false);
   const modalStore = getModalStore();
 
-  const handleStartDaemon = async () => {
+  const startDaemonNow = async () => {
     connectButtonDisabled = true;
     try {
       const args = await startDaemonArgs();
@@ -31,6 +41,14 @@
     } finally {
       connectButtonDisabled = false;
     }
+  };
+
+  const handleStartDaemon = async () => {
+    if (!get(pref_seen_direct_prompt)) {
+      directPromptOpen = true;
+      return;
+    }
+    await startDaemonNow();
   };
 
   const handleStopDaemon = async () => {
@@ -46,6 +64,15 @@
   };
 
   const switchServers = async () => {
+    if ($conn_status !== "disconnected") {
+      const modal: ModalSettings = {
+        type: "alert",
+        title: l10n($curr_lang, "disconnect-first-title"),
+        body: l10n($curr_lang, "disconnect-first-body"),
+      };
+      modalStore.trigger(modal);
+      return;
+    }
     serversOpen = true;
   };
 
@@ -55,6 +82,28 @@
       : $conn_status === "connecting"
         ? "connecting"
         : "connected");
+
+  let sessionGroups = $derived.by(() => {
+    if ($conn_status === "disconnected" || $conn_status === "connecting") {
+      return [];
+    }
+    const groups = new Map<
+      string,
+      { country: string; exit: string; count: number }
+    >();
+    for (const s of $conn_status.sessions) {
+      const key = `${s.country}|${s.exit}`;
+      const g = groups.get(key);
+      if (g) {
+        g.count += 1;
+      } else {
+        groups.set(key, { country: s.country, exit: s.exit, count: 1 });
+      }
+    }
+    return [...groups.values()].sort(
+      (a, b) => b.count - a.count || a.country.localeCompare(b.country),
+    );
+  });
 </script>
 
 {#if $app_status}
@@ -74,16 +123,13 @@
         </div>
         <div class="flex flex-row mt-1">
           {#if $conn_status !== "disconnected" && $conn_status !== "connecting"}
-            <small><Flag country={$conn_status.country} /></small>
-            <small>
-              {$conn_status.exit}
-
-              <span class="font-normal">
-                [{#if $conn_status.bridge}{$conn_status.bridge}{:else}{l10n(
-                    $curr_lang,
-                    "direct",
-                  )}{/if}]
-              </span>
+            <small class="flex flex-row flex-wrap gap-x-2 gap-y-1 items-center">
+              {#each sessionGroups as g}
+                <span class="inline-flex items-center gap-1">
+                  <Flag country={g.country} />
+                  <span>{g.exit}</span>
+                </span>
+              {/each}
             </small>
           {:else}
             <small>
@@ -131,6 +177,11 @@
     {/if}
   </div>
 {/if}
+
+<DirectConnectionPromptPopup
+  bind:open={directPromptOpen}
+  onContinue={() => void startDaemonNow()}
+/>
 
 <style>
   .server-name {

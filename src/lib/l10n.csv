@@ -233,3 +233,13 @@ best-for-occasional-usage,Best for occasional usage,最适合偶尔使用,最適
 popular,Popular,推荐,推薦,محبوب,Популярно,Popular,Популярно
 per-month,per month,每月,每月,در ماه,в месяц,por mes,на місяць
 show-cny-prices,Show prices in CNY,使用人民币显示价格,使用人民幣顯示價格,نمایش قیمت‌ها به یوان,Показывать цены в юанях,Mostrar precios en CNY,Показувати ціни в юанях
+direct-prompt-title,Before you connect…,连接之前…,連線之前…,پیش از اتصال…,Перед подключением…,Antes de conectarte…,Перед підключенням…
+direct-prompt-question,Does your network block VPNs?,您的网络封锁 VPN 吗？,您的網路封鎖 VPN 嗎？,آیا شبکهٔ شما VPN را مسدود می‌کند؟,Ваша сеть блокирует VPN?,¿Tu red bloquea VPNs?,Ваша мережа блокує VPN?
+direct-prompt-examples,"e.g. you live in China, Iran, Russia",如中国、伊朗、俄罗斯等,如中國、伊朗、俄羅斯等,"مثلاً در چین، ایران یا روسیه","например: Китай, Иран, Россия","p. ej. China, Irán, Rusia","напр.: Китай, Іран, Росія"
+direct-prompt-yes,My network blocks VPNs,我的网络封锁 VPN,我的網路封鎖 VPN,شبکهٔ من VPN را مسدود می‌کند,Моя сеть блокирует VPN,Mi red bloquea las VPNs,Моя мережа блокує VPN
+direct-prompt-yes-sub,Hide Geph traffic from my ISP,向网络服务商隐藏迷雾通流量,向網路服務商隱藏迷霧通流量,پنهان‌سازی ترافیک Geph از ارائه‌دهندهٔ اینترنت,Скрыть трафик Geph от провайдера,Ocultar el tráfico de Geph a mi proveedor,Приховати трафік Geph від провайдера
+direct-prompt-no,My network allows VPNs,我的网络允许 VPN,我的網路允許 VPN,شبکهٔ من VPN را مجاز می‌داند,Моя сеть разрешает VPN,Mi red permite las VPNs,Моя мережа дозволяє VPN
+direct-prompt-no-sub,Connect faster,连接更快,連線更快,اتصال سریع‌تر,Подключаться быстрее,Conectar más rápido,Підключатися швидше
+direct-prompt-footer,"You can change this later in Settings → ""Allow direct connections"".","之后可在「设置 → 允许直连」中更改。","之後可在「設定 → 允許直連」中變更。","می‌توانید بعداً از مسیر «تنظیمات ← اجازهٔ اتصال مستقیم» تغییر دهید.","Это можно изменить позже в «Настройки → Разрешить прямые подключения».","Puedes cambiarlo después en «Ajustes → Permitir conexiones directas».","Це можна змінити пізніше в «Налаштування → Дозволити прямі підключення»."
+disconnect-first-title,Disconnect first,请先断开连接,請先中斷連線,ابتدا قطع کنید,Сначала отключитесь,Desconéctate primero,Спочатку від'єднайтеся
+disconnect-first-body,"You need to disconnect before changing the server. Tap Disconnect, then pick a new location.","更改服务器之前需要先断开连接。请点击“断开连接”，然后选择新的位置。","更改伺服器之前需要先中斷連線。請點選「中斷連線」，然後選擇新的位置。","قبل از تغییر سرور باید اتصال را قطع کنید. روی «قطع اتصال» بزنید و سپس مکان جدیدی انتخاب کنید.","Перед сменой сервера нужно отключиться. Нажмите «Отключить», затем выберите новую локацию.","Debes desconectarte antes de cambiar de servidor. Toca Desconectar y luego elige una nueva ubicación.","Перед зміною сервера потрібно від'єднатися. Натисніть «Від'єднати», а потім виберіть нове розташування."

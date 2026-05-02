@@ -181,3 +181,11 @@ export const pref_seen_data_collection: Writable<boolean> = persistentWritable(
   "seen_data_collection_1",
   false
 );
+
+/**
+ * Whether the direct-connection-mode prompt has been shown.
+ */
+export const pref_seen_direct_prompt: Writable<boolean> = persistentWritable(
+  "seen_direct_prompt_1",
+  false
+);

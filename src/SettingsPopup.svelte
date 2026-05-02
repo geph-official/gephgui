@@ -38,8 +38,20 @@
   import Popup from "./lib/Popup.svelte";
   import {
     app_status,
+    conn_status,
     curr_valid_secret,
   } from "./lib/user";
+  import Flag from "./lib/Flag.svelte";
+
+  function protocolColor(p: string): string {
+    let h = 2166136261;
+    for (let i = 0; i < p.length; i++) {
+      h ^= p.charCodeAt(i);
+      h = Math.imul(h, 16777619);
+    }
+    const hue = ((h >>> 0) % 360);
+    return `hsl(${hue}, 40%, 30%)`;
+  }
   import { pref_wizard } from "./lib/prefs";
   import AppWhitelistControl from "./settings/AppWhitelistControl.svelte";
   import VersionDisplay from "./settings/VersionDisplay.svelte";
@@ -273,9 +285,36 @@
           {l10n($curr_lang, "debug")}
         </h2>
 
+        {#if $conn_status !== "disconnected" && $conn_status !== "connecting"}
+          <div class="session-grid mb-2 tnum">
+            {#each $conn_status.sessions as session, i}
+              {@const sameAsPrev =
+                i > 0 && $conn_status.sessions[i - 1].exit === session.exit}
+              {#if sameAsPrev}
+                <span></span>
+                <span></span>
+              {:else}
+                <Flag country={session.country} />
+                <span>{session.exit}</span>
+              {/if}
+              {#if session.bridge}
+                <span><span class="opacity-60">via</span> {session.bridge}</span>
+              {:else}
+                <span class="font-bold">direct</span>
+              {/if}
+              <span
+                class="text-right"
+                style:color={protocolColor(session.protocol)}
+              >
+                {session.protocol}
+              </span>
+            {/each}
+          </div>
+        {/if}
+
         <SingleSetting>
           {#snippet icon()}
-                  
+
               <Network size="1.4rem" />
             
                   {/snippet}
@@ -371,5 +410,16 @@
     margin-top: -0.4rem;
     font-weight: 500;
     opacity: 0.8;
+  }
+
+  .session-grid {
+    display: grid;
+    grid-template-columns: auto auto 1fr auto;
+    column-gap: 0.5rem;
+    row-gap: 0.25rem;
+    align-items: center;
+    width: 100%;
+    font-size: clamp(0.8rem, 3.5vw, 1rem);
+    white-space: nowrap;
   }
 </style>
