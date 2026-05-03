@@ -1,6 +1,6 @@
 <script lang="ts">
   import { curr_lang, l10n } from "./lib/l10n";
-  import { app_status, traffic_history } from "./lib/user";
+  import { app_status } from "./lib/user";
 
   import { pref_wizard } from "./lib/prefs";
   import { ProgressBar } from "@skeletonlabs/skeleton";

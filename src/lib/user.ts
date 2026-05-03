@@ -1,4 +1,4 @@
-import { get, writable, type Readable, type Writable } from "svelte/store";
+import { get, writable, type Writable } from "svelte/store";
 import {
   persistentWritable,
   pref_app_whitelist,
@@ -118,8 +118,9 @@ function selfRefreshingStore<T>(
   initialValue: T
 ): Writable<T> {
   const store = writable(initialValue);
-  const getInterval =
-    typeof intervalMs === "function" ? intervalMs : () => intervalMs;
+  const isDynamic = typeof intervalMs === "function";
+  const getInterval = isDynamic ? (intervalMs as () => number) : () => intervalMs as number;
+  const sleep = isDynamic ? burstPollSleep : pollSleep;
 
   async function loop() {
     while (true) {
@@ -129,7 +130,7 @@ function selfRefreshingStore<T>(
       } catch (error) {
         console.error("Error during refresh:", error);
       }
-      await pollSleep(getInterval());
+      await sleep(getInterval());
     }
   }
 
@@ -153,8 +154,9 @@ export function persistentSelfRefreshingStore<T>(
   initialValue: T
 ): Writable<T> {
   const store = persistentWritable<T>(storageName, initialValue);
-  const getInterval =
-    typeof intervalMs === "function" ? intervalMs : () => intervalMs;
+  const isDynamic = typeof intervalMs === "function";
+  const getInterval = isDynamic ? (intervalMs as () => number) : () => intervalMs as number;
+  const sleep = isDynamic ? burstPollSleep : pollSleep;
 
   async function loop() {
     while (true) {
@@ -164,7 +166,7 @@ export function persistentSelfRefreshingStore<T>(
       } catch (error) {
         console.error("Error during refresh:", error);
       }
-      await pollSleep(getInterval());
+      await sleep(getInterval());
     }
   }
 
@@ -192,6 +194,11 @@ function pollInterval(slowMs: number, fastMs: number = 100): number {
 }
 
 function pollSleep(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+// Like pollSleep but registers in pollWakers so triggerPollBurst can interrupt it early.
+function burstPollSleep(ms: number): Promise<void> {
   return new Promise((resolve) => {
     let done = false;
     const finish = () => {
@@ -307,25 +314,6 @@ export const conn_status: Writable<ConnectionStatus> =
     () => pollInterval(1000),
     "disconnected" // initial value
   );
-
-export const traffic_history: Readable<number[]> = selfRefreshingStore(
-  async () => {
-    const gate = await native_gate();
-    const v: number[] = (await gate.daemon_rpc("stat_history", [
-      "traffic",
-    ])) as any;
-    if (v.length > 0) {
-      v.pop();
-    }
-    // Pad the array with zeros at the beginning to reach a length of 600
-    const padLength = Math.max(0, 600 - v.length);
-    const paddedArray = [...Array(padLength).fill(0), ...v];
-
-    return paddedArray;
-  },
-  1000,
-  []
-);
 
 /**
  * Single store to track account, stats, and news.
