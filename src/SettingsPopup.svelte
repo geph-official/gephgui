@@ -337,8 +337,12 @@
                 <span>{session.exit}</span>
               {/if}
               {#if session.bridge}
-                <span>
-                  <span class="opacity-60">via</span> {session.bridge}{#if session.count > 1}
+                <span class="bridge-address-cell">
+                  <span class="opacity-60">via</span>
+                  <span class="bridge-address" title={session.bridge}>
+                    {session.bridge}
+                  </span>
+                  {#if session.count > 1}
                     <span class="opacity-60">[{session.count}]</span>
                   {/if}
                 </span>
@@ -465,12 +469,26 @@
 
   .session-grid {
     display: grid;
-    grid-template-columns: auto auto 1fr auto;
+    grid-template-columns: auto auto minmax(0, 1fr) auto;
     column-gap: 0.5rem;
     row-gap: 0.25rem;
     align-items: center;
     width: 100%;
     font-size: clamp(0.8rem, 3.5vw, 0.875rem);
+    white-space: nowrap;
+  }
+
+  .bridge-address-cell {
+    display: flex;
+    min-width: 0;
+    align-items: center;
+    gap: 0.25rem;
+  }
+
+  .bridge-address {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
     white-space: nowrap;
   }
 </style>

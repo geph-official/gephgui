@@ -445,7 +445,7 @@ const MockDaemonRpc = {
             load: 0.3,
             expiry: 10000000000,
           },
-          bridge: "203.0.113.42:8443",
+          bridge: "[2001:db8:85a3:0000:0000:8a2e:0370:7334]:8443",
         },
         {
           protocol: "sosistab3",
