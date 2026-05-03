@@ -323,46 +323,6 @@
           {l10n($curr_lang, "debug")}
         </h2>
 
-        {#if $conn_status !== "disconnected" && $conn_status !== "connecting"}
-          {@const sessions = collapseSessions($conn_status.sessions)}
-          <div class="session-grid mb-2 tnum">
-            {#each sessions as session, i}
-              {@const sameAsPrev =
-                i > 0 && sessions[i - 1].exit === session.exit}
-              {#if sameAsPrev}
-                <span></span>
-                <span></span>
-              {:else}
-                <Flag country={session.country} />
-                <span>{session.exit}</span>
-              {/if}
-              {#if session.bridge}
-                <span class="bridge-address-cell">
-                  <span class="opacity-60">via</span>
-                  <span class="bridge-address" title={session.bridge}>
-                    {session.bridge}
-                  </span>
-                  {#if session.count > 1}
-                    <span class="opacity-60">[{session.count}]</span>
-                  {/if}
-                </span>
-              {:else}
-                <span class="font-bold">
-                  direct{#if session.count > 1}
-                    <span class="font-normal opacity-60">[{session.count}]</span>
-                  {/if}
-                </span>
-              {/if}
-              <span
-                class="text-right"
-                style:color={protocolColor(session.protocol)}
-              >
-                {session.bridge ? session.protocol : ""}
-              </span>
-            {/each}
-          </div>
-        {/if}
-
         {#await native_gate() then gate}
           {#if gate.supports_proxy_conf}
             <SingleSetting>
@@ -441,6 +401,46 @@
             }}>{l10n($curr_lang, "debug-logs")}</button
           >
         </div>
+
+        {#if $conn_status !== "disconnected" && $conn_status !== "connecting"}
+          {@const sessions = collapseSessions($conn_status.sessions)}
+          <div class="session-grid mt-6 tnum">
+            {#each sessions as session, i}
+              {@const sameAsPrev =
+                i > 0 && sessions[i - 1].exit === session.exit}
+              {#if sameAsPrev}
+                <span></span>
+                <span></span>
+              {:else}
+                <Flag country={session.country} />
+                <span>{session.exit}</span>
+              {/if}
+              {#if session.bridge}
+                <span class="bridge-address-cell">
+                  <span class="opacity-60">via</span>
+                  <span class="bridge-address" title={session.bridge}>
+                    {session.bridge}
+                  </span>
+                  {#if session.count > 1}
+                    <span class="opacity-60">[{session.count}]</span>
+                  {/if}
+                </span>
+              {:else}
+                <span class="font-bold">
+                  direct{#if session.count > 1}
+                    <span class="font-normal opacity-60">[{session.count}]</span>
+                  {/if}
+                </span>
+              {/if}
+              <span
+                class="text-right"
+                style:color={protocolColor(session.protocol)}
+              >
+                {session.bridge ? session.protocol : ""}
+              </span>
+            {/each}
+          </div>
+        {/if}
       </section>
     {/if}
 
@@ -471,10 +471,10 @@
     display: grid;
     grid-template-columns: auto auto minmax(0, 1fr) auto;
     column-gap: 0.5rem;
-    row-gap: 0.25rem;
     align-items: center;
     width: 100%;
-    font-size: clamp(0.8rem, 3.5vw, 0.875rem);
+    font-size: clamp(0.704rem, 3.08vw, 0.77rem);
+    line-height: 1.4;
     white-space: nowrap;
   }
 
