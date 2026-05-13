@@ -504,6 +504,10 @@
             </button>
           {/each}
 
+          <div class="card p-3 variant-ghost-surface text-sm text-center">
+            {l10n($curr_lang, "plus-device-limit-note")}
+          </div>
+
           {#if createInvoiceInProgress}
             <ProgressBar />
           {:else}
@@ -570,6 +574,11 @@
                 {l10n($curr_lang, "promo-code-blurb")}
               </p>
             </div>
+            {#if secondPagePayment.methods.includes("wechat") || secondPagePayment.methods.includes("alipay")}
+              <div class="card p-3 variant-ghost-warning text-sm">
+                {l10n($curr_lang, "wechat-alipay-no-refund-note")}
+              </div>
+            {/if}
             {#each secondPagePayment.methods as method}
               <button
                 class="btn variant-filled border p-2 rounded-lg"

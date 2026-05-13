@@ -11,6 +11,7 @@ export default defineConfig({
     dsv(),
     legacy({
       targets: ["defaults", ">0.01%"],
+      renderModernChunks: false,
     }),
   ],
   resolve: {

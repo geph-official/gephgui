@@ -90,6 +90,10 @@
         <dt>Renewal</dt>
         <dd>Auto-renews monthly until canceled.</dd>
       </div>
+      <div>
+        <dt>Devices</dt>
+        <dd>{l10n($curr_lang, "plus-device-limit-note")}</dd>
+      </div>
     </dl>
 
     <p class="renewal">
