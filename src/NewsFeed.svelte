@@ -106,7 +106,7 @@
       {#each $all_news as item}
         {@const dateInfo = formatDate(item.date_unix)}
         <button
-          class={"flex flex-row text-left justify-between items-center mb-3 py-2  " +
+          class={"flex flex-row text-start justify-between items-center mb-3 py-2  " +
             (item.date_unix > latestReadDate
               ? "unread-news text-primary-800"
               : "read-news")}

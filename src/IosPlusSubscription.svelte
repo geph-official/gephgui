@@ -92,7 +92,7 @@
       </div>
       <div>
         <dt>Devices</dt>
-        <dd>{l10n($curr_lang, "plus-device-limit-note")}</dd>
+        <dd>{@html l10n($curr_lang, "plus-device-limit-note")}</dd>
       </div>
     </dl>
 

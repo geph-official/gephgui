@@ -76,7 +76,7 @@
 >
   <div class="flex flex-col w-full overflow-hidden">
     <div
-      class="bg-surface-200 p-3 rounded-lg border-l-4 border-primary-500 mb-4"
+      class="bg-surface-200 p-3 rounded-lg border-s-4 border-primary-500 mb-4"
     >
       <p class="text-sm">
         {l10n($curr_lang, "select-excluded-apps-description")}
@@ -92,14 +92,14 @@
         </div>
       {:then loadedApps}
         <div class="relative flex items-center mb-4">
-          <div class="absolute left-3 opacity-70">
+          <div class="absolute start-3 opacity-70">
             <MagnifyingGlass size="1.2rem" />
           </div>
           <input
             type="text"
             bind:value={searchQuery}
             placeholder={l10n($curr_lang, "search-apps")}
-            class="w-full input pl-10"
+            class="w-full input ps-10"
           />
         </div>
 
@@ -117,10 +117,10 @@
             <li class="border-b border-surface-300 last:border-b-0">
               <button
                 type="button"
-                class="flex w-full items-center p-3 text-left transition-colors duration-200 hover:bg-surface-200"
+                class="flex w-full items-center p-3 text-start transition-colors duration-200 hover:bg-surface-200"
                 onclick={() => toggleApp(app.id)}
               >
-                <div class="mr-3 flex items-center">
+                <div class="me-3 flex items-center">
                   {#if $pref_app_whitelist[app.id]}
                     <CheckCircle
                       size="1.4rem"
@@ -131,7 +131,7 @@
                   {/if}
                 </div>
                 <div
-                  class="w-8 h-8 mr-3 flex-shrink-0 flex items-center justify-center"
+                  class="w-8 h-8 me-3 flex-shrink-0 flex items-center justify-center"
                 >
                   {#if appIcons[app.id]}
                     <img

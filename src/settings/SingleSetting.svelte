@@ -81,7 +81,7 @@
     margin-top: 1.5rem;
     margin-bottom: 1.5rem;
     padding: 0;
-    text-align: left;
+    text-align: start;
     width: 100%;
   }
 

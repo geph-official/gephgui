@@ -6,6 +6,10 @@ import detectNearestBrowserLocale from "detect-nearest-browser-locale";
 // Languages
 export type Natlang = "en" | "zh-CN" | "zh-TW" | "fa" | "ru" | "es" | "uk";
 
+const rtl_langs = new Set<Natlang>(["fa"]);
+
+export const is_rtl = (lang: Natlang) => rtl_langs.has(lang);
+
 // The current language.
 export const curr_lang: Writable<Natlang> = persistentWritable<Natlang>(
   "language-new-6",

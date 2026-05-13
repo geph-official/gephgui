@@ -433,7 +433,7 @@
                 </span>
               {/if}
               <span
-                class="text-right"
+                class="text-end"
                 style:color={protocolColor(session.protocol)}
               >
                 {session.bridge ? session.protocol : ""}

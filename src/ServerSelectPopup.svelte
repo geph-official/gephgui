@@ -52,7 +52,7 @@
   };
 
   const rowClass =
-    "flex flex-row variant-ghost p-2 rounded-md cursor-pointer items-center text-left block text-sm";
+    "flex flex-row variant-ghost p-2 rounded-md cursor-pointer items-center text-start block text-sm";
 
   type ExitInfo = { desc: ExitDescriptor; meta: ExitMetadata };
   type CategoryKey = "core" | "streaming";

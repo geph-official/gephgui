@@ -90,8 +90,7 @@
   .big-logo {
     width: 50vmin;
 
-    margin-left: auto;
-    margin-right: auto;
+    margin-inline: auto;
   }
 
   .bottom {
@@ -100,7 +99,7 @@
     position: fixed;
     width: 100%;
     bottom: 0;
-    left: 0;
+    inset-inline: 0;
   }
 
   .stretch {

@@ -13,4 +13,4 @@
         : "bg-red-500");
 </script>
 
-<div class={`inline-block w-4 h-4 rounded-full ${color} mr-2`}></div>
+<div class={`inline-block w-4 h-4 rounded-full ${color} me-2`}></div>

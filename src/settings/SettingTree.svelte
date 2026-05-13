@@ -67,14 +67,16 @@
       {/snippet}
     {#snippet control()}
       {#if setting.type === "checkbox"}
-        <SlideToggle
-          name={setting.description}
-          size="sm"
-          active="bg-primary-500"
-          bind:checked={$store}
-          disabled={setting.disabled}
-          onchange={handleToggle}
-        />
+        <span dir="ltr" class="inline-flex">
+          <SlideToggle
+            name={setting.description}
+            size="sm"
+            active="bg-primary-500"
+            bind:checked={$store}
+            disabled={setting.disabled}
+            onchange={handleToggle}
+          />
+        </span>
       {/if}
     {/snippet}
     {#snippet details()}

@@ -158,7 +158,7 @@
                     ?.join(" ")}
                 {/if}
               </div>
-              <button onclick={() => (secretShown = !secretShown)} class="mr-2">
+              <button onclick={() => (secretShown = !secretShown)} class="me-2">
                 {#if secretShown}
                   <EyeSlash size="1.5rem" />
                 {:else}

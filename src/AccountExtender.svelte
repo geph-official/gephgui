@@ -169,7 +169,7 @@
   .sheen-effect {
     position: absolute;
     top: 0;
-    left: -100%;
+    inset-inline-start: -100%;
     width: 50%;
     height: 100%;
     background: linear-gradient(
@@ -185,10 +185,10 @@
 
   @keyframes sheen {
     0% {
-      left: -100%;
+      inset-inline-start: -100%;
     }
     100% {
-      left: 100%;
+      inset-inline-start: 100%;
     }
   }
 </style>

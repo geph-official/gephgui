@@ -85,7 +85,7 @@
   .choice-btn {
     border-radius: 0.5rem;
     padding: 0.875rem 1rem;
-    text-align: left;
+    text-align: start;
     width: 100%;
     color: inherit;
     font: inherit;

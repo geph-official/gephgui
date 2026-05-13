@@ -12,7 +12,7 @@
         width: 1.5rem;
         position: absolute;
         top: 50%;
-        right: 10%;
+        inset-inline-end: 10%;
         transform: translate3d(-50%, -50%, 0);
         will-change: transform;
     }

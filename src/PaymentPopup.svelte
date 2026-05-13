@@ -276,7 +276,7 @@
                   plan === "unlimited"
                     ? "btn variant-ringed-primary bg-primary-50/40 dark:bg-primary-900/20 hover:bg-primary-100/70 dark:hover:bg-primary-900/30"
                     : "btn variant-ringed bg-surface-50/70 dark:bg-surface-900/10 hover:bg-surface-100/70 dark:hover:bg-surface-900/20"
-                } w-full text-left transition flex flex-col items-start gap-3 relative p-4`}
+                } w-full text-start transition flex flex-col items-start gap-3 relative p-4`}
                 onclick={() => {
                   planTab = plan === "unlimited" ? "unlimited" : "basic";
                   selectedIndex = 0;
@@ -286,17 +286,17 @@
                 <!-- Badges -->
                 {#if plan === "unlimited"}
                   <span
-                    class="badge variant-filled-primary absolute top-2 right-2"
+                    class="badge variant-filled-primary absolute top-2 end-2"
                     >{l10n($curr_lang, "popular")}</span
                   >
                   {#if isBasic}
                     <span
-                      class="badge variant-ghost-primary absolute top-10 right-2"
+                      class="badge variant-ghost-primary absolute top-10 end-2"
                       >{l10n($curr_lang, "upgrade")}</span
                     >
                   {/if}
                 {:else}
-                  <span class="absolute top-2 right-2"></span>
+                  <span class="absolute top-2 end-2"></span>
                 {/if}
                 <div class="flex items-center gap-3">
                   <div
@@ -492,7 +492,7 @@
               onclick={() => handleSelect(i)}
             >
               <div>{displayLabel(days, effectivePlanTab)}</div>
-              <div class="grow text-right tnum">
+              <div class="grow text-end tnum">
                 <span class="font-semibold">
                   {#if showCNYPrices}
                     ¥{Math.ceil(price * allInfo.cnyFxRate)}
@@ -504,9 +504,9 @@
             </button>
           {/each}
 
-          <div class="card p-3 variant-ghost-surface text-sm text-center">
-            {l10n($curr_lang, "plus-device-limit-note")}
-          </div>
+          <p class="px-2 text-sm leading-normal opacity-85">
+            {@html l10n($curr_lang, "plus-device-limit-note")}
+          </p>
 
           {#if createInvoiceInProgress}
             <ProgressBar />

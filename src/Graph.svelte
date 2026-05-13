@@ -47,8 +47,8 @@
 {#key data}
   {#key color}
     <div class="tnum">
-      <div class="text-xs -mb-1 ml-2 mt-2">{title}</div>
-      <div class="ml-2" style="color: {color}">
+      <div class="text-xs -mb-1 ms-2 mt-2">{title}</div>
+      <div class="ms-2" style="color: {color}">
         <span class="text-xl"
           >{(data[data.length - 1] || 0).toFixed(decimals)}</span
         >

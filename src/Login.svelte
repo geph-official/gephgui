@@ -117,7 +117,7 @@
     {/if}
   </div>
   <div
-    class="absolute bottom-0 left-0 flex flex-col w-screen bg-surface-100 px-8 pt-3 pb-4"
+    class="absolute bottom-0 inset-x-0 flex flex-col w-screen bg-surface-100 px-8 pt-3 pb-4"
   >
     <small>{l10n($curr_lang, "dont-have-account-secret")}</small>
     <button

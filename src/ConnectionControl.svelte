@@ -116,7 +116,7 @@
 {#if $app_status}
   <div class="bottom flex flex-col mt-2 p-1">
     <button
-      class="flex flex-row mb-4 text-left"
+      class="flex flex-row mb-4 text-start"
       onclick={() => switchServers()}
     >
       <div class="server-name grow">

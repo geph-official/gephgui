@@ -9,7 +9,7 @@
   import { Gear, UserCircle } from "phosphor-svelte";
   import SettingsPopup from "./SettingsPopup.svelte";
 
-  import { curr_lang, l10n } from "./lib/l10n";
+  import { curr_lang, is_rtl, l10n } from "./lib/l10n";
   import Login from "./Login.svelte";
   import { app_status, curr_valid_secret } from "./lib/user";
   import Main from "./Main.svelte";
@@ -57,6 +57,11 @@
 
   $effect(() => {
     document.body.setAttribute("lang", $curr_lang);
+    document.body.setAttribute("dir", is_rtl($curr_lang) ? "rtl" : "ltr");
+    document.documentElement.setAttribute(
+      "dir",
+      is_rtl($curr_lang) ? "rtl" : "ltr",
+    );
   });
 
   // Compute when to show expiry warning: last 3 days, Plus, non-recurring
@@ -101,7 +106,7 @@
   <title>{l10n($curr_lang, "geph")}</title>
 </svelte:head>
 
-<main lang={$curr_lang} dir="auto">
+<main lang={$curr_lang} dir={is_rtl($curr_lang) ? "rtl" : "ltr"}>
   <Modal />
   <Toast />
   <AppBar>
