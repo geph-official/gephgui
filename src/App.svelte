@@ -109,7 +109,7 @@
 <main lang={$curr_lang} dir={is_rtl($curr_lang) ? "rtl" : "ltr"}>
   <Modal />
   <Toast />
-  <AppBar>
+  <AppBar slotTrail={is_rtl($curr_lang) ? "space-x-reverse" : ""}>
     {#snippet lead()}
       
       <img src="gephlogo.png" id="logo" alt="Geph logo" />

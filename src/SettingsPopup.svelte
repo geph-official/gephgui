@@ -246,6 +246,7 @@
             <option value="zh-CN">简体中文</option>
             <option value="zh-TW">繁體中文</option>
             <option value="fa">فارسی</option>
+            <option value="ar">العربية</option>
             <option value="ru">Русский</option>
             <option value="es">Español</option>
             <option value="uk">Українська</option>

@@ -4,16 +4,27 @@ import { persistentWritable } from "./prefs";
 import detectNearestBrowserLocale from "detect-nearest-browser-locale";
 
 // Languages
-export type Natlang = "en" | "zh-CN" | "zh-TW" | "fa" | "ru" | "es" | "uk";
+const supported_langs = [
+  "en",
+  "zh-CN",
+  "zh-TW",
+  "fa",
+  "ar",
+  "ru",
+  "es",
+  "uk",
+] as const;
 
-const rtl_langs = new Set<Natlang>(["fa"]);
+export type Natlang = (typeof supported_langs)[number];
+
+const rtl_langs = new Set<Natlang>(["fa", "ar"]);
 
 export const is_rtl = (lang: Natlang) => rtl_langs.has(lang);
 
 // The current language.
 export const curr_lang: Writable<Natlang> = persistentWritable<Natlang>(
   "language-new-6",
-  detectNearestBrowserLocale(["en", "zh-CN", "zh-TW", "fa", "ru", "es", "uk"]) as Natlang
+  detectNearestBrowserLocale([...supported_langs]) as Natlang
 );
 
 type CsvRow = { label: string } & Partial<Record<Natlang, string>>;
