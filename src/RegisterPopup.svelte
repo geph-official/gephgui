@@ -86,7 +86,7 @@
   {#if accountSecret}
     <div class="w-full flex items-center justify-center tnum my-8">
       <div class="text-center text-3xl w-[20rem]">
-        {formatNumberWithSpaces(accountSecret)}
+        <bdi dir="ltr">{formatNumberWithSpaces(accountSecret)}</bdi>
       </div>
     </div>
     <div class="text-center mt-2">

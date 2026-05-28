@@ -149,14 +149,16 @@
             <h2 class="text-primary-700">{l10n($curr_lang, "account-secret")}</h2>
             <div class="flex flex-row tnum">
               <div class="grow">
-                {#if secretShown}
-                  {$curr_valid_secret.match(/.{1,4}/g)?.join(" ")}
-                {:else}
-                  {$curr_valid_secret
-                    .replace(/\d/g, "•")
-                    .match(/.{1,4}/g)
-                    ?.join(" ")}
-                {/if}
+                <bdi dir="ltr">
+                  {#if secretShown}
+                    {$curr_valid_secret.match(/.{1,4}/g)?.join(" ")}
+                  {:else}
+                    {$curr_valid_secret
+                      .replace(/\d/g, "•")
+                      .match(/.{1,4}/g)
+                      ?.join(" ")}
+                  {/if}
+                </bdi>
               </div>
               <button onclick={() => (secretShown = !secretShown)} class="me-2">
                 {#if secretShown}
@@ -201,7 +203,7 @@
                 <tr>
                   <td>{l10n($curr_lang, "invite-code")}</td>
                   <td class="tnum flex flex-row gap-1 items-center"
-                    >{inviteCode}
+                    ><bdi dir="ltr">{inviteCode}</bdi>
                     <button onclick={() => copyToClipboard(inviteCode || "")}
                       ><Copy size="1rem" /></button
                     ></td
