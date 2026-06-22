@@ -11,6 +11,8 @@ import { get } from "svelte/store";
 export interface NativeGate {
   start_daemon(daemon_args: DaemonArgs): Promise<void>;
   restart_daemon(daemon_args: DaemonArgs): Promise<void>;
+  // Switch the exit while connected; the daemon reconnects without a leak window.
+  set_exit_constraint(exit: ExitConstraint): Promise<void>;
   stop_daemon(): Promise<void>;
   is_running(): Promise<boolean>;
   daemon_rpc(method: string, args: any[]): Promise<unknown>;
@@ -158,6 +160,10 @@ function mock_native_gate(): NativeGate {
       random_fail();
       random_fail();
       running = true;
+      await random_sleep();
+    },
+    set_exit_constraint: async () => {
+      random_fail();
       await random_sleep();
     },
     stop_daemon: async () => {

@@ -2,22 +2,31 @@
   import { ArrowsClockwise } from "phosphor-svelte";
   import { curr_lang, l10n } from "./lib/l10n";
   import {
+    native_gate,
     type ExitDescriptor,
     type ExitMetadata,
   } from "./native-gate";
   import { pref_exit_constraint, type ExitConstraint } from "./lib/prefs";
   import Flag from "./lib/Flag.svelte";
-  import { app_status, openPayments } from "./lib/user";
+  import { app_status, conn_status, openPayments, triggerPollBurst } from "./lib/user";
   import Popup from "./lib/Popup.svelte";
+  import { get } from "svelte/store";
   interface Props {
     open?: boolean;
   }
 
   let { open = $bindable(false) }: Props = $props();
 
-  const selectExit = (constraint: ExitConstraint) => {
+  const selectExit = async (constraint: ExitConstraint) => {
     pref_exit_constraint.set(constraint);
     open = false;
+    // If already connected, apply the new exit immediately via a leak-free
+    // reconnect (the daemon keeps the kill switch up across the switch).
+    if (get(conn_status) !== "disconnected") {
+      const gate = await native_gate();
+      await gate.set_exit_constraint(constraint);
+      triggerPollBurst();
+    }
   };
 
   const getCountries = (servers: ExitDescriptor[]): string[] => {
