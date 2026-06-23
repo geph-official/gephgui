@@ -12,11 +12,7 @@
   } from "./lib/prefs";
   import { get } from "svelte/store";
   import { native_gate } from "./native-gate";
-  import {
-    ProgressBar,
-    getModalStore,
-    type ModalSettings,
-  } from "@skeletonlabs/skeleton";
+  import { ProgressBar, getModalStore } from "@skeletonlabs/skeleton";
   import { CaretRight } from "phosphor-svelte";
   import Flag from "./lib/Flag.svelte";
   import StatusCircle from "./lib/StatusCircle.svelte";
@@ -70,16 +66,9 @@
     }
   };
 
-  const switchServers = async () => {
-    if ($conn_status !== "disconnected") {
-      const modal: ModalSettings = {
-        type: "alert",
-        title: l10n($curr_lang, "disconnect-first-title"),
-        body: l10n($curr_lang, "disconnect-first-body"),
-      };
-      modalStore.trigger(modal);
-      return;
-    }
+  const switchServers = () => {
+    // Picking a server while connected is fine: ServerSelectPopup applies the
+    // new exit via the daemon's leak-free reconnect (no disconnect needed).
     serversOpen = true;
   };
 
