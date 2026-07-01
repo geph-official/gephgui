@@ -144,8 +144,9 @@
 <style>
   small {
     display: block;
-    margin-top: -0.4rem;
+    margin-top: -0.2rem;
     font-weight: 500;
+    line-height: 1.35;
     opacity: 0.8;
   }
 

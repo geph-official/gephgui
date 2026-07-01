@@ -87,6 +87,7 @@
 
   .icon {
     width: 2rem;
+    flex-shrink: 0;
     opacity: 0.8;
   }
 
