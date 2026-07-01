@@ -1,6 +1,6 @@
 <script lang="ts">
   import SettingTree from "./SettingTree.svelte";
-  import { SlideToggle } from "@skeletonlabs/skeleton";
+  import { ProgressRadial, SlideToggle } from "@skeletonlabs/skeleton";
   import { writable } from "svelte/store";
   import type { Writable } from "svelte/store";
   import SingleSetting from "./SingleSetting.svelte";
@@ -105,19 +105,19 @@
           onchange={clampNumber}
         />
       {:else if setting.type === "info"}
-        {#await setting.values()}
-          <span class="opacity-50">…</span>
-        {:then values}
-          <div class="flex flex-col text-sm tnum text-end">
-            {#each values as value}
-              <b>{value}</b>
+        <div class="info-value text-sm tnum">
+          {#await setting.values()}
+            <ProgressRadial width="w-4" stroke={100} />
+          {:then values}
+            {#if values.length}
+              <b>{values.join(", ")}</b>
             {:else}
               <span class="opacity-50">—</span>
-            {/each}
-          </div>
-        {:catch}
-          <span class="opacity-50">—</span>
-        {/await}
+            {/if}
+          {:catch}
+            <span class="opacity-50">—</span>
+          {/await}
+        </div>
       {/if}
     {/snippet}
     {#snippet details()}
@@ -147,5 +147,15 @@
     margin-top: -0.4rem;
     font-weight: 500;
     opacity: 0.8;
+  }
+
+  /* Constant height whether the spinner or the value is showing, so the row
+     doesn't jump when loading finishes. */
+  .info-value {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    min-height: 1.5rem;
+    white-space: nowrap;
   }
 </style>
