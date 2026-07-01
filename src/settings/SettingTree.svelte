@@ -104,6 +104,20 @@
           disabled={setting.disabled}
           onchange={clampNumber}
         />
+      {:else if setting.type === "info"}
+        {#await setting.values()}
+          <span class="opacity-50">…</span>
+        {:then values}
+          <div class="flex flex-col text-sm tnum text-end">
+            {#each values as value}
+              <b>{value}</b>
+            {:else}
+              <span class="opacity-50">—</span>
+            {/each}
+          </div>
+        {:catch}
+          <span class="opacity-50">—</span>
+        {/await}
       {/if}
     {/snippet}
     {#snippet details()}

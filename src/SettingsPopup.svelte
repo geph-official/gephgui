@@ -9,7 +9,6 @@
   import {
     CircleHalfTilt,
     Funnel,
-    GlobeSimple,
     LockKey,
     Network,
     Plugs,
@@ -220,6 +219,13 @@
               type: "checkbox",
               store: pref_listen_all,
               blurb: "listen-all-blurb",
+              inner: [
+                {
+                  description: "lan-addresses",
+                  type: "info",
+                  values: () => gate.get_lan_addresses(),
+                },
+              ],
             },
             {
               description: "socks5-port",
@@ -311,32 +317,6 @@
             <SettingTree {setting} />
           {/each}
 
-          {#if section === "network" && gate.supports_proxy_mode && $pref_proxy_mode && $pref_listen_all}
-            <SingleSetting>
-              {#snippet icon()}
-                <GlobeSimple size="1.4rem" />
-              {/snippet}
-              {#snippet description()}
-                {l10n($curr_lang, "lan-addresses")}
-              {/snippet}
-              {#snippet control()}
-                {#await gate.get_lan_addresses()}
-                  <span class="opacity-50">…</span>
-                {:then addrs}
-                  <div class="flex flex-col text-sm tnum text-end">
-                    {#each addrs as addr}
-                      <b>{addr}</b>
-                    {:else}
-                      <span class="opacity-50">—</span>
-                    {/each}
-                  </div>
-                {:catch}
-                  <span class="opacity-50">—</span>
-                {/await}
-              {/snippet}
-            </SingleSetting>
-          {/if}
-
           {#if section === "features" && $pref_use_app_whitelist}
             <div class="app-whitelist-section">
               <SingleSetting>
@@ -375,40 +355,6 @@
         <h2 class="text-primary-700 uppercase font-semibold text-sm mb-2">
           {l10n($curr_lang, "debug")}
         </h2>
-
-        {#await native_gate() then gate}
-          {#if gate.supports_proxy_mode && $pref_proxy_mode}
-            <SingleSetting>
-              {#snippet icon()}
-
-                  <Network size="1.4rem" />
-
-                      {/snippet}
-              {#snippet description()}
-
-                  <div class="flex flex-col text-sm">
-                    <div>SOCKS5 proxy</div>
-                    <div>HTTP proxy</div>
-                  </div>
-
-                      {/snippet}
-              {#snippet control()}
-                <div class="flex flex-col text-sm tnum">
-                  <b
-                    ><span class="opacity-50"
-                      >{#if $pref_listen_all}0.0.0.0{:else}localhost{/if}:</span
-                    >{$pref_socks5_port}</b
-                  >
-                  <b
-                    ><span class="opacity-50"
-                      >{#if $pref_listen_all}0.0.0.0{:else}localhost{/if}:</span
-                    >{$pref_http_port}</b
-                  >
-                </div>
-              {/snippet}
-            </SingleSetting>
-          {/if}
-        {/await}
 
         <div class="flex flex-row gap-2">
           <button

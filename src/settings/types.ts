@@ -41,4 +41,20 @@ export type CollapseSetting = {
   onClickDisabled?: () => void;
 };
 
-export type Setting = CheckboxSetting | CollapseSetting | NumberSetting;
+// A read-only row displaying asynchronously fetched values.
+export type InfoSetting = {
+  type: "info";
+  description: string;
+  icon?: SettingIcon;
+  values: () => Promise<string[]>;
+  blurb?: string;
+  disabled?: boolean;
+  tag?: string;
+  onClickDisabled?: () => void;
+};
+
+export type Setting =
+  | CheckboxSetting
+  | CollapseSetting
+  | NumberSetting
+  | InfoSetting;
