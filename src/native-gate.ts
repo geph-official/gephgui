@@ -28,9 +28,16 @@ export interface NativeGate {
   get_app_icon_url(id: string): Promise<string>;
   get_debug_pack(): Promise<string>;
 
+  // Non-loopback addresses of this machine, for the "listen on all interfaces"
+  // display.
+  get_lan_addresses(): Promise<string[]>;
+
   supports_listen_all: boolean;
   supports_app_whitelist: boolean;
   supports_prc_whitelist: boolean;
+  // Whether the local proxy can be turned on and off at all.
+  supports_proxy_mode: boolean;
+  // Whether the platform can auto-configure the system proxy.
   supports_proxy_conf: boolean;
   supports_vpn_conf: boolean;
   supports_autoupdate: boolean;
@@ -77,6 +84,16 @@ export interface AppDescriptor {
 }
 
 /**
+ * Local-proxy configuration.
+ */
+export interface ProxyArgs {
+  autoconf: boolean;
+  listen_all: boolean;
+  socks5_port: number;
+  http_port: number;
+}
+
+/**
  * Arguments passed to start the Geph daemon.
  */
 export interface DaemonArgs {
@@ -92,8 +109,8 @@ export interface DaemonArgs {
 
   // platform-specific arguments
   global_vpn: boolean;
-  listen_all: boolean;
-  proxy_autoconf: boolean;
+  // null = proxy mode off = Geph listens on no ports at all
+  proxy: ProxyArgs | null;
 }
 
 /**
@@ -231,7 +248,13 @@ function mock_native_gate(): NativeGate {
       return "hello\nworld";
     },
 
+    async get_lan_addresses() {
+      await random_sleep();
+      return ["192.168.1.23", "10.0.0.5"];
+    },
+
     supports_listen_all: true,
+    supports_proxy_mode: true,
     supports_app_whitelist: true,
     supports_proxy_conf: true,
     supports_vpn_conf: true,

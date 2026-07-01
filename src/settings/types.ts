@@ -8,10 +8,25 @@ export type CheckboxSetting = {
   description: string;
   icon?: SettingIcon;
   store: Writable<boolean>;
+  // Sub-settings, shown only while the checkbox is on.
+  inner?: Setting[];
   blurb?: string;
   disabled?: boolean;
   tag?: string;
   onToggle?: (value: boolean) => void;
+  onClickDisabled?: () => void;
+};
+
+export type NumberSetting = {
+  type: "number";
+  description: string;
+  icon?: SettingIcon;
+  store: Writable<number>;
+  min?: number;
+  max?: number;
+  blurb?: string;
+  disabled?: boolean;
+  tag?: string;
   onClickDisabled?: () => void;
 };
 
@@ -26,4 +41,4 @@ export type CollapseSetting = {
   onClickDisabled?: () => void;
 };
 
-export type Setting = CheckboxSetting | CollapseSetting;
+export type Setting = CheckboxSetting | CollapseSetting | NumberSetting;

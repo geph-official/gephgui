@@ -7,8 +7,11 @@ import {
   pref_allow_direct,
   pref_exit_constraint_derived,
   pref_global_vpn,
+  pref_http_port,
   pref_listen_all,
   pref_proxy_autoconf,
+  pref_proxy_mode,
+  pref_socks5_port,
   pref_use_app_whitelist,
   pref_use_prc_whitelist,
 } from "./prefs";
@@ -377,9 +380,15 @@ export const startDaemonArgs = async (): Promise<DaemonArgs | null> => {
     app_whitelist: whitelistApps,
     prc_whitelist: get(pref_use_prc_whitelist),
     allow_direct: get(pref_allow_direct),
-    listen_all: get(pref_listen_all),
-    proxy_autoconf: get(pref_proxy_autoconf),
     global_vpn: get(pref_global_vpn),
+    proxy: get(pref_proxy_mode)
+      ? {
+          autoconf: get(pref_proxy_autoconf),
+          listen_all: get(pref_listen_all),
+          socks5_port: get(pref_socks5_port),
+          http_port: get(pref_http_port),
+        }
+      : null,
   };
 };
 

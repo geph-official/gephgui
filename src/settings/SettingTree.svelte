@@ -11,7 +11,24 @@
   let { setting }: { setting: Setting } = $props();
   const store: Writable<boolean> =
     setting.type === "checkbox" ? setting.store : writable(false);
+  const numStore: Writable<number> =
+    setting.type === "number" ? setting.store : writable(0);
   let open = $state(false);
+  // Checkbox sub-settings show whenever the checkbox is on.
+  const showDetails = $derived(
+    open || (setting.type === "checkbox" && !!setting.inner && $store)
+  );
+
+  function clampNumber(event: Event) {
+    if (setting.type !== "number") return;
+    const input = event.currentTarget as HTMLInputElement;
+    const min = setting.min ?? 1;
+    const max = setting.max ?? 65535;
+    const parsed = parseInt(input.value, 10);
+    const clamped = isNaN(parsed) ? $numStore : Math.min(max, Math.max(min, parsed));
+    numStore.set(clamped);
+    input.value = clamped.toString();
+  }
 
   function handleClick() {
     if (setting.disabled && setting.onClickDisabled) {
@@ -37,7 +54,7 @@
     collapse={setting.type === "collapse"}
     disabled={setting.disabled}
     onclick={setting.type === "collapse" ? handleClick : undefined}
-    {open}
+    open={showDetails}
   >
     {#snippet icon()}
       
@@ -77,6 +94,16 @@
             onchange={handleToggle}
           />
         </span>
+      {:else if setting.type === "number"}
+        <input
+          class="input w-24 text-end tnum"
+          type="number"
+          min={setting.min ?? 1}
+          max={setting.max ?? 65535}
+          value={$numStore}
+          disabled={setting.disabled}
+          onchange={clampNumber}
+        />
       {/if}
     {/snippet}
     {#snippet details()}
@@ -89,6 +116,10 @@
                 // disabled: setting.disabled || innerSetting.disabled,
               }}
             />
+          {/each}
+        {:else if setting.type === "checkbox" && setting.inner && $store}
+          {#each setting.inner as innerSetting}
+            <SettingTree setting={innerSetting} />
           {/each}
         {/if}
       </div>

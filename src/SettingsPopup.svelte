@@ -12,8 +12,8 @@
     GlobeSimple,
     LockKey,
     Network,
+    Plugs,
     SquaresFour,
-    Sparkle,
     Translate,
     TreeStructure,
   } from "phosphor-svelte";
@@ -30,8 +30,12 @@
     pref_use_prc_whitelist,
     pref_use_app_whitelist,
     pref_proxy_autoconf,
+    pref_proxy_mode,
     pref_listen_all,
+    pref_socks5_port,
+    pref_http_port,
   } from "./lib/prefs";
+  import { get } from "svelte/store";
   import { native_gate, broker_rpc } from "./native-gate";
   import SingleSetting from "./settings/SingleSetting.svelte";
   import ShowLogsPopup from "./ShowLogsPopup.svelte";
@@ -183,29 +187,51 @@
           description: "global-vpn",
           type: "checkbox",
           store: pref_global_vpn,
-          tag: l10n($curr_lang, "beta"),
+          blurb: "global-vpn-blurb",
           onToggle: (value: boolean) => {
-            if (value) {
-              showToast(
-                toastStore,
-                l10n($curr_lang, "global-vpn") +
-                  ": " +
-                  l10n($curr_lang, "experimental-feature-warning"),
-              );
+            // At least one of VPN / proxy mode must stay active.
+            if (!value && !get(pref_proxy_mode)) {
+              pref_proxy_mode.set(true);
             }
           },
         },
-        gate.supports_proxy_conf && {
-          icon: Sparkle,
-          description: "auto-proxy",
+        gate.supports_proxy_mode && {
+          icon: Plugs,
+          description: "proxy-mode",
           type: "checkbox",
-          store: pref_proxy_autoconf,
-        },
-        {
-          icon: GlobeSimple,
-          description: "listen-all",
-          type: "checkbox",
-          store: pref_listen_all,
+          store: pref_proxy_mode,
+          blurb: "proxy-mode-blurb",
+          onToggle: (value: boolean) => {
+            // Where VPN mode isn't a toggle (mobile), it is inherently on, so
+            // the proxy can be freely toggled.
+            if (!value && gate.supports_vpn_conf && !get(pref_global_vpn)) {
+              pref_global_vpn.set(true);
+            }
+          },
+          inner: filterSettings([
+            gate.supports_proxy_conf && {
+              description: "auto-proxy",
+              type: "checkbox",
+              store: pref_proxy_autoconf,
+              blurb: "auto-proxy-blurb",
+            },
+            {
+              description: "listen-all",
+              type: "checkbox",
+              store: pref_listen_all,
+              blurb: "listen-all-blurb",
+            },
+            {
+              description: "socks5-port",
+              type: "number",
+              store: pref_socks5_port,
+            },
+            {
+              description: "http-proxy-port",
+              type: "number",
+              store: pref_http_port,
+            },
+          ]),
         },
         {
           icon: Network,
@@ -285,6 +311,32 @@
             <SettingTree {setting} />
           {/each}
 
+          {#if section === "network" && gate.supports_proxy_mode && $pref_proxy_mode && $pref_listen_all}
+            <SingleSetting>
+              {#snippet icon()}
+                <GlobeSimple size="1.4rem" />
+              {/snippet}
+              {#snippet description()}
+                {l10n($curr_lang, "lan-addresses")}
+              {/snippet}
+              {#snippet control()}
+                {#await gate.get_lan_addresses()}
+                  <span class="opacity-50">…</span>
+                {:then addrs}
+                  <div class="flex flex-col text-sm tnum text-end">
+                    {#each addrs as addr}
+                      <b>{addr}</b>
+                    {:else}
+                      <span class="opacity-50">—</span>
+                    {/each}
+                  </div>
+                {:catch}
+                  <span class="opacity-50">—</span>
+                {/await}
+              {/snippet}
+            </SingleSetting>
+          {/if}
+
           {#if section === "features" && $pref_use_app_whitelist}
             <div class="app-whitelist-section">
               <SingleSetting>
@@ -325,7 +377,7 @@
         </h2>
 
         {#await native_gate() then gate}
-          {#if gate.supports_proxy_conf}
+          {#if gate.supports_proxy_mode && $pref_proxy_mode}
             <SingleSetting>
               {#snippet icon()}
 
@@ -345,12 +397,12 @@
                   <b
                     ><span class="opacity-50"
                       >{#if $pref_listen_all}0.0.0.0{:else}localhost{/if}:</span
-                    >9909</b
+                    >{$pref_socks5_port}</b
                   >
                   <b
                     ><span class="opacity-50"
                       >{#if $pref_listen_all}0.0.0.0{:else}localhost{/if}:</span
-                    >9910</b
+                    >{$pref_http_port}</b
                   >
                 </div>
               {/snippet}

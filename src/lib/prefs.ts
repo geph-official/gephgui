@@ -100,12 +100,43 @@ export const pref_allow_direct: Writable<boolean> = persistentWritable(
   false
 );
 
+// Whether this is a pre-existing install: persistentWritable writes its value
+// back on creation, so every install that has run before has this key. Must be
+// checked BEFORE the stores below are created.
+const is_existing_install = localStorage.getItem("global_vpn_2") !== null;
+
 /**
  * Whether to do global vpn stuff
  */
 export const pref_global_vpn: Writable<boolean> = persistentWritable(
   "global_vpn_2",
-  false
+  true
+);
+
+/**
+ * Whether the local SOCKS5/HTTP proxies are enabled at all. Existing installs
+ * always had them listening, so they default to on; fresh installs are
+ * VPN-only by default.
+ */
+export const pref_proxy_mode: Writable<boolean> = persistentWritable(
+  "proxy_mode_1",
+  is_existing_install
+);
+
+/**
+ * SOCKS5 proxy port.
+ */
+export const pref_socks5_port: Writable<number> = persistentWritable(
+  "socks5_port",
+  9909
+);
+
+/**
+ * HTTP proxy port.
+ */
+export const pref_http_port: Writable<number> = persistentWritable(
+  "http_port",
+  9910
 );
 
 export const pref_block_ads: Writable<boolean> = persistentWritable(
