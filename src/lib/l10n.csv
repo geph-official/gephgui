@@ -133,7 +133,8 @@ manage-account,Manage account,管理账户,管理帳戶,مدیریت حساب ک
 mb-per-month,MB/month,MB/月,MB/月,MB/ماه,МБ/мес,MB/mes,МБ/міс,ميغابايت/شهر
 migrate-from-older-versions,"Migrate from older versions","从旧版本迁移","從舊版本遷移","مهاجرت از نسخه‌های قدیمی","Миграция со старых версий","Migrar desde versiones anteriores","Міграція зі старих версій",الانتقال من الإصدارات القديمة
 much-faster-speed,"🚀 Much faster speed","🚀 超快的速度","🚀 超快的速度","🚀 سرعت بسیار بالاتر","🚀 Намного быстрее","🚀 Mucha más velocidad","🚀 Значно швидше",🚀 سرعة أعلى بكثير
-network,Network,网络,網路,شبکه,Сеть,Red,Мережа,الشبكة
+local-network,Local network,局域网,區域網路,شبکه محلی,Локальная сеть,Red local,Локальна мережа,الشبكة المحلية
+connection,Connection,连接,連線,اتصال,Подключение,Conexión,З'єднання,الاتصال
 news,News,通知频道,通知頻道,اخبار,Новости,Noticias,Новини,الأخبار
 no-apps-found,"No apps found","未找到应用","未找到應用","هیچ برنامه‌ای یافت نشد","Приложения не найдены","No se encontraron aplicaciones","Додатки не знайдені",لم يتم العثور على تطبيقات
 no-apps-found,No apps found,未找到应用,未找到應用,هیچ برنامه‌ای یافت نشد,Приложения не найдены,No se encontraron aplicaciones,Додатки не знайдені,لم يتم العثور على تطبيقات

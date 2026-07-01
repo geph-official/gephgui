@@ -109,7 +109,11 @@
 
   const modalStore = getModalStore();
   const toastStore = getToastStore();
-  const restrictedSettingsSections = new Set(["features", "network"]);
+  const restrictedSettingsSections = new Set([
+    "features",
+    "local-network",
+    "connection",
+  ]);
 
   const handleFreeTierFeature = () => {
     open = false;
@@ -180,7 +184,8 @@
           ]),
         },
       ]),
-      network: filterSettings([
+      // How Geph exposes itself on this device and the local network.
+      "local-network": filterSettings([
         gate.supports_vpn_conf && {
           icon: LockKey,
           description: "global-vpn",
@@ -239,11 +244,15 @@
             },
           ]),
         },
+      ]),
+      // How Geph connects out to its servers.
+      connection: filterSettings([
         {
           icon: Network,
           description: "allow-direct",
           type: "checkbox",
           store: pref_allow_direct,
+          blurb: "allow-direct-blurb",
         },
       ]),
     };
