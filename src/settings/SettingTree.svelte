@@ -14,9 +14,12 @@
   const numStore: Writable<number> =
     setting.type === "number" ? setting.store : writable(0);
   let open = $state(false);
-  // Checkbox sub-settings show whenever the checkbox is on.
+  // Checkbox sub-settings show whenever the checkbox is on; info values
+  // always render in the details area below the row.
   const showDetails = $derived(
-    open || (setting.type === "checkbox" && !!setting.inner && $store)
+    open ||
+      (setting.type === "checkbox" && !!setting.inner && $store) ||
+      setting.type === "info"
   );
 
   function clampNumber(event: Event) {
@@ -104,20 +107,6 @@
           disabled={setting.disabled}
           onchange={clampNumber}
         />
-      {:else if setting.type === "info"}
-        <div class="info-value text-sm tnum">
-          {#await setting.values()}
-            <ProgressRadial width="w-4" stroke={100} />
-          {:then values}
-            {#if values.length}
-              <b>{values.join(", ")}</b>
-            {:else}
-              <span class="opacity-50">—</span>
-            {/if}
-          {:catch}
-            <span class="opacity-50">—</span>
-          {/await}
-        </div>
       {/if}
     {/snippet}
     {#snippet details()}
@@ -135,6 +124,20 @@
           {#each setting.inner as innerSetting}
             <SettingTree setting={innerSetting} />
           {/each}
+        {:else if setting.type === "info"}
+          <div class="info-values text-sm tnum">
+            {#await setting.values()}
+              <ProgressRadial width="w-4" stroke={100} />
+            {:then values}
+              {#each values as value}
+                <b>{value}</b>
+              {:else}
+                <span class="opacity-50">—</span>
+              {/each}
+            {:catch}
+              <span class="opacity-50">—</span>
+            {/await}
+          </div>
         {/if}
       </div>
     {/snippet}
@@ -150,13 +153,17 @@
     opacity: 0.8;
   }
 
-  /* Constant height whether the spinner or the value is showing, so the row
-     doesn't jump when loading finishes. */
-  .info-value {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
+  /* Full-width block under the row label, one value per line, so long
+     address lists don't get crammed into the control column. The min-height
+     keeps the row from jumping when the spinner is replaced by values. */
+  .info-values {
+    padding-inline-start: 2rem;
     min-height: 1.5rem;
-    white-space: nowrap;
+    line-height: 1.6;
+  }
+
+  .info-values b {
+    display: block;
+    overflow-wrap: anywhere;
   }
 </style>
