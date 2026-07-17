@@ -3,13 +3,11 @@
   import {
     app_status,
     conn_status,
+    pref_exit_constraint_derived,
     startDaemonArgs,
     triggerPollBurst,
   } from "./lib/user";
-  import {
-    pref_exit_constraint_derived,
-    pref_seen_direct_prompt,
-  } from "./lib/prefs";
+  import { pref_seen_direct_prompt } from "./lib/prefs";
   import { get } from "svelte/store";
   import { native_gate } from "./native-gate";
   import { ProgressBar, getModalStore } from "@skeletonlabs/skeleton";

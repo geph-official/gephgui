@@ -1,11 +1,11 @@
-import { get, writable, type Writable } from "svelte/store";
+import { derived, get, writable, type Readable, type Writable } from "svelte/store";
+import { persistentWritable } from "./persistent";
 import {
-  persistentWritable,
   pref_app_whitelist,
   pref_block_ads,
   pref_block_adult,
   pref_allow_direct,
-  pref_exit_constraint_derived,
+  pref_exit_constraint,
   pref_global_vpn,
   pref_http_port,
   pref_listen_all,
@@ -14,6 +14,7 @@ import {
   pref_socks5_port,
   pref_use_app_whitelist,
   pref_use_prc_whitelist,
+  type ExitConstraint,
 } from "./prefs";
 import {
   native_gate,
@@ -353,6 +354,41 @@ export const app_status: Writable<AppStatus | null> =
     2000, // refresh interval in ms
     null
   );
+
+/**
+ * The current exit constraint, taking into account available exits.
+ *
+ * Lives here rather than in prefs.ts because it reads app_status at module
+ * evaluation time; prefs.ts importing user.ts would create an import cycle.
+ */
+export const pref_exit_constraint_derived: Readable<ExitConstraint> = derived(
+  [pref_exit_constraint, app_status],
+  ([$pref_exit_constraint, $app_status]) => {
+    // Return "auto" when the constraint is already "auto"
+    if ($pref_exit_constraint === "auto" || !$app_status) {
+      return "auto";
+    }
+
+    const exitList = Object.values($app_status.net_status.exits).map(v => v[1]);
+    const freeExitList = Object.values($app_status.net_status.exits).filter(v => v[2].allowed_levels.includes("Free")).map(v => v[1]);
+    const exits = ($app_status.account.level === "Free") ? freeExitList : exitList;
+
+    // Check if app_status has exits data
+    if (exits.length === 0) {
+      return "auto";
+    }
+
+    // Check if any exit matches the constraint (country and city)
+    const matchingExit = exits.find(
+      (exit) =>
+        exit.country === $pref_exit_constraint.country &&
+        exit.city === $pref_exit_constraint.city
+    );
+
+    // If no exit matches the constraint, return "auto", otherwise return the constraint
+    return matchingExit ? $pref_exit_constraint : "auto";
+  }
+);
 
 export const startDaemonArgs = async (): Promise<DaemonArgs | null> => {
   const secret = get(curr_valid_secret);

@@ -1,6 +1,6 @@
 import type { Writable } from "svelte/store";
 import l10n_csv from "./l10n.csv";
-import { persistentWritable } from "./prefs";
+import { persistentWritable } from "./persistent";
 import detectNearestBrowserLocale from "detect-nearest-browser-locale";
 
 // Languages

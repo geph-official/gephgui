@@ -1,12 +1,6 @@
 import MockRss from "./native-gate-mock-rss";
 import MockLogs from "./native-gate-mock-logs";
-import {
-  pref_app_whitelist,
-  pref_block_adult,
-  type ExitConstraint,
-} from "./lib/prefs";
-import { curr_valid_secret } from "./lib/user";
-import { get } from "svelte/store";
+export type ExitConstraint = "auto" | { city: string; country: string };
 
 export interface NativeGate {
   start_daemon(daemon_args: DaemonArgs): Promise<void>;
