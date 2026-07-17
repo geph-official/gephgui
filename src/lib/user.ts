@@ -4,6 +4,7 @@ import {
   pref_app_whitelist,
   pref_block_ads,
   pref_block_adult,
+  pref_allow_lan,
   pref_allow_direct,
   pref_exit_constraint,
   pref_global_vpn,
@@ -415,6 +416,7 @@ export const startDaemonArgs = async (): Promise<DaemonArgs | null> => {
     exit: get(pref_exit_constraint_derived),
     app_whitelist: whitelistApps,
     prc_whitelist: get(pref_use_prc_whitelist),
+    allow_lan: get(pref_allow_lan),
     allow_direct: get(pref_allow_direct),
     global_vpn: get(pref_global_vpn),
     proxy: get(pref_proxy_mode)

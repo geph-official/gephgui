@@ -22,6 +22,7 @@
     pref_block_ads,
     pref_block_adult,
     pref_block_gambling,
+    pref_allow_lan,
     pref_allow_direct,
     pref_global_vpn,
     pref_routing_mode,
@@ -43,6 +44,8 @@
     app_status,
     conn_status,
     curr_valid_secret,
+    startDaemonArgs,
+    triggerPollBurst,
     type SessionInfo,
   } from "./lib/user";
   import Flag from "./lib/Flag.svelte";
@@ -115,6 +118,27 @@
     "connection",
   ]);
 
+  let applyTimer: ReturnType<typeof setTimeout> | undefined;
+  let applyChain: Promise<void> = Promise.resolve();
+
+  function scheduleTunnelSettingsApply() {
+    if ($conn_status === "disconnected") return;
+    if (applyTimer) clearTimeout(applyTimer);
+    applyTimer = setTimeout(() => {
+      applyChain = applyChain
+        .then(async () => {
+          const args = await startDaemonArgs();
+          if (!args) return;
+          const gate = await native_gate();
+          await gate.restart_daemon(args);
+          triggerPollBurst();
+        })
+        .catch((error) =>
+          showErrorToast(toastStore, l10n($curr_lang, "error") + ": " + error)
+        );
+    }, 75);
+  }
+
   const handleFreeTierFeature = () => {
     open = false;
     $pref_wizard = true;
@@ -150,6 +174,7 @@
               type: "checkbox",
               store: pref_block_ads,
               disabled: !isPlusUser,
+              onToggle: scheduleTunnelSettingsApply,
               onClickDisabled: handleFreeTierFeature,
             },
             {
@@ -157,6 +182,7 @@
               type: "checkbox",
               store: pref_block_adult,
               disabled: !isPlusUser,
+              onToggle: scheduleTunnelSettingsApply,
               onClickDisabled: handleFreeTierFeature,
             },
           ],
@@ -172,6 +198,7 @@
               type: "checkbox",
               store: pref_use_prc_whitelist,
               blurb: "exclude-prc-blurb",
+              onToggle: scheduleTunnelSettingsApply,
             },
             gate.supports_app_whitelist && {
               description: "app-whitelist",
@@ -192,11 +219,21 @@
           type: "checkbox",
           store: pref_global_vpn,
           blurb: "global-vpn-blurb",
+          inner: [
+            {
+              description: "allow-lan",
+              type: "checkbox",
+              store: pref_allow_lan,
+              blurb: "allow-lan-blurb",
+              onToggle: scheduleTunnelSettingsApply,
+            },
+          ],
           onToggle: (value: boolean) => {
             // At least one of VPN / proxy mode must stay active.
             if (!value && !get(pref_proxy_mode)) {
               pref_proxy_mode.set(true);
             }
+            scheduleTunnelSettingsApply();
           },
         },
         gate.supports_proxy_mode && {
@@ -211,6 +248,7 @@
             if (!value && gate.supports_vpn_conf && !get(pref_global_vpn)) {
               pref_global_vpn.set(true);
             }
+            scheduleTunnelSettingsApply();
           },
           inner: filterSettings([
             gate.supports_proxy_conf && {
@@ -218,12 +256,14 @@
               type: "checkbox",
               store: pref_proxy_autoconf,
               blurb: "auto-proxy-blurb",
+              onToggle: scheduleTunnelSettingsApply,
             },
             {
               description: "listen-all",
               type: "checkbox",
               store: pref_listen_all,
               blurb: "listen-all-blurb",
+              onToggle: scheduleTunnelSettingsApply,
               inner: [
                 {
                   description: "lan-addresses",
@@ -236,11 +276,13 @@
               description: "socks5-port",
               type: "number",
               store: pref_socks5_port,
+              onChange: scheduleTunnelSettingsApply,
             },
             {
               description: "http-proxy-port",
               type: "number",
               store: pref_http_port,
+              onChange: scheduleTunnelSettingsApply,
             },
           ]),
         },
@@ -253,6 +295,7 @@
           type: "checkbox",
           store: pref_allow_direct,
           blurb: "allow-direct-blurb",
+          onToggle: scheduleTunnelSettingsApply,
         },
       ]),
     };

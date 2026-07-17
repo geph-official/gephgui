@@ -30,6 +30,7 @@
     const parsed = parseInt(input.value, 10);
     const clamped = isNaN(parsed) ? $numStore : Math.min(max, Math.max(min, parsed));
     numStore.set(clamped);
+    setting.onChange?.(clamped);
     input.value = clamped.toString();
   }
 

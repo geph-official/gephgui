@@ -27,6 +27,7 @@ export type NumberSetting = {
   blurb?: string;
   disabled?: boolean;
   tag?: string;
+  onChange?: (value: number) => void;
   onClickDisabled?: () => void;
 };
 

@@ -46,6 +46,15 @@ export const pref_allow_direct: Writable<boolean> = persistentWritable(
   false
 );
 
+/**
+ * Whether devices on the local network remain reachable outside the VPN.
+ * This defaults to true to preserve Geph's existing behavior.
+ */
+export const pref_allow_lan: Writable<boolean> = persistentWritable(
+  "allow_lan",
+  true
+);
+
 // Whether this is a pre-existing install: persistentWritable writes its value
 // back on creation, so every install that has run before has this key. Must be
 // checked BEFORE the stores below are created.

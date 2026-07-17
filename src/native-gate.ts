@@ -99,6 +99,7 @@ export interface DaemonArgs {
 
   // connection stuff
   exit: ExitConstraint;
+  allow_lan: boolean;
   allow_direct: boolean;
 
   // platform-specific arguments
