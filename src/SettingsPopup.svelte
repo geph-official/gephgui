@@ -213,6 +213,17 @@
       ]),
       // How Geph exposes itself on this device and the local network.
       "local-network": filterSettings([
+        // On platforms where the VPN is not a toggle (mobile), it is inherently
+        // on, so surface allow-lan as its own setting instead of nesting it
+        // under the (hidden) global-vpn toggle.
+        !gate.supports_vpn_conf && {
+          icon: Network,
+          description: "allow-lan",
+          type: "checkbox",
+          store: pref_allow_lan,
+          blurb: "allow-lan-blurb",
+          onToggle: scheduleTunnelSettingsApply,
+        },
         gate.supports_vpn_conf && {
           icon: LockKey,
           description: "global-vpn",
