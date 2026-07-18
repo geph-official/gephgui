@@ -6,7 +6,6 @@
     iosSubscriptionOpen,
   } from "./lib/user";
   import { native_gate, type IosPlusPrice } from "./native-gate";
-  import { onMount } from "svelte";
   import { ProgressBar } from "@skeletonlabs/skeleton";
   import Popup from "./lib/Popup.svelte";
 
@@ -18,8 +17,11 @@
   let purchaseInProgress = $state(false);
   let errorMessage: string | null = $state(null);
 
-  onMount(async () => {
+  async function loadPrice() {
+    if (loadingPrice) return;
+
     loadingPrice = true;
+    errorMessage = null;
     try {
       const gate = await native_gate();
       price = await gate.get_ios_plus_price();
@@ -27,6 +29,12 @@
       errorMessage = "" + error;
     } finally {
       loadingPrice = false;
+    }
+  }
+
+  $effect(() => {
+    if ($iosSubscriptionOpen && !price && !loadingPrice && !errorMessage) {
+      void loadPrice();
     }
   });
 
@@ -109,7 +117,10 @@
 
     {#if errorMessage}
       <div class="error">
-        {errorMessage}
+        <span>{errorMessage}</span>
+        <button class="btn variant-ghost-error" onclick={loadPrice}>
+          Retry
+        </button>
       </div>
     {/if}
 
@@ -208,11 +219,19 @@
   }
 
   .error {
+    align-items: center;
     border-radius: 0.5rem;
     background: rgb(var(--color-error-50));
     color: rgb(var(--color-error-700));
+    display: flex;
     font-size: 0.85rem;
+    gap: 0.5rem;
+    justify-content: space-between;
     padding: 0.75rem;
+  }
+
+  .error button {
+    flex: none;
   }
 
   .actions {
