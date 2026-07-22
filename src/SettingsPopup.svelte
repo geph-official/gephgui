@@ -464,7 +464,7 @@
           >
         </div>
 
-        {#if $conn_status !== "disconnected" && $conn_status !== "connecting"}
+        {#if $conn_status !== "disconnected" && $conn_status !== "connecting" && Array.isArray($conn_status.sessions)}
           {@const sessions = collapseSessions($conn_status.sessions)}
           <div class="session-grid mt-6 tnum">
             {#each sessions as session, i}

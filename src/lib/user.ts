@@ -314,7 +314,7 @@ async function fetchConnectionStatus(): Promise<ConnectionStatus> {
  */
 export const conn_status: Writable<ConnectionStatus> =
   persistentSelfRefreshingStore(
-    "connection_status", // localStorage key
+    "connection_status_1", // localStorage key; bumped when the connected shape changed to {sessions, primary}
     fetchConnectionStatus,
     () => pollInterval(1000),
     "disconnected" // initial value

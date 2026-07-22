@@ -78,7 +78,13 @@
         : "connected");
 
   let sessionGroups = $derived.by(() => {
-    if ($conn_status === "disconnected" || $conn_status === "connecting") {
+    if (
+      $conn_status === "disconnected" ||
+      $conn_status === "connecting" ||
+      // stale localStorage from an old version may hold a connected object
+      // without a sessions array
+      !Array.isArray($conn_status.sessions)
+    ) {
       return [];
     }
     const groups = new Map<
