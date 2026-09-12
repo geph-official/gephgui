@@ -1,12 +1,9 @@
 <script lang="ts">
   import { ProgressBar, getModalStore } from "@skeletonlabs/skeleton";
   import { curr_lang, l10n } from "./lib/l10n";
-  import { curr_valid_secret } from "./lib/user";
-  import { native_gate, broker_rpc } from "./native-gate";
+  import { signInWithCode, account_code_error, pending_account_code } from "./lib/user";
   import RegisterPopup from "./RegisterPopup.svelte";
-  import MigrationPopup from "./MigrationPopup.svelte";
   import { formatNumberWithSpaces, showErrorModal } from "./lib/utils";
-  import { onMount } from "svelte";
 
   let inputValue = $state("");
 
@@ -15,31 +12,21 @@
   const handleInput = (e: Event) => {
     const target = e.target as HTMLInputElement;
     let formattedValue = formatNumberWithSpaces(target.value);
-    console.log(target.value, formattedValue);
     inputValue = formattedValue; // Update the store with the formatted value
   };
 
   const modalStore = getModalStore();
 
   const onLogin = async () => {
+    if (loggingIn) return;
     loggingIn = true;
     try {
-      const secret = inputValue.replaceAll(" ", "");
-      await native_gate();
-      const userInfo = (await broker_rpc("get_user_info_by_cred", [
-        { secret },
-      ])) as any;
-      const isValidSecret = !!userInfo;
-      if (isValidSecret) {
-        $curr_valid_secret = secret;
-      } else {
-        await showErrorModal(
-          modalStore,
-          l10n($curr_lang, "incorrect-user-secret")
-        );
-      }
-    } catch (e: any) {
-      await showErrorModal(modalStore, e.toString());
+      await signInWithCode(inputValue);
+    } catch {
+      // A returned replacement stays on the update screen if saving/restarting fails.
+      if ($pending_account_code) return;
+      await showErrorModal(modalStore, l10n($curr_lang,
+        $account_code_error || "account-code-request-error"));
     } finally {
       loggingIn = false;
     }
@@ -50,44 +37,10 @@
   };
 
   let registerOpen = $state(false);
-
-  let migrateOpen = $state(false);
-
-  // Legacy user credentials for migration
-  let legacyUsername = $state("");
-  let legacyPassword = $state("");
-
-  // Check for legacy credentials on component mount
-  onMount(() => {
-    // Check if the legacy userpwd key exists in localStorage
-    const legacyCredentials = localStorage.getItem("userpwd");
-    if (legacyCredentials) {
-      try {
-        // Parse the JSON object containing username and password
-        const credentials = JSON.parse(legacyCredentials);
-        if (credentials.username && credentials.password) {
-          // Store the legacy credentials to pass to MigrationPopup
-          legacyUsername = credentials.username;
-          legacyPassword = credentials.password;
-          // Open the migration popup automatically
-          migrateOpen = true;
-        }
-      } catch (e) {
-        console.error("Failed to parse legacy credentials:", e);
-      }
-    }
-  });
 </script>
 
 <div id="login">
   <RegisterPopup bind:open={registerOpen} />
-  {#if migrateOpen}
-    <MigrationPopup
-      bind:open={migrateOpen}
-      initialUsername={legacyUsername}
-      initialPassword={legacyPassword}
-    />
-  {/if}
   <div class="middle">
     <h1 class="text-3xl">{l10n($curr_lang, "login")}</h1>
     <input
@@ -127,14 +80,6 @@
       onclick={() => onRegister()}
     >
       {l10n($curr_lang, "register")}
-    </button>
-    <button
-      type="button"
-      class="btn variant-ringed mt-2 btn-sm"
-      disabled={loggingIn}
-      onclick={() => (migrateOpen = true)}
-    >
-      {l10n($curr_lang, "migrate-from-older-versions")}
     </button>
   </div>
 </div>

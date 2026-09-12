@@ -34,6 +34,151 @@ export const curr_valid_secret: Writable<string | null> = persistentWritable(
   null
 );
 
+export type AccountCodeStatus =
+  | { current: { user_id: number; invite_code: string | null } }
+  | "retired"
+  | "invalid";
+
+export const account_code_status = writable<{ secret: string; status: AccountCodeStatus } | null>(null);
+const PENDING_CODE_KEY = "pending-account-code";
+type PendingCode = { secret: string; showCode: boolean };
+let restoredCode: PendingCode | null = null;
+try {
+  const saved = JSON.parse(localStorage.getItem(PENDING_CODE_KEY) || "null");
+  if (saved && /^8[0-9]{23}$/.test(saved.secret) && typeof saved.showCode === "boolean") {
+    restoredCode = saved;
+  }
+} catch { /* A malformed journal must not replace the saved account. */ }
+export const pending_account_code = writable<PendingCode | null>(restoredCode);
+export const account_code_busy = writable(false);
+export const account_code_error = writable<string | null>(null);
+let codeSynced = false;
+
+export const account_update_required = derived(
+  [curr_valid_secret, pending_account_code, account_code_status],
+  ([secret, pending, checked]) => !!pending || !!secret?.startsWith("9") ||
+    (!!secret && checked?.secret === secret && typeof checked.status === "string")
+);
+
+export async function checkAccountCode(secret: string): Promise<AccountCodeStatus> {
+  const status: AccountCodeStatus = await broker_rpc("get_account_secret_status", [secret]);
+  if (status !== "retired" && status !== "invalid" &&
+      !(status && typeof status === "object" && "current" in status &&
+        typeof status.current?.user_id === "number" &&
+        (status.current.invite_code === null || typeof status.current.invite_code === "string"))) {
+    throw new Error("Invalid account status response");
+  }
+  if (get(curr_valid_secret) === secret) account_code_status.set({ secret, status });
+  return status;
+}
+
+// Shared by login and the required update screen. A legacy code is only saved
+// here; the user must explicitly request rotation on the next screen.
+export async function signInWithCode(input: string): Promise<void> {
+  if (get(account_code_busy)) return;
+  account_code_busy.set(true);
+  account_code_error.set(null);
+  try {
+    const secret = input.replace(/\s/g, "");
+    const status = await checkAccountCode(secret);
+    if (status === "invalid" || (status === "retired" && !secret.startsWith("9"))) {
+      throw new Error("incorrect-user-secret");
+    }
+    if (secret.startsWith("9")) {
+      curr_valid_secret.set(secret);
+      account_code_status.set({ secret, status });
+      clearAccountCache();
+      app_status.set(null);
+    } else {
+      if (!/^8[0-9]{23}$/.test(secret)) throw new Error("incorrect-user-secret");
+      pending_account_code.set({ secret, showCode: false });
+      codeSynced = false;
+      await saveAndSyncAccountCode();
+      localStorage.removeItem(PENDING_CODE_KEY);
+      pending_account_code.set(null);
+    }
+  } catch (error) {
+    if (!get(account_code_error)) account_code_error.set(
+      error instanceof Error && error.message === "incorrect-user-secret"
+        ? "incorrect-user-secret" : "account-code-request-error"
+    );
+    throw error;
+  } finally {
+    account_code_busy.set(false);
+  }
+}
+
+export async function rotateAccountCode(): Promise<void> {
+  if (get(account_code_busy) || get(pending_account_code)) return;
+  const secret = get(curr_valid_secret);
+  if (!secret?.startsWith("9")) return;
+  account_code_busy.set(true);
+  account_code_error.set(null);
+  try {
+    const replacement: unknown = await broker_rpc("rotate_account_secret", [secret]);
+    if (typeof replacement !== "string" || !/^8[0-9]{23}$/.test(replacement)) {
+      throw new Error("Invalid replacement response");
+    }
+    // Keep the returned code in memory even if either local write fails.
+    pending_account_code.set({ secret: replacement, showCode: true });
+    codeSynced = false;
+    await saveAndSyncAccountCode();
+  } catch {
+    if (!get(pending_account_code)) {
+      let status: AccountCodeStatus | null = null;
+      try { status = await checkAccountCode(secret); } catch { /* Keep network failures recoverable. */ }
+      account_code_error.set(status === "retired" ? "account-code-retired" :
+        status === "invalid" ? "incorrect-user-secret" : "account-code-request-error");
+    }
+  } finally {
+    account_code_busy.set(false);
+  }
+}
+
+export async function completeAccountCodeUpdate(acknowledge: boolean): Promise<void> {
+  if (get(account_code_busy)) return;
+  account_code_busy.set(true);
+  account_code_error.set(null);
+  try {
+    await saveAndSyncAccountCode();
+    if (acknowledge) {
+      localStorage.removeItem(PENDING_CODE_KEY);
+      pending_account_code.set(null);
+    }
+  } catch {
+    if (!get(account_code_error)) account_code_error.set("account-code-save-error");
+  } finally {
+    account_code_busy.set(false);
+  }
+}
+
+async function saveAndSyncAccountCode(): Promise<void> {
+  const pending = get(pending_account_code);
+  if (!pending) return;
+  try {
+    // Journal first: reload can finish installing a successfully returned code.
+    localStorage.setItem(PENDING_CODE_KEY, JSON.stringify(pending));
+    curr_valid_secret.set(pending.secret);
+    clearAccountCache();
+    app_status.set(null);
+  } catch (error) {
+    account_code_error.set("account-code-save-error");
+    throw error;
+  }
+  if (!codeSynced) {
+    try {
+      const args = await startDaemonArgs();
+      if (!args) throw new Error("Missing saved account");
+      await (await native_gate()).restart_daemon(args);
+      codeSynced = true;
+      triggerPollBurst();
+    } catch (error) {
+      account_code_error.set("account-code-reconnect-error");
+      throw error;
+    }
+  }
+}
+
 /****************
  * News
  ****************/
@@ -229,13 +374,15 @@ const accountStatusCache = new LRUCache<string, AccountStatus>({
     account_refreshing.set(true);
     try {
       await native_gate();
+      const codeStatus = await checkAccountCode(secret);
+      if (typeof codeStatus === "string") throw new Error("Account code is no longer current");
       const info = (await broker_rpc("get_user_info_by_cred", [
         { secret },
       ])) as any;
       if (!info) {
         throw new Error("no such user");
       }
-      console.log("new info", info, secret);
+
       const level = info.plus_expires_unix ? "Plus" : "Free";
       const account: AccountStatus =
         level === "Plus"
@@ -345,6 +492,7 @@ export const app_status: Writable<AppStatus | null> =
         serverListCache.fetch("exits"),
       ]);
 
+      if (get(curr_valid_secret) !== secret) throw new Error("Account changed during refresh");
       const toret = {
         account: account as any,
         net_status: net_status as any,

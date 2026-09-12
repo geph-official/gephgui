@@ -18,10 +18,18 @@ export function persistentWritable<T>(
   } catch {
     initValue = default_value;
   }
-  let w = writable(initValue);
-  w.subscribe((value: T) => {
-    // console.log("storing", value);
+  const store = writable<T>(initValue);
+  let current: T = initValue;
+  const set = (value: T) => {
+    // Persist before notifying subscribers. A failed write leaves the store
+    // unchanged and does not throw from inside Svelte's subscriber queue.
     localStorage.setItem(storage_name, JSON.stringify(value));
-  });
-  return w;
+    current = value;
+    store.set(value);
+  };
+  return {
+    subscribe: store.subscribe,
+    set,
+    update: (updater) => set(updater(current)),
+  };
 }

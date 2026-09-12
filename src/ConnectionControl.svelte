@@ -2,6 +2,7 @@
   import { curr_lang, l10n } from "./lib/l10n";
   import {
     app_status,
+    account_update_required,
     conn_status,
     pref_exit_constraint_derived,
     startDaemonArgs,
@@ -28,6 +29,7 @@
   const modalStore = getModalStore();
 
   const startDaemonNow = async () => {
+    if (get(account_update_required)) return;
     connectButtonDisabled = true;
     try {
       const args = await startDaemonArgs();

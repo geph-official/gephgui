@@ -11,8 +11,9 @@
 
   import { curr_lang, is_rtl, l10n } from "./lib/l10n";
   import Login from "./Login.svelte";
-  import { app_status, curr_valid_secret } from "./lib/user";
+  import { app_status, curr_valid_secret, account_update_required } from "./lib/user";
   import Main from "./Main.svelte";
+  import AccountCodeUpdate from "./AccountCodeUpdate.svelte";
   import AccountPopup from "./AccountPopup.svelte";
   import PaymentPopup from "./PaymentPopup.svelte";
   import IosPlusSubscription from "./IosPlusSubscription.svelte";
@@ -116,11 +117,11 @@
     {/snippet}
     <!-- <b id="logo-text">{l10n($curr_lang, "geph")}</b> -->
     {#snippet trail()}
-      {#if $curr_valid_secret !== null && (!$pref_wizard || $app_status?.account.level !== "Free")}
+      {#if !$account_update_required && $curr_valid_secret !== null && (!$pref_wizard || $app_status?.account.level !== "Free")}
         <FreeVoucherButton />
       {/if}
-      {#if $curr_valid_secret !== null}
-        <button
+      {#if !$account_update_required && $curr_valid_secret !== null}
+        <button aria-label={l10n($curr_lang, "account")}
           onclick={() => {
             accountOpen = true;
           }}
@@ -128,6 +129,7 @@
           <UserCircle size="1.5rem" />
         </button>
       {/if}
+      {#if !$account_update_required}
       <button
         onclick={() => {
           settingsOpen = true;
@@ -135,15 +137,19 @@
       >
         <Gear size="1.5rem" />
       </button>
+      {/if}
     {/snippet}
   </AppBar>
 
-  {#if $curr_valid_secret === null}
+  {#if $account_update_required}
+    <AccountCodeUpdate />
+  {:else if $curr_valid_secret === null}
     <Login />
   {:else}
     <Main />
   {/if}
 
+  {#if !$account_update_required}
   <SettingsPopup bind:open={settingsOpen} />
   <AccountPopup bind:open={accountOpen} />
   {#if !isIOS}
@@ -153,6 +159,7 @@
   <ExpiryWarningPopup bind:open={expiryOpen} {daysRemaining} {expiryUnix} />
   {#if isIOS}
     <DataCollectionPopup bind:open={dataNoticeOpen} />
+  {/if}
   {/if}
 </main>
 

@@ -168,11 +168,12 @@ function mock_native_gate(): NativeGate {
     },
     restart_daemon: async () => {
       random_fail();
-      random_fail();
-      random_fail();
-      random_fail();
-      running = true;
-      await random_sleep();
+      // Saving arguments while disconnected must not initiate a connection.
+      if (running) {
+        connected = false;
+        await random_sleep();
+        connected = true;
+      }
     },
     set_exit_constraint: async () => {
       random_fail();
@@ -305,6 +306,11 @@ export async function broker_rpc(method: string, params: any[]): Promise<any> {
 }
 
 let mockRegisterProgress = 0.0;
+const mockAccounts = new Map([
+  ["900000000000000000000001", { user_id: 12345, invite_code: "XRZ1GB4DF6YMV2SN" }],
+  ["800000000000000000000001", { user_id: 12346, invite_code: "MOCKNEWACCOUNT01" }],
+]);
+const mockRotations = new Map<string, { replacement: string; expires: number }>();
 
 const MockDaemonRpc = {
   async ab_test(_key: string, _secret: string) {
@@ -313,6 +319,27 @@ const MockDaemonRpc = {
 
   async broker_rpc(method: string, params: any[]) {
     switch (method) {
+      case "get_account_secret_status": {
+        const account = mockAccounts.get(params[0]);
+        return account ? { current: account } : mockRotations.has(params[0]) ? "retired" : "invalid";
+      }
+      case "rotate_account_secret": {
+        const old = params[0] as string;
+        if (!old.startsWith("9")) throw new Error("incorrect account code or rotation not supported");
+        const previous = mockRotations.get(old);
+        if (previous) {
+          if (Date.now() < previous.expires) return previous.replacement;
+          throw new Error("account code has been replaced");
+        }
+        const account = mockAccounts.get(old);
+        if (!account) throw new Error("incorrect account code");
+        const digits = crypto.getRandomValues(new Uint8Array(23));
+        const replacement = "8" + Array.from(digits, digit => digit % 10).join("");
+        mockAccounts.delete(old);
+        mockAccounts.set(replacement, account);
+        mockRotations.set(old, { replacement, expires: Date.now() + 600_000 });
+        return replacement;
+      }
       case "raw_price_points":
         return [
           [30, 500],
@@ -342,8 +369,9 @@ const MockDaemonRpc = {
       case "upgrade_to_secret":
         return "12345678";
       case "get_user_info_by_cred":
+        if (!mockAccounts.has(params[0]?.secret)) throw new Error("incorrect credentials");
         return {
-          user_id: 12345,
+          user_id: mockAccounts.get(params[0].secret)!.user_id,
           plus_expires_unix: Math.floor(Date.now() / 1000) + 86400 * 30,
           recurring: false,
           bw_consumption: null,
@@ -373,7 +401,7 @@ const MockDaemonRpc = {
     } else {
       return {
         progress: mockRegisterProgress,
-        secret: "123456781234567812345678",
+        secret: "800000000000000000000001",
       };
     }
   },
