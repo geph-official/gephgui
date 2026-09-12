@@ -8,6 +8,7 @@ export interface NativeGate {
   // Switch the exit while connected; the daemon reconnects without a leak window.
   set_exit_constraint(exit: ExitConstraint): Promise<void>;
   stop_daemon(): Promise<void>;
+  logout(): Promise<void>;
   is_running(): Promise<boolean>;
   daemon_rpc(method: string, args: any[]): Promise<unknown>;
   open_browser(args: any[]): Promise<unknown>;
@@ -180,6 +181,13 @@ function mock_native_gate(): NativeGate {
       await random_sleep();
     },
     stop_daemon: async () => {
+      random_fail();
+      await random_sleep();
+      connected = false;
+      running = false;
+    },
+
+    logout: async () => {
       random_fail();
       await random_sleep();
       connected = false;
