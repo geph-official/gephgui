@@ -493,6 +493,23 @@ export const app_status: Writable<AppStatus | null> =
       ]);
 
       if (get(curr_valid_secret) !== secret) throw new Error("Account changed during refresh");
+      const previousAccount = get(app_status)?.account;
+      if (
+        previousAccount?.level === "Free" &&
+        account?.level === "Plus" &&
+        previousAccount.user_id === account.user_id
+      ) {
+        // Reconnect with Plus credentials as soon as an upgrade is observed.
+        const gate = await native_gate();
+        if (await gate.is_running()) {
+          const args = await startDaemonArgs();
+          if (args?.secret === secret && get(curr_valid_secret) === secret) {
+            await gate.restart_daemon(args);
+            triggerPollBurst();
+          }
+        }
+      }
+      if (get(curr_valid_secret) !== secret) throw new Error("Account changed during refresh");
       const toret = {
         account: account as any,
         net_status: net_status as any,
