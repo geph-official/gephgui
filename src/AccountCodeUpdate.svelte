@@ -31,7 +31,7 @@
     signInWithCode,
   } from "./lib/user";
 
-  const INCIDENT_URL = "https://geph.io/account-code-update";
+  const INCIDENT_URL = "https://community.geph.io/t/topic/22227";
   const SUPPORT_EMAIL = "support@geph.io";
 
   let enteringCode = $state(false);
