@@ -175,24 +175,25 @@
     {/if}
 
     <header class="header">
+      <!-- Step 2 is the longest screen; the step bar already orients the user. -->
+      {#if screen !== "save"}
       <span
         class="badge-icon {screen === 'retired' || screen === 'invalid'
           ? 'variant-soft-warning'
-          : screen === 'save'
-            ? 'variant-soft-success'
-            : 'variant-soft-primary'}"
+          : 'variant-soft-primary'}"
         aria-hidden="true"
       >
         {#if screen === "retired"}
           <ShieldWarning size="2.25rem" weight="duotone" />
         {:else if screen === "invalid"}
           <WarningCircle size="2.25rem" weight="duotone" />
-        {:else if screen === "save" || screen === "enter"}
+        {:else if screen === "enter"}
           <Key size="2.25rem" weight="duotone" />
         {:else}
           <ShieldCheck size="2.25rem" weight="duotone" />
         {/if}
       </span>
+      {/if}
       <h1 id="account-update-title" class="text-2xl font-semibold">
         {l10n($curr_lang, titles[screen])}
       </h1>
@@ -244,19 +245,30 @@
       </div>
     {:else if screen === "save" && $pending_account_code}
       <p>{l10n($curr_lang, "account-code-save-instructions")}</p>
-      <div class="card variant-soft p-4 text-center">
-        <bdi dir="ltr" class="tnum text-2xl sm:text-3xl select-all">
-          {formatNumberWithSpaces($pending_account_code.secret)}
-        </bdi>
+      <div class="secret-display w-full flex items-center justify-center tnum my-2">
+        <div class="text-center text-3xl w-[20rem]">
+          <bdi dir="ltr">{formatNumberWithSpaces($pending_account_code.secret)}</bdi>
+        </div>
       </div>
       <button class="btn variant-ghost-primary w-full" onclick={copyCode}>
         {#if copied}<Check size="1.2rem" />{:else}<Copy size="1.2rem" />{/if}
         {l10n($curr_lang, copied ? "account-code-copied" : "account-code-copy")}
       </button>
-      <ul class="notes text-sm">
-        <li>{l10n($curr_lang, "account-code-old-stops")}</li>
-        <li>{l10n($curr_lang, "account-code-other-devices")}</li>
-      </ul>
+      <div>
+        <p class="font-semibold">{l10n($curr_lang, "account-code-old-stops")}</p>
+        <p class="text-sm opacity-80">{l10n($curr_lang, "account-code-see-later")}</p>
+      </div>
+      <div class="other-devices card variant-soft p-4">
+        <h2 class="flex items-center gap-2 font-semibold">
+          <Devices size="1.4rem" weight="duotone" />
+          {l10n($curr_lang, "account-code-other-devices-title")}
+        </h2>
+        <ol class="device-steps">
+          <li>{l10n($curr_lang, "account-code-other-devices-step-1")}</li>
+          <li>{l10n($curr_lang, "account-code-other-devices-step-2")}</li>
+        </ol>
+        <p class="text-sm opacity-80">{l10n($curr_lang, "account-code-other-devices")}</p>
+      </div>
       <label class="confirm">
         <input class="checkbox" type="checkbox" bind:checked={savedConfirmed} />
         <span>{l10n($curr_lang, "account-code-saved")}</span>
@@ -406,14 +418,14 @@
     flex: 1;
     min-height: 0;
     overflow: auto;
-    padding: 1.5rem;
+    padding: 1rem 1.25rem;
   }
   .update-content {
     max-width: 30rem;
-    margin: 1rem auto 2rem;
+    margin: 0 auto 1rem;
     display: flex;
     flex-direction: column;
-    gap: 1.25rem;
+    gap: 1rem;
   }
   form,
   .actions,
@@ -469,12 +481,17 @@
     margin-top: 0.1rem;
   }
 
-  .notes {
-    list-style: disc;
-    padding-inline-start: 1.25rem;
+  .other-devices {
     display: flex;
     flex-direction: column;
-    gap: 0.35rem;
+    gap: 0.6rem;
+  }
+  .device-steps {
+    list-style: decimal;
+    padding-inline-start: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
   }
   .confirm {
     display: flex;
@@ -537,5 +554,39 @@
   }
   .logout-link:hover {
     opacity: 1;
+  }
+
+  /* Short phones (e.g. 375x667): keep every screen on one page. */
+  @media (max-height: 720px) {
+    .update-screen {
+      padding-block: 0.75rem;
+    }
+    .update-content {
+      gap: 0.5rem;
+      margin-bottom: 0.25rem;
+    }
+    .badge-icon {
+      display: none;
+    }
+    .header h1 {
+      font-size: 1.25rem;
+      line-height: 1.75rem;
+    }
+    .points {
+      gap: 0.625rem;
+    }
+    .secret-display {
+      margin-block: 0;
+    }
+    .other-devices {
+      padding: 0.75rem;
+      gap: 0.4rem;
+    }
+    .choices {
+      gap: 0.5rem;
+    }
+    .choice-btn {
+      padding: 0.625rem 0.875rem;
+    }
   }
 </style>
