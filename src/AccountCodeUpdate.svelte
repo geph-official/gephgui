@@ -209,7 +209,7 @@
             </span>
             <div>
               <h2 class="font-semibold">{l10n($curr_lang, point.title)}</h2>
-              <p class="text-sm opacity-80">{l10n($curr_lang, point.body)}</p>
+              <p class="text-sm opacity-80">{@html l10n($curr_lang, point.body)}</p>
             </div>
           </li>
         {/each}
